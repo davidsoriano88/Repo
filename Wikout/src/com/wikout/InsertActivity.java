@@ -1,5 +1,5 @@
 package com.wikout;
-//HOLAAAAAAAAAAAAA
+//Adios
 import io.backbeam.Backbeam;
 import io.backbeam.BackbeamException;
 import io.backbeam.BackbeamObject;
