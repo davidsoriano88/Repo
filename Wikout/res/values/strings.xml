@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Wikout</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="question">Elija la ubicación de la foto</string>
+    <string name="camera">Cámara</string>
+    <string name="galeria">Galería</string>
+    <string name="categorias_prompt">Categorias</string>
+ <string name="toast_crash">Fallo de la aplicacion, lo sentimos.</string>
+    <string-array name="categorias">
+        <item>ocio</item>
+        <item>compras</item>
+        <item>servicios</item>
+        <item>otros</item>
+    </string-array>
+    <string-array name="report">
+        <item>Referencia incorrecta</item>
+        <item>Contenido ofensivo</item>
+        <item>Cancelar</item>
+    </string-array>
+    <string name="report_prompt">Report</string>
+    <string-array name="options">
+        <item>Buscar</item>
+        <item>Filtrar</item>
+        <item>Info</item>
+        <item>Salir</item>
+    </string-array>
+     <array name="navigation_iconos">
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/initicon</item>
+        <item>@drawable/pin</item>
+        <item>@drawable/pinplaces</item>
+    </array> 
+ <string-array name="places">
+        <item >ATM</item>
+        <item >Bank</item>
+        <item >Cafe</item>
+        <item >Fire-Station</item>
+        <item >Hospital</item>
+        <item >Pharmacy</item>
+        <item >Police</item>
+        <item >Restaurant</item>
+        <item >Shopping Mall</item>
+  </string-array>
+  <string name="oferta">Oferta</string>
+    
+
+</resources>

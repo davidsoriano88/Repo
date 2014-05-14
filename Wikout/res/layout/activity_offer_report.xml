@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.wikout.OfferReport"
+    tools:ignore="MergeRootFrame" >
+
+    <ImageView
+        android:id="@+id/ivPhotoOffer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="102dp"
+        android:layout_marginTop="26dp"
+        android:src="@drawable/initicon" />
+
+    <TextView
+        android:id="@+id/tvOfferText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ivPhotoOffer"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/tvOfferDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvOfferText"
+        android:layout_below="@+id/tvOfferText"
+        android:layout_marginTop="21dp" />
+
+    <Button
+        android:id="@+id/btnAddLike"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvOfferDeadline"
+        android:layout_below="@+id/tvOfferDeadline"
+        android:layout_marginTop="24dp"
+        android:text="I Like" />
+
+    <TextView
+        android:id="@+id/tvOfferCreationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvOfferLocation"
+        android:layout_below="@+id/tvOfferLocation"
+        android:layout_marginTop="18dp" />
+
+    <TextView
+        android:id="@+id/tvOfferLikes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnAddLike"
+        android:layout_alignLeft="@+id/ivPhotoOffer"
+        android:textSize="30dp" />
+
+    <TextView
+        android:id="@+id/tvOfferLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnAddLike"
+        android:layout_below="@+id/btnAddLike"
+        android:layout_marginTop="19dp" />
+
+    <Button
+        android:id="@+id/btnFlag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btnAddLike"
+        android:layout_toRightOf="@+id/ivPhotoOffer"
+        android:text="flag" />
+
+</RelativeLayout>
+

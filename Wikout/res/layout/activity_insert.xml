@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ivFoto"
+        android:layout_width="fill_parent"
+        android:layout_height="110px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="imageClicked"
+        android:src="@drawable/initicon" />
+
+    <TextView
+        android:id="@+id/ubicacionTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/validoTv"
+        android:layout_below="@+id/nombreTv"
+        android:layout_marginTop="10dp"
+        android:text="[ubicacion]" />
+
+    <TextView
+        android:id="@+id/validoTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnDateLimit"
+        android:layout_alignBottom="@+id/btnDateLimit"
+        android:layout_alignLeft="@+id/ofertaTv"
+        android:text="Válido hasta:" />
+
+    <EditText
+        android:id="@+id/nombreTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/btnDateLimit"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="Nombre" />
+
+    <EditText
+        android:id="@+id/ofertaTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/nombreTv"
+        android:layout_below="@+id/ivFoto"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="Oferta" />
+
+    <Button
+        android:id="@+id/btnDateLimit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ofertaTv"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/validoTv"
+        android:text="Seleccionar Fecha" />
+
+    <Button
+        android:id="@+id/btnOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/nombreTv"
+        android:layout_below="@+id/ubicacionTv"
+        android:layout_marginTop="64dp"
+        android:text="Ok" />
+
+    <Spinner
+        android:id="@+id/spnCategorias"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ubicacionTv"
+        android:layout_marginLeft="26dp"
+        android:layout_marginTop="10dp"
+        android:layout_toLeftOf="@+id/btnOk"
+        android:entries="@array/categorias"
+        android:prompt="@string/categorias_prompt" />
+
+</RelativeLayout>
