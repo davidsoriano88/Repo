@@ -121,7 +121,7 @@ public class Map extends ActionBarActivity {
 		insert = new Intent(getApplicationContext(), InsertActivity.class);
 		places = getResources().getStringArray(R.array.places);
 		
-		//setupActionBar(); 
+		
 		
 		
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
