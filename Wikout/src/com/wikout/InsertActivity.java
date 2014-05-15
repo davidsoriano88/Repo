@@ -88,8 +88,8 @@ public class InsertActivity extends Activity {
 	 public void initUI(){
 		map = new Intent(getApplicationContext(), Map.class);
 		contactPhoto = (ImageView) findViewById(R.id.ivFoto);
-		offerEt = (EditText) findViewById(R.id.ofertaTv);
-		placeName = (EditText) findViewById(R.id.nombreTv);
+		offerEt = (EditText) findViewById(R.id.tvReferenceDescription);
+		placeName = (EditText) findViewById(R.id.tvReferencePlacename);
 		accept = (Button) findViewById(R.id.btnOk);
 		projectData();
 		addListenerOnButton();
@@ -97,7 +97,7 @@ public class InsertActivity extends Activity {
 
 		setCurrentDateOnView();
 
-		placelink = (TextView) findViewById(R.id.ubicacionTv);
+		placelink = (TextView) findViewById(R.id.tvReferenceLocation);
 		Bundle bundle = getIntent().getExtras();
 		enter = bundle.getInt("enter");
 		if (enter == 1) {

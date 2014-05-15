@@ -33,14 +33,15 @@ import android.widget.TextView;
 
 public class OfferReport extends Activity {
 
-	TextView offertext, offerdeadline, offercreation, offerlocation,
-			offerlikes;
-	Button like, flag;
-	ImageView photo;
+	TextView tvDescription, tvDeadline, tvCreationDate, tvLocation,
+			tvNumLike;
+	Button btnLike, btnFlag;
+	ImageView ivPhoto;
 	String idofferparameter = "";
 	String idcommerceparameter = "";
 	Context context;
 	Util util = new Util();
+	
 	boolean statuslike= false;
 	//statuslike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//statuslike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
@@ -73,19 +74,19 @@ public class OfferReport extends Activity {
 		Backbeam.read("offer", idoffer, new ObjectCallback() {
 			@Override
 			public void success(BackbeamObject offer) {
-				offertext.setText(offer.getString("description"));
-				offerlikes.setText(offer.getNumber("numlike").toString());
+				tvDescription.setText(offer.getString("description"));
+				tvNumLike.setText(offer.getNumber("numlike").toString());
 				// Paso las fechas a los edittexts
 				SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 				String deadline = format1.format(offer.getDay("deadline")
 						.getTime());
-				offerdeadline.setText(deadline);
+				tvDeadline.setText(deadline);
 				String creation = format1.format(offer
 						.getDate("offercreationdate"));
-				offercreation.setText(creation);
+				tvCreationDate.setText(creation);
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
-				offerlocation.setText(commerce.getString("placelocation"));
+				tvLocation.setText(commerce.getString("placelocation"));
 			}
 		});
 
@@ -122,7 +123,7 @@ public class OfferReport extends Activity {
 						Bitmap mIcon_val = BitmapFactory.decodeStream(newurl
 								.openConnection().getInputStream());
 						util.log("icono cargado");
-						photo.setImageBitmap(mIcon_val);
+						ivPhoto.setImageBitmap(mIcon_val);
 						// image.setImageBitmap(mIcon_val);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
@@ -136,25 +137,25 @@ public class OfferReport extends Activity {
 
 	private void initUi() {
 		// EDITEXTS
-		offertext = (TextView) findViewById(R.id.tvOfferText);
-		offerdeadline = (TextView) findViewById(R.id.tvOfferDeadline);
-		offercreation = (TextView) findViewById(R.id.tvOfferCreationDate);
-		offerlocation = (TextView) findViewById(R.id.tvOfferLocation);
-		offerlikes = (TextView) findViewById(R.id.tvOfferLikes);
+		tvDescription = (TextView) findViewById(R.id.tvOfferReportDescription);
+		tvDeadline = (TextView) findViewById(R.id.tvOfferReportDeadline);
+		tvCreationDate = (TextView) findViewById(R.id.tvOfferReportCreationDate);
+		tvLocation = (TextView) findViewById(R.id.tvOfferReportLocation);
+		tvNumLike = (TextView) findViewById(R.id.tvOfferReportNumLikes);
 		// BOTONES
-		like = (Button) findViewById(R.id.btnAddLike);
-		flag = (Button) findViewById(R.id.btnFlag);
+		btnLike = (Button) findViewById(R.id.btnOfferReportLike);
+		btnFlag = (Button) findViewById(R.id.btnOfferReportFlag);
 		// IMAGEVIEW
-		photo = (ImageView) findViewById(R.id.ivPhotoOffer);
+		ivPhoto = (ImageView) findViewById(R.id.ivOfferReportPhoto);
 
-		like.setOnClickListener(new OnClickListener() {
+		btnLike.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				insertLike(idofferparameter);
 			}
 		});
-		flag.setOnClickListener(new OnClickListener() {
+		btnFlag.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -165,6 +166,7 @@ public class OfferReport extends Activity {
 						OfferReport.this);
 				builder.setTitle("Elija el motivo: ");
 				builder.setItems(items, new DialogInterface.OnClickListener() {
+					@Override
 					public void onClick(DialogInterface dialog, int item) {
 						// Do something with the selection
 
@@ -256,7 +258,7 @@ public class OfferReport extends Activity {
 													.getString("description"));
 											System.out.println(object
 													.getNumber("numlike"));
-											offerlikes.setText(object.getNumber("numlike").toString());
+											tvNumLike.setText(object.getNumber("numlike").toString());
 											queryLike(idoffer);
 										}
 									});
@@ -329,7 +331,7 @@ public class OfferReport extends Activity {
 					boolean fromCache) {
 				if (totalCount == 0) {
 					// NO HA HECHO CLIC ANTES
-					like.setText("Like");
+					btnLike.setText("Like");
 					System.out.println("no ha hecho clic antes");
 					statuslike = true;
 					System.out.println("Estado del boolean: " + statuslike);
@@ -342,13 +344,13 @@ public class OfferReport extends Activity {
 
 					if (status.equals("1")) {
 						// Deshabilitar boton
-						like.setText("Dislike");
+						btnLike.setText("Dislike");
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + statuslike);
 						statuslike = false;
 					} else {
 						// Habilitar boton
-						like.setText("Like");
+						btnLike.setText("Like");
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + statuslike);
 						statuslike = true;
@@ -358,7 +360,7 @@ public class OfferReport extends Activity {
 			}
 		});
 
-		like.setEnabled(true);
+		btnLike.setEnabled(true);
 	}
 
 	
