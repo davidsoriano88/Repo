@@ -105,7 +105,7 @@ public class InsertActivity extends Activity {
 			latitude = bundle.getDouble("latiMain");
 			longitude = bundle.getDouble("longiMain");
 			util.log( latitude + "," + longitude);
-			position = "(posClick) " + String.valueOf(latitude) + ","
+			position = String.valueOf(latitude) + ","
 					+ String.valueOf(longitude);
 			placelink.setText(position);
 

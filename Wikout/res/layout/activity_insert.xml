@@ -18,7 +18,8 @@
         android:id="@+id/tvReferenceLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/tvReferenceValid"
+        android:layout_alignLeft="@+id/tvReferencePlacename"
+        android:layout_alignRight="@+id/tvReferencePlacename"
         android:layout_below="@+id/tvReferencePlacename"
         android:layout_marginTop="10dp"
         android:text="[ubicacion]" />
