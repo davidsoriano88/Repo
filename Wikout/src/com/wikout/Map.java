@@ -297,7 +297,6 @@ public class Map extends ActionBarActivity {
 								int totalCount, boolean fromCache) {
 							
 							map.clear();
-							//HashMap<String,String> refData= new HashMap<String,String>();
 							final ArrayList<String>placeName=new ArrayList<String>();
 							final ArrayList<String>idData=new ArrayList<String>();
 							
@@ -366,7 +365,9 @@ public class Map extends ActionBarActivity {
 			return true;
 		}
 	}
-
+public void nextActivity(Class cls){
+	
+}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
