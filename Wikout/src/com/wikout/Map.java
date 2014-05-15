@@ -78,47 +78,40 @@ public class Map extends ActionBarActivity {
     private ArrayList<ItemObject> NavItms;
     private TypedArray NavIcons;	
     Context context;
-    
 
-	
-	
 	protected void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    setContentView(R.layout.fragment_main);
-	    context=this;
-	    String[] values = getResources().getStringArray(R.array.options);
-        navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ListView optionList = (ListView) findViewById(R.id.left_drawer);
-        optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
-        optionList.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
-					long arg3) {
-				// TODO Auto-generated method stub
-				switch(pos){
-				case 0: util.showToast(getApplicationContext(), "buscar"); break;
-					
-				case 1: util.showToast(getApplicationContext(), "Filtrar"); break;
-					
-				case 2: util.showInfoDialog(context, "Wikout", "Aplicación desarrollado por Uptimiza. 2014"); break;
-					
-				case 3: android.os.Process.killProcess(android.os.Process.myPid()); break;
-				}
-				
-			}});
-	   initUI();
-	    util.projectData(context);
-	   
-	  }
+	 super.onCreate(savedInstanceState);
+	 setContentView(R.layout.fragment_main);
+	 context=this;
+  
+     util.projectData(context);
+     initUI();  
+	 }
 
 	public void initUI(){
 		insert = new Intent(getApplicationContext(), InsertActivity.class);
 		places = getResources().getStringArray(R.array.places);
-		
-		
-		
-		
+		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+	    ListView optionList = (ListView) findViewById(R.id.left_drawer);
+	    
+	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
+	    optionList.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
+					switch(pos){
+					case 0: util.showToast(getApplicationContext(), "buscar"); break;
+						
+					case 1: util.showToast(getApplicationContext(), "Filtrar"); break;
+						
+					case 2: util.showInfoDialog(context, "Wikout", "Aplicación desarrollado por Uptimiza. 2014"); break;
+						
+					case 3: android.os.Process.killProcess(android.os.Process.myPid()); break;
+					}
+					
+				}});
+		
+		
 		map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 		
@@ -132,16 +125,16 @@ public class Map extends ActionBarActivity {
 				Point coord = proj.toScreenLocation(point);
 				
 				
-				util.showToast(Map.this, "Click\n" + "Lat: " + point.latitude + "\n" + "Lng: "
+		util.showToast(Map.this, "Click\n" + "Lat: " + point.latitude + "\n" + "Lng: "
 						+ point.longitude + "\n" + "X: " + coord.x
 						+ " - Y: " + coord.y);
 				
 				
-				insert.putExtra("latiMain", point.latitude);
-				insert.putExtra("longiMain", point.longitude);
-				enter = 1;
-				insert.putExtra("enter", enter);
-				startActivity(insert);
+		insert.putExtra("latiMain", point.latitude);
+		insert.putExtra("longiMain", point.longitude);
+		enter = 1;
+		insert.putExtra("enter", enter);
+		startActivity(insert);
 			}
 		});
 		
@@ -183,6 +176,7 @@ public class Map extends ActionBarActivity {
 		inflater.inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
 		}
+	
 	@SuppressWarnings("deprecation")
 	public void InfoVersion(){
 		AlertDialog info = new AlertDialog.Builder(this).create();
