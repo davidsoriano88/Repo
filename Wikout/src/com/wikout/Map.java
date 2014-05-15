@@ -95,9 +95,9 @@ public class Map extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
 					switch(pos){
-					case 0: util.showToast(getApplicationContext(), "buscar"); break;
+					case 0: util.showToast(context, "buscar"); break;
 						
-					case 1: util.showToast(getApplicationContext(), "Filtrar"); break;
+					case 1: util.showToast(context, "Filtrar"); break;
 						
 					case 2: util.showInfoDialog(context, "Wikout", "Aplicación desarrollado por Uptimiza. 2014"); break;
 						
@@ -122,7 +122,7 @@ public class Map extends ActionBarActivity {
 				
 		
 		///establecemos el paso a la siguiente pantalla y le pasamos valores:
-		Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
+		Intent insert = new Intent(context, InsertActivity.class);
 		insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
@@ -154,7 +154,7 @@ public class Map extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_search:
-        	Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
+        	Intent insert = new Intent(context, InsertActivity.class);
 			enter = 0;
 			insert.putExtra("enter", enter);
 			startActivity(insert);
@@ -222,7 +222,7 @@ public class Map extends ActionBarActivity {
 			util.log( "location update : " + location);
 			double lat = location.getLatitude();
 			double lon = location.getLongitude();
-			Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
+			Intent insert = new Intent(context, InsertActivity.class);
 			insert.putExtra("latpos", lat);
 			insert.putExtra("longpos", lon);
 			
@@ -280,9 +280,7 @@ public class Map extends ActionBarActivity {
 				util.log("places : " + placeDetail.getName());
 			}
 			return findPlaces;
-
 		}
-
 	}
 	//gets data from Backbeam:
 	private class MyData extends AsyncTask<Void, Integer, Boolean> {
@@ -290,7 +288,7 @@ public class Map extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
-			final Intent info = new Intent(getApplicationContext(),
+			final Intent info = new Intent(context,
 					OfferList.class);
 
 			Query query = new Query("commerce");
@@ -364,19 +362,20 @@ public class Map extends ActionBarActivity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
-		
+
 			util.log("doInBackgroundRecorrido mydata");
 
 			return true;
 		}
 	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		return super.onCreateOptionsMenu(menu);
-		}
+	}
 }
 
 	
