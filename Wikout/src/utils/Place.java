@@ -51,7 +51,7 @@ public class Place {
         this.vicinity = vicinity;
     }
 
-    public static Place jsonToPontoReferencia(JSONObject referencePoint) {
+    public static Place jsonToReferencePoint(JSONObject referencePoint) {
         try {
             Place result = new Place();
             JSONObject geometry = (JSONObject) referencePoint.get("geometry");

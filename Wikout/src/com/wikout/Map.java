@@ -147,8 +147,8 @@ public class Map extends ActionBarActivity {
 				util.log(String.valueOf(latitudeNE));
 				util.log("screen has been recharged");
 				//start both asyncTask:
-				MyData data = (MyData) new MyData(/*Map.this*/).execute();
-				GetPlaces getplaces= (GetPlaces) new GetPlaces(Map.this,"").execute();
+				 new MyData().execute();
+				 new GetPlaces("").execute();
 			}
 		});	
 	}
@@ -235,13 +235,10 @@ public class Map extends ActionBarActivity {
 	//gets data from google places:
 	private class GetPlaces extends AsyncTask<Void, Void, ArrayList<Place>> {
 
-		
-		private Context context;
 		private String places;
 		
-		public GetPlaces(Context context, String places) {
+		public GetPlaces(String places) {
 			util.log("recorremos getplaces");
-		this.context = context;
 		this.places = places;
 		}
 
@@ -291,15 +288,6 @@ public class Map extends ActionBarActivity {
 	}
 	//gets data from database:
 	private class MyData extends AsyncTask<Void, Integer, Boolean> {
-
-		//private ProgressDialog dialog;
-		//private Context context;
-
-		/*public MyData(Context context) {
-			util.log("recorremos mydata");
-			//this.context = context;
-
-		}*/
 
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
