@@ -86,7 +86,7 @@ public class Map extends ActionBarActivity {
 	public void initUI(){
 		util.showDialog(context);
 		
-		//******
+		//*******
 		places = getResources().getStringArray(R.array.places);
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -167,6 +167,7 @@ public class Map extends ActionBarActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+	
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
@@ -403,6 +404,7 @@ public class Map extends ActionBarActivity {
 
 	}
 
+	
 }
 
 	
