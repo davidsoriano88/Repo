@@ -7,15 +7,11 @@ import io.backbeam.Query;
 import java.util.ArrayList;
 import java.util.List;
 
-import utils.ItemObject;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
@@ -55,7 +51,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Map extends ActionBarActivity {
 	
-	//
+	
 	private GoogleMap map;
 	Marker marker, mark;
 	String title, finalId, option;
@@ -72,6 +68,7 @@ public class Map extends ActionBarActivity {
 	Util util = new Util();
     Context context;
 
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
 	 setContentView(R.layout.fragment_main);
@@ -161,19 +158,14 @@ public class Map extends ActionBarActivity {
 			enter = 0;
 			insert.putExtra("enter", enter);
 			startActivity(insert);
-                        return true;
+            return true;
        
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 	
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-		}
+	
 	
 	
 	//contains info about the viewposition, clientposition...:
@@ -181,12 +173,15 @@ public class Map extends ActionBarActivity {
 		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
+		
 		locationManager.requestLocationUpdates(
 				locationManager.getBestProvider(criteria, false), 0, 0,
 				listener);
+		
 		location = locationManager
 				.getLastKnownLocation(locationManager.getBestProvider(criteria,
 						false));
+		
 		if (location != null) {
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 					location.getLatitude(), location.getLongitude()), 13.0F));
@@ -202,6 +197,9 @@ public class Map extends ActionBarActivity {
 					.newCameraPosition(cameraPosition));
 			
 			util.log(String.valueOf(location.getLatitude()));
+		}else
+		{
+			util.showToast(context, "location null");
 		}
 		
 	}
@@ -289,6 +287,7 @@ public class Map extends ActionBarActivity {
 	//gets data from database:
 	private class MyData extends AsyncTask<Void, Integer, Boolean> {
 
+		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
 			final Intent info = new Intent(getApplicationContext(),
@@ -298,7 +297,6 @@ public class Map extends ActionBarActivity {
 			query.bounding("placelocation", latitudeSW, longitudeSW,
 					latitudeNE, longitudeNE, 40, new FetchCallback() {
 
-						@Override
 						public void success(List<BackbeamObject> objects,
 								int totalCount, boolean fromCache) {
 							
@@ -310,10 +308,8 @@ public class Map extends ActionBarActivity {
 							util.log("map clear mydata");
 							for (final BackbeamObject object : objects) {
 								util.log("1"+object.getId());
-								//String desc = object.getId();
 								placeName.add(object.getString("placename"));
 								idData.add(object.getId());
-								//refData.put(object.getString("placename"),object.getId());
 								marker = map.addMarker(new MarkerOptions()
 										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
 															 object.getLocation("placelocation").getLongitude()))
@@ -324,6 +320,7 @@ public class Map extends ActionBarActivity {
 								
 								util.log("2"+object.getId());
 								map.setOnMarkerClickListener(new OnMarkerClickListener() {
+									@Override
 									public boolean onMarkerClick(Marker marker) {
 										marker.showInfoWindow();
 										for(int i=0;i<placeName.size();i++){
@@ -363,8 +360,6 @@ public class Map extends ActionBarActivity {
 			util.log("recorremos pre execute");
 			util.showDialog(context);
 			util.log("mostramos dialog mydata");
-			
-
 		}
 
 		@Override
@@ -373,16 +368,15 @@ public class Map extends ActionBarActivity {
 			util.log("doInBackgroundRecorrido mydata");
 
 			return true;
-
 		}
-
 	}
- public void NextActivity(Class cls, Intent intent){
-	 intent = new Intent(getApplicationContext(), cls);
-	 
-	 startActivity(intent);
- }
-	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+		}
 }
 
 	
