@@ -190,7 +190,7 @@ public class Map extends ActionBarActivity {
 							.getLongitude())) // Sets the center of the map to
 												// location user
 					.zoom(17.0F) // Sets the zoom
-					.build(); // Creates a CameraPosition from the builder
+					.build(); //Creates a CameraPosition from the builder
 			map.animateCamera(CameraUpdateFactory
 					.newCameraPosition(cameraPosition));
 			
