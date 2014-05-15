@@ -4,7 +4,6 @@ import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.CollectionConstraint;
 import io.backbeam.FetchCallback;
-import io.backbeam.JoinResult;
 import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
@@ -18,11 +17,10 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
 
-import com.wikout.R;
-
 import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -42,6 +40,7 @@ public class OfferReport extends Activity {
 	ImageView photo;
 	String idofferparameter = "";
 	String idcommerceparameter = "";
+	Context context;
 	Util util = new Util();
 	boolean statuslike= false;
 	//statuslike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
@@ -52,13 +51,13 @@ public class OfferReport extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_offer_report);
+		util.projectData(context);
 		initUi();
 		initQueries();
 
 	}
 
 	private void initQueries() {
-		projectData();
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
@@ -76,7 +75,7 @@ public class OfferReport extends Activity {
 			@Override
 			public void success(BackbeamObject offer) {
 				offertext.setText(offer.getString("description"));
-				offerlikes.setText(offer.getNumber("numlike").toString());///////////////////////////////////////////
+				offerlikes.setText(offer.getNumber("numlike").toString());
 				// Paso las fechas a los edittexts
 				SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 				String deadline = format1.format(offer.getDay("deadline")
@@ -199,19 +198,6 @@ public class OfferReport extends Activity {
 
 	}
 
-	// DATOS DEL PROYECTO
-	protected void projectData() {
-		Backbeam.setProject("pruebaapp");
-		Backbeam.setEnvironment("dev");
-		Backbeam.setContext(getApplicationContext());
-
-		// Create the API keys in the control panel of your project
-		Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
-		Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
-
-	}
-
-	
 
 	// METODO PARA INSERTAR LIKE
 		protected void insertLike(final String idoffer) {

@@ -1,12 +1,6 @@
 package com.wikout;
 
-import io.backbeam.Backbeam;
-import io.backbeam.BackbeamObject;
-import io.backbeam.CollectionConstraint;
-import io.backbeam.FetchCallback;
-import io.backbeam.JoinResult;
-import io.backbeam.ObjectCallback;
-import io.backbeam.Query;
+import io.backbeam.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -14,10 +8,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import com.wikout.R;
-
 import utils.Util;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.Button;
@@ -29,14 +22,15 @@ public class Reference extends Activity {
 	public String string,string1;
 	public Button button1,button2;
 	public ImageView photo;
+	Context context;
 	Util util = new Util();
-	
 
 	  @Override
 	  protected void onCreate(Bundle savedInstanceState) 
 	  {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.list_activity);
+	    util.projectData(context);
 	    initUI();
 	  }
 	  
@@ -64,13 +58,6 @@ public class Reference extends Activity {
 	       }
 		
 		private void queryOffer(String idreference) {
-			Backbeam.setProject("pruebaapp");
-			Backbeam.setEnvironment("dev");
-			Backbeam.setContext(getApplicationContext());
-			// Create the API keys in the control panel of your project
-			Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
-			Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
-			
 			CollectionConstraint collection = new CollectionConstraint();
 			collection.addIdentifier(idreference);
 
@@ -101,13 +88,6 @@ public class Reference extends Activity {
 		}
 		
 		private void insertLike(final String idoffer){
-			Backbeam.setProject("pruebaapp");
-			Backbeam.setEnvironment("dev");
-			Backbeam.setContext(getApplicationContext());
-			// Create the API keys in the control panel of your project
-			Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
-			Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
-			
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
 			//create objects

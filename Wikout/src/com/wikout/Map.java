@@ -396,7 +396,6 @@ public class Map extends ActionBarActivity {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
 			util.showDialog(context);
-			
 			util.log("mostramos dialog mydata");
 			
 
