@@ -68,10 +68,8 @@ public class Map extends ActionBarActivity {
 	ActionBar actionBar;
 	private String[] places;
 	LocationClient mLocationClient;
-	Util util = new Util();
-
 	
-	private DrawerLayout navDrawerLayout;
+	Util util = new Util();
     Context context;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,14 +84,16 @@ public class Map extends ActionBarActivity {
 	public void initUI(){
 		util.showDialog(context);
 		
+		//Inicializamos las variables
 		places = getResources().getStringArray(R.array.places);
 		String[] values = getResources().getStringArray(R.array.options);
-		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		DrawerLayout navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    ListView optionList = (ListView) findViewById(R.id.left_drawer);
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
 	    
+	    //establecemos las opciones del menu deslizable
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
@@ -124,7 +124,7 @@ public class Map extends ActionBarActivity {
 						+ " - Y: " + coord.y);
 				
 		
-		
+		///establecemos el paso a la siguiente pantalla y le pasamos valores:
 		Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
 		insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
@@ -147,7 +147,7 @@ public class Map extends ActionBarActivity {
 				util.log(String.valueOf(latitudeNE));
 				util.log("screen has been recharged");
 				//start both asyncTask:
-				MyData data = (MyData) new MyData(Map.this).execute();
+				MyData data = (MyData) new MyData(/*Map.this*/).execute();
 				GetPlaces getplaces= (GetPlaces) new GetPlaces(Map.this,"").execute();
 			}
 		});	
@@ -178,7 +178,7 @@ public class Map extends ActionBarActivity {
 	
 	//contains info about the viewposition, clientposition...:
 	public void viewPort(){
-		Intent myPos= new Intent(getApplicationContext(),PlacesService.class);
+		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		locationManager.requestLocationUpdates(
@@ -203,8 +203,7 @@ public class Map extends ActionBarActivity {
 			
 			util.log(String.valueOf(location.getLatitude()));
 		}
-		myPos.putExtra("latitude", location.getLatitude());
-		myPos.putExtra("longitude", location.getLongitude());
+		
 	}
 	private LocationListener listener = new LocationListener() {
 
@@ -222,10 +221,10 @@ public class Map extends ActionBarActivity {
 
 		@Override
 		public void onLocationChanged(Location location) {
-			Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
 			util.log( "location update : " + location);
 			double lat = location.getLatitude();
 			double lon = location.getLongitude();
+			Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
 			insert.putExtra("latpos", lat);
 			insert.putExtra("longpos", lon);
 			
@@ -294,13 +293,13 @@ public class Map extends ActionBarActivity {
 	private class MyData extends AsyncTask<Void, Integer, Boolean> {
 
 		//private ProgressDialog dialog;
-		private Context context;
+		//private Context context;
 
-		public MyData(Context context) {
+		/*public MyData(Context context) {
 			util.log("recorremos mydata");
-			this.context = context;
+			//this.context = context;
 
-		}
+		}*/
 
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
