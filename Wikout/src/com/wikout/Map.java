@@ -55,9 +55,7 @@ public class Map extends ActionBarActivity {
 	private GoogleMap map;
 	Marker marker, mark;
 	String title, finalId, option;
-	LocationRequest request;
 	LocationManager locationManager;
-	LatLng myLocation;
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	int enter;
