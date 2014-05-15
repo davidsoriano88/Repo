@@ -284,7 +284,7 @@ public class Map extends ActionBarActivity {
 		}
 
 	}
-	//gets data from database:
+	//gets data from Backbeam:
 	private class MyData extends AsyncTask<Void, Integer, Boolean> {
 
 		@Override
