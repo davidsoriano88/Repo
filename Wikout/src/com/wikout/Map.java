@@ -1,6 +1,5 @@
 package com.wikout;
 
-import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
 import io.backbeam.Query;
@@ -24,12 +23,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -58,10 +54,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class Map extends ActionBarActivity {
-
+	
+	//
 	private GoogleMap map;
 	Marker marker, mark;
-	String title;
+	String title, finalId, option;
 	LocationRequest request;
 	LocationManager locationManager;
 	LatLng myLocation;
@@ -73,8 +70,7 @@ public class Map extends ActionBarActivity {
 	private String[] places;
 	LocationClient mLocationClient;
 	Util util = new Util();
-	String finalId;
-	String option;
+
 	
 	private String[] titulos;
 	private DrawerLayout navDrawerLayout;
@@ -110,10 +106,8 @@ public class Map extends ActionBarActivity {
 				}
 				
 			}});
-	    initUI();
-	    BackBeamData();
-	    
-	    
+	   initUI();
+	    util.projectData(context);
 	   
 	  }
 
@@ -202,14 +196,7 @@ public class Map extends ActionBarActivity {
 		// Set the Icon for the Dialog
 		info.show();
 	}
-	public void BackBeamData(){
-		Backbeam.setProject("pruebaapp");
-		Backbeam.setEnvironment("dev");
-		Backbeam.setContext(getApplicationContext());
-		// Create the API keys in the control panel of your project
-		Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
-		Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
-	}
+	
 	//contains info about the viewposition, clientposition...:
 	public void viewPort(){
 		Intent myPos= new Intent(getApplicationContext(),PlacesService.class);

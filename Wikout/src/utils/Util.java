@@ -1,10 +1,10 @@
 package utils;
 
+import io.backbeam.*;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -54,7 +54,18 @@ public class Util {
 				Log.i("log",mensaje);
 			}
 		}
+	
+		
 
+		public void projectData(Context context) {
+			Backbeam.setProject("pruebaapp");
+			Backbeam.setEnvironment("dev");
+			Backbeam.setContext(context);
+			// Create the API keys in the control panel of your project
+			Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
+			Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
+			
+		}
 	
 	
 }
