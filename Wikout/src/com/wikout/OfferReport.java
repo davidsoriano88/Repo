@@ -35,8 +35,7 @@ public class OfferReport extends Activity {
 
 	TextView offertext, offerdeadline, offercreation, offerlocation,
 			offerlikes;
-	Button like;
-	Button flag;
+	Button like, flag;
 	ImageView photo;
 	String idofferparameter = "";
 	String idcommerceparameter = "";
