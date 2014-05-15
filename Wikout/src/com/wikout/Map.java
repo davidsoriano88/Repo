@@ -86,7 +86,6 @@ public class Map extends ActionBarActivity {
 	public void initUI(){
 		util.showDialog(context);
 		
-		//*******
 		places = getResources().getStringArray(R.array.places);
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -124,7 +123,8 @@ public class Map extends ActionBarActivity {
 						+ point.longitude + "\n" + "X: " + coord.x
 						+ " - Y: " + coord.y);
 				
-		//
+		
+		
 		Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
 		insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
@@ -158,9 +158,9 @@ public class Map extends ActionBarActivity {
         switch (item.getItemId()) {
         case R.id.action_search:
         	Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
-        	startActivity(insert);
 			enter = 0;
 			insert.putExtra("enter", enter);
+			startActivity(insert);
                         return true;
        
         default:
@@ -175,19 +175,6 @@ public class Map extends ActionBarActivity {
 		return super.onCreateOptionsMenu(menu);
 		}
 	
-	@SuppressWarnings("deprecation")
-	public void InfoVersion(){
-		AlertDialog info = new AlertDialog.Builder(this).create();
-		info.setTitle("Wikout");
-		info.setMessage("Wikout, desarrollado por Uptimiza.");
-		info.setButton("OK", new DialogInterface.OnClickListener() {
-		   public void onClick(DialogInterface dialog, int which) {
-		      // TODO Add your code for the button here.
-		   }
-		});
-		// Set the Icon for the Dialog
-		info.show();
-	}
 	
 	//contains info about the viewposition, clientposition...:
 	public void viewPort(){
@@ -403,7 +390,11 @@ public class Map extends ActionBarActivity {
 		}
 
 	}
-
+ public void NextActivity(Class cls, Intent intent){
+	 intent = new Intent(getApplicationContext(), cls);
+	 
+	 startActivity(intent);
+ }
 	
 }
 
