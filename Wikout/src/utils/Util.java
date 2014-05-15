@@ -36,7 +36,8 @@ public class Util {
 		dialog.isIndeterminate();
 		dialog.show();
 		Thread cronometro = new Thread(){
-	        public void run(){
+	        @Override
+			public void run(){
 	                try{  
 	                        Thread.sleep(1000);
 	                        dialog.dismiss();

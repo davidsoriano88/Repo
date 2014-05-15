@@ -32,7 +32,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -194,7 +193,7 @@ public class Map extends ActionBarActivity {
 			map.animateCamera(CameraUpdateFactory
 					.newCameraPosition(cameraPosition));
 			
-			util.log(String.valueOf(location.getLatitude()));
+			util.log(String.valueOf("location"+location.getLatitude()));
 		}else
 		{
 			util.showToast(context, "location null");
@@ -216,13 +215,15 @@ public class Map extends ActionBarActivity {
 		}
 
 		@Override
-		public void onLocationChanged(Location location) {
+		public void onLocationChanged(Location locationn) {
 			util.log( "location update : " + location);
+			
 			double lat = location.getLatitude();
 			double lon = location.getLongitude();
 			Intent insert = new Intent(context, InsertActivity.class);
 			insert.putExtra("latpos", lat);
 			insert.putExtra("longpos", lon);
+			
 			
 			locationManager.removeUpdates(listener);
 		
@@ -293,6 +294,7 @@ public class Map extends ActionBarActivity {
 			query.bounding("placelocation", latitudeSW, longitudeSW,
 					latitudeNE, longitudeNE, 40, new FetchCallback() {
 
+						@Override
 						public void success(List<BackbeamObject> objects,
 								int totalCount, boolean fromCache) {
 							
