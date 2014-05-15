@@ -177,7 +177,7 @@ public class OfferList extends ListActivity {
 
 		public void initUi(){
 			image=new ImageView(this);
-		image = (ImageView) findViewById(R.id.imageView1);
+		image = (ImageView) findViewById(R.id.ivTitleReference);
 		nombre=(TextView)findViewById(R.id.idRef);
 		Bundle bundle = getIntent().getExtras();
 		queryOffer(bundle.getString("id"));

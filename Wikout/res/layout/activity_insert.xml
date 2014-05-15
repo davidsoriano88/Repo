@@ -15,25 +15,25 @@
         android:src="@drawable/initicon" />
 
     <TextView
-        android:id="@+id/ubicacionTv"
+        android:id="@+id/tvReferenceLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/validoTv"
-        android:layout_below="@+id/nombreTv"
+        android:layout_alignRight="@+id/tvReferenceValid"
+        android:layout_below="@+id/tvReferencePlacename"
         android:layout_marginTop="10dp"
         android:text="[ubicacion]" />
 
     <TextView
-        android:id="@+id/validoTv"
+        android:id="@+id/tvReferenceValid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnDateLimit"
         android:layout_alignBottom="@+id/btnDateLimit"
-        android:layout_alignLeft="@+id/ofertaTv"
+        android:layout_alignLeft="@+id/tvReferenceDescription"
         android:text="Válido hasta:" />
 
     <EditText
-        android:id="@+id/nombreTv"
+        android:id="@+id/tvReferencePlacename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -44,10 +44,10 @@
         android:hint="Nombre" />
 
     <EditText
-        android:id="@+id/ofertaTv"
+        android:id="@+id/tvReferenceDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/nombreTv"
+        android:layout_alignLeft="@+id/tvReferencePlacename"
         android:layout_below="@+id/ivFoto"
         android:layout_marginTop="14dp"
         android:ems="10"
@@ -57,17 +57,17 @@
         android:id="@+id/btnDateLimit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ofertaTv"
+        android:layout_below="@+id/tvReferenceDescription"
         android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/validoTv"
+        android:layout_toRightOf="@+id/tvReferenceValid"
         android:text="Seleccionar Fecha" />
 
     <Button
         android:id="@+id/btnOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/nombreTv"
-        android:layout_below="@+id/ubicacionTv"
+        android:layout_alignRight="@+id/tvReferencePlacename"
+        android:layout_below="@+id/tvReferenceLocation"
         android:layout_marginTop="64dp"
         android:text="Ok" />
 
@@ -75,7 +75,7 @@
         android:id="@+id/spnCategorias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ubicacionTv"
+        android:layout_below="@+id/tvReferenceLocation"
         android:layout_marginLeft="26dp"
         android:layout_marginTop="10dp"
         android:layout_toLeftOf="@+id/btnOk"

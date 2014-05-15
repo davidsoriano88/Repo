@@ -5,17 +5,17 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/ofertaTv"
+        android:id="@+id/tvReferenceDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/validoTv"
-        android:layout_alignLeft="@+id/validoTv"
+        android:layout_alignBottom="@+id/tvReferenceValid"
+        android:layout_alignLeft="@+id/tvReferenceValid"
         android:layout_marginBottom="41dp"
         android:ems="10"
         android:text="@string/oferta" />
 
     <TextView
-        android:id="@+id/validoTv"
+        android:id="@+id/tvReferenceValid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -25,7 +25,7 @@
         android:text="Válido hasta:" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/ivTitleReference"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
@@ -34,59 +34,59 @@
         android:src="@drawable/abc_ab_solid_dark_holo" />
 
     <TextView
-        android:id="@+id/ubicacionTv"
+        android:id="@+id/tvReferenceLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/validoTv"
-        android:layout_below="@+id/ofertaTv"
+        android:layout_alignLeft="@+id/tvReferenceValid"
+        android:layout_below="@+id/tvReferenceDescription"
         android:layout_marginTop="81dp"
         android:text="[ubicacion]" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_alignBottom="@+id/ubicacionTv"
+        android:layout_alignBottom="@+id/tvReferenceLocation"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="38dp"
         android:background="@android:color/darker_gray" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnReferenceLike"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/ubicacionTv"
-        android:layout_below="@+id/ubicacionTv"
-        android:background="#dc0606"
+        android:layout_alignLeft="@+id/tvReferenceLocation"
+        android:layout_below="@+id/tvReferenceLocation"
         android:layout_marginTop="24dp"
-        android:text=" ♡ "/>
+        android:background="#dc0606"
+        android:text=" ♡ " />
 
     <ImageView
         android:id="@+id/ivFoto"
         android:layout_width="fill_parent"
         android:layout_height="110px"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/imageView1"
+        android:layout_below="@+id/ivTitleReference"
         android:onClick="imageClicked"
         android:src="@drawable/initicon" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnReferenceFlag"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button1"
-        android:layout_alignBottom="@+id/button1"
-        android:layout_alignRight="@+id/nombreTv"
+        android:layout_alignBaseline="@+id/btnReferenceLike"
+        android:layout_alignBottom="@+id/btnReferenceLike"
+        android:layout_alignRight="@+id/tvReferencePlacename"
         android:text="Button" />
 
     <TextView
-        android:id="@+id/nombreTv"
+        android:id="@+id/tvReferencePlacename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageView1"
+        android:layout_alignBottom="@+id/ivTitleReference"
         android:layout_marginBottom="15dp"
-        android:layout_toRightOf="@+id/ubicacionTv"
+        android:layout_toRightOf="@+id/tvReferenceLocation"
         android:ems="10"
         android:text="Nombre" />
 
