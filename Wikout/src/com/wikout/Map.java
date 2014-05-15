@@ -63,7 +63,6 @@ public class Map extends ActionBarActivity {
 	LocationManager locationManager;
 	LatLng myLocation;
 	Location location;
-	public Intent insert;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	int enter;
 	ActionBar actionBar;
@@ -72,11 +71,7 @@ public class Map extends ActionBarActivity {
 	Util util = new Util();
 
 	
-	private String[] titulos;
 	private DrawerLayout navDrawerLayout;
-	private ListView NavList;
-    private ArrayList<ItemObject> NavItms;
-    private TypedArray NavIcons;	
     Context context;
 
 	protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +84,17 @@ public class Map extends ActionBarActivity {
 	 }
 
 	public void initUI(){
-		insert = new Intent(getApplicationContext(), InsertActivity.class);
+		util.showDialog(context);
+		
+		//******
 		places = getResources().getStringArray(R.array.places);
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    ListView optionList = (ListView) findViewById(R.id.left_drawer);
-	    
+	    map = ((SupportMapFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
+	    
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
@@ -110,17 +109,13 @@ public class Map extends ActionBarActivity {
 					}
 					
 				}});
-		
-		
-		map = ((SupportMapFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.map)).getMap();
-		
+
 		map.setMyLocationEnabled(true);
-	
 
 		map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
+				
 				Projection proj = map.getProjection();
 				Point coord = proj.toScreenLocation(point);
 				
@@ -129,7 +124,8 @@ public class Map extends ActionBarActivity {
 						+ point.longitude + "\n" + "X: " + coord.x
 						+ " - Y: " + coord.y);
 				
-				
+		//
+		Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
 		insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
@@ -161,6 +157,7 @@ public class Map extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_search:
+        	Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
         	startActivity(insert);
 			enter = 0;
 			insert.putExtra("enter", enter);
@@ -237,7 +234,7 @@ public class Map extends ActionBarActivity {
 
 		@Override
 		public void onLocationChanged(Location location) {
-			insert = new Intent(getApplicationContext(), InsertActivity.class);
+			Intent insert = new Intent(getApplicationContext(), InsertActivity.class);
 			util.log( "location update : " + location);
 			double lat = location.getLatitude();
 			double lon = location.getLongitude();
