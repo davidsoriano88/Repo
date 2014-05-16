@@ -85,8 +85,8 @@ public class ViewOffer extends Activity {
 				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
-				System.out.println(commerce.getString("placename"));
-				tvLocation.setText(commerce.getLocation("placelocation").toString());
+				System.out.println(commerce.getId());
+				//tvLocation.setText("lat: "+commerce.getLocation("placelocation").getLatitude()+"lon: "+commerce.getLocation("placelocation").getLongitude());
 			}
 		});
 
@@ -258,7 +258,7 @@ public class ViewOffer extends Activity {
 													.getString("description"));
 											System.out.println(object
 													.getNumber("numlike"));
-											tvNumLike.setText((CharSequence) object.getNumber("numlike"));
+											tvNumLike.setText(object.getNumber("numlike").toString());
 											queryLike(idoffer);
 										}
 									});
