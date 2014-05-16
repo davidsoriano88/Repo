@@ -31,7 +31,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class OfferReport extends Activity {
+public class ViewOffer extends Activity {
 
 	TextView tvDescription, tvDeadline, tvCreationDate, tvLocation,
 			tvNumLike;
@@ -163,7 +163,7 @@ public class OfferReport extends Activity {
 						"Contenido Ofensivo", "Cancelar" };
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(
-						OfferReport.this);
+						ViewOffer.this);
 				builder.setTitle("Elija el motivo: ");
 				builder.setItems(items, new DialogInterface.OnClickListener() {
 					@Override

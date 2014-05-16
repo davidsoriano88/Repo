@@ -58,7 +58,7 @@
             android:parentActivityName="com.wikout.Map" >
         </activity>
         <activity
-            android:name="com.wikout.OfferReport"
+            android:name="com.wikout.ViewOffer"
             android:label="@string/app_name"
             android:parentActivityName="com.wikout.Map" >
         </activity>
