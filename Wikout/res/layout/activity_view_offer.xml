@@ -107,4 +107,12 @@
         android:layout_marginTop="25dp"
         android:text="Creado el: " />
 
+    <TextView
+        android:id="@+id/tvViewOfferDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvViewOfferDeadline"
+        android:layout_alignRight="@+id/btnViewOfferFlag"
+        android:text="Distancia:" />
+
 </RelativeLayout>

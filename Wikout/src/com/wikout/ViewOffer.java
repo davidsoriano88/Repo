@@ -67,8 +67,6 @@ public class ViewOffer extends Activity {
 	}
 
 	private void loadData(String idoffer) {
-		// PLANTEAR COMO OBTENGO LOS DATOS PARA EL LAYOUT PROVISIONAL
-		// POR INTENT O LOS CARGO DIRECTAMENTE en TestMode
 
 		Backbeam.read("offer", idoffer, new ObjectCallback() {
 			@Override
@@ -85,8 +83,8 @@ public class ViewOffer extends Activity {
 				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
-				System.out.println(commerce.getId());
-				//tvLocation.setText("lat: "+commerce.getLocation("placelocation").getLatitude()+"lon: "+commerce.getLocation("placelocation").getLongitude());
+			
+				tvLocation.setText(commerce.getLocation("placelocation").toString());
 			}
 		});
 
@@ -258,7 +256,7 @@ public class ViewOffer extends Activity {
 													.getString("description"));
 											System.out.println(object
 													.getNumber("numlike"));
-											tvNumLike.setText(object.getNumber("numlike").toString());
+											tvNumLike.setText((CharSequence) object.getNumber("numlike"));
 											queryLike(idoffer);
 										}
 									});

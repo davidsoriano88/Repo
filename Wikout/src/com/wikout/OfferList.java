@@ -42,15 +42,24 @@ import android.widget.Toast;
 
 public class OfferList extends ListActivity {
 
+	
 	private ArrayList<String> dataoffer = new ArrayList<String>();
 	private ArrayList<String> datalike = new ArrayList<String>();
 	private ArrayList<String> dataid = new ArrayList<String>();
+	
+	
 	Context con = this;
 	Util util = new Util();
 	Bitmap bmPhoto =null;
 	ImageView ivPhoto;
 	TextView tvPlacename;
+	static TextView tvLocation;
 	String idcommerce="";
+	
+	//Radio de la tierra (en metros)
+	final static double radio = 6371000;
+	final static double distancedouble = 0;
+	
 	public static class viewHolder {
 		TextView toffer,tlike,tid;
 		Button blike;	
@@ -219,7 +228,11 @@ public class OfferList extends ListActivity {
 					boolean fromCache) {
 				BackbeamObject place = objects.get(0);
 				JoinResult join = place.getJoinResult("offer");
-
+				
+				//PASAR COORDENADAS DE USUARIO PARA HACER HAVERSINE
+				//haversine(place.getLocation("placelocation").getLatitude(),place.getLocation("placelocation").getLongitude(), userlat, userlon)
+						
+						
 				tvPlacename.setText(place.getString("placename"));
 				util.log(place.getString("placename"));
 				List<BackbeamObject> offers = join.getResults();
@@ -295,6 +308,39 @@ protected Date actualDate(){
 	Calendar calendar = new GregorianCalendar();
 	final Date createdate = calendar.getTime();
 	return createdate;
+}
+
+//METODO PARA CALCULAR LA RUTA
+public static String haversine(double placelat, double placelon, double userlat, double userlon) {
+	String distancestring ="";
+	Double distancedouble =(double) 0;
+	double dLat = Math.toRadians(userlat - placelat);
+	double dLon = Math.toRadians(userlon - placelon);
+	placelat = Math.toRadians(placelat);
+	userlat = Math.toRadians(userlat);
+
+	double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(placelat) * Math.cos(userlat);
+
+	double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	
+	distancedouble = radio*c;
+	
+	//A LA HORA DE PONER EL TEXTO EN LA ETIQUETA, SI PASA DE 1000metros, escribo la distancedouble en KM.
+	if(distancedouble>= 1000){
+	// EJEMPLO: 23400,123 --> 23,4
+		distancedouble = distancedouble / 1000;
+		distancedouble = (double)Math.round(distancedouble * 10) /10;
+		distancestring = distancedouble.toString();
+		tvLocation.setText("Dist: "+distancestring+" km.");
+	}else{
+		int distanceint = distancedouble.intValue();
+		distancestring.valueOf(distanceint);
+		tvLocation.setText("Dist: "+distancestring+" m.");
+	}
+	
+	
+	
+	return distancestring;
 }
 
 }
