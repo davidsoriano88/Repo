@@ -37,8 +37,7 @@ public class ViewOffer extends Activity {
 			tvNumLike;
 	Button btnLike, btnFlag;
 	ImageView ivPhoto;
-	String idofferparameter = "";
-	String idcommerceparameter = "";
+	String idofferparameter = "",idcommerceparameter = "";
 	Context context;
 	Util util = new Util();
 	

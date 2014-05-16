@@ -47,14 +47,12 @@ public class OfferList extends ListActivity {
 	private ArrayList<String> dataid = new ArrayList<String>();
 	Context con = this;
 	Util util = new Util();
-	Bitmap mIcon_val =null;
-	ImageView image;
-	TextView nombre;
+	Bitmap bmPhoto =null;
+	ImageView ivPhoto;
+	TextView tvPlacename;
 	String idcommerce="";
 	public static class viewHolder {
-		TextView toffer;
-		TextView tlike;
-		TextView tid;
+		TextView toffer,tlike,tid;
 		Button blike;	
 	}
 
@@ -149,10 +147,10 @@ public class OfferList extends ListActivity {
 					}
 					
 					try {
-						mIcon_val = BitmapFactory.decodeStream(newurl
+						bmPhoto = BitmapFactory.decodeStream(newurl
 								.openConnection().getInputStream());
 						util.log("icono cargado");
-						image.setImageBitmap(mIcon_val);
+						ivPhoto.setImageBitmap(bmPhoto);
 						//image.setImageBitmap(mIcon_val);
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -177,9 +175,9 @@ public class OfferList extends ListActivity {
 
 		public void initUi(){
 			Bundle bundle = getIntent().getExtras();
-			image=new ImageView(this);
-		image = (ImageView) findViewById(R.id.ivOfferListPhoto);
-		nombre=(TextView)findViewById(R.id.tvOfferListPlacename);
+			ivPhoto=new ImageView(this);
+		ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
+		tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
 		
 		queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));
@@ -205,7 +203,7 @@ public class OfferList extends ListActivity {
 
 //METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
 	private void queryOffer(String idreference) {
-		projectData();
+		util.projectData(con);
 		dataoffer.clear();
 		datalike.clear();
 		dataid.clear();
@@ -222,7 +220,7 @@ public class OfferList extends ListActivity {
 				BackbeamObject place = objects.get(0);
 				JoinResult join = place.getJoinResult("offer");
 
-				nombre.setText(place.getString("placename"));
+				tvPlacename.setText(place.getString("placename"));
 				util.log(place.getString("placename"));
 				List<BackbeamObject> offers = join.getResults();
 				util.log("succes!!");
@@ -291,17 +289,7 @@ protected void insertLike(final String idoffer) {
 	});
 }
 	
-//DATOS DEL PROYECTO
-protected void projectData() {
-	Backbeam.setProject("pruebaapp");
-	Backbeam.setEnvironment("dev");
-	Backbeam.setContext(getApplicationContext());
 
-	// Create the API keys in the control panel of your project
-	Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
-	Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
-
-}
 // METODO PARA OBTENER LA FECHA ACTUAL
 protected Date actualDate(){
 	Calendar calendar = new GregorianCalendar();

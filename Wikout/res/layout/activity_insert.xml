@@ -14,15 +14,23 @@
         android:onClick="imageClicked"
         android:src="@drawable/initicon" />
 
-    <TextView
-        android:id="@+id/tvInsertLocation"
+    <Button
+        android:id="@+id/btnInsertOk"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvInsertPlacename"
-        android:layout_alignRight="@+id/tvInsertPlacename"
-        android:layout_below="@+id/tvInsertPlacename"
-        android:layout_marginTop="10dp"
-        android:text="[ubicacion]" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/btnInsertDeadline"
+        android:layout_marginBottom="77dp"
+        android:layout_marginRight="17dp"
+        android:text="Ok" />
+
+    <Button
+        android:id="@+id/btnInsertDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etInsertDescription"
+        android:layout_toRightOf="@+id/tvInsertText"
+        android:text="Seleccionar Fecha" />
 
     <TextView
         android:id="@+id/tvInsertText"
@@ -30,56 +38,43 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnInsertDeadline"
         android:layout_alignBottom="@+id/btnInsertDeadline"
-        android:layout_alignLeft="@+id/tvInsertDescription"
+        android:layout_alignLeft="@+id/etInsertDescription"
         android:text="Válido hasta:" />
 
     <EditText
-        android:id="@+id/tvInsertPlacename"
+        android:id="@+id/etInsertDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etInsertPlacename"
+        android:layout_below="@+id/ivInsertPhoto"
+        android:ems="10"
+        android:hint="Oferta" />
+
+    <EditText
+        android:id="@+id/etInsertPlacename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/btnInsertDeadline"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="21dp"
         android:ems="10"
         android:hint="Nombre" />
 
-    <EditText
-        android:id="@+id/tvInsertDescription"
+    <TextView
+        android:id="@+id/tvInsertLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvInsertPlacename"
-        android:layout_below="@+id/ivInsertPhoto"
-        android:layout_marginTop="14dp"
-        android:ems="10"
-        android:hint="Oferta" />
-
-    <Button
-        android:id="@+id/btnInsertDeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvInsertDescription"
-        android:layout_marginTop="10dp"
-        android:layout_toRightOf="@+id/tvInsertText"
-        android:text="Seleccionar Fecha" />
-
-    <Button
-        android:id="@+id/btnInsertOk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/tvInsertPlacename"
-        android:layout_below="@+id/tvInsertLocation"
-        android:layout_marginTop="64dp"
-        android:text="Ok" />
+        android:layout_alignLeft="@+id/etInsertPlacename"
+        android:layout_centerVertical="true"
+        android:text="[ubicacion]" />
 
     <Spinner
         android:id="@+id/spnInsertCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_below="@+id/tvInsertLocation"
-        android:layout_marginLeft="26dp"
-        android:layout_marginTop="10dp"
-        android:layout_toLeftOf="@+id/btnInsertOk"
+        android:layout_marginTop="15dp"
         android:entries="@array/categorias"
         android:prompt="@string/categorias_prompt" />
 

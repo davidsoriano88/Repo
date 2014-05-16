@@ -42,29 +42,22 @@ import android.widget.TextView;
 public class InsertCommerce extends Activity {
 	Double latitude, longitude;
 	int enter;
-	TextView placelink;
+	TextView etLocation;
 	String position;
-	ImageView contactPhoto;
-	EditText offerEt;
-	EditText placeName;
-	Button accept;
-	Button dateLimit;
-	Spinner spinner1;
+	ImageView ivPhoto;
+	EditText etDescription,etPlacename;
+	Button btnOk,dateLimit;
+	Spinner spnCategory;
 
 	// Otras variables
-	String photoPath;
-	String idoferta;
-	String idphoto = "";
+	String photoPath, idoferta, idphoto = "";
 
 	// Variables para controlar la fecha
-	private int year;
-	private int month;
-	private int day;
+	private int year, month, day;
 	private Date deadline;
 	// variables para control de fotografias
 
-	String photoName;
-	String url;
+	String photoName, url;
 	File photo;
 	public int existPhoto = 0;
 	// constantes utilizadas para lanzar intents
@@ -84,22 +77,21 @@ public class InsertCommerce extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insert);
+		util.projectData(context);
 		initUI();
 		
 	}
 	 public void initUI(){
 		map = new Intent(getApplicationContext(), Map.class);
-		contactPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
-		offerEt = (EditText) findViewById(R.id.tvInsertDescription);
-		placeName = (EditText) findViewById(R.id.tvInsertPlacename);
-		accept = (Button) findViewById(R.id.btnInsertOk);
-		projectData();
+		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
+		etDescription = (EditText) findViewById(R.id.etInsertDescription);
+		etPlacename = (EditText) findViewById(R.id.etInsertPlacename);
+		btnOk = (Button) findViewById(R.id.btnInsertOk);
 		addListenerOnButton();
 		addListenerOnSpinnerItemSelection();
-
 		setCurrentDateOnView();
 
-		placelink = (TextView) findViewById(R.id.tvInsertLocation);
+		etLocation = (TextView) findViewById(R.id.tvInsertLocation);
 		Bundle bundle = getIntent().getExtras();
 		enter = bundle.getInt("enter");
 		if (enter == 1) {
@@ -109,15 +101,15 @@ public class InsertCommerce extends Activity {
 			util.log( latitude + "," + longitude);
 			position = String.valueOf(latitude) + ","
 					+ String.valueOf(longitude);
-			placelink.setText(position);
+			etLocation.setText(position);
 
 		} else {
 			util.log("unable to show localization");
 		}
 
 		// Lo ponemos a escuchar para cuando sea pulsado
-		placelink.setTextColor(Color.BLUE);
-		placelink.setOnClickListener(new View.OnClickListener() {
+		etLocation.setTextColor(Color.BLUE);
+		etLocation.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -128,14 +120,14 @@ public class InsertCommerce extends Activity {
 
 		});
 
-		accept.setOnClickListener(new OnClickListener() {
+		btnOk.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				if (placelink == null) {
+				if (etLocation == null) {
 					dialog();
 				} else {
-					if(offerEt.getText().length()==0 | placeName.getText().length()==0){
+					if(etDescription.getText().length()==0 | etPlacename.getText().length()==0){
 						util.log("aceptar1");
 					dialogText();
 					
@@ -156,23 +148,13 @@ public class InsertCommerce extends Activity {
 		});
  
 	 }
-	private void projectData() {
-		Backbeam.setProject("pruebaapp");
-		Backbeam.setEnvironment("dev");
-		Backbeam.setContext(getApplicationContext());
-
-		// Create the API keys in the control panel of your project
-		Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
-		Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
-
-	}
 
 	public void dialog() {
-		AlertDialog.Builder dialog1 = new AlertDialog.Builder(this);
-		dialog1.setTitle("Ubicacion");
-		dialog1.setMessage("Elija la direccion:");
-		dialog1.setCancelable(false);
-		dialog1.setPositiveButton("Ubicacion actual",
+		AlertDialog.Builder dialogLocation = new AlertDialog.Builder(this);
+		dialogLocation.setTitle("Ubicacion");
+		dialogLocation.setMessage("Elija la direccion:");
+		dialogLocation.setCancelable(false);
+		dialogLocation.setPositiveButton("Ubicacion actual",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
@@ -181,12 +163,12 @@ public class InsertCommerce extends Activity {
 						latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefs.getString("longpos", "no id");
 						longitude = Double.parseDouble(myLongitude);
-						placelink.setText(latitude +","+longitude);
+						etLocation.setText(latitude +","+longitude);
 
 					}
 
 				});
-		dialog1.setNegativeButton("Indicar en el mapa",
+		dialogLocation.setNegativeButton("Indicar en el mapa",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
@@ -196,7 +178,7 @@ public class InsertCommerce extends Activity {
 						finish();
 					}
 				});
-		dialog1.show();
+		dialogLocation.show();
 	}
 	public void dialogText() {
 		AlertDialog.Builder dialog1 = new AlertDialog.Builder(this);
@@ -217,8 +199,8 @@ public class InsertCommerce extends Activity {
 	}
 	public void addListenerOnSpinnerItemSelection() {
 
-		spinner1 = (Spinner) findViewById(R.id.spnInsertCategory);
-		spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory);
+		spnCategory.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 	}
 
@@ -294,16 +276,12 @@ public class InsertCommerce extends Activity {
 			//Creo el objeto "offer"
 			final BackbeamObject offer = new BackbeamObject("offer");
 			//inserto los valores de "offer"
-			offer.setString("description", offerEt.getText().toString());
+			offer.setString("description", etDescription.getText().toString());
 			offer.setDay("deadline", deadline);
 			offer.setString("udid", getId());
 			offer.setString("offerstatus", "ok");
 			offer.setDate("offercreationdate", createdate);
 			offer.setObject("commerce", commerce);
-			//TODAVIA NO CONTEMPLO LIKE NI REPORT YA QUE SE ACABA DE CREAR
-			// offer.addObject("like");
-			// offer.addObject("report");
-			
 			offer.setNumber("numlike", 0);
 			offer.save(new ObjectCallback() {
 				@Override
@@ -348,16 +326,16 @@ public class InsertCommerce extends Activity {
 		
 		// INSERTAR NUEVO "COMMERCE"
 		protected void insertCommerce(BackbeamObject objectphoto) {
-			locationbm = new Location(latitude, longitude);//********************************************
+			locationbm = new Location(latitude, longitude);
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
 			//Creo el objeto commerce
 			final BackbeamObject commerce = new BackbeamObject("commerce");
 			//Relleno los campos del objeto
-			commerce.setString("placename", placeName.getText().toString());
+			commerce.setString("placename", etPlacename.getText().toString());
 			commerce.setLocation("placelocation", locationbm);
-			commerce.setString("category",(String) spinner1.getSelectedItem() );
+			commerce.setString("category",(String) spnCategory.getSelectedItem() );
 			commerce.setDate("commercecreationdate", createdate);
 			commerce.setString("udid", getId());
 			commerce.setObject("file", objectphoto);
@@ -446,7 +424,7 @@ public class InsertCommerce extends Activity {
 			util.log(photoBundle.getString("photoName"));
 
 			Bitmap cphoto = BitmapFactory.decodeFile(photoPath);
-			contactPhoto.setImageBitmap(cphoto);
+			ivPhoto.setImageBitmap(cphoto);
 			existPhoto = 1;
 
 		}
