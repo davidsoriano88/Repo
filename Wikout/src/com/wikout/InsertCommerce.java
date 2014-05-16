@@ -132,7 +132,7 @@ public class InsertCommerce extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if (latitude == null) {
+				if (placelink == null) {
 					dialog();
 				} else {
 					if(offerEt.getText().length()==0 | placeName.getText().length()==0){
