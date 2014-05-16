@@ -121,7 +121,7 @@ public class Map extends ActionBarActivity {
 				
 		
 		///establecemos el paso a la siguiente pantalla y le pasamos valores:
-		Intent insert = new Intent(context, InsertActivity.class);
+		Intent insert = new Intent(context, InsertCommerce.class);
 		insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
@@ -153,7 +153,7 @@ public class Map extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_search:
-        	Intent insert = new Intent(context, InsertActivity.class);
+        	Intent insert = new Intent(context, InsertCommerce.class);
 			enter = 0;
 			insert.putExtra("enter", enter);
 			startActivity(insert);

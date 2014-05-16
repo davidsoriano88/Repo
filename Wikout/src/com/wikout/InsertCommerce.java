@@ -39,7 +39,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class InsertActivity extends Activity {
+public class InsertCommerce extends Activity {
 	Double latitude, longitude;
 	int enter;
 	TextView placelink;
