@@ -1,0 +1,110 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ivViewOfferTitleBar"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/abc_ab_solid_dark_holo" />
+
+    <TextView
+        android:id="@+id/tvViewOfferDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnViewOfferLike"
+        android:layout_below="@+id/ivViewOfferPhoto"
+        android:layout_marginTop="26dp"
+        android:ems="10"
+        android:text="@string/oferta" />
+
+    <ImageView
+        android:id="@+id/ivViewOfferPhoto"
+        android:layout_width="fill_parent"
+        android:layout_height="110px"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ivViewOfferTitleBar"
+        android:onClick="imageClicked"
+        android:src="@drawable/initicon" />
+
+    <TextView
+        android:id="@+id/tvViewOfferPlacename"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivViewOfferTitleBar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="14dp"
+        android:ems="10"
+        android:text="Nombre" />
+
+    <Button
+        android:id="@+id/btnViewOfferFlag"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnViewOfferLike"
+        android:layout_alignBottom="@+id/btnViewOfferLike"
+        android:layout_marginLeft="28dp"
+        android:layout_toRightOf="@+id/tvViewOfferDescription"
+        android:text="Flag" />
+
+    <TextView
+        android:id="@+id/tvViewOfferNumlike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnViewOfferLike"
+        android:layout_alignBottom="@+id/btnViewOfferLike"
+        android:layout_toRightOf="@+id/tvViewOfferLocation" />
+
+    <TextView
+        android:id="@+id/tvViewOfferDeadline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvViewOfferDescription"
+        android:layout_below="@+id/tvViewOfferDescription"
+        android:layout_marginTop="16dp"
+        android:text="Válido hasta:" />
+
+    <TextView
+        android:id="@+id/tvViewOfferLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvViewOfferDeadline"
+        android:layout_centerVertical="true"
+        android:text="[ubicacion]" />
+
+    <View
+        android:id="@+id/vViewOfferSeparator"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvViewOfferLocation"
+        android:layout_marginTop="91dp"
+        android:background="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/btnViewOfferLike"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vViewOfferSeparator"
+        android:layout_marginTop="30dp"
+        android:layout_toLeftOf="@+id/tvViewOfferPlacename"
+        android:background="#dc0606"
+        android:text=" ♡ " />
+
+    <TextView
+        android:id="@+id/tvViewOfferCreationDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvViewOfferLocation"
+        android:layout_below="@+id/tvViewOfferLocation"
+        android:layout_marginTop="25dp"
+        android:text="Creado el: " />
+
+</RelativeLayout>
