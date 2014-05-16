@@ -87,17 +87,17 @@ public class InsertActivity extends Activity {
 	}
 	 public void initUI(){
 		map = new Intent(getApplicationContext(), Map.class);
-		contactPhoto = (ImageView) findViewById(R.id.ivFoto);
-		offerEt = (EditText) findViewById(R.id.tvReferenceDescription);
-		placeName = (EditText) findViewById(R.id.tvReferencePlacename);
-		accept = (Button) findViewById(R.id.btnOk);
+		contactPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
+		offerEt = (EditText) findViewById(R.id.tvInsertDescription);
+		placeName = (EditText) findViewById(R.id.tvInsertPlacename);
+		accept = (Button) findViewById(R.id.btnInsertOk);
 		projectData();
 		addListenerOnButton();
 		addListenerOnSpinnerItemSelection();
 
 		setCurrentDateOnView();
 
-		placelink = (TextView) findViewById(R.id.tvReferenceLocation);
+		placelink = (TextView) findViewById(R.id.tvInsertLocation);
 		Bundle bundle = getIntent().getExtras();
 		enter = bundle.getInt("enter");
 		if (enter == 1) {
@@ -216,7 +216,7 @@ public class InsertActivity extends Activity {
 	}
 	public void addListenerOnSpinnerItemSelection() {
 
-		spinner1 = (Spinner) findViewById(R.id.spnCategorias);
+		spinner1 = (Spinner) findViewById(R.id.spnInsertCategories);
 		spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 	}
@@ -239,7 +239,7 @@ public class InsertActivity extends Activity {
 
 	private void addListenerOnButton() {
 
-		dateLimit = (Button) findViewById(R.id.btnDateLimit);
+		dateLimit = (Button) findViewById(R.id.btnInsertDeadline);
 		dateLimit.setOnClickListener(new OnClickListener() {
 
 			@SuppressWarnings("deprecation")

@@ -34,12 +34,12 @@ public class Reference extends Activity {
 
 	public void initUI() {
 
-		tvPlacename = (TextView) findViewById(R.id.tvReferencePlacename);
-		tvDescription = (TextView) findViewById(R.id.tvReferenceDescription);
+		tvPlacename = (TextView) findViewById(R.id.tvInsertPlacename);
+		tvDescription = (TextView) findViewById(R.id.tvInsertDescription);
 		btnLike = (Button) findViewById(R.id.btnReferenceLike);
 		btnFlag = (Button) findViewById(R.id.btnReferenceFlag);
-		tvLocation = (TextView) findViewById(R.id.tvReferenceLocation);
-		ivPhoto = (ImageView) findViewById(R.id.ivFoto);
+		tvLocation = (TextView) findViewById(R.id.tvInsertLocation);
+		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
 		tvPlacename.setTextColor(Color.WHITE);
 		btnLike.setTextColor(Color.WHITE);
 

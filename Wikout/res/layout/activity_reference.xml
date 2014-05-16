@@ -5,21 +5,21 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/tvReferenceDescription"
+        android:id="@+id/tvInsertDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvReferenceValid"
-        android:layout_alignLeft="@+id/tvReferenceValid"
+        android:layout_alignBottom="@+id/tvInsertText"
+        android:layout_alignLeft="@+id/tvInsertText"
         android:layout_marginBottom="41dp"
         android:ems="10"
         android:text="@string/oferta" />
 
     <TextView
-        android:id="@+id/tvReferenceValid"
+        android:id="@+id/tvInsertText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/ivFoto"
+        android:layout_below="@+id/ivInsertPhoto"
         android:layout_marginLeft="33dp"
         android:layout_marginTop="109dp"
         android:text="Válido hasta:" />
@@ -34,18 +34,18 @@
         android:src="@drawable/abc_ab_solid_dark_holo" />
 
     <TextView
-        android:id="@+id/tvReferenceLocation"
+        android:id="@+id/tvInsertLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvReferenceValid"
-        android:layout_below="@+id/tvReferenceDescription"
+        android:layout_alignLeft="@+id/tvInsertText"
+        android:layout_below="@+id/tvInsertDescription"
         android:layout_marginTop="81dp"
         android:text="[ubicacion]" />
 
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_alignBottom="@+id/tvReferenceLocation"
+        android:layout_alignBottom="@+id/tvInsertLocation"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="38dp"
         android:background="@android:color/darker_gray" />
@@ -55,14 +55,14 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvReferenceLocation"
-        android:layout_below="@+id/tvReferenceLocation"
+        android:layout_alignLeft="@+id/tvInsertLocation"
+        android:layout_below="@+id/tvInsertLocation"
         android:layout_marginTop="24dp"
         android:background="#dc0606"
         android:text=" ♡ " />
 
     <ImageView
-        android:id="@+id/ivFoto"
+        android:id="@+id/ivInsertPhoto"
         android:layout_width="fill_parent"
         android:layout_height="110px"
         android:layout_alignParentLeft="true"
@@ -77,16 +77,16 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/btnReferenceLike"
         android:layout_alignBottom="@+id/btnReferenceLike"
-        android:layout_alignRight="@+id/tvReferencePlacename"
+        android:layout_alignRight="@+id/tvInsertPlacename"
         android:text="Button" />
 
     <TextView
-        android:id="@+id/tvReferencePlacename"
+        android:id="@+id/tvInsertPlacename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/ivTitleReference"
         android:layout_marginBottom="15dp"
-        android:layout_toRightOf="@+id/tvReferenceLocation"
+        android:layout_toRightOf="@+id/tvInsertLocation"
         android:ems="10"
         android:text="Nombre" />
 
