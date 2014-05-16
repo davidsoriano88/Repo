@@ -24,10 +24,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -174,13 +176,10 @@ public class InsertActivity extends Activity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
-						Bundle bundle = getIntent().getExtras();
-						latitude = bundle.getDouble("latpos");
-						longitude = bundle.getDouble("longpos");
-						util.log(latitude + "," + longitude);
-						position = "(Actual) " + String.valueOf(latitude) + ","
-								+ String.valueOf(longitude);
-						placelink.setText(position);
+						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+						String myLatitude = prefs.getString("latpos", "no id");
+						String myLongitude = prefs.getString("longpos", "no id");
+						placelink.setText(myLatitude +","+myLongitude);
 
 					}
 
@@ -452,4 +451,4 @@ public class InsertActivity extends Activity {
 	}
 
 }
->>>>>>> branch 'master' of https://github.com/Shezek/Repositorio.git
+
