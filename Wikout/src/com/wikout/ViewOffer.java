@@ -73,19 +73,20 @@ public class ViewOffer extends Activity {
 		Backbeam.read("offer", idoffer, new ObjectCallback() {
 			@Override
 			public void success(BackbeamObject offer) {
-				tvDescription.setText(offer.getString("description"));
+				tvDescription.setText("Descripción: "+offer.getString("description"));
 				tvNumLike.setText(offer.getNumber("numlike").toString());
 				// Paso las fechas a los edittexts
 				SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 				String deadline = format1.format(offer.getDay("deadline")
 						.getTime());
-				tvDeadline.setText(deadline);
+				tvDeadline.setText("Válido hasta: "+deadline);
 				String creation = format1.format(offer
 						.getDate("offercreationdate"));
-				tvCreationDate.setText(creation);
+				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
-				tvLocation.setText(commerce.getString("placelocation"));
+				System.out.println(commerce.getString("placename"));
+				tvLocation.setText(commerce.getLocation("placelocation").toString());
 			}
 		});
 
@@ -257,7 +258,7 @@ public class ViewOffer extends Activity {
 													.getString("description"));
 											System.out.println(object
 													.getNumber("numlike"));
-											tvNumLike.setText(object.getNumber("numlike").toString());
+											tvNumLike.setText((CharSequence) object.getNumber("numlike"));
 											queryLike(idoffer);
 										}
 									});
