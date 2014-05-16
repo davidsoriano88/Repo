@@ -193,10 +193,10 @@ public class Map extends ActionBarActivity {
 			map.animateCamera(CameraUpdateFactory
 					.newCameraPosition(cameraPosition));
 			
-			util.log(String.valueOf("location"+location.getLatitude()));
+			util.log("location"+String.valueOf(location.getLatitude()));
 		}else
 		{
-			util.showToast(context, "location null");
+			util.log("location null");
 		}
 		
 	}
