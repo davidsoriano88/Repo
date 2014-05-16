@@ -228,16 +228,6 @@ public void viewPort(){
 			editor.commit();
 			
 			locationManager.removeUpdates(listener);
-			/*
-			util.log( "location update : " + location);
-			
-			
-			Intent insert = new Intent(context, InsertActivity.class);
-			insert.putExtra("latpos", lat);
-			insert.putExtra("longpos", lon);
-			
-			
-			locationManager.removeUpdates(listener);*/
 		
 		}
 	};
