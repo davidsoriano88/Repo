@@ -176,10 +176,11 @@ public class OfferList extends ListActivity {
 		}
 
 		public void initUi(){
+			Bundle bundle = getIntent().getExtras();
 			image=new ImageView(this);
 		image = (ImageView) findViewById(R.id.ivTitleReference);
 		nombre=(TextView)findViewById(R.id.idRef);
-		Bundle bundle = getIntent().getExtras();
+		
 		queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));
 		idcommerce = bundle.getString("id");

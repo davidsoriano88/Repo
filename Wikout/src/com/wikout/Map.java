@@ -261,7 +261,7 @@ public class Map extends ActionBarActivity {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			util.log("recorremos pre execute places");
+			util.log("recorremos pre-execute places");
 			util.showDialog(context);
 			
 		}
@@ -272,7 +272,7 @@ public class Map extends ActionBarActivity {
 					"AIzaSyCo0GZPsPX3hZvSi8q31AUlzufu6SUymXU");
 			ArrayList<Place> findPlaces = service.findPlaces(
 					location.getLatitude(), location.getLongitude(), places);
-
+				
 			for (int i = 0; i < findPlaces.size(); i++) {
 
 				Place placeDetail = findPlaces.get(i);
