@@ -216,7 +216,7 @@ public class InsertActivity extends Activity {
 	}
 	public void addListenerOnSpinnerItemSelection() {
 
-		spinner1 = (Spinner) findViewById(R.id.spnInsertCategories);
+		spinner1 = (Spinner) findViewById(R.id.spnInsertCategory);
 		spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 	}

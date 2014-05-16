@@ -179,7 +179,7 @@ public class OfferList extends ListActivity {
 			Bundle bundle = getIntent().getExtras();
 			image=new ImageView(this);
 		image = (ImageView) findViewById(R.id.ivTitleReference);
-		nombre=(TextView)findViewById(R.id.idRef);
+		nombre=(TextView)findViewById(R.id.tvOfferListPlacename);
 		
 		queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));

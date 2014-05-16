@@ -50,7 +50,7 @@ public class OfferReport extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_offer_report);
+		setContentView(R.layout.activity_view_offer);
 		util.projectData(context);
 		initUi();
 		initQueries();
@@ -137,16 +137,16 @@ public class OfferReport extends Activity {
 
 	private void initUi() {
 		// EDITEXTS
-		tvDescription = (TextView) findViewById(R.id.tvOfferReportDescription);
-		tvDeadline = (TextView) findViewById(R.id.tvOfferReportDeadline);
-		tvCreationDate = (TextView) findViewById(R.id.tvOfferReportCreationDate);
-		tvLocation = (TextView) findViewById(R.id.tvOfferReportLocation);
-		tvNumLike = (TextView) findViewById(R.id.tvOfferReportNumLikes);
+		tvDescription = (TextView) findViewById(R.id.tvViewOfferDescription);
+		tvDeadline = (TextView) findViewById(R.id.tvViewOfferDeadline);
+		tvCreationDate = (TextView) findViewById(R.id.tvViewOfferCreationDate);
+		tvLocation = (TextView) findViewById(R.id.tvViewOfferLocation);
+		tvNumLike = (TextView) findViewById(R.id.tvViewOfferNumlike);
 		// BOTONES
-		btnLike = (Button) findViewById(R.id.btnOfferReportLike);
-		btnFlag = (Button) findViewById(R.id.btnOfferReportFlag);
+		btnLike = (Button) findViewById(R.id.btnViewOfferLike);
+		btnFlag = (Button) findViewById(R.id.btnViewOfferFlag);
 		// IMAGEVIEW
-		ivPhoto = (ImageView) findViewById(R.id.ivOfferReportPhoto);
+		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
 
 		btnLike.setOnClickListener(new OnClickListener() {
 
