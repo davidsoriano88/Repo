@@ -166,45 +166,42 @@ public class Map extends ActionBarActivity {
 	
 	
 	//contains info about the viewposition, clientposition...:
-	public void viewPort(){
+public void viewPort(){
 		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
 		
-		public void viewPort(){
-			
-			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-			Criteria criteria = new Criteria();
-			
-			locationManager.requestLocationUpdates(
-					locationManager.getBestProvider(criteria, false), 0, 0,
-					listener);
-			
-			location = locationManager
-					.getLastKnownLocation(locationManager.getBestProvider(criteria,
-							false));
-			
-			if (location != null) {
-				map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-						location.getLatitude(), location.getLongitude()), 13.0F));
-			
-					
-				CameraPosition cameraPosition = new CameraPosition.Builder()
-						.target(new LatLng(location.getLatitude(), location
-								.getLongitude())) // Sets the center of the map to
-													// location user
-						.zoom(17.0F) // Sets the zoom
-						.build(); //Creates a CameraPosition from the builder
-				map.animateCamera(CameraUpdateFactory
-						.newCameraPosition(cameraPosition));
+		locationManager.requestLocationUpdates(
+				locationManager.getBestProvider(criteria, false), 0, 0,
+				listener);
+		
+		location = locationManager
+				.getLastKnownLocation(locationManager.getBestProvider(criteria,
+						false));
+		
+		if (location != null) {
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+					location.getLatitude(), location.getLongitude()), 13.0F));
+		
 				
-				util.log(String.valueOf("location"+location.getLatitude()));
-			}else
-			{
-				util.showToast(context, "location null");
-			}
+			CameraPosition cameraPosition = new CameraPosition.Builder()
+					.target(new LatLng(location.getLatitude(), location
+							.getLongitude())) // Sets the center of the map to
+												// location user
+					.zoom(17.0F) // Sets the zoom
+					.build(); //Creates a CameraPosition from the builder
+			map.animateCamera(CameraUpdateFactory
+					.newCameraPosition(cameraPosition));
 			
-		} = new LocationListener() {
+			util.log("location"+String.valueOf(location.getLatitude()));
+		}else
+		{
+			util.showToast(context, "location null");
+		}
+		
+	}
+
+	private LocationListener listener = new LocationListener() {
 
 		@Override
 		public void onStatusChanged(String provider, int status, Bundle extras) {
