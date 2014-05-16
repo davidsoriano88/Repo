@@ -12,6 +12,7 @@ import utils.PlacesService;
 import utils.Util;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -32,6 +34,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
@@ -61,7 +64,6 @@ public class Map extends ActionBarActivity {
 	ActionBar actionBar;
 	private String[] places;
 	LocationClient mLocationClient;
-	
 	Util util = new Util();
     Context context;
 
@@ -217,16 +219,25 @@ public void viewPort(){
 
 		@Override
 		public void onLocationChanged(Location locationn) {
-			util.log( "location update : " + location);
-			
 			double lat = location.getLatitude();
 			double lon = location.getLongitude();
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putString("latpos", String.valueOf(lat)); 
+			editor.putString("longpos", String.valueOf(lon));
+			editor.commit();
+			
+			locationManager.removeUpdates(listener);
+			/*
+			util.log( "location update : " + location);
+			
+			
 			Intent insert = new Intent(context, InsertActivity.class);
 			insert.putExtra("latpos", lat);
 			insert.putExtra("longpos", lon);
 			
 			
-			locationManager.removeUpdates(listener);
+			locationManager.removeUpdates(listener);*/
 		
 		}
 	};
