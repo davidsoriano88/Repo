@@ -86,7 +86,8 @@ public class ViewOffer extends Activity {
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
 				System.out.println(commerce.getId());
-				//tvLocation.setText("lat: "+commerce.getLocation("placelocation").getLatitude()+"lon: "+commerce.getLocation("placelocation").getLongitude());
+				//tvLocation.setText("lat: "+String.valueOf(commerce.getLocation("placelocation").getLatitude())+"lon: "+String.valueOf(commerce.getLocation("placelocation").getLongitude()));
+				
 			}
 		});
 
