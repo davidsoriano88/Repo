@@ -42,14 +42,6 @@
         android:layout_marginTop="81dp"
         android:text="[ubicacion]" />
 
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_alignBottom="@+id/tvReferenceLocation"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="38dp"
-        android:background="@android:color/darker_gray" />
-
     <Button
         android:id="@+id/btnReferenceLike"
         style="?android:attr/buttonStyleSmall"
@@ -89,5 +81,21 @@
         android:layout_toRightOf="@+id/tvReferenceLocation"
         android:ems="10"
         android:text="Nombre" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvReferenceDescription"
+        android:layout_marginTop="46dp"
+        android:background="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/tvReferencePlacename"
+        android:layout_alignParentBottom="true"
+        android:text="Button" />
 
 </RelativeLayout>
