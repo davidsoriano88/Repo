@@ -178,8 +178,10 @@ public class InsertCommerce extends Activity {
 					public void onClick(DialogInterface dialogo1, int id) {
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 						String myLatitude = prefs.getString("latpos", "no id");
+						latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefs.getString("longpos", "no id");
-						placelink.setText(myLatitude +","+myLongitude);
+						longitude = Double.parseDouble(myLongitude);
+						placelink.setText(latitude +","+longitude);
 
 					}
 
@@ -346,7 +348,7 @@ public class InsertCommerce extends Activity {
 		
 		// INSERTAR NUEVO "COMMERCE"
 		protected void insertCommerce(BackbeamObject objectphoto) {
-			locationbm = new Location(latitude, longitude);
+			locationbm = new Location(latitude, longitude);//********************************************
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
