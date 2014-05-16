@@ -96,7 +96,6 @@
         android:layout_marginTop="30dp"
         android:layout_toLeftOf="@+id/tvViewOfferPlacename"
         android:background="#dc0606"
-        android:text=" ♡ "
         android:textSize="30sp" />
 
     <TextView

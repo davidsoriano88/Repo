@@ -8,6 +8,8 @@
     <string name="camera">Cámara</string>
     <string name="galeria">Galería</string>
     <string name="categorias_prompt">Categorias</string>
+    <string name="like"> ♡ </string>
+    <string name="dislike">-1</string>
  <string name="toast_crash">Fallo de la aplicacion, lo sentimos.</string>
     <string-array name="categorias">
         <item>ocio</item>

@@ -331,7 +331,7 @@ public class ViewOffer extends Activity {
 					boolean fromCache) {
 				if (totalCount == 0) {
 					// NO HA HECHO CLIC ANTES
-					btnLike.setText("+1");
+					btnLike.setText(R.string.like);
 					System.out.println("no ha hecho clic antes");
 					statuslike = true;
 					System.out.println("Estado del boolean: " + statuslike);
@@ -344,13 +344,13 @@ public class ViewOffer extends Activity {
 
 					if (status.equals("1")) {
 						// Deshabilitar boton
-						btnLike.setText("-1");
+						btnLike.setText(R.string.dislike);
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + statuslike);
 						statuslike = false;
 					} else {
 						// Habilitar boton
-						btnLike.setText("+1");
+						btnLike.setText(R.string.like);
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + statuslike);
 						statuslike = true;
