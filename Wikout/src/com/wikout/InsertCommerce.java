@@ -40,6 +40,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class InsertCommerce extends Activity {
+	
 	Double latitude, longitude;
 	int enter;
 	TextView etLocation;
@@ -103,9 +104,8 @@ public class InsertCommerce extends Activity {
 					+ String.valueOf(longitude);
 			etLocation.setText(position);
 
-		} else {
-			util.log("unable to show localization");
-		}
+		} 
+		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
 		etLocation.setTextColor(Color.BLUE);

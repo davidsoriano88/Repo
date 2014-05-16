@@ -17,6 +17,7 @@ import android.util.Log;
 public class PlacesService {
 
 	private String API_KEY;
+	Util util = new Util();
 	
 	public PlacesService(String apikey) {
 		this.API_KEY = apikey;
@@ -47,7 +48,7 @@ public class PlacesService {
 				try {
 					Place place = Place
 							.jsonToReferencePoint((JSONObject) array.get(i));
-					Log.v("places", "" + place);
+					util.log("" + place);
 					arrayList.add(place);
 				} catch (Exception e) {
 				}
@@ -71,10 +72,10 @@ public class PlacesService {
 			urlString.append(",");
 			urlString.append(Double.toString(longitude));
 			urlString.append("&radius=1000");
-			// urlString.append("&types="+place);
+			urlString.append("&types=bank|hospital|cafe|pharmacy|police|restaurant" /*+ place*/);
 			urlString.append("&sensor=false&key=" + API_KEY);
-			Log.i("url",urlString.toString());
-			Log.i("latitud","latitud: "+String.valueOf(latitude)+String.valueOf(longitude));
+			util.log(urlString.toString());
+			util.log("latitud: "+String.valueOf(latitude)+String.valueOf(longitude));
 		} else {
 			urlString.append("&location=");
 			urlString.append(Double.toString(latitude));
@@ -83,8 +84,8 @@ public class PlacesService {
 			urlString.append("&radius=1000");
 			urlString.append("&types=bank|hospital|cafe|pharmacy|police|restaurant" /*+ place*/);
 			urlString.append("&sensor=false&key=" + API_KEY);
-			//Log.i("url",urlString.toString());
-			Log.i("latitud","latitud: "+String.valueOf(latitude)+String.valueOf(longitude));
+			
+			util.log("latitud: "+String.valueOf(latitude)+String.valueOf(longitude));
 		}
 		return urlString.toString();
 		
