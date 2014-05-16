@@ -40,6 +40,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 public class InsertCommerce extends Activity {
+	
 	Double latitude, longitude;
 	int enter;
 	TextView placelink;
@@ -111,9 +112,8 @@ public class InsertCommerce extends Activity {
 					+ String.valueOf(longitude);
 			placelink.setText(position);
 
-		} else {
-			util.log("unable to show localization");
-		}
+		} 
+		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
 		placelink.setTextColor(Color.BLUE);

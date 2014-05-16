@@ -274,6 +274,7 @@ public void viewPort(){
 					"AIzaSyCo0GZPsPX3hZvSi8q31AUlzufu6SUymXU");
 			ArrayList<Place> findPlaces = service.findPlaces(
 					location.getLatitude(), location.getLongitude(), places);
+			util.log("placesprueba1"+location.getLatitude()+location.getLongitude()+places);
 				
 			for (int i = 0; i < findPlaces.size(); i++) {
 
