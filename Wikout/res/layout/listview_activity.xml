@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/idRef"
+        android:id="@+id/tvOfferListPlacename"
         android:layout_width="136dp"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
+        android:layout_height="wrap_content" />
 
     <ImageView
-        android:id="@+id/ivTitleReference"
+        android:id="@+id/ivOfferListPhoto"
         android:layout_width="match_parent"
         android:layout_height="99dp" />
 
