@@ -113,7 +113,7 @@ public class OfferList extends ListActivity {
 					intent.putExtra("idcommerce", idcommerce);
 					intent.putExtra("placename",placeName);
 					startActivity(intent);
-					finish();
+					
 				}
 			});
 			return convertView;

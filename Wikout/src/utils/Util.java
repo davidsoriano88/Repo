@@ -67,6 +67,27 @@ public class Util {
 			Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
 			
 		}
+
+		public void showProgressDialog(Context context, final int i) {
+			final ProgressDialog dialog = new ProgressDialog(context);
+			dialog.setCancelable(false);
+			dialog.setMessage("Cargando...");
+			dialog.isIndeterminate();
+			dialog.show();
+			Thread cronometro = new Thread(){
+		        @Override
+				public void run(){
+		                try{  
+		                        Thread.sleep(i);
+		                        dialog.dismiss();
+		                        }
+		                catch(Exception e){
+		               
+		                }
+		        }
+		    };
+		   cronometro.start(); 
+		}
 	
 	
 }

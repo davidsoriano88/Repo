@@ -21,12 +21,14 @@ import utils.Util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,6 +44,8 @@ public class ViewOffer extends ActionBarActivity {
 	String idofferparameter = "",idcommerceparameter = "";
 	Context context;
 	Util util = new Util();
+	
+	long startui;
 	
 	boolean lastlike= false;
 	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
@@ -59,12 +63,14 @@ public class ViewOffer extends ActionBarActivity {
 		setContentView(R.layout.activity_view_offer);
 		context=this;
 		util.projectData(context);
+		util.showProgressDialog(context, 1900);
 		initUi();
 		initQueries();
 
 	}
 
 	private void initQueries() {
+		
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
@@ -110,7 +116,7 @@ public class ViewOffer extends ActionBarActivity {
 								longitude);
 						
 						btnLike.setEnabled(true);
-					}});
+						}});
 			}
 		});
 
@@ -228,7 +234,10 @@ public class ViewOffer extends ActionBarActivity {
 
 	// METODO PARA INSERTAR LIKE
 		protected void insertLike(final String idoffer) {
+			//CONTADOR DE TIEMPO
+			final long start = Calendar.getInstance().getTimeInMillis();
 			// CREO OBJETOS
+			util.showProgressDialog(context, 2500);
 			btnLike.setEnabled(false);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
@@ -290,6 +299,8 @@ public class ViewOffer extends ActionBarActivity {
 											System.out.println(object
 													.getNumber("numlike"));
 											tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
+											System.out.println("tarda en ejecutarse 1: "+(Calendar.getInstance().getTimeInMillis()-start));
+											btnLike.setEnabled(true);
 										}
 									});
 								}
@@ -299,7 +310,8 @@ public class ViewOffer extends ActionBarActivity {
 					});
 				}
 			});
-			btnLike.setEnabled(true);
+			
+			System.out.println("tarda en ejecutarse 2: "+(Calendar.getInstance().getTimeInMillis()-start));
 		}
 
 	// METODO PARA OBTENER LA UDID DEL SMARTPHONE
@@ -394,6 +406,7 @@ public class ViewOffer extends ActionBarActivity {
 		});
 
 		btnLike.setEnabled(true);
+		
 	}
 
 
@@ -429,5 +442,14 @@ public class ViewOffer extends ActionBarActivity {
 		
 	}
 
-	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        	case android.R.id.home: util.showToast(context, "e");
+			finish();
+        		return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 }
