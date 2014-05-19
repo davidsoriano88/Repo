@@ -34,7 +34,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;

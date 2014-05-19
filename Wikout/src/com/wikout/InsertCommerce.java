@@ -1,6 +1,4 @@
 package com.wikout;
-//Adios
-import io.backbeam.Backbeam;
 import io.backbeam.BackbeamException;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FileUpload;

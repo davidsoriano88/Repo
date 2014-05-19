@@ -22,9 +22,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -89,12 +91,16 @@ public class ViewOffer extends Activity {
 				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
-			
+				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+				String myLatitude = prefs.getString("latpos", "no id");
+				double latitude = Double.parseDouble(myLatitude);
+				String myLongitude = prefs.getString("longpos", "no id");
+				double longitude = Double.parseDouble(myLongitude);
 				tvLocation.setText(commerce.getLocation("placelocation").toString());
 				haversine(commerce.getLocation("placelocation").getLatitude(),
 						commerce.getLocation("placelocation").getLongitude(), 
-						userlat, 
-						userlon);
+						latitude, 
+						longitude);
 			}
 		});
 
