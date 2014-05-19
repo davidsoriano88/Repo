@@ -24,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -64,7 +65,9 @@ public class Map extends ActionBarActivity {
 	LocationClient mLocationClient;
 	Util util = new Util();
     Context context;
-
+    DrawerLayout navDrawerLayout;
+    ListView optionList;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -76,17 +79,17 @@ public class Map extends ActionBarActivity {
 	 }
 
 	public void initUI(){
-		util.showDialog(context);
+		util.showProgressDialog(context);
 		
 		//Inicializamos las variables
 		places = getResources().getStringArray(R.array.places);
 		String[] values = getResources().getStringArray(R.array.options);
-		DrawerLayout navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-	    ListView optionList = (ListView) findViewById(R.id.left_drawer);
+		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+	    optionList = (ListView) findViewById(R.id.left_drawer);
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
-	    getSupportActionBar().setHomeButtonEnabled(true);
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -156,17 +159,35 @@ public class Map extends ActionBarActivity {
 			insert.putExtra("enter", enter);
 			startActivity(insert);
             return true;
-
+        	case android.R.id.home: 
+        		drawerOpener();
+        		return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 	
+	@Override
+	public boolean onKeyDown(int keycode, KeyEvent e) {
+	    switch(keycode) {
+	        case KeyEvent.KEYCODE_MENU:
+	        	drawerOpener();
+        		return true;
+	    }
+
+	    return super.onKeyDown(keycode, e);
+	}
 	
-	
+	//comprueba si el menu está abierto o cerrado y lo abre o cierra en consecuencia:
+	public void drawerOpener(){
+		if(navDrawerLayout.isDrawerOpen(optionList)){
+			navDrawerLayout.closeDrawer(optionList);}
+		else{
+		navDrawerLayout.openDrawer(optionList);}
+	}
 	
 	//contains info about the viewposition, clientposition...:
-public void viewPort(){
+	public void viewPort(){
 		
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		Criteria criteria = new Criteria();
@@ -262,7 +283,7 @@ public void viewPort(){
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre-execute places");
-			util.showDialog(context);
+			util.showProgressDialog(context);
 			
 		}
 
@@ -356,7 +377,7 @@ public void viewPort(){
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			util.showDialog(context);
+			util.showProgressDialog(context);
 			util.log("mostramos dialog mydata");
 		}
 
@@ -368,9 +389,7 @@ public void viewPort(){
 			return true;
 		}
 	}
-public void nextActivity(Class cls){
-	
-}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar

@@ -29,7 +29,7 @@ public class Util {
 			
 			info.show();
 		}
-	public void showDialog(Context context){
+	public void showProgressDialog(Context context){
 		final ProgressDialog dialog = new ProgressDialog(context);
 		dialog.setCancelable(false);
 		dialog.setMessage("Cargando...");
