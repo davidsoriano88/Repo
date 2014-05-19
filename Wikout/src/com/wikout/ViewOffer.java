@@ -83,9 +83,7 @@ public class ViewOffer extends ActionBarActivity {
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
-		loadData(bundle.getString("idoffer"));
-		queryLike(idofferparameter);
-		getPhoto(bundle.getString("idcommerce"));
+		new LoadDataTask().execute();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(bundle.getString("placename"));
 		
@@ -193,7 +191,8 @@ public class ViewOffer extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				insertLike(idofferparameter);
+				//insertLike(idofferparameter);
+				new RefreshDataTask().execute();
 			}
 		});
 		btnFlag.setOnClickListener(new OnClickListener() {
@@ -237,8 +236,8 @@ public class ViewOffer extends ActionBarActivity {
 
 		/*	
 */
-		new LoadDataTask().execute();
-		new RefreshDataTask().execute();
+		
+		
 	}
 
 
@@ -363,6 +362,7 @@ public class ViewOffer extends ActionBarActivity {
 						System.out.println(offer.getString("description"));
 						util.showToast(getApplicationContext(),
 								"Informe enviado");
+						finish();
 					}
 				});
 			}
@@ -467,7 +467,9 @@ public class ViewOffer extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
-			
+			loadData(idofferparameter);
+			queryLike(idofferparameter);
+			getPhoto(idcommerceparameter);
 		}
 
 		@Override
@@ -491,7 +493,7 @@ public class ViewOffer extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
-			
+			insertLike(idofferparameter);
 		}
 
 		@Override
@@ -502,11 +504,10 @@ public class ViewOffer extends ActionBarActivity {
 			util.log("mostramos dialog mydata");
 		}
 
-		@Override
 		protected Boolean doInBackground(Void... params) {
-
+			
 			util.log("doInBackgroundRecorrido mydata");
-
+			
 			return true;
 		}
 	}
