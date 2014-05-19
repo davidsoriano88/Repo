@@ -79,7 +79,7 @@ public class Map extends ActionBarActivity {
 	 }
 
 	public void initUI(){
-		util.showDialog(context);
+		util.showProgressDialog(context);
 		
 		//Inicializamos las variables
 		places = getResources().getStringArray(R.array.places);
@@ -283,7 +283,7 @@ public class Map extends ActionBarActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre-execute places");
-			util.showDialog(context);
+			util.showProgressDialog(context);
 			
 		}
 
@@ -377,7 +377,7 @@ public class Map extends ActionBarActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			util.showDialog(context);
+			util.showProgressDialog(context);
 			util.log("mostramos dialog mydata");
 		}
 
