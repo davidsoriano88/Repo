@@ -27,13 +27,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ViewOffer extends Activity {
+public class ViewOffer extends ActionBarActivity {
 
 	TextView tvDescription, tvDeadline, tvCreationDate;
 	static TextView tvDistance;
@@ -72,6 +73,7 @@ public class ViewOffer extends Activity {
 		loadData(bundle.getString("idoffer"));
 		queryLike(idofferparameter);
 		getPhoto(bundle.getString("idcommerce"));
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 
