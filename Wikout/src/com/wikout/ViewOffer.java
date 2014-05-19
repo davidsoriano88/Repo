@@ -58,6 +58,7 @@ public class ViewOffer extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_offer);
+		context=this;
 		util.projectData(context);
 		initUi();
 		initQueries();
@@ -91,12 +92,15 @@ public class ViewOffer extends Activity {
 				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Lo mismo con location
 				BackbeamObject commerce = offer.getObject("commerce");
-				SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-				String myLatitude = prefs.getString("latpos", "no id");
+				
+				SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
+				String myLatitude = prefers.getString("latpos", "null");
 				double latitude = Double.parseDouble(myLatitude);
-				String myLongitude = prefs.getString("longpos", "no id");
+				String myLongitude = prefers.getString("longpos", "null");
 				double longitude = Double.parseDouble(myLongitude);
-				tvLocation.setText(commerce.getLocation("placelocation").toString());
+				util.log("ruta: "+latitude+","+longitude);
+				
+				//tvLocation.setText(commerce.getLocation("placelocation").toString());
 				haversine(commerce.getLocation("placelocation").getLatitude(),
 						commerce.getLocation("placelocation").getLongitude(), 
 						latitude, 
@@ -400,10 +404,10 @@ public class ViewOffer extends Activity {
 			distancedouble = distancedouble / 1000;
 			distancedouble = (double)Math.round(distancedouble * 10) /10;
 			distancestring = distancedouble.toString();
-			tvDistance.setText("Dist: "+distancestring+" km.");
+			util.log("Dist: "+distancestring+" km.");
 		}else{
 			int distanceint = distancedouble.intValue();
-			tvDistance.setText("Dist: "+String.valueOf(distanceint)+" m.");
+			util.log("Dist: "+distanceint+" km.");
 		}
 		
 		
