@@ -48,5 +48,6 @@
   </string-array>
   <string name="oferta">Oferta</string>
     
+  <string name="titleName">title</string>
 
 </resources>

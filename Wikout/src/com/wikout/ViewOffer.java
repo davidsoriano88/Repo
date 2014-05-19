@@ -73,7 +73,8 @@ public class ViewOffer extends ActionBarActivity {
 		queryLike(idofferparameter);
 		getPhoto(bundle.getString("idcommerce"));
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		getSupportActionBar().setTitle(bundle.getString("placename"));
+		
 	}
 
 	private void loadData(String idoffer) {

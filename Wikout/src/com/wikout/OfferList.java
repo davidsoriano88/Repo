@@ -47,7 +47,7 @@ public class OfferList extends ListActivity {
 	TextView tvPlacename;
 	static TextView tvLocation;
 	String idcommerce="";
-	
+	String placeName;
 
 	
 	public static class viewHolder {
@@ -111,6 +111,7 @@ public class OfferList extends ListActivity {
 							ViewOffer.class);	 
 					intent.putExtra("idoffer", dataid.get(position));
 					intent.putExtra("idcommerce", idcommerce);
+					intent.putExtra("placename",placeName);
 					startActivity(intent);
 					finish();
 				}
@@ -223,7 +224,7 @@ public class OfferList extends ListActivity {
 				//PASAR COORDENADAS DE USUARIO PARA HACER HAVERSINE EN CASO DE HACERLO EN ESTA CLASE
 				//haversine(place.getLocation("placelocation").getLatitude(),place.getLocation("placelocation").getLongitude(), userlat, userlon)
 						
-						
+				placeName=place.getString("placename");
 				tvPlacename.setText(place.getString("placename"));
 				List<BackbeamObject> offers = join.getResults();
 				// Contemplo si alguna referencia NO TIENE ofertas
