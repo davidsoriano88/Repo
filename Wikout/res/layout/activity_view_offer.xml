@@ -48,18 +48,11 @@
         android:text="Creado el: " />
 
     <TextView
-        android:id="@+id/tvViewOfferDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvViewOfferDeadline"
-        android:layout_alignRight="@+id/btnViewOfferFlag"
-        android:text="Distancia:" />
-
-    <TextView
         android:id="@+id/tvViewOfferDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/btnViewOfferLike"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@+id/ivViewOfferPhoto"
         android:layout_marginTop="27dp"
         android:ems="10"
@@ -94,5 +87,14 @@
         android:layout_alignBaseline="@+id/btnViewOfferFlag"
         android:layout_alignBottom="@+id/btnViewOfferFlag"
         android:layout_toRightOf="@+id/tvViewOfferDeadline" />
+
+    <TextView
+        android:id="@+id/tvViewOfferDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvViewOfferLocation"
+        android:layout_alignRight="@+id/tvViewOfferCreationDate"
+        android:layout_marginBottom="18dp"
+        android:text="Distancia:" />
 
 </RelativeLayout>
