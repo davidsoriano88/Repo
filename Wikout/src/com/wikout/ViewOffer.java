@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import utils.Util;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
