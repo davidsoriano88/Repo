@@ -11,11 +11,19 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
+
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import utils.Util;
 import android.app.AlertDialog;
@@ -25,6 +33,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -63,7 +72,7 @@ public class ViewOffer extends ActionBarActivity {
 		setContentView(R.layout.activity_view_offer);
 		context=this;
 		util.projectData(context);
-		util.showProgressDialog(context, 1900);
+		//util.showProgressDialog(context, 1900);
 		initUi();
 		initQueries();
 
@@ -228,7 +237,8 @@ public class ViewOffer extends ActionBarActivity {
 
 		/*	
 */
-
+		new LoadDataTask().execute();
+		new RefreshDataTask().execute();
 	}
 
 
@@ -237,7 +247,7 @@ public class ViewOffer extends ActionBarActivity {
 			//CONTADOR DE TIEMPO
 			final long start = Calendar.getInstance().getTimeInMillis();
 			// CREO OBJETOS
-			util.showProgressDialog(context, 2500);
+			//util.showProgressDialog(context, 2500);
 			btnLike.setEnabled(false);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
@@ -445,11 +455,60 @@ public class ViewOffer extends ActionBarActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        	case android.R.id.home: util.showToast(context, "e");
+        	case android.R.id.home: 
 			finish();
         		return true;
         default:
             return super.onOptionsItemSelected(item);
         }
     }
+	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			util.log("recorremos post execute mydata");
+			
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			util.log("recorremos pre execute");
+			util.showProgressDialog(context);
+			util.log("mostramos dialog mydata");
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+
+			util.log("doInBackgroundRecorrido mydata");
+
+			return true;
+		}
+	}
+	private class RefreshDataTask extends AsyncTask<Void, Integer, Boolean> {
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			util.log("recorremos post execute mydata");
+			
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			util.log("recorremos pre execute");
+			util.showProgressDialog(context);
+			util.log("mostramos dialog mydata");
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+
+			util.log("doInBackgroundRecorrido mydata");
+
+			return true;
+		}
+	}
+	
 }
