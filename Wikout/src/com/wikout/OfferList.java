@@ -1,12 +1,6 @@
 package com.wikout;
 
-import io.backbeam.Backbeam;
-import io.backbeam.BackbeamObject;
-import io.backbeam.CollectionConstraint;
-import io.backbeam.FetchCallback;
-import io.backbeam.JoinResult;
-import io.backbeam.ObjectCallback;
-import io.backbeam.Query;
+import io.backbeam.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,8 +12,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
-
-import com.wikout.R;
 
 import utils.Util;
 import android.app.ListActivity;
@@ -101,7 +93,7 @@ public class OfferList extends ListActivity {
 					.findViewById(R.id.textViewName);
 			holder.tlike = (TextView) convertView
 					.findViewById(R.id.textViewCode);
-			holder.blike = (Button) convertView.findViewById(R.id.btLike);
+			holder.blike = (Button) convertView.findViewById(R.id.btnListOfferOpen);
 			
 			
 			holder.toffer.setText(dataoffer.get(position));
@@ -183,13 +175,13 @@ public class OfferList extends ListActivity {
 		public void initUi(){
 			Bundle bundle = getIntent().getExtras();
 			ivPhoto=new ImageView(this);
-		ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
-		tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
-		
-		queryOffer(bundle.getString("id"));
-		util.log(bundle.getString("id"));
-		idcommerce = bundle.getString("id");
-		getPhoto(bundle.getString("id"));
+			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
+			tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
+			
+			queryOffer(bundle.getString("id"));
+			util.log(bundle.getString("id"));
+			idcommerce = bundle.getString("id");
+			getPhoto(bundle.getString("id"));
 		}
 	
 
@@ -210,13 +202,14 @@ public class OfferList extends ListActivity {
 
 //METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
 	private void queryOffer(String idreference) {
+		//vacio los arraylists
 		util.projectData(con);
 		dataoffer.clear();
 		datalike.clear();
 		dataid.clear();
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idreference);
-
+		
 		Query query = new Query("commerce");
 		query.setQuery("where this in ? join last 100 offer", collection);
 		query.fetch(100, 0, new FetchCallback() {
@@ -227,26 +220,21 @@ public class OfferList extends ListActivity {
 				BackbeamObject place = objects.get(0);
 				JoinResult join = place.getJoinResult("offer");
 				
-				//PASAR COORDENADAS DE USUARIO PARA HACER HAVERSINE
+				//PASAR COORDENADAS DE USUARIO PARA HACER HAVERSINE EN CASO DE HACERLO EN ESTA CLASE
 				//haversine(place.getLocation("placelocation").getLatitude(),place.getLocation("placelocation").getLongitude(), userlat, userlon)
 						
 						
 				tvPlacename.setText(place.getString("placename"));
-				util.log(place.getString("placename"));
 				List<BackbeamObject> offers = join.getResults();
-				util.log("succes!!");
-				// Contemplar si alguna referencia NO TIENE ofertas
+				// Contemplo si alguna referencia NO TIENE ofertas
 				if (offers.size() == 0) {
 					// No hay ofertas disponibles
 				} else {
 					// Hay ofertas
 					for (BackbeamObject offer : offers) {
-						SimpleDateFormat format1 = new SimpleDateFormat(
-								"dd-MM-yyyy");
-						String formatted = format1.format(offer.getDay(
-								"deadline").getTime());
-						dataoffer.add(offer.getString("description")
-								+ " Hasta: " + formatted);
+						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+						String formatted = format1.format(offer.getDay("deadline").getTime());
+						dataoffer.add(offer.getString("description")+ " Hasta: " + formatted);
 						datalike.add(offer.getNumber("numlike").toString());
 						dataid.add(offer.getId());
 						// Anadir al set Adapter
@@ -259,46 +247,6 @@ public class OfferList extends ListActivity {
 		});
 
 	}
-//METODO PARA INSERTAR LIKE
-protected void insertLike(final String idoffer) {
-	// CREO OBJETOS
-	final BackbeamObject like = new BackbeamObject("like");
-	final BackbeamObject offer = new BackbeamObject("offer", idoffer);
-	// Escribo los campos de "like"
-	like.setString("udid", getId());
-	like.setDate("likedate",actualDate());
-	like.setString("statuslike", "1");
-	like.setObject("offer", offer);
-
-	like.save(new ObjectCallback() {
-		@Override
-		public void success(BackbeamObject object) {
-			System.out.println("like guardado");
-			Query query = new Query("like");
-			query.setQuery("where offer = ?", idoffer);
-			query.fetch(100, 0, new FetchCallback() {
-				@Override
-					public void success(List<BackbeamObject> objects, int totalCount,boolean fromCache) {
-						final int numlike = totalCount;
-						Backbeam.read("offer", idoffer, new ObjectCallback() {
-							@Override
-							public void success(BackbeamObject offer) {
-								offer.setNumber("numlike", numlike);
-								offer.save(new ObjectCallback() {
-								@Override
-								public void success(BackbeamObject object) {
-									System.out.println("updated! :) "+object.getId());
-									Bundle bundle = getIntent().getExtras();
-									queryOffer(bundle.getString("id"));
-								}
-							});
-							}
-						});
-					}});
-		
-		}
-	});
-}
 	
 
 // METODO PARA OBTENER LA FECHA ACTUAL

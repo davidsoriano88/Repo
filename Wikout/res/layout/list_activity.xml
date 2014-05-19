@@ -10,10 +10,10 @@
         android:gravity="left" >
 
         <Button
-            android:id="@+id/btLike"
+            android:id="@+id/btnListOfferOpen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Like" />
+            android:text="Open" />
 
         <TextView
             android:id="@+id/textViewName"

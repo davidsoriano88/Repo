@@ -1,16 +1,10 @@
 package com.wikout;
-import io.backbeam.BackbeamException;
-import io.backbeam.BackbeamObject;
-import io.backbeam.FileUpload;
-import io.backbeam.Location;
-import io.backbeam.ObjectCallback;
+import io.backbeam.*;
 
 import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-
-import com.wikout.R;
 
 import utils.CustomOnItemSelectedListener;
 import utils.Photo;
@@ -113,7 +107,7 @@ public class InsertCommerce extends Activity {
 			public void onClick(View v) {
 				// request your webservice here. Possible use of AsyncTask and
 				// ProgressDialog
-				dialog();
+				dialogGetLocation();
 			}
 
 		});
@@ -123,11 +117,11 @@ public class InsertCommerce extends Activity {
 			@Override
 			public void onClick(View v) {
 				if (etLocation == null) {
-					dialog();
+					dialogGetLocation();
 				} else {
 					if(etDescription.getText().length()==0 | etPlacename.getText().length()==0){
 						util.log("aceptar1");
-					dialogText();
+					dialogIncompleteFields();
 					
 
 					}else{
@@ -147,7 +141,7 @@ public class InsertCommerce extends Activity {
  
 	 }
 
-	public void dialog() {
+	public void dialogGetLocation() {
 		AlertDialog.Builder dialogLocation = new AlertDialog.Builder(this);
 		dialogLocation.setTitle("Ubicacion");
 		dialogLocation.setMessage("Elija la direccion:");
@@ -178,7 +172,7 @@ public class InsertCommerce extends Activity {
 				});
 		dialogLocation.show();
 	}
-	public void dialogText() {
+	public void dialogIncompleteFields() {
 		AlertDialog.Builder dialog1 = new AlertDialog.Builder(this);
 		dialog1.setTitle("Información incompleta");
 		dialog1.setMessage("Rellene los campos Incompletos, por favor.");
@@ -289,7 +283,7 @@ public class InsertCommerce extends Activity {
 				}
 			});
 		}
-		// METODO PARA SUBIR FOTO
+	// METODO PARA SUBIR FOTO
 		protected void insertPhoto() {
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
@@ -322,7 +316,7 @@ public class InsertCommerce extends Activity {
 					});
 		}
 		
-		// INSERTAR NUEVO "COMMERCE"
+	// INSERTAR NUEVO "COMMERCE"
 		protected void insertCommerce(BackbeamObject objectphoto) {
 			locationbm = new Location(latitude, longitude);
 			//Extraigo la fecha actual
