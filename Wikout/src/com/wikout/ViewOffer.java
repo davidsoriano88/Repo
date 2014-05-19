@@ -69,6 +69,7 @@ public class ViewOffer extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
+		util.log("idOffer: "+idofferparameter);
 		loadData(bundle.getString("idoffer"));
 		queryLike(idofferparameter);
 		getPhoto(bundle.getString("idcommerce"));
