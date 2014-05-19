@@ -100,11 +100,14 @@ public class ViewOffer extends Activity {
 						String myLongitude = prefers.getString("longpos", "null");
 						double longitude = Double.parseDouble(myLongitude);
 						
-						//tvLocation.setText(commerce.getLocation("placelocation").toString());
+						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
+								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/
+						tvLocation.setText(commerce.getLocation("placelocation").getAddress());
 						haversine(commerce.getLocation("placelocation").getLatitude(),
 								commerce.getLocation("placelocation").getLongitude(), 
 								latitude, 
 								longitude);
+						
 						
 					}});
 			}
@@ -279,7 +282,7 @@ public class ViewOffer extends Activity {
 													.getString("description"));
 											System.out.println(object
 													.getNumber("numlike"));
-											tvNumLike.setText((CharSequence) object.getNumber("numlike"));
+											tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
 											queryLike(idoffer);
 										}
 									});
@@ -407,9 +410,11 @@ public class ViewOffer extends Activity {
 			distancedouble = (double)Math.round(distancedouble * 10) /10;
 			distancestring = distancedouble.toString();
 			util.log("Dist: "+distancestring+" km.");
+			tvDistance.setText(distancestring+" km.");
 		}else{
 			int distanceint = distancedouble.intValue();
-			util.log("Dist: "+distanceint+" km.");
+			util.log("Dist: "+distanceint+" m.");
+			tvDistance.setText(distanceint+" m.");
 		}
 		
 		

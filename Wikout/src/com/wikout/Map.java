@@ -157,7 +157,7 @@ public class Map extends ActionBarActivity {
 			insert.putExtra("enter", enter);
 			startActivity(insert);
             return true;
-       
+
         default:
             return super.onOptionsItemSelected(item);
         }
