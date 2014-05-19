@@ -60,6 +60,7 @@ public class Map extends ActionBarActivity {
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	int enter;
+	ActionBar actionBar;
 	private String[] places;
 	LocationClient mLocationClient;
 	Util util = new Util();
@@ -86,7 +87,7 @@ public class Map extends ActionBarActivity {
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
-	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -150,15 +151,13 @@ public class Map extends ActionBarActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.action_next:
+        case R.id.action_search:
         	Intent insert = new Intent(context, InsertCommerce.class);
 			enter = 0;
 			insert.putExtra("enter", enter);
 			startActivity(insert);
             return true;
-        case android.R.id.home:
-        	util.showToast(context, "click home");
-            return true;
+       
         default:
             return super.onOptionsItemSelected(item);
         }

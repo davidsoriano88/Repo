@@ -69,7 +69,6 @@ public class ViewOffer extends Activity {
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
-		util.log("idOffer: "+idofferparameter);
 		loadData(bundle.getString("idoffer"));
 		queryLike(idofferparameter);
 		getPhoto(bundle.getString("idcommerce"));
@@ -92,20 +91,22 @@ public class ViewOffer extends Activity {
 						.getDate("offercreationdate"));
 				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Lo mismo con location
-				BackbeamObject commerce = offer.getObject("commerce");
-				
-				SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
-				String myLatitude = prefers.getString("latpos", "null");
-				double latitude = Double.parseDouble(myLatitude);
-				String myLongitude = prefers.getString("longpos", "null");
-				double longitude = Double.parseDouble(myLongitude);
-				util.log("ruta: "+latitude+","+longitude);
-				
-				//tvLocation.setText(commerce.getLocation("placelocation").toString());
-				haversine(commerce.getLocation("placelocation").getLatitude(),
-						commerce.getLocation("placelocation").getLongitude(), 
-						latitude, 
-						longitude);
+				Backbeam.read("commerce", offer.getObject("commerce").getId(), new ObjectCallback() {
+					@Override
+					public void success(BackbeamObject commerce) {
+						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
+						String myLatitude = prefers.getString("latpos", "null");
+						double latitude = Double.parseDouble(myLatitude);
+						String myLongitude = prefers.getString("longpos", "null");
+						double longitude = Double.parseDouble(myLongitude);
+						
+						//tvLocation.setText(commerce.getLocation("placelocation").toString());
+						haversine(commerce.getLocation("placelocation").getLatitude(),
+								commerce.getLocation("placelocation").getLongitude(), 
+								latitude, 
+								longitude);
+						
+					}});
 			}
 		});
 
