@@ -43,6 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/tvViewOfferLocation"
+        android:layout_alignRight="@+id/tvViewOfferLocation"
         android:layout_below="@+id/tvViewOfferLocation"
         android:layout_marginTop="25dp"
         android:text="Creado el: " />
@@ -93,7 +94,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/tvViewOfferLocation"
-        android:layout_alignRight="@+id/tvViewOfferCreationDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/tvViewOfferLocation"
         android:layout_marginBottom="18dp"
         android:text="Distancia:" />
 
