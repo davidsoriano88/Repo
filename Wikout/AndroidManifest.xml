@@ -34,7 +34,8 @@
 
         <activity
             android:name="com.wikout.SplashScreen"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,22 +46,25 @@
             android:name="com.wikout.Map"
             android:label="@string/app_name"
             android:parentActivityName="com.wikout.SplashScreen" 
-            >
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.wikout.OfferList"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.Map" >
+            android:parentActivityName="com.wikout.Map" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.wikout.ViewOffer"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.Map" >
+            android:parentActivityName="com.wikout.Map" 
+            android:screenOrientation="portrait">
         </activity>
           <activity
              android:name="com.wikout.InsertCommerce"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.Map" >
+            android:parentActivityName="com.wikout.Map" 
+            android:screenOrientation="portrait">
         </activity>
         <activity
              android:name="utils.Photo"

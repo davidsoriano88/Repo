@@ -35,10 +35,8 @@ import android.widget.TextView;
 
 public class ViewOffer extends Activity {
 
-	TextView tvDescription, tvDeadline, tvCreationDate;
+	TextView tvDescription, tvDeadline, tvCreationDate,tvLocation,tvNumLike;
 	static TextView tvDistance;
-	TextView tvLocation;
-	TextView tvNumLike;
 	Button btnLike, btnFlag;
 	ImageView ivPhoto;
 	String idofferparameter = "",idcommerceparameter = "";
@@ -76,7 +74,7 @@ public class ViewOffer extends Activity {
 	}
 
 	private void loadData(String idoffer) {
-
+		
 		Backbeam.read("offer", idoffer, new ObjectCallback() {
 			@Override
 			public void success(BackbeamObject offer) {
@@ -108,7 +106,7 @@ public class ViewOffer extends Activity {
 								latitude, 
 								longitude);
 						
-						
+						btnLike.setEnabled(true);
 					}});
 			}
 		});
