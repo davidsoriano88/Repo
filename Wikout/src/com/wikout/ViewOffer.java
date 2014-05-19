@@ -44,9 +44,10 @@ public class ViewOffer extends ActionBarActivity {
 	Context context;
 	Util util = new Util();
 	
-	boolean statuslike= false;
-	//statuslike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
-	//statuslike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
+	boolean lastlike= false;
+	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
+	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
+	boolean statuslike=false;
 	
 	//Radio de la tierra (en metros)
 	final static double radio = 6371000;
@@ -171,7 +172,8 @@ public class ViewOffer extends ActionBarActivity {
 		btnFlag = (Button) findViewById(R.id.btnViewOfferFlag);
 		// IMAGEVIEW
 		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
-
+		
+		btnLike.setEnabled(false);
 		btnLike.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -227,7 +229,7 @@ public class ViewOffer extends ActionBarActivity {
 	// METODO PARA INSERTAR LIKE
 		protected void insertLike(final String idoffer) {
 			// CREO OBJETOS
-			
+			btnLike.setEnabled(false);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
 			// Escribo los campos de "like"
@@ -236,12 +238,17 @@ public class ViewOffer extends ActionBarActivity {
 			// Compruebo el boolean y, si es TRUE, inserta un LIKE. Si es FALSE,
 			// inserta un DISLIKE.
 			// Por último, se hace el count.
-			if (statuslike == true) {
+			if (lastlike == true) {
 				like.setString("statuslike", "1");
 				System.out.println("1");
+				lastlike=false;
+				btnLike.setText(R.string.dislike);
+				
 			} else {
 				like.setString("statuslike", "0");
 				System.out.println("0");
+				lastlike=true;
+				btnLike.setText(R.string.like);
 			}
 			like.setObject("offer", offer);
 			like.save(new ObjectCallback() {
@@ -283,7 +290,6 @@ public class ViewOffer extends ActionBarActivity {
 											System.out.println(object
 													.getNumber("numlike"));
 											tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
-											queryLike(idoffer);
 										}
 									});
 								}
@@ -293,7 +299,7 @@ public class ViewOffer extends ActionBarActivity {
 					});
 				}
 			});
-			
+			btnLike.setEnabled(true);
 		}
 
 	// METODO PARA OBTENER LA UDID DEL SMARTPHONE
@@ -357,8 +363,9 @@ public class ViewOffer extends ActionBarActivity {
 					// NO HA HECHO CLIC ANTES
 					btnLike.setText(R.string.like);
 					System.out.println("no ha hecho clic antes");
+					lastlike = true;
+					System.out.println("Estado del boolean: " + lastlike);
 					statuslike = true;
-					System.out.println("Estado del boolean: " + statuslike);
 				} else {
 					System.out.println("ha hecho clic antes");
 					BackbeamObject likeobject = objects.get(0);
@@ -370,13 +377,15 @@ public class ViewOffer extends ActionBarActivity {
 						// Deshabilitar boton
 						btnLike.setText(R.string.dislike);
 						System.out.println("habilita boton");
-						System.out.println("Estado del boolean: " + statuslike);
+						System.out.println("Estado del boolean: " + lastlike);
+						lastlike = false;
 						statuslike = false;
 					} else {
 						// Habilitar boton
 						btnLike.setText(R.string.like);
 						System.out.println("deshabilita boton");
-						System.out.println("Estado del boolean: " + statuslike);
+						System.out.println("Estado del boolean: " + lastlike);
+						lastlike = true;
 						statuslike = true;
 
 					}
