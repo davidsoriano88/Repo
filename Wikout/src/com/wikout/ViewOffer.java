@@ -33,8 +33,10 @@ import android.widget.TextView;
 
 public class ViewOffer extends Activity {
 
-	TextView tvDescription, tvDeadline, tvCreationDate, tvLocation,
-			tvNumLike;
+	TextView tvDescription, tvDeadline, tvCreationDate;
+	static TextView tvDistance;
+	TextView tvLocation;
+	TextView tvNumLike;
 	Button btnLike, btnFlag;
 	ImageView ivPhoto;
 	String idofferparameter = "",idcommerceparameter = "";
@@ -44,6 +46,10 @@ public class ViewOffer extends Activity {
 	boolean statuslike= false;
 	//statuslike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//statuslike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
+	
+	//Radio de la tierra (en metros)
+	final static double radio = 6371000;
+	final static double distancedouble = 0;
 	
 	
 	@Override
@@ -85,6 +91,10 @@ public class ViewOffer extends Activity {
 				BackbeamObject commerce = offer.getObject("commerce");
 			
 				tvLocation.setText(commerce.getLocation("placelocation").toString());
+				haversine(commerce.getLocation("placelocation").getLatitude(),
+						commerce.getLocation("placelocation").getLongitude(), 
+						userlat, 
+						userlon);
 			}
 		});
 
@@ -140,6 +150,7 @@ public class ViewOffer extends Activity {
 		tvCreationDate = (TextView) findViewById(R.id.tvViewOfferCreationDate);
 		tvLocation = (TextView) findViewById(R.id.tvViewOfferLocation);
 		tvNumLike = (TextView) findViewById(R.id.tvViewOfferNumlike);
+		tvDistance = (TextView) findViewById(R.id.tvViewOfferDistance);
 		// BOTONES
 		btnLike = (Button) findViewById(R.id.btnViewOfferLike);
 		btnFlag = (Button) findViewById(R.id.btnViewOfferFlag);
@@ -359,6 +370,37 @@ public class ViewOffer extends Activity {
 		});
 
 		btnLike.setEnabled(true);
+	}
+
+
+	//METODO PARA CALCULAR LA RUTA
+	public void haversine(double placelat, double placelon, double userlat, double userlon) {
+		String distancestring ="";
+		Double distancedouble =(double) 0;
+		double dLat = Math.toRadians(userlat - placelat);
+		double dLon = Math.toRadians(userlon - placelon);
+		placelat = Math.toRadians(placelat);
+		userlat = Math.toRadians(userlat);
+
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(placelat) * Math.cos(userlat);
+
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		
+		distancedouble = radio*c;
+		
+		//A LA HORA DE PONER EL TEXTO EN LA ETIQUETA, SI PASA DE 1000metros, escribo la distancedouble en KM.
+		if(distancedouble>= 1000){
+		// EJEMPLO: 23400,123 --> 23,4
+			distancedouble = distancedouble / 1000;
+			distancedouble = (double)Math.round(distancedouble * 10) /10;
+			distancestring = distancedouble.toString();
+			tvDistance.setText("Dist: "+distancestring+" km.");
+		}else{
+			int distanceint = distancedouble.intValue();
+			tvDistance.setText("Dist: "+String.valueOf(distanceint)+" m.");
+		}
+		
+		
 	}
 
 	
