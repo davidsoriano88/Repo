@@ -67,6 +67,7 @@ public class Map extends ActionBarActivity {
     Context context;
     DrawerLayout navDrawerLayout;
     ListView optionList;
+    boolean statusMap;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,8 +108,7 @@ public class Map extends ActionBarActivity {
 				}});
 
 		map.setMyLocationEnabled(true);
-
-		map.setOnMapClickListener(new OnMapClickListener() {
+		/*map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
 				
@@ -129,7 +129,7 @@ public class Map extends ActionBarActivity {
 		insert.putExtra("enter", enter);
 		startActivity(insert);
 			}
-		});
+		});*/
 		
 		viewPort();	
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
