@@ -60,7 +60,6 @@ public class Map extends ActionBarActivity {
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	int enter;
-	ActionBar actionBar;
 	private String[] places;
 	LocationClient mLocationClient;
 	Util util = new Util();
@@ -151,7 +150,7 @@ public class Map extends ActionBarActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.action_search:
+        case R.id.action_next:
         	Intent insert = new Intent(context, InsertCommerce.class);
 			enter = 0;
 			insert.putExtra("enter", enter);
