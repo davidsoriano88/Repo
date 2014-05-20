@@ -49,6 +49,12 @@
             android:parentActivityName="com.wikout.SplashScreen" 
             android:screenOrientation="portrait">
         </activity>
+          <activity
+            android:name="com.wikout.Map2Test"
+            android:label="@string/app_name"
+            android:parentActivityName="com.wikout.Map" 
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name="com.wikout.OfferList"
             android:label="@string/app_name"

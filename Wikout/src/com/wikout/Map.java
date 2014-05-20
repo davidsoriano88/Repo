@@ -10,7 +10,9 @@ import java.util.List;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
@@ -63,7 +65,7 @@ public class Map extends ActionBarActivity {
     DrawerLayout navDrawerLayout;
     ListView optionList;
     boolean statusMap;
-    
+    String filter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -85,15 +87,47 @@ public class Map extends ActionBarActivity {
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
+				drawerOpener();
 					switch(pos){
-					case 0: util.showToast(context, "buscar"); break;
-						
-					case 1: util.showToast(context, "Filtrar"); break;
-						
+					case 0: 
+							util.showToast(context, "buscar");
+							
+							break;
+					case 1: 	
+							final CharSequence[] items = { "Ocio",
+							"Servicios", "Compras", "Otros"};
+
+							AlertDialog.Builder builder = new AlertDialog.Builder(
+							context);
+							builder.setTitle("Filtrar por: ");
+							builder.setItems(items, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int item) {
+							// Do something with the selection
+							switch (item) {
+							case 0:
+								util.showToast(context, "Ocio");filter="Ocio"; break;
+							case 1:
+								util.showToast(context, "Servicios");filter="Servicios"; break;
+								
+							case 2:
+								util.showToast(context, "Compras");filter="Compras"; break;
+							case 3:
+								util.showToast(context, "Otros");filter="Otros"; break;		
+							}
+							Intent a = new Intent(context,Map2Test.class);
+							a.putExtra("filter",filter);
+							startActivity(a);
+						}
+					});
+					AlertDialog alert = builder.create();
+					alert.show();
+						break;
 					case 2: util.showInfoDialog(context, "Wikout", "Aplicación desarrollado por Uptimiza. 2014"); break;
 						
 					case 3: android.os.Process.killProcess(android.os.Process.myPid()); break;
