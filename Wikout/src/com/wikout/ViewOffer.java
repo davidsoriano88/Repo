@@ -223,13 +223,7 @@ public class ViewOffer extends ActionBarActivity {
 							insertReport(idofferparameter, "ofensivo");
 							break;
 						case 2:
-							try {
-								finalize();
-
-							} catch (Throwable e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							finish();
 						}
 					}
 				});

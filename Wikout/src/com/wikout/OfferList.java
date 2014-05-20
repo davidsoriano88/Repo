@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -252,5 +253,30 @@ protected Date actualDate(){
 	final Date createdate = calendar.getTime();
 	return createdate;
 }
+//Async Task para cargar datos al abrir la activity
+	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
 
+		@Override
+		protected void onPostExecute(Boolean result) {
+			util.log("recorremos post execute mydata");
+			
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			util.log("recorremos pre execute");
+			util.showProgressDialog(con);
+			util.log("mostramos dialog mydata");
+		}
+
+		@Override
+		protected Boolean doInBackground(Void... params) {
+
+			util.log("doInBackgroundRecorrido mydata");
+
+			return true;
+		}
+	}
+	
 }
