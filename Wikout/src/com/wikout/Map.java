@@ -57,7 +57,6 @@ public class Map extends ActionBarActivity {
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	int enter;
-	private String[] places;
 	LocationClient mLocationClient;
 	Util util = new Util();
     Context context;
@@ -79,7 +78,6 @@ public class Map extends ActionBarActivity {
 		util.showProgressDialog(context);
 		
 		//Inicializamos las variables
-		places = getResources().getStringArray(R.array.places);
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    optionList = (ListView) findViewById(R.id.left_drawer);

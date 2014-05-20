@@ -29,25 +29,7 @@
         <item>Info</item>
         <item>Salir</item>
     </string-array>
-     <array name="navigation_iconos">
-        <item>@drawable/ic_launcher</item>
-        <item>@drawable/initicon</item>
-        <item>@drawable/pin</item>
-        <item>@drawable/pinplaces</item>
-    </array> 
- <string-array name="places">
-        <item >ATM</item>
-        <item >Bank</item>
-        <item >Cafe</item>
-        <item >Fire-Station</item>
-        <item >Hospital</item>
-        <item >Pharmacy</item>
-        <item >Police</item>
-        <item >Restaurant</item>
-        <item >Shopping Mall</item>
-  </string-array>
-  <string name="oferta">Oferta</string>
-    
+  <string name="oferta">Oferta</string>  
   <string name="titleName">title</string>
 
 </resources>
