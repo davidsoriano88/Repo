@@ -451,25 +451,25 @@ public class Map extends ActionBarActivity {
 				});
 	}
 	
-	public void filterQuery(String filter){
-		util.log("recorremos post execute mydata");
+	public void filterQuery(final String filter){
 		final Intent info = new Intent(context,
 				OfferList.class);
-
 		Query query = new Query("commerce");
-		query.setQuery("where category = ?", filter);
-		query.fetch(100, 0, new FetchCallback() {
+		query.bounding("placelocation", latitudeSW, longitudeSW,
+				latitudeNE, longitudeNE, 40, new FetchCallback() {
 
-			@Override
-			public void success(List<BackbeamObject> objects, int totalCount,
-					boolean fromCache) {
-				map.clear();
-				for(BackbeamObject object : objects) {
-
-				final ArrayList<String>placeName=new ArrayList<String>();
-				final ArrayList<String>idData=new ArrayList<String>();
-				final ArrayList<String>idMarker = new ArrayList<String>();
+					@Override
+					public void success(List<BackbeamObject> objects,
+							int totalCount, boolean fromCache) {
 						
+						map.clear();
+						final ArrayList<String>placeName=new ArrayList<String>();
+						final ArrayList<String>idData=new ArrayList<String>();
+						final ArrayList<String>idMarker = new ArrayList<String>();
+						
+						util.log("map clear mydata");
+						for (final BackbeamObject object : objects) {
+						if(object.getString("category").equals(filter)==true){
 							util.log("1"+object.getId());
 							placeName.add(object.getString("placename"));
 							idData.add(object.getId());
@@ -478,7 +478,7 @@ public class Map extends ActionBarActivity {
 									.position(new LatLng(object.getLocation("placelocation").getLatitude(),
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
-									.title(object.getString("placename"))
+									.title(object.getString("placename")+"♥")
 									.icon(BitmapDescriptorFactory
 									.fromResource(R.drawable.pin)));
 							idMarker.add(markerBB.getId());
@@ -502,7 +502,7 @@ public class Map extends ActionBarActivity {
 							map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 								@Override
 								public void onInfoWindowClick(Marker marker) {
-								
+									util.log("4"+object.getId());
 									for(int i=0;i<idMarker.size();i++){
 									if(idMarker.get(i).contains(marker.getId())){
 									util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
@@ -514,7 +514,7 @@ public class Map extends ActionBarActivity {
 							});
 
 						}
-					}
+					}}
 				});
 	}
 	
