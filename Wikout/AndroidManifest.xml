@@ -58,7 +58,7 @@
         <activity
             android:name="com.wikout.ViewOffer"
             android:label="@string/titleName"
-            android:parentActivityName="com.wikout.OfferList" 
+            android:parentActivityName="com.wikout.Map" 
             android:screenOrientation="portrait">
         </activity>
           <activity

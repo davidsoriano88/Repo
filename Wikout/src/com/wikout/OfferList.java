@@ -120,7 +120,7 @@ public class OfferList extends ListActivity {
 		}
 
 	}
-	protected void getPhoto(String idcommerce) {
+	private void getPhoto(String idcommerce) {
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
 
@@ -173,7 +173,7 @@ public class OfferList extends ListActivity {
 		
 		}
 
-		public void initUi(){
+	private void initUi(){
 			Bundle bundle = getIntent().getExtras();
 			ivPhoto=new ImageView(this);
 			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
@@ -220,10 +220,6 @@ public class OfferList extends ListActivity {
 					boolean fromCache) {
 				BackbeamObject place = objects.get(0);
 				JoinResult join = place.getJoinResult("offer");
-				
-				//PASAR COORDENADAS DE USUARIO PARA HACER HAVERSINE EN CASO DE HACERLO EN ESTA CLASE
-				//haversine(place.getLocation("placelocation").getLatitude(),place.getLocation("placelocation").getLongitude(), userlat, userlon)
-						
 				placeName=place.getString("placename");
 				tvPlacename.setText(place.getString("placename"));
 				List<BackbeamObject> offers = join.getResults();

@@ -86,6 +86,7 @@ public class Util {
 		                }
 		        }
 		    };
+
 		   cronometro.start(); 
 		}
 	
