@@ -31,6 +31,36 @@
             android:background="#FFFFFF"/>
 	
 	</android.support.v4.widget.DrawerLayout>
+
+    	 <ImageView
+    	     android:id="@+id/filterText"
+    	     android:layout_width="270dp"
+    	     android:layout_height="38dp"
+    	     android:layout_gravity="bottom"
+    	     android:paddingTop="1dp"
+    	     android:scaleType="fitXY"
+    	     android:src="@drawable/abc_ab_bottom_solid_dark_holo" />
+
+    	 <ImageButton
+    	     android:id="@+id/filterButton"
+    	     android:layout_width="wrap_content"
+    	     android:layout_height="38dp"
+    	     android:layout_gravity="bottom|right"
+    	     android:layout_marginRight="55dp"
+    	     android:baselineAlignBottom="false"
+    	     android:src="@drawable/abc_ic_clear_search_api_holo_light" />
+
+    	 <TextView
+    	     android:id="@+id/tvFilterText"
+    	     android:layout_width="168dp"
+    	     android:layout_height="wrap_content"
+    	     android:layout_gravity="bottom|center"
+    	     android:layout_marginBottom="8dp"
+    	     android:layout_marginRight="30dp"
+    	     android:text="Medium Text"
+    	     android:textAppearance="?android:attr/textAppearanceMedium"
+    	     android:textSize="15sp" />
+
 </FrameLayout>
 
 

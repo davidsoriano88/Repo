@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -32,7 +33,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -65,6 +69,12 @@ public class Map extends ActionBarActivity {
     DrawerLayout navDrawerLayout;
     ListView optionList;
     String filter;
+    ImageView filterView; 
+    TextView tvFilterText;
+    ImageButton filterButton;
+    
+    
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -86,7 +96,11 @@ public class Map extends ActionBarActivity {
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    
+	    filterView = (ImageView) findViewById(R.id.filterText);
+	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
+	    filterButton = (ImageButton) findViewById(R.id.filterButton);
+	    filterVisible(false);
+	    tvFilterText.setTextColor(Color.WHITE);
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -119,6 +133,8 @@ public class Map extends ActionBarActivity {
 							case 3:
 								util.showToast(context, "Otros");filter="otros"; break;		
 							}
+							tvFilterText.setText("Filtrado por: " + filter);
+							filterVisible(true);
 							new MyData().execute();
 						}
 					});
@@ -191,7 +207,17 @@ public class Map extends ActionBarActivity {
             return super.onOptionsItemSelected(item);
         }
     }
-	
+	//configuracion visibilidad del filtro:
+	public void filterVisible(Boolean visible){
+		if (visible==false){
+		filterButton.setVisibility(4);
+	    tvFilterText.setVisibility(4);
+	    filterView.setVisibility(4);
+		}else{
+		filterButton.setVisibility(0);
+	    tvFilterText.setVisibility(0);
+	    filterView.setVisibility(0);}
+	}
 	@Override
 	public boolean onKeyDown(int keycode, KeyEvent e) {
 	    switch(keycode) {
