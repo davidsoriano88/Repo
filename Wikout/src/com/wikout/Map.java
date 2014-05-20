@@ -136,6 +136,7 @@ public class Map extends ActionBarActivity {
 								util.showToast(context, "Otros");filter="otros"; break;		
 							}
 							tvFilterText.setText("Filtrado por: " + filter);
+							getSupportActionBar().setTitle("Resultados");
 							filterVisible(true);
 							new MyData().execute();
 						}
@@ -151,6 +152,19 @@ public class Map extends ActionBarActivity {
 				}});
 
 		map.setMyLocationEnabled(true);
+		filterButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// request your webservice here. Possible use of AsyncTask and
+				// ProgressDialog
+				filter=null;
+				filterVisible(false);
+				new MyData().execute();
+				getSupportActionBar().setTitle("Wikout");
+			}
+
+		});
 		/*map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
