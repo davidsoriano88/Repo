@@ -100,7 +100,7 @@ public class Map extends ActionBarActivity {
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
 	    filterButton = (ImageButton) findViewById(R.id.filterButton);
 	    filterVisible(false);
-	    tvFilterText.setTextColor(Color.WHITE);
+	    //tvFilterText.setTextColor(Color.WHITE);
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
