@@ -360,9 +360,21 @@ public class ViewOffer extends ActionBarActivity {
 								+ object.getString("description")
 								+ " en supervision");
 						System.out.println(offer.getString("description"));
-						util.showToast(getApplicationContext(),
-								"Informe enviado");
-						finish();
+						AlertDialog.Builder info = new AlertDialog.Builder(context);
+						info.setTitle("Denuncia realizada");
+						info.setMessage("Gracias, en breve analizaremos su solicitud.");
+						info.setCancelable(false);
+						info.setNeutralButton("Aceptar",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogo1, int id) {
+										finish();
+									}
+
+								});
+						
+						info.show();
+						
 					}
 				});
 			}
