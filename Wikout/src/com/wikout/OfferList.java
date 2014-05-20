@@ -180,10 +180,11 @@ public class OfferList extends ListActivity {
 			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
 			tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
 			
-			queryOffer(bundle.getString("id"));
+			//queryOffer(bundle.getString("id"));
 			util.log(bundle.getString("id"));
 			idcommerce = bundle.getString("id");
-			getPhoto(bundle.getString("id"));
+			//getPhoto(bundle.getString("id"));
+			new LoadDataTask().execute();
 		}
 	
 
@@ -203,14 +204,14 @@ public class OfferList extends ListActivity {
 
 
 //METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
-	private void queryOffer(String idreference) {
+	private void queryOffer(String idcommerce) {
 		//vacio los arraylists
 		util.projectData(con);
 		dataoffer.clear();
 		datalike.clear();
 		dataid.clear();
 		CollectionConstraint collection = new CollectionConstraint();
-		collection.addIdentifier(idreference);
+		collection.addIdentifier(idcommerce);
 		
 		Query query = new Query("commerce");
 		query.setQuery("where this in ? join last 100 offer", collection);
@@ -259,7 +260,9 @@ protected Date actualDate(){
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
+			queryOffer(idcommerce);
 			
+			getPhoto(idcommerce);
 		}
 
 		@Override

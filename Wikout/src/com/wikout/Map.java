@@ -358,10 +358,6 @@ public class Map extends ActionBarActivity {
 									@Override
 									public void onInfoWindowClick(Marker marker) {
 										util.log("4"+object.getId());
-										util.showToast(
-												Map.this,
-												"Marker\n" + marker.getTitle()
-														+ "\n" + " pulsed.");
 										util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
 										info.putExtra("id", finalId);
 										startActivity(info);

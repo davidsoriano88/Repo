@@ -9,7 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="110px"
         android:layout_alignParentLeft="true"
-        android:onClick="imageClicked"
         android:src="@drawable/initicon" />
 
     <TextView
