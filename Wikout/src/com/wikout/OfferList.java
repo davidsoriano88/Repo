@@ -112,7 +112,7 @@ public class OfferList extends ListActivity {
 
 				@Override
 				public void onClick(View v) {
-						Intent intent = new Intent(getApplicationContext(),
+						Intent intent = new Intent(context,
 							ViewOffer.class);	 
 					intent.putExtra("idoffer", dataid.get(position));
 					intent.putExtra("idcommerce", idcommerce);
