@@ -542,7 +542,7 @@ public class Map extends ActionBarActivity {
 	}
 	
 	//METODO PARA MOSTRAR NUMLIKES en el PIN ------------> COMPROBADOOOOO!!!
-		protected void busquedaCoordenadas() {
+		protected void commerceNumlike() {
 			System.out.println("dentro de coordenadas");
 			Query query = new Query("commerce");
 			//BUSCO COMERCIOS POR COORDENADAS
