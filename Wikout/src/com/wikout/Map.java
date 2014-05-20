@@ -51,7 +51,7 @@ public class Map extends ActionBarActivity {
 	
 	
 	private GoogleMap map;
-	Marker marker, mark;
+	Marker markerBB, mark;
 	String title, finalId, option;
 	LocationManager locationManager;
 	Location location;
@@ -94,7 +94,7 @@ public class Map extends ActionBarActivity {
 						
 					case 1: util.showToast(context, "Filtrar"); break;
 						
-					case 2: util.showInfoDialog(context, "Wikout", "AplicaciÛn desarrollado por Uptimiza. 2014"); break;
+					case 2: util.showInfoDialog(context, "Wikout", "Aplicaci√≥n desarrollado por Uptimiza. 2014"); break;
 						
 					case 3: android.os.Process.killProcess(android.os.Process.myPid()); break;
 					}
@@ -172,7 +172,7 @@ public class Map extends ActionBarActivity {
 	    return super.onKeyDown(keycode, e);
 	}
 	
-	//comprueba si el menu est· abierto o cerrado y lo abre o cierra en consecuencia:
+	//comprueba si el menu est√° abierto o cerrado y lo abre o cierra en consecuencia:
 	public void drawerOpener(){
 		if(navDrawerLayout.isDrawerOpen(optionList)){
 			navDrawerLayout.closeDrawer(optionList);}
@@ -277,8 +277,7 @@ public class Map extends ActionBarActivity {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre-execute places");
-			util.showProgressDialog(context);
-			
+			util.showProgressDialog(context);	
 		}
 
 		@Override
@@ -317,20 +316,22 @@ public class Map extends ActionBarActivity {
 							map.clear();
 							final ArrayList<String>placeName=new ArrayList<String>();
 							final ArrayList<String>idData=new ArrayList<String>();
+							final ArrayList<String>idMarker = new ArrayList<String>();
 							
 							util.log("map clear mydata");
 							for (final BackbeamObject object : objects) {
 								util.log("1"+object.getId());
 								placeName.add(object.getString("placename"));
 								idData.add(object.getId());
-								marker = map.addMarker(new MarkerOptions()
+								
+								markerBB = map.addMarker(new MarkerOptions()
 										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
-										.title(object.getString("placename"))
+										.title(object.getString("placename")+"‚ô•")
 										.icon(BitmapDescriptorFactory
 										.fromResource(R.drawable.pin)));
-								
+								idMarker.add(markerBB.getId());
 								util.log("2"+object.getId());
 								map.setOnMarkerClickListener(new OnMarkerClickListener() {
 									@Override
@@ -352,9 +353,13 @@ public class Map extends ActionBarActivity {
 									@Override
 									public void onInfoWindowClick(Marker marker) {
 										util.log("4"+object.getId());
+										for(int i=0;i<idMarker.size();i++){
+										if(idMarker.get(i).contains(marker.getId())){
 										util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
 										info.putExtra("id", finalId);
 										startActivity(info);
+										}
+									}
 									}
 								});
 
