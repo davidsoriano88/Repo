@@ -420,14 +420,45 @@ public class Map extends ActionBarActivity {
 							util.log("1"+object.getId());
 							placeName.add(object.getString("placename"));
 							idData.add(object.getId());
-							
+							switch(object.getString("category")){
+							case("ocio"):
 							markerBB = map.addMarker(new MarkerOptions()
 									.position(new LatLng(object.getLocation("placelocation").getLatitude(),
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
-									.title(object.getString("placename")+"♥")
+									.title(object.getString("placename"))
 									.icon(BitmapDescriptorFactory
-									.fromResource(R.drawable.pin)));
+									.fromResource(R.drawable.pinazul)));
+							break;
+							case("servicios"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
+															 object.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(object.getString("placename"))
+										.icon(BitmapDescriptorFactory
+										.fromResource(R.drawable.pinmorado)));
+							break;
+							case("compras"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
+															 object.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(object.getString("placename"))
+										.icon(BitmapDescriptorFactory
+										.fromResource(R.drawable.pinrosa)));
+							break;
+							case("otros"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
+															 object.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(object.getString("placename"))
+										.icon(BitmapDescriptorFactory
+										.fromResource(R.drawable.pinverde)));
+							break;
+							default: break;
+							}
 							idMarker.add(markerBB.getId());
 							util.log("2"+object.getId());
 							map.setOnMarkerClickListener(new OnMarkerClickListener() {
@@ -488,13 +519,45 @@ public class Map extends ActionBarActivity {
 							placeName.add(object.getString("placename"));
 							idData.add(object.getId());
 							
+							switch(object.getString("category")){
+							case("ocio"):
 							markerBB = map.addMarker(new MarkerOptions()
 									.position(new LatLng(object.getLocation("placelocation").getLatitude(),
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
-									.title(object.getString("placename")+"♥")
+									.title(object.getString("placename"))
 									.icon(BitmapDescriptorFactory
-									.fromResource(R.drawable.pin)));
+									.fromResource(R.drawable.pinazul)));
+							break;
+							case("servicios"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
+															 object.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(object.getString("placename"))
+										.icon(BitmapDescriptorFactory
+										.fromResource(R.drawable.pinmorado)));
+							break;
+							case("compras"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
+															 object.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(object.getString("placename"))
+										.icon(BitmapDescriptorFactory
+										.fromResource(R.drawable.pinrosa)));
+							break;
+							case("otros"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(object.getLocation("placelocation").getLatitude(),
+															 object.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(object.getString("placename"))
+										.icon(BitmapDescriptorFactory
+										.fromResource(R.drawable.pinverde)));
+							break;
+							default: break;
+							}
 							idMarker.add(markerBB.getId());
 							util.log("2"+object.getId());
 							map.setOnMarkerClickListener(new OnMarkerClickListener() {
@@ -541,7 +604,7 @@ public class Map extends ActionBarActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 	
-	//METODO PARA MOSTRAR NUMLIKES en el PIN ------------> COMPROBADOOOOO!!!
+	//METODO PARA MOSTRAR NUMLIKES en el PIN 
 		protected void commerceNumlike() {
 			System.out.println("dentro de coordenadas");
 			Query query = new Query("commerce");
