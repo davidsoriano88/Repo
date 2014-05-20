@@ -231,11 +231,7 @@ public class ViewOffer extends ActionBarActivity {
 				alert.show();
 
 			}
-		});
-
-		/*	
-*/
-		
+		});	
 		
 	}
 
@@ -250,7 +246,7 @@ public class ViewOffer extends ActionBarActivity {
 			btnLike.setEnabled(false);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
-			// Escribo los campos de "like"
+			// Escribo los campos de "like" 
 			like.setString("udid", getId());
 			like.setDate("likedate", actualDate());
 			// Compruebo el boolean y, si es TRUE, inserta un LIKE. Si es FALSE,
