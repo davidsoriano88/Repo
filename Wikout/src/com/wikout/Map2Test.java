@@ -10,9 +10,7 @@ import java.util.List;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Criteria;
@@ -24,15 +22,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,7 +44,7 @@ public class Map2Test extends ActionBarActivity {
 	
 	private GoogleMap map;
 	Marker markerBB, mark;
-	String title, finalId, option;
+	String title, finalId, option,filter;
 	LocationManager locationManager;
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
@@ -63,8 +53,6 @@ public class Map2Test extends ActionBarActivity {
 	Util util = new Util();
     Context context;
     DrawerLayout navDrawerLayout;
-    ListView optionList;
-    boolean statusMap;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +70,12 @@ public class Map2Test extends ActionBarActivity {
 					.findFragmentById(R.id.map)).getMap();	    
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    Bundle bundle = getIntent().getExtras();
-	
-	    getSupportActionBar().setTitle(bundle.getString("filter"));
+	    navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+	    filter=bundle.getString("filter");
+	    getSupportActionBar().setTitle(filter);
+	    filter=filter.toLowerCase();
 		map.setMyLocationEnabled(true);
+		navDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 		/*map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
@@ -121,8 +112,8 @@ public class Map2Test extends ActionBarActivity {
 				util.log(String.valueOf(latitudeNE));
 				util.log("screen has been recharged");
 				//start both asyncTask:
-				// new MyData().execute();
 				 new GetPlaces("").execute();
+				 new MyData().execute();
 			}
 		});	
 	}
@@ -131,6 +122,8 @@ public class Map2Test extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         	case android.R.id.home: 
+        		Intent returnToMap = new Intent(context,Map.class);
+        		startActivity(returnToMap);
         		finish();
         		return true;
         default:
@@ -266,20 +259,19 @@ public class Map2Test extends ActionBarActivity {
 					OfferList.class);
 
 			Query query = new Query("commerce");
-			query.bounding("placelocation", latitudeSW, longitudeSW,
-					latitudeNE, longitudeNE, 40, new FetchCallback() {
+			query.setQuery("where category = ?", filter);
+			query.fetch(100, 0, new FetchCallback() {
 
-						@Override
-						public void success(List<BackbeamObject> objects,
-								int totalCount, boolean fromCache) {
+				@Override
+				public void success(List<BackbeamObject> objects, int totalCount,
+						boolean fromCache) {
+					map.clear();
+					for(BackbeamObject object : objects) {
+
+					final ArrayList<String>placeName=new ArrayList<String>();
+					final ArrayList<String>idData=new ArrayList<String>();
+					final ArrayList<String>idMarker = new ArrayList<String>();
 							
-							map.clear();
-							final ArrayList<String>placeName=new ArrayList<String>();
-							final ArrayList<String>idData=new ArrayList<String>();
-							final ArrayList<String>idMarker = new ArrayList<String>();
-							
-							util.log("map clear mydata");
-							for (final BackbeamObject object : objects) {
 								util.log("1"+object.getId());
 								placeName.add(object.getString("placename"));
 								idData.add(object.getId());
@@ -312,7 +304,7 @@ public class Map2Test extends ActionBarActivity {
 								map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 									@Override
 									public void onInfoWindowClick(Marker marker) {
-										util.log("4"+object.getId());
+									
 										for(int i=0;i<idMarker.size();i++){
 										if(idMarker.get(i).contains(marker.getId())){
 										util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
