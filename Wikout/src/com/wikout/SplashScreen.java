@@ -3,8 +3,6 @@ package com.wikout;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.wikout.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

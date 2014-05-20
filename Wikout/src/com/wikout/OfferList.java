@@ -1,6 +1,10 @@
 package com.wikout;
 
-import io.backbeam.*;
+import io.backbeam.BackbeamObject;
+import io.backbeam.CollectionConstraint;
+import io.backbeam.FetchCallback;
+import io.backbeam.JoinResult;
+import io.backbeam.Query;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

@@ -6,8 +6,6 @@ import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
 
-import com.wikout.R;
-
 import android.app.Application;
 
 @ReportsCrashes(
