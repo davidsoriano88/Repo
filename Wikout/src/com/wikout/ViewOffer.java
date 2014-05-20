@@ -59,7 +59,7 @@ public class ViewOffer extends ActionBarActivity {
 	boolean lastlike= false;
 	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
-	boolean statuslike=false;
+
 	
 	//Radio de la tierra (en metros)
 	final static double radio = 6371000;
@@ -104,24 +104,29 @@ public class ViewOffer extends ActionBarActivity {
 				String creation = format1.format(offer
 						.getDate("offercreationdate"));
 				tvCreationDate.setText("Fecha de creación: "+creation);
-				// Lo mismo con location
+				// Tengo que leer el objeto commerce para poder acceder a sus datos
 				Backbeam.read("commerce", offer.getObject("commerce").getId(), new ObjectCallback() {
 					@Override
 					public void success(BackbeamObject commerce) {
+						
+						// paso la dirección/coordenadas al textView correspondiente
+						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
+								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/
+						tvLocation.setText(commerce.getLocation("placelocation").getAddress());
+						
+						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
 						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
 						String myLatitude = prefers.getString("latpos", "null");
 						double latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefers.getString("longpos", "null");
 						double longitude = Double.parseDouble(myLongitude);
 						
-						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
-								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/
-						tvLocation.setText(commerce.getLocation("placelocation").getAddress());
+						//Mando latitud y long del usuario y del comercio para calcular la distancia
 						haversine(commerce.getLocation("placelocation").getLatitude(),
 								commerce.getLocation("placelocation").getLongitude(), 
 								latitude, 
 								longitude);
-						
+						//Habilito el boton para que el usuario pueda hacer like.
 						btnLike.setEnabled(true);
 						}});
 			}
@@ -129,7 +134,7 @@ public class ViewOffer extends ActionBarActivity {
 
 	}
 
-	protected void getPhoto(String idcommerce) {
+	private void getPhoto(String idcommerce) {
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
 
@@ -242,9 +247,10 @@ public class ViewOffer extends ActionBarActivity {
 
 
 	// METODO PARA INSERTAR LIKE
-		protected void insertLike(final String idoffer) {
+		private void insertLike(final String idoffer) {
 			//CONTADOR DE TIEMPO
 			final long start = Calendar.getInstance().getTimeInMillis();
+			
 			// CREO OBJETOS
 			//util.showProgressDialog(context, 2500);
 			btnLike.setEnabled(false);
@@ -324,7 +330,7 @@ public class ViewOffer extends ActionBarActivity {
 		}
 
 	// METODO PARA OBTENER LA UDID DEL SMARTPHONE
-	protected String getId() {
+	private String getId() {
 		String id = android.provider.Settings.System.getString(
 				super.getContentResolver(),
 				android.provider.Settings.Secure.ANDROID_ID);
@@ -332,14 +338,14 @@ public class ViewOffer extends ActionBarActivity {
 	}
 
 	// METODO PARA OBTENER LA FECHA ACTUAL
-	protected Date actualDate() {
+	private Date actualDate() {
 		Calendar calendar = new GregorianCalendar();
 		final Date createdate = calendar.getTime();
 		return createdate;
 	}
 
 	// METODO PARA CREAR DENUNCIA
-	protected void insertReport(final String idoffer, String reason) {
+	private void insertReport(final String idoffer, String reason) {
 
 		BackbeamObject report = new BackbeamObject("report");
 		final BackbeamObject offer = new BackbeamObject("offer", idoffer);
@@ -368,8 +374,8 @@ public class ViewOffer extends ActionBarActivity {
 			}
 		});
 	}
-
-	protected void queryLike(String idoffer) {
+	// Consulta para saber qué estado tiene el último like del usuario
+	private void queryLike(String idoffer) {
 		// SE PUEDE PASAR offerobject y meter en la query el id
 		BackbeamObject offerobject = new BackbeamObject("offer", idoffer);
 
@@ -387,7 +393,7 @@ public class ViewOffer extends ActionBarActivity {
 					System.out.println("no ha hecho clic antes");
 					lastlike = true;
 					System.out.println("Estado del boolean: " + lastlike);
-					statuslike = true;
+					
 				} else {
 					System.out.println("ha hecho clic antes");
 					BackbeamObject likeobject = objects.get(0);
@@ -401,14 +407,14 @@ public class ViewOffer extends ActionBarActivity {
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = false;
-						statuslike = false;
+						
 					} else {
 						// Habilitar boton
 						btnLike.setText(R.string.like);
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = true;
-						statuslike = true;
+						
 
 					}
 				}
@@ -421,7 +427,7 @@ public class ViewOffer extends ActionBarActivity {
 
 
 	//METODO PARA CALCULAR LA RUTA
-	public void haversine(double placelat, double placelon, double userlat, double userlon) {
+	private void haversine(double placelat, double placelon, double userlat, double userlon) {
 		String distancestring ="";
 		Double distancedouble =(double) 0;
 		double dLat = Math.toRadians(userlat - placelat);
@@ -462,6 +468,8 @@ public class ViewOffer extends ActionBarActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+	
+	//Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
 
 		@Override
@@ -488,6 +496,8 @@ public class ViewOffer extends ActionBarActivity {
 			return true;
 		}
 	}
+	
+	//Async Task para actualizar datos al hacer clic en LIKE/DISLIKE
 	private class RefreshDataTask extends AsyncTask<Void, Integer, Boolean> {
 
 		@Override

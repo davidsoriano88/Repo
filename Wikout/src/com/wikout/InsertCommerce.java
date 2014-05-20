@@ -74,7 +74,7 @@ public class InsertCommerce extends Activity {
 		initUI();
 		
 	}
-	 public void initUI(){
+	 private void initUI(){
 		map = new Intent(getApplicationContext(), Map.class);
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
 		etDescription = (EditText) findViewById(R.id.etInsertDescription);
@@ -234,7 +234,7 @@ public class InsertCommerce extends Activity {
 		switch (id) {
 		case DATE_DIALOG_ID:
 			// set date picker as current date
-			return new DatePickerDialog(this, datePickerListener, year, month,
+			return new DatePickerDialog(this, datePickerListener, year, month+3,
 					day);
 		}
 		return null;
@@ -264,7 +264,7 @@ public class InsertCommerce extends Activity {
 
 	
 	// METODO PARA INSERTAR OFERTA
-		protected void insertOffer(Date createdate, final BackbeamObject commerce) {
+		private void insertOffer(Date createdate, final BackbeamObject commerce) {
 			//Creo el objeto "offer"
 			final BackbeamObject offer = new BackbeamObject("offer");
 			//inserto los valores de "offer"
@@ -284,7 +284,7 @@ public class InsertCommerce extends Activity {
 			});
 		}
 	// METODO PARA SUBIR FOTO
-		protected void insertPhoto() {
+		private void insertPhoto() {
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
@@ -317,7 +317,7 @@ public class InsertCommerce extends Activity {
 		}
 		
 	// INSERTAR NUEVO "COMMERCE"
-		protected void insertCommerce(BackbeamObject objectphoto) {
+		private void insertCommerce(BackbeamObject objectphoto) {
 			locationbm = new Location(latitude, longitude);
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
