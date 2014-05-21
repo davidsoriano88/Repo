@@ -13,12 +13,10 @@
     </EditText>
 
     <ImageButton
-        android:id="@+id/srchButton"
+        android:id="@+id/imageButton1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:hint="@string/buscar"
-        android:scaleType="fitEnd"
-        android:src="@drawable/abc_ic_search" />
+        android:src="@drawable/abc_ic_clear" />
 
 </FrameLayout>

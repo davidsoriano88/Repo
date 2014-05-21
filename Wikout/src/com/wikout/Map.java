@@ -72,9 +72,9 @@ public class Map extends ActionBarActivity {
     String filter;
     ImageView filterView; 
     TextView tvFilterText;
-    ImageButton filterButton;
+    ImageButton filterButton, sbutton;
     EditText etSearch;
-    
+ 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -83,6 +83,7 @@ public class Map extends ActionBarActivity {
 	 
      util.projectData(context);
      initUI();  
+ 	
 	 }
 
 	public void initUI(){
@@ -90,12 +91,12 @@ public class Map extends ActionBarActivity {
 		
 		//Inicializamos las variables
 		 View header = getLayoutInflater().inflate(R.layout.header, null);
-
+		 
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    optionList = (ListView) findViewById(R.id.left_drawer);
 	    optionList.addHeaderView(header);
-	    Button srchButton=(Button)findViewById(R.id.srchButton);
+	  
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
@@ -104,7 +105,7 @@ public class Map extends ActionBarActivity {
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
 	    filterButton = (ImageButton) findViewById(R.id.filterButton);
 	    filterVisible(false);
-	    
+	  
 	    //tvFilterText.setTextColor(Color.WHITE);
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
@@ -112,10 +113,7 @@ public class Map extends ActionBarActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
 				drawerOpener();
 					switch(pos){
-					case 0: 
-							util.showToast(context, "buscar");
-						
-							break;
+					case 0: break;
 					case 1: 	
 							final CharSequence[] items = { "Ocio",
 							"Servicios", "Compras", "Otros"};
@@ -133,9 +131,9 @@ public class Map extends ActionBarActivity {
 							case 1:
 								util.showToast(context, "Servicios");filter="servicios"; break;
 								
-							case 2:
-								util.showToast(context, "Compras");filter="compras"; break;
 							case 3:
+								util.showToast(context, "Compras");filter="compras"; break;
+							case 4:
 								util.showToast(context, "Otros");filter="otros"; break;		
 							}
 							tvFilterText.setText("Filtrado por: " + filter);
@@ -190,15 +188,14 @@ public class Map extends ActionBarActivity {
 		startActivity(insert);
 			}
 		});*/
-		srchButton.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// request your webservice here. Possible use of AsyncTask and
-				// ProgressDialog
-				util.showToast(context,"click");
-			}
-
+		
+		header.setOnClickListener(new View.OnClickListener()
+		{
+		   @Override
+		   public void onClick(View v)
+		   {
+			util.showToast(context, "header clicked!");   
+		   }
 		});
 		viewPort();	
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
@@ -218,7 +215,7 @@ public class Map extends ActionBarActivity {
 			}
 		});	
 	}
-	
+
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
