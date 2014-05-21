@@ -647,6 +647,51 @@ public class Map extends ActionBarActivity {
 		    super.onRestart();
 		    new MyData().execute();
 		    }
+		
+	
+		private void commercesOnMap(String parameter) {
+			Query queryCommerce = new Query("commerce");
+			queryCommerce.setQuery("where placename like ?", parameter)
+					.fetch(100, 0, new FetchCallback() {
+						@Override
+						public void success(List<BackbeamObject> objects,
+								int totalCount, boolean fromCache) {
+							System.out.println(totalCount);
+							for (BackbeamObject commerce : objects) {
+								if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
+									&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
+									&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
+									&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
+									// CREAR MARCADOR PARA MOSTRAR EN MAPA
+
+								}
+							}
+						}
+
+					});
+			Query queryOffer = new Query("offer");
+			queryOffer.setQuery("where description like ? join commerce", parameter)
+			.fetch(100, 0, new FetchCallback() {
+				@Override
+				public void success(List<BackbeamObject> objects,
+						int totalCount, boolean fromCache) {
+					System.out.println(totalCount);
+					for (BackbeamObject offer : objects) {
+						BackbeamObject commerce = offer.getObject("commerce");
+						if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
+							&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
+							&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
+							&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
+									// CREAR MARCADOR PARA MOSTRAR EN MAPA
+									System.out.println(commerce.getString("placename"));
+								}
+							}
+						}
+
+					});
+			
+
+		}
 }
 
 	
