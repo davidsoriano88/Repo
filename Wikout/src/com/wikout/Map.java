@@ -17,7 +17,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -402,6 +405,9 @@ public class Map extends ActionBarActivity {
 	public void standardQuery(){
 		final Intent info = new Intent(context,
 				OfferList.class);
+		
+		
+		
 		Query query = new Query("commerce");
 		query.bounding("placelocation", latitudeSW, longitudeSW,
 				latitudeNE, longitudeNE, 40, new FetchCallback() {
@@ -414,7 +420,13 @@ public class Map extends ActionBarActivity {
 						final ArrayList<String>placeName=new ArrayList<String>();
 						final ArrayList<String>idData=new ArrayList<String>();
 						final ArrayList<String>idMarker = new ArrayList<String>();
-						
+						///*********************************
+						Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
+						Bitmap bmp = Bitmap.createBitmap(200, 50, conf); 
+						Canvas canvas = new Canvas(bmp);
+						Paint paint = null;
+						canvas.drawText("TEXT", 0, 50, paint);
+						//********************************************
 						util.log("map clear mydata");
 						for (final BackbeamObject object : objects) {
 							util.log("1"+object.getId());
@@ -427,8 +439,9 @@ public class Map extends ActionBarActivity {
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
 									.title(object.getString("placename"))
-									.icon(BitmapDescriptorFactory
-									.fromResource(R.drawable.pinazul)));
+									.icon(BitmapDescriptorFactory.fromBitmap(bmp)));
+									/*.icon(BitmapDescriptorFactory
+									.fromResource(R.drawable.pinazul)));*/
 							break;
 							case("servicios"):
 								markerBB = map.addMarker(new MarkerOptions()
