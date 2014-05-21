@@ -120,7 +120,7 @@ public class InsertCommerce extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if (etLocation == null) {
+				if (etLocation.getText().equals("[ubicacion]")) {
 					dialogGetLocation();
 				} else {
 					if(etDescription.getText().length()==0 | etPlacename.getText().length()==0){
@@ -210,7 +210,7 @@ public class InsertCommerce extends Activity {
 		// set current date into textview
 		dateLimit.setText(new StringBuilder()
 				// Month is 0 based, just add 1
-				.append(day).append("-").append(month + 1).append("-")
+				.append(day).append("-").append(month + 4).append("-")
 				.append(year).append(" ")); 
 		deadline = c.getTime();
 
@@ -238,7 +238,7 @@ public class InsertCommerce extends Activity {
 		switch (id) {
 		case DATE_DIALOG_ID:
 			// set date picker as current date
-			return new DatePickerDialog(this, datePickerListener, year, month+3,
+			return new DatePickerDialog(this, datePickerListener, year, month,
 					day);
 		}
 		return null;
