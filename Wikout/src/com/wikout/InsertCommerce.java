@@ -52,11 +52,12 @@ public class InsertCommerce extends Activity {
 	// Variables para controlar la fecha
 	private int year, month, day;
 	private Date deadline;
+	
 	// variables para control de fotografias
-
 	String photoName, url;
 	File photo;
 	public int existPhoto = 0;
+	
 	// constantes utilizadas para lanzar intents
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	static final int LOAD_IMAGE = 3;
@@ -177,11 +178,11 @@ public class InsertCommerce extends Activity {
 		dialogLocation.show();
 	}
 	public void dialogIncompleteFields() {
-		AlertDialog.Builder dialog1 = new AlertDialog.Builder(this);
-		dialog1.setTitle("Información incompleta");
-		dialog1.setMessage("Rellene los campos Incompletos, por favor.");
-		dialog1.setCancelable(false);
-		dialog1.setNeutralButton("Aceptar",
+		AlertDialog.Builder dialogIncomplete = new AlertDialog.Builder(this);
+		dialogIncomplete.setTitle("Información incompleta");
+		dialogIncomplete.setMessage("Rellene los campos Incompletos, por favor.");
+		dialogIncomplete.setCancelable(false);
+		dialogIncomplete.setNeutralButton("Aceptar",
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
@@ -191,7 +192,7 @@ public class InsertCommerce extends Activity {
 
 				});
 		
-		dialog1.show();
+		dialogIncomplete.show();
 	}
 	public void addListenerOnSpinnerItemSelection() {
 

@@ -56,8 +56,8 @@ public class OfferList extends ListActivity {
 
 	
 	public static class viewHolder {
-		TextView toffer,tlike,tid;
-		Button blike;	
+		TextView tvOffer,tvLike,tvId;
+		Button btnView;	
 	}
 
 	private class EfficientAdapter extends BaseAdapter {
@@ -94,21 +94,21 @@ public class OfferList extends ListActivity {
 			} else {
 				holder = (viewHolder) convertView.getTag();
 			}
-			holder.toffer = (TextView) convertView
+			holder.tvOffer = (TextView) convertView
 					.findViewById(R.id.textViewName);
-			holder.tlike = (TextView) convertView
+			holder.tvLike = (TextView) convertView
 					.findViewById(R.id.textViewCode);
-			holder.blike = (Button) convertView.findViewById(R.id.btnListOfferOpen);
+			holder.btnView = (Button) convertView.findViewById(R.id.btnListOfferOpen);
 			
 			
-			holder.toffer.setText(dataoffer.get(position));
-			holder.tlike.setText("Likes: "+datalike.get(position));
+			holder.tvOffer.setText(dataoffer.get(position));
+			holder.tvLike.setText("Likes: "+datalike.get(position));
 			
 			
 			
 			//holder.tid.setText(dataid.get(position));
 
-			holder.blike.setOnClickListener(new OnClickListener() {
+			holder.btnView.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -224,10 +224,10 @@ public class OfferList extends ListActivity {
 			@Override
 			public void success(List<BackbeamObject> objects, int totalCount,
 					boolean fromCache) {
-				BackbeamObject place = objects.get(0);
-				JoinResult join = place.getJoinResult("offer");
-				placeName=place.getString("placename");
-				tvPlacename.setText(place.getString("placename"));
+				BackbeamObject commerce = objects.get(0);
+				JoinResult join = commerce.getJoinResult("offer");
+				placeName=commerce.getString("placename");
+				tvPlacename.setText(commerce.getString("placename")+" Num de likes total: "+ commerce.getNumber("numbubble"));
 				List<BackbeamObject> offers = join.getResults();
 				// Contemplo si alguna referencia NO TIENE ofertas
 				if (offers.size() == 0) {
