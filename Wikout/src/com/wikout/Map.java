@@ -614,38 +614,8 @@ public class Map extends ActionBarActivity {
 				public void success(List<BackbeamObject> commerces,int totalCount, boolean fromCache) {
 					//RECORRO CADA COMERCIO 
 					for (BackbeamObject commerce : commerces) {
-						//CREO UN CONSTRAINT PARA PASARLE EL id
-						CollectionConstraint collection = new CollectionConstraint();
-						collection.addIdentifier(commerce.getId());
-						//HAGO LA CONSULTA DEL COMERCIO EN CONCRETO UNIENDO OFERTAS
-						Query query = new Query("commerce");
-						query.setQuery("where this in ? join last 100 offer", collection);
-						query.fetch(100, 0, new FetchCallback() {
-							@Override
-							public void success(List<BackbeamObject> commerces, int totalCount,
-									boolean fromCache) {
-								BackbeamObject commerce = commerces.get(0);
-								JoinResult offerjoin = commerce.getJoinResult("offer");
-								//CREO UN LIST CON LAS OFERTAS
-								List<BackbeamObject> offers = offerjoin.getResults();
-								// Contemplo si algun comercio NO TIENE ofertas
-								if (offers.size() == 0) {
-									// No hay ofertas
-								} else {
-									// Hay ofertas
-									//DECLARO EL CONTADOR DE NUMLIKES
-									int numlike = 0;
-									for (BackbeamObject offer : offers) {
-										//RECORRO CADA OFERTA Y VOY SUMANDO NUMLIKES
-										numlike = numlike + offer.getNumber("numlike").intValue();
-
-									}
-									System.out.println("tiene: "+numlike+" likes");
-								}
-							}
-
-						});
-
+						//CON ESTO SE OBTIENE EL NUMERO DE LIKES TOTAL DE CADA COMERCIO
+						commerce.getNumber("numbubble");
 					}
 				}
 

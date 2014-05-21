@@ -230,7 +230,6 @@ public class ViewOffer extends ActionBarActivity {
 			final long start = Calendar.getInstance().getTimeInMillis();
 			
 			// CREO OBJETOS
-			//util.showProgressDialog(context, 2500);
 			btnLike.setEnabled(false);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
