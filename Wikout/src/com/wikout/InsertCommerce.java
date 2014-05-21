@@ -333,6 +333,7 @@ public class InsertCommerce extends Activity {
 			commerce.setLocation("placelocation", locationbm);
 			commerce.setString("category",(String) spnCategory.getSelectedItem() );
 			commerce.setDate("commercecreationdate", createdate);
+			commerce.setNumber("numbubble", 0);
 			commerce.setString("udid", getId());
 			commerce.setObject("file", objectphoto);
 			//Guardo el objeto
