@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -420,14 +421,16 @@ public class Map extends ActionBarActivity {
 						final ArrayList<String>placeName=new ArrayList<String>();
 						final ArrayList<String>idData=new ArrayList<String>();
 						final ArrayList<String>idMarker = new ArrayList<String>();
-						/*
-						Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
+						
+						/*Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
 						Bitmap bmp = Bitmap.createBitmap(200, 50, conf); 
 						Canvas canvas = new Canvas(bmp);
 						Paint paint = new Paint();
 						paint.setColor(Color.BLACK);
-						canvas.drawText("TEXT", 0.1F, 0.1F, paint);
-						*/
+						
+						canvas.drawText("TEXT", 0.1F, 0.1F, paint);*/
+						
+						
 						util.log("map clear mydata");
 						for (final BackbeamObject object : objects) {
 							util.log("1"+object.getId());
@@ -440,9 +443,9 @@ public class Map extends ActionBarActivity {
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
 									.title(object.getString("placename"))
-									//.icon(BitmapDescriptorFactory.fromBitmap(bmp)));
-									.icon(BitmapDescriptorFactory
-									.fromResource(R.drawable.pinazul)));
+									.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul, object.getNumber("numbubble").toString()))));
+									/*.icon(BitmapDescriptorFactory
+									.fromResource(R.drawable.pinazul)));*/
 							break;
 							case("servicios"):
 								markerBB = map.addMarker(new MarkerOptions()
@@ -450,8 +453,7 @@ public class Map extends ActionBarActivity {
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
 										.title(object.getString("placename"))
-										.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.pinmorado)));
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado, object.getNumber("numbubble").toString()))));
 							break;
 							case("compras"):
 								markerBB = map.addMarker(new MarkerOptions()
@@ -459,8 +461,7 @@ public class Map extends ActionBarActivity {
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
 										.title(object.getString("placename"))
-										.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.pinrosa)));
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa, object.getNumber("numbubble").toString()))));
 							break;
 							case("otros"):
 								markerBB = map.addMarker(new MarkerOptions()
@@ -468,8 +469,7 @@ public class Map extends ActionBarActivity {
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
 										.title(object.getString("placename"))
-										.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.pinverde)));
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde, object.getNumber("numbubble").toString()))));
 							break;
 							default: break;
 							}
@@ -629,7 +629,7 @@ public class Map extends ActionBarActivity {
 					//RECORRO CADA COMERCIO 
 					for (BackbeamObject commerce : commerces) {
 						//CON ESTO SE OBTIENE EL NUMERO DE LIKES TOTAL DE CADA COMERCIO
-						commerce.getNumber("numbubble");
+						commerce.getNumber("numbubble").intValue();
 					}
 				}
 
