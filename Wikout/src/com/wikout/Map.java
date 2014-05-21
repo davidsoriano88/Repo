@@ -420,13 +420,14 @@ public class Map extends ActionBarActivity {
 						final ArrayList<String>placeName=new ArrayList<String>();
 						final ArrayList<String>idData=new ArrayList<String>();
 						final ArrayList<String>idMarker = new ArrayList<String>();
-						///*********************************
+						/*
 						Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
 						Bitmap bmp = Bitmap.createBitmap(200, 50, conf); 
 						Canvas canvas = new Canvas(bmp);
-						Paint paint = null;
-						canvas.drawText("TEXT", 0, 50, paint);
-						//********************************************
+						Paint paint = new Paint();
+						paint.setColor(Color.BLACK);
+						canvas.drawText("TEXT", 0.1F, 0.1F, paint);
+						*/
 						util.log("map clear mydata");
 						for (final BackbeamObject object : objects) {
 							util.log("1"+object.getId());
@@ -439,9 +440,9 @@ public class Map extends ActionBarActivity {
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
 									.title(object.getString("placename"))
-									.icon(BitmapDescriptorFactory.fromBitmap(bmp)));
-									/*.icon(BitmapDescriptorFactory
-									.fromResource(R.drawable.pinazul)));*/
+									//.icon(BitmapDescriptorFactory.fromBitmap(bmp)));
+									.icon(BitmapDescriptorFactory
+									.fromResource(R.drawable.pinazul)));
 							break;
 							case("servicios"):
 								markerBB = map.addMarker(new MarkerOptions()
