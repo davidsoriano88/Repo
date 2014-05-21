@@ -225,12 +225,14 @@ public class ViewOffer extends ActionBarActivity {
 	}
 
 	// METODO PARA INSERTAR LIKE
-		private void insertLike(final String idoffer) {
+		private void insertLike(final String idoffer, final String idcommerce) {
 			//CONTADOR DE TIEMPO
 			final long start = Calendar.getInstance().getTimeInMillis();
 			
 			// CREO OBJETOS
 			btnLike.setEnabled(false);
+			int numbubble = 0;
+			final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
 			// Escribo los campos de "like" 
@@ -241,16 +243,26 @@ public class ViewOffer extends ActionBarActivity {
 			// Por último, se hace el count.
 			if (lastlike == true) {
 				like.setString("statuslike", "1");
+				numbubble = commerce.getNumber("numbubble").intValue();
+				commerce.setNumber("numbubble", numbubble+1);
 				System.out.println("1");
 				lastlike=false;
 				btnLike.setText(R.string.dislike);
 				
 			} else {
 				like.setString("statuslike", "0");
+				numbubble = commerce.getNumber("numbubble").intValue();
+				commerce.setNumber("numbubble", numbubble-1);
 				System.out.println("0");
 				lastlike=true;
 				btnLike.setText(R.string.like);
 			}
+			commerce.save(new ObjectCallback() {
+				@Override
+				public void success(BackbeamObject object) {
+					System.out.println("numbubble guardado");
+				}
+			});
 			like.setObject("offer", offer);
 			like.save(new ObjectCallback() {
 				@Override
@@ -492,7 +504,7 @@ public class ViewOffer extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
-			insertLike(idofferparameter);
+			insertLike(idofferparameter, idcommerceparameter);
 		}
 
 		@Override
