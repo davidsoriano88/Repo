@@ -24,12 +24,12 @@
     </string-array>
     <string name="report_prompt">Report</string>
     <string-array name="options">
-        <item>Buscar</item>
         <item>Filtrar</item>
         <item>Info</item>
         <item>Salir</item>
     </string-array>
   <string name="oferta">Oferta</string>  
   <string name="titleName">title</string>
+  <string name="buscar">Buscar</string>
 
 </resources>

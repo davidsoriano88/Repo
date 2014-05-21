@@ -3,12 +3,22 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
-    
-    <ImageView
-        android:id="@+id/backgrd"
-        android:layout_width="fill_parent"
-        android:layout_height="150dp"
-        android:src="@drawable/pin"
-        android:scaleType="centerCrop"
-/>
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="149dp"
+        android:layout_height="wrap_content" >
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/srchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:hint="@string/buscar"
+        android:scaleType="fitEnd"
+        android:src="@drawable/abc_ic_search" />
+
 </FrameLayout>

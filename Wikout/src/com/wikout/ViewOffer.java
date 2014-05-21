@@ -523,6 +523,7 @@ public class ViewOffer extends ActionBarActivity {
 			util.log("mostramos dialog mydata");
 		}
 
+		@Override
 		protected Boolean doInBackground(Void... params) {
 			
 			util.log("doInBackgroundRecorrido mydata");

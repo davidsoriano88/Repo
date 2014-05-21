@@ -1,9 +1,7 @@
 package com.wikout;
 
 import io.backbeam.BackbeamObject;
-import io.backbeam.CollectionConstraint;
 import io.backbeam.FetchCallback;
-import io.backbeam.JoinResult;
 import io.backbeam.Query;
 
 import java.util.ArrayList;
@@ -12,17 +10,11 @@ import java.util.List;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -37,10 +29,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -80,7 +73,7 @@ public class Map extends ActionBarActivity {
     ImageView filterView; 
     TextView tvFilterText;
     ImageButton filterButton;
-    
+    EditText etSearch;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +89,13 @@ public class Map extends ActionBarActivity {
 		util.showProgressDialog(context);
 		
 		//Inicializamos las variables
+		 View header = getLayoutInflater().inflate(R.layout.header, null);
+
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    optionList = (ListView) findViewById(R.id.left_drawer);
+	    optionList.addHeaderView(header);
+	    Button srchButton=(Button)findViewById(R.id.srchButton);
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
@@ -117,7 +114,7 @@ public class Map extends ActionBarActivity {
 					switch(pos){
 					case 0: 
 							util.showToast(context, "buscar");
-							
+						
 							break;
 					case 1: 	
 							final CharSequence[] items = { "Ocio",
@@ -193,7 +190,16 @@ public class Map extends ActionBarActivity {
 		startActivity(insert);
 			}
 		});*/
-		
+		srchButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// request your webservice here. Possible use of AsyncTask and
+				// ProgressDialog
+				util.showToast(context,"click");
+			}
+
+		});
 		viewPort();	
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
