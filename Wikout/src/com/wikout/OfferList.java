@@ -285,5 +285,9 @@ protected Date actualDate(){
 			return true;
 		}
 	}
-	
+	@Override
+	protected void onRestart() {
+	    super.onRestart();
+	    new LoadDataTask().execute();
+	    }
 }

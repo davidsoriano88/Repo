@@ -50,6 +50,7 @@ public class ViewOffer extends ActionBarActivity {
 	boolean lastlike= false;
 	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
+	int numbubble = 0;
 
 	
 	//Radio de la tierra (en metros)
@@ -231,8 +232,8 @@ public class ViewOffer extends ActionBarActivity {
 			
 			// CREO OBJETOS
 			btnLike.setEnabled(false);
-			int numbubble = 0;
-			final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
+			
+			//final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
 			final BackbeamObject like = new BackbeamObject("like");
 			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
 			// Escribo los campos de "like" 
@@ -241,79 +242,86 @@ public class ViewOffer extends ActionBarActivity {
 			// Compruebo el boolean y, si es TRUE, inserta un LIKE. Si es FALSE,
 			// inserta un DISLIKE.
 			// Por último, se hace el count.
-			if (lastlike == true) {
-				like.setString("statuslike", "1");
-				numbubble = commerce.getNumber("numbubble").intValue();
-				commerce.setNumber("numbubble", numbubble+1);
-				System.out.println("1");
-				lastlike=false;
-				btnLike.setText(R.string.dislike);
-				
-			} else {
-				like.setString("statuslike", "0");
-				numbubble = commerce.getNumber("numbubble").intValue();
-				commerce.setNumber("numbubble", numbubble-1);
-				System.out.println("0");
-				lastlike=true;
-				btnLike.setText(R.string.like);
-			}
-			commerce.save(new ObjectCallback() {
+			Backbeam.read("commerce", idcommerce, new ObjectCallback() {
 				@Override
-				public void success(BackbeamObject object) {
-					System.out.println("numbubble guardado");
-				}
-			});
-			like.setObject("offer", offer);
-			like.save(new ObjectCallback() {
-				@Override
-				public void success(BackbeamObject object) {
-					System.out.println("like guardado");
-					Query query = new Query("like");
-					// Consulto los LIKE cuyo STATUSLIKE == "1".
-					query.setQuery("where statuslike = ? and offer is ? ", "1",
-							idoffer);
-					// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
-					// "1");
-					System.out.println("Tras la consulta del success");
-					query.fetch(100, 0, new FetchCallback() {
-						@Override
-						public void success(List<BackbeamObject> objects,
-								final int totalCountLike, boolean fromCache) {
-							System.out.println("totalCount: " + totalCountLike);
-							Query query = new Query("like");
-							// Consulto los LIKE cuyo STATUSLIKE == "1".
-							query.setQuery("where statuslike = ? and offer is ? ",
-									"0", idoffer);
-							// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
-							// "1");
-							System.out.println("Tras la consulta del success");
-							query.fetch(100, 0, new FetchCallback() {
-								@Override
-								public void success(List<BackbeamObject> objects,
-										int totalCountDislike, boolean fromCache) {
-									System.out.println("totalCount: "
-											+ totalCountDislike);
-									offer.setNumber("numlike", totalCountLike
-											- totalCountDislike);
-									offer.save(new ObjectCallback() {
-										@Override
-										public void success(BackbeamObject object) {
-											System.out.println(object
-													.getString("description"));
-											System.out.println(object
-													.getNumber("numlike"));
-											tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
-											System.out.println("tarda en ejecutarse 1: "+(Calendar.getInstance().getTimeInMillis()-start));
-											btnLike.setEnabled(true);
-										}
-									});
-								}
-							});
-						}
+				public void success(BackbeamObject commerce) {
+					if (lastlike == true) {
+						like.setString("statuslike", "1");
+						numbubble = commerce.getNumber("numbubble").intValue();
+						commerce.setNumber("numbubble", numbubble+1);
+						System.out.println("1");
+						lastlike=false;
+						btnLike.setText(R.string.dislike);
+						
+					} else {
+						like.setString("statuslike", "0");
+						numbubble = commerce.getNumber("numbubble").intValue();
+						commerce.setNumber("numbubble", numbubble-1);
+						System.out.println("0");
+						lastlike=true;
+						btnLike.setText(R.string.like);
+						
+					}
+							commerce.save(new ObjectCallback() {
+							@Override
+							public void success(BackbeamObject object) {
+								System.out.println("updated! :) "+object.getId());
+								like.setObject("offer", offer);
+								like.save(new ObjectCallback() {
+									@Override
+									public void success(BackbeamObject object) {
+										System.out.println("like guardado");
+										Query query = new Query("like");
+										// Consulto los LIKE cuyo STATUSLIKE == "1".
+										query.setQuery("where statuslike = ? and offer is ? ", "1",
+												idoffer);
+										// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
+										// "1");
+										System.out.println("Tras la consulta del success");
+										query.fetch(100, 0, new FetchCallback() {
+											@Override
+											public void success(List<BackbeamObject> objects,
+													final int totalCountLike, boolean fromCache) {
+												System.out.println("totalCount: " + totalCountLike);
+												Query query = new Query("like");
+												// Consulto los LIKE cuyo STATUSLIKE == "1".
+												query.setQuery("where statuslike = ? and offer is ? ",
+														"0", idoffer);
+												// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
+												// "1");
+												System.out.println("Tras la consulta del success");
+												query.fetch(100, 0, new FetchCallback() {
+													@Override
+													public void success(List<BackbeamObject> objects,
+															int totalCountDislike, boolean fromCache) {
+														System.out.println("totalCount: "
+																+ totalCountDislike);
+														offer.setNumber("numlike", totalCountLike
+																- totalCountDislike);
+														offer.save(new ObjectCallback() {
+															@Override
+															public void success(BackbeamObject object) {
+																System.out.println(object
+																		.getString("description"));
+																System.out.println(object
+																		.getNumber("numlike"));
+																tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
+																System.out.println("tarda en ejecutarse 1: "+(Calendar.getInstance().getTimeInMillis()-start));
+																btnLike.setEnabled(true);
+															}
+														});
+													}
+												});
+											}
 
+										});
+									}
+								});
+							}
+						});
+						}
 					});
-				}
-			});
+			
 			
 			System.out.println("tarda en ejecutarse 2: "+(Calendar.getInstance().getTimeInMillis()-start));
 		}

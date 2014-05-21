@@ -12,6 +12,7 @@ import java.util.List;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -80,13 +82,12 @@ public class Map extends ActionBarActivity {
     ImageButton filterButton;
     
     
-    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
 	 setContentView(R.layout.fragment_main);
 	 context=this;
-  
+	 
      util.projectData(context);
      initUI();  
 	 }
@@ -106,6 +107,7 @@ public class Map extends ActionBarActivity {
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
 	    filterButton = (ImageButton) findViewById(R.id.filterButton);
 	    filterVisible(false);
+	    
 	    //tvFilterText.setTextColor(Color.WHITE);
 	    //establecemos las opciones del menu deslizable:
 	    optionList.setOnItemClickListener(new OnItemClickListener() {
@@ -220,6 +222,9 @@ public class Map extends ActionBarActivity {
 			insert.putExtra("enter", enter);
 			startActivity(insert);
             return true;
+        case R.id.menu_load:
+        	util.showToast(context, "clik");
+        	return true;
         	case android.R.id.home: 
         		drawerOpener();
         		return true;
@@ -540,8 +545,7 @@ public class Map extends ActionBarActivity {
 														 object.getLocation("placelocation").getLongitude()))
 									.draggable(false)
 									.title(object.getString("placename"))
-									.icon(BitmapDescriptorFactory
-									.fromResource(R.drawable.pinazul)));
+									.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul, object.getNumber("numbubble").toString()))));
 							break;
 							case("servicios"):
 								markerBB = map.addMarker(new MarkerOptions()
@@ -549,8 +553,7 @@ public class Map extends ActionBarActivity {
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
 										.title(object.getString("placename"))
-										.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.pinmorado)));
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado, object.getNumber("numbubble").toString()))));
 							break;
 							case("compras"):
 								markerBB = map.addMarker(new MarkerOptions()
@@ -558,8 +561,7 @@ public class Map extends ActionBarActivity {
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
 										.title(object.getString("placename"))
-										.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.pinrosa)));
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa, object.getNumber("numbubble").toString()))));
 							break;
 							case("otros"):
 								markerBB = map.addMarker(new MarkerOptions()
@@ -567,8 +569,7 @@ public class Map extends ActionBarActivity {
 															 object.getLocation("placelocation").getLongitude()))
 										.draggable(false)
 										.title(object.getString("placename"))
-										.icon(BitmapDescriptorFactory
-										.fromResource(R.drawable.pinverde)));
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde, object.getNumber("numbubble").toString()))));
 							break;
 							default: break;
 							}
@@ -635,6 +636,11 @@ public class Map extends ActionBarActivity {
 
 			});
 		}
+		@Override
+		protected void onRestart() {
+		    super.onRestart();
+		    new MyData().execute();
+		    }
 }
 
 	
