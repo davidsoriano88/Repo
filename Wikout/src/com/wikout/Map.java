@@ -7,14 +7,17 @@ import io.backbeam.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.NavDrawerItem;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
+import adapter.NavDrawerListAdapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -22,6 +25,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
@@ -32,7 +36,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -74,13 +77,78 @@ public class Map extends ActionBarActivity {
     TextView tvFilterText;
     ImageButton filterButton, sbutton;
     EditText etSearch;
+    
+    
+    
+    
+    //*********************************************************************************
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
  
+    // nav drawer title
+    private CharSequence mDrawerTitle;
+ 
+    // used to store app title
+    private CharSequence mTitle;
+ 
+    // slide menu items
+    private String[] navMenuTitles;
+ 
+    private ArrayList<NavDrawerItem> navDrawerItems;
+    private NavDrawerListAdapter adapter;
+    
+    //*******************************************************************************
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
 	 setContentView(R.layout.fragment_main);
 	 context=this;
+	 //************************************************************************************
+	 mTitle = mDrawerTitle = getTitle();
 	 
+     // load slide menu items
+     navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
+
+     // nav drawer icons from resources
+
+     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+     mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+     navDrawerItems = new ArrayList<NavDrawerItem>();
+
+     // adding nav drawer items to array
+     // Home
+     navDrawerItems.add(new NavDrawerItem(navMenuTitles[0]));
+     // Find People
+     navDrawerItems.add(new NavDrawerItem(navMenuTitles[1]));
+     // Photos
+     navDrawerItems.add(new NavDrawerItem(navMenuTitles[2]));
+     // Communities, Will add a counter here
+     navDrawerItems.add(new NavDrawerItem(navMenuTitles[3]));
+     // Pages
+     navDrawerItems.add(new NavDrawerItem(navMenuTitles[4]));
+     // What's hot, We  will add a counter here
+     navDrawerItems.add(new NavDrawerItem(navMenuTitles[5]));
+      
+
+    
+    
+
+     // setting the nav drawer list adapter
+     adapter = new NavDrawerListAdapter(getApplicationContext(),
+             navDrawerItems);
+     mDrawerList.setAdapter(adapter);
+
+
+
+    
+
+
+
+    
+ 
+	 
+	 //************************************************************************************
      util.projectData(context);
      initUI();  
  	
@@ -90,25 +158,28 @@ public class Map extends ActionBarActivity {
 		util.showProgressDialog(context);
 		
 		//Inicializamos las variables
-		
 		 
-		String[] values = getResources().getStringArray(R.array.options);
-		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-	    optionList = (ListView) findViewById(R.id.left_drawer);
-	   
+//		String[] values = getResources().getStringArray(R.array.options);
+//		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+//	    optionList = (ListView) findViewById(R.id.left_drawer);
+	    //String[] search = getResources().getStringArray(R.array.buscar);
 	  
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
-	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
-	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    //optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.search_drawer,search));
+	    
+//	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
+	    
+//	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    
+	    
 	    filterView = (ImageView) findViewById(R.id.filterText);
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
 	    filterButton = (ImageButton) findViewById(R.id.filterButton);
 	    filterVisible(false);
-	  
 	    //tvFilterText.setTextColor(Color.WHITE);
 	    //establecemos las opciones del menu deslizable:
-	    optionList.setOnItemClickListener(new OnItemClickListener() {
+/*	    optionList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
 				drawerOpener();
@@ -151,9 +222,11 @@ public class Map extends ActionBarActivity {
 					}
 					
 				}});
-
+	    
+*/	   
+	    
 		map.setMyLocationEnabled(true);
-		filterButton.setOnClickListener(new View.OnClickListener() {
+/*		filterButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -166,7 +239,7 @@ public class Map extends ActionBarActivity {
 			}
 
 		});
-		/*map.setOnMapClickListener(new OnMapClickListener() {
+*/		/*map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
 				
@@ -208,7 +281,7 @@ public class Map extends ActionBarActivity {
 			}
 		});	
 	}
-
+	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

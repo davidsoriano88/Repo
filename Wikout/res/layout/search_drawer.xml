@@ -1,0 +1,13 @@
+
+	<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:id="@+id/search1"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:focusable="true"
+	    android:gravity="center_vertical"
+	    android:height="50dp"
+	    android:paddingLeft="16dp"
+	    android:paddingRight="16dp"
+	    android:text="Busqueda"
+	    android:textSize="20sp" />
+
