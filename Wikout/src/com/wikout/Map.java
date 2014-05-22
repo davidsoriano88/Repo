@@ -647,6 +647,8 @@ public class Map extends ActionBarActivity {
 		
 	
 		private void commercesOnMap(String parameter) {
+			final ArrayList<String>idcommerce=new ArrayList<String>();
+			final ArrayList<String>placename=new ArrayList<String>();
 			Query queryCommerce = new Query("commerce");
 			queryCommerce.setQuery("where placename like ?", parameter)
 					.fetch(100, 0, new FetchCallback() {
@@ -659,8 +661,10 @@ public class Map extends ActionBarActivity {
 									&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
 									&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
 									&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
-									// CREAR MARCADOR PARA MOSTRAR EN MAPA
-
+									// METO LOS IDCOMMERCE EN UN ARRAY
+									idcommerce.add(commerce.getId());
+									
+									placename.add(commerce.getString("placename"));
 								}
 							}
 						}
@@ -681,8 +685,17 @@ public class Map extends ActionBarActivity {
 							&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
 									// CREAR MARCADOR PARA MOSTRAR EN MAPA
 									System.out.println(commerce.getString("placename"));
+									if(!idcommerce.contains(commerce.getId())){
+										idcommerce.add(commerce.getId());
+										
+										placename.add(commerce.getString("placename"));
+									}
 								}
 							}
+					//CREAR MARCADOR EN EL MAPA (cambiar for)
+					for(String commerceplace: placename){
+						System.out.println(commerceplace);
+					}
 						}
 
 					});
