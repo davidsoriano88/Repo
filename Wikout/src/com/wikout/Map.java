@@ -712,21 +712,22 @@ public class Map extends ActionBarActivity {
 		    }
 		
 	
-		private void commercesOnMap(String parameter) {
+		private void commercesOnMap(final String parameter) {
+			final ArrayList<String>idcommerce=new ArrayList<String>();
 			Query queryCommerce = new Query("commerce");
 			queryCommerce.setQuery("where placename like ?", parameter)
 					.fetch(100, 0, new FetchCallback() {
 						@Override
 						public void success(List<BackbeamObject> objects,
 								int totalCount, boolean fromCache) {
-							System.out.println(totalCount);
+							System.out.println("Numero de comercios con '"+parameter+"': "+totalCount);
 							for (BackbeamObject commerce : objects) {
 								if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
 									&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
 									&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
 									&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
-									// CREAR MARCADOR PARA MOSTRAR EN MAPA
-
+									// METO LOS IDCOMMERCE EN UN ARRAY
+									idcommerce.add(commerce.getId());
 								}
 							}
 						}
@@ -738,23 +739,38 @@ public class Map extends ActionBarActivity {
 				@Override
 				public void success(List<BackbeamObject> objects,
 						int totalCount, boolean fromCache) {
-					System.out.println(totalCount);
+					System.out.println("Numero de ofertas con '"+parameter+"': "+totalCount);
 					for (BackbeamObject offer : objects) {
 						BackbeamObject commerce = offer.getObject("commerce");
 						if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
 							&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
 							&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
 							&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
-									// CREAR MARCADOR PARA MOSTRAR EN MAPA
-									System.out.println(commerce.getString("placename"));
+									// COMPRUEBO SI EL ID YA ESTA DENTRO DEL ARRAY
+									if(!idcommerce.contains(commerce.getId())){
+										idcommerce.add(commerce.getId());
+									}
 								}
 							}
+					//CREAR MARCADOR EN EL MAPA (cambiar for por el de abajo)
+					for(String commerceid: idcommerce){
+						System.out.println(commerceid);
+					}
+					/*
+					for(String commerce: idcommerce){
+						Backbeam.read("commerce", commerce, new ObjectCallback() {
+						@Override
+						public void success(BackbeamObject offer) {
+							//CREAR MARCADOR
+						});
+					}
+					*/
 						}
 
 					});
-			
+	
 
-		}
+}
 }
 
 	
