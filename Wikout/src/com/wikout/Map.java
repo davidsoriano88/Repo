@@ -90,12 +90,12 @@ public class Map extends ActionBarActivity {
 		util.showProgressDialog(context);
 		
 		//Inicializamos las variables
-		 View header = getLayoutInflater().inflate(R.layout.header, null);
+		
 		 
 		String[] values = getResources().getStringArray(R.array.options);
 		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 	    optionList = (ListView) findViewById(R.id.left_drawer);
-	    optionList.addHeaderView(header);
+	   
 	  
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
@@ -189,14 +189,7 @@ public class Map extends ActionBarActivity {
 			}
 		});*/
 		
-		header.setOnClickListener(new View.OnClickListener()
-		{
-		   @Override
-		   public void onClick(View v)
-		   {
-			util.showToast(context, "header clicked!");   
-		   }
-		});
+		
 		viewPort();	
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
 			@Override
@@ -281,14 +274,14 @@ public class Map extends ActionBarActivity {
 		
 		if (location != null) {
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-					location.getLatitude(), location.getLongitude()), 13.0F));
+					location.getLatitude(), location.getLongitude()), 15.0F));
 		
 				
 			CameraPosition cameraPosition = new CameraPosition.Builder()
 					.target(new LatLng(location.getLatitude(), location
 							.getLongitude())) // Sets the center of the map to
 												// location user
-					.zoom(17.0F) // Sets the zoom
+					.zoom(15.0F) // Sets the zoom
 					.build(); //Creates a CameraPosition from the builder
 			map.animateCamera(CameraUpdateFactory
 					.newCameraPosition(cameraPosition));
