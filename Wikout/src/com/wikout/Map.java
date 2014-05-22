@@ -81,7 +81,7 @@ public class Map extends ActionBarActivity {
     
     
     
-    //*********************************************************************************
+    //*******sdfsd**************************************************************************
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
  
