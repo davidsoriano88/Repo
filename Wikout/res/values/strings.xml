@@ -38,14 +38,6 @@
        <item>Buscar</item>
     </string-array>
     
-  <string-array name="nav_drawer_items">
-        <item >Home</item>
-        <item >Find People</item>
-        <item >Photos</item>
-        <item >Communities</item>
-        <item >Pages</item>
-        <item >What\'s Hot</item>
-    </string-array>
  
 
 </resources>

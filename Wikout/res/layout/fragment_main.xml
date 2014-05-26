@@ -34,13 +34,10 @@
 
 	</android.support.v4.widget.DrawerLayout>
 
-
- 
-
     	 <ImageView
     	     android:id="@+id/filterText"
     	     android:layout_width="262dp"
-    	     android:layout_height="38dp"
+    	     android:layout_height="44dp"
     	     android:layout_gravity="bottom"
     	     android:scaleType="fitXY"
     	     android:src="@drawable/abc_ab_bottom_solid_light_holo" />

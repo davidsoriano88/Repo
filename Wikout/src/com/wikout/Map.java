@@ -1,9 +1,7 @@
 package com.wikout;
 
-import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
-import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.util.ArrayList;
@@ -61,7 +59,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Map extends ActionBarActivity {
 	
-	
+	Util util = new Util();
 	private GoogleMap map;
 	Marker markerBB, mark;
 	String title, finalId, option,filter, searchResult;
@@ -70,30 +68,13 @@ public class Map extends ActionBarActivity {
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	int enter;
 	LocationClient mLocationClient;
-	Util util = new Util();
-    Context context;
-    DrawerLayout navDrawerLayout;
-    ListView optionList, optionList2;
-    
+    Context context;  
     ImageView filterView; 
     TextView tvFilterText;
-    ImageButton filterButton, sbutton;
+    ImageButton filterButton;
     EditText etSearch;
-    
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
-    // nav drawer title
-    private CharSequence mDrawerTitle;
- 
-    // used to store app title
-    private CharSequence mTitle;
- 
-    // slide menu items
-    private String[] navMenuTitles;
-    private ArrayList<NavDrawerItem> navDrawerItems;
-    private NavDrawerListAdapter adapter;
-    View search;
-    
+    DrawerLayout mDrawerLayout;
+    ListView mDrawerList;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -107,18 +88,18 @@ public class Map extends ActionBarActivity {
 
 	public void initUI(){
 		util.showProgressDialog(context);
-		mTitle = mDrawerTitle = getTitle();
+		
 		 
 	     //load slide menu items
-	     navMenuTitles = getResources().getStringArray(R.array.options);     
-	     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-	     mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		String[] navMenuTitles = getResources().getStringArray(R.array.options);     
+		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
-	     navDrawerItems = new ArrayList<NavDrawerItem>();
+	     ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 	     LayoutInflater inflater = LayoutInflater.from(this);
 	    
-	    search = inflater.inflate(R.layout.item_drawer, null);
-	    etSearch=(EditText)search.findViewById(R.id.et01);
+	    View search = inflater.inflate(R.layout.search_drawer, null);
+	    etSearch=(EditText)search.findViewById(R.id.search1);
 	    
 	     mDrawerList.addHeaderView(search);
 	    // navDrawerItems.add(new NavDrawerItem();
@@ -131,9 +112,9 @@ public class Map extends ActionBarActivity {
 
 
 	     // setting the nav drawer list adapter
-	     adapter = new NavDrawerListAdapter(context,
-	             navDrawerItems);
-	     mDrawerList.setAdapter(adapter);
+	      
+	     mDrawerList.setAdapter(new NavDrawerListAdapter(context,
+	             navDrawerItems));
 		//Inicializamos las variables
 	  
 	    map = ((SupportMapFragment) getSupportFragmentManager()
@@ -185,10 +166,9 @@ public class Map extends ActionBarActivity {
 					AlertDialog alert = builder.create();
 					alert.show();
 						break;
-					case 2: util.showInfoDialog(context, "Wikout", "Aplicación desarrollado por Uptimiza. 2014"); break;
+					case 2: util.showInfoDialog(context, "Wikout", "Aplicacion desarrollada por Uptimiza. 2014"); break;
 						
-					case 3: android.os.Process.killProcess(android.os.Process.myPid());
-								break;
+					case 3: android.os.Process.killProcess(android.os.Process.myPid());break;
 					}
 					
 				}});
@@ -447,7 +427,7 @@ public class Map extends ActionBarActivity {
 			if(filter==null&&searchResult==null){
 			standardQuery();
 			}else if(searchResult==null){
-			filterQuery(filter);}else{ commercesOnMap(searchResult);}
+			filterQuery(filter);}else{ /*commercesOnMap(searchResult);*/}
 		}
 
 		@Override
@@ -576,7 +556,7 @@ public class Map extends ActionBarActivity {
 					}
 				});
 	}
-	private void commercesOnMap(final String parameter) {
+	/*private void commercesOnMap(final String parameter) {
 		final ArrayList<String>idcommerce=new ArrayList<String>();
 		Query queryCommerce = new Query("commerce");
 		queryCommerce.setQuery("where placename like ?", parameter)
@@ -704,7 +684,7 @@ public class Map extends ActionBarActivity {
 				});
 
 
-}
+}*/
 	public void filterQuery(final String filter){
 		final Intent info = new Intent(context,
 				OfferList.class);
