@@ -13,13 +13,13 @@
     <ImageView
         android:id="@+id/ivOfferListPhoto"
         android:layout_width="match_parent"
-        android:layout_height="99dp" />
+        android:layout_height="99dp"
+        android:contentDescription="@string/description" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
+        android:layout_height="0dp"
         android:layout_weight="0.81"
         android:dividerHeight="0.5dp" >
 

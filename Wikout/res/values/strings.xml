@@ -14,6 +14,8 @@
     <string name="report_prompt">Report</string>
     <string name="oferta">Oferta</string>  
     <string name="titleName">title</string>
+  	<string name="buscar">Buscar</string>
+  	<string name="description">description</string>
   
     <string-array name="categorias">
         <item>ocio</item>
