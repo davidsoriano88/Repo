@@ -1,5 +1,6 @@
 package model;
 
+import android.widget.EditText;
 
 public class NavDrawerItem {
 	

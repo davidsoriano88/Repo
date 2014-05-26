@@ -51,8 +51,7 @@ public class OfferList extends ListActivity {
 	ImageView ivPhoto;
 	TextView tvPlacename;
 	static TextView tvLocation;
-	String idcommerce="";
-	String placeName;
+	String idcommerce="",placeName;
 
 	
 	public static class viewHolder {
@@ -112,8 +111,7 @@ public class OfferList extends ListActivity {
 
 				@Override
 				public void onClick(View v) {
-						Intent intent = new Intent(context,
-							ViewOffer.class);	 
+					Intent intent = new Intent(context,ViewOffer.class);	 
 					intent.putExtra("idoffer", dataid.get(position));
 					intent.putExtra("idcommerce", idcommerce);
 					intent.putExtra("placename",placeName);
@@ -173,6 +171,7 @@ public class OfferList extends ListActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.listview_activity);
+		util.projectData(con);
 		initUi();
 		
 		
@@ -210,7 +209,7 @@ public class OfferList extends ListActivity {
 //METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
 	private void queryOffer(String idcommerce) {
 		//vacio los arraylists
-		util.projectData(con);
+		
 		dataoffer.clear();
 		datalike.clear();
 		dataid.clear();
