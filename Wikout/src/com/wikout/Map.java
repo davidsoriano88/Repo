@@ -1,7 +1,9 @@
 package com.wikout;
 
+import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
+import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.util.ArrayList;
@@ -75,6 +77,8 @@ public class Map extends ActionBarActivity {
     EditText etSearch;
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
+    ArrayList<String>placeName,idcommerce,idMarker;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
@@ -451,9 +455,9 @@ public class Map extends ActionBarActivity {
 		
 	
 	public void standardQuery(){
+
 		final Intent info = new Intent(context,
 				OfferList.class);
-		
 		
 		
 		Query query = new Query("commerce");
@@ -465,9 +469,9 @@ public class Map extends ActionBarActivity {
 							int totalCount, boolean fromCache) {
 						
 						map.clear();
-						final ArrayList<String>placeName=new ArrayList<String>();
-						final ArrayList<String>idData=new ArrayList<String>();
-						final ArrayList<String>idMarker = new ArrayList<String>();
+						placeName.clear();						
+						idcommerce.clear();
+						idMarker.clear();
 						
 						/*Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
 						Bitmap bmp = Bitmap.createBitmap(200, 50, conf); 
@@ -482,7 +486,7 @@ public class Map extends ActionBarActivity {
 						for (final BackbeamObject object : objects) {
 							util.log("1"+object.getId());
 							placeName.add(object.getString("placename"));
-							idData.add(object.getId());
+							idcommerce.add(object.getId());
 							switch(object.getString("category")){
 							case("ocio"):
 							markerBB = map.addMarker(new MarkerOptions()
@@ -528,7 +532,7 @@ public class Map extends ActionBarActivity {
 									marker.showInfoWindow();
 									for(int i=0;i<placeName.size();i++){
 										if(marker.getTitle().equals(placeName.get(i))){
-											finalId=idData.get(i);
+											finalId=idcommerce.get(i);
 											break;
 										}
 									}
@@ -556,8 +560,15 @@ public class Map extends ActionBarActivity {
 					}
 				});
 	}
-	/*private void commercesOnMap(final String parameter) {
-		final ArrayList<String>idcommerce=new ArrayList<String>();
+	private void commercesOnMap(final String parameter) {
+		final Intent info = new Intent(context,
+				OfferList.class);
+		map.clear();
+		placeName.clear();						
+		idcommerce.clear();
+		idMarker.clear();
+
+		
 		Query queryCommerce = new Query("commerce");
 		queryCommerce.setQuery("where placename like ?", parameter)
 				.fetch(100, 0, new FetchCallback() {
@@ -596,62 +607,62 @@ public class Map extends ActionBarActivity {
 								}
 							}
 						}
-				map.clear();
+				
 				//CREAR MARCADOR EN EL MAPA (cambiar for por el de abajo)
 				for(String commerce: idcommerce){
 					Backbeam.read("commerce", commerce, new ObjectCallback() {
 					@Override
-					public void success(BackbeamObject offer) {
+					public void success(final BackbeamObject commerceMark) {
 						//CREAR MARCADOR
-						if(offer.getString("category").equals(filter)==true){
-							util.log("1"+offer.getId());
-							placeName.add(offer.getString("placename"));
-							idData.add(offer.getId());
+						if(commerceMark.getString("category").equals(filter)==true){
+							util.log("1"+commerceMark.getId());
+							placeName.add(commerceMark.getString("placename"));
+							idcommerce.add(commerceMark.getId());
 							
-							switch(offer.getString("category")){
+							switch(commerceMark.getString("category")){
 							case("ocio"):
 							markerBB = map.addMarker(new MarkerOptions()
-									.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
-											offer.getLocation("placelocation").getLongitude()))
+									.position(new LatLng(commerceMark.getLocation("placelocation").getLatitude(),
+											commerceMark.getLocation("placelocation").getLongitude()))
 									.draggable(false)
-									.title(offer.getString("placename"))
-									.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul, offer.getNumber("numbubble").toString()))));
+									.title(commerceMark.getString("placename"))
+									.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul, commerceMark.getNumber("numbubble").toString()))));
 							break;
 							case("servicios"):
 								markerBB = map.addMarker(new MarkerOptions()
-										.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
-															 offer.getLocation("placelocation").getLongitude()))
+										.position(new LatLng(commerceMark.getLocation("placelocation").getLatitude(),
+															 commerceMark.getLocation("placelocation").getLongitude()))
 										.draggable(false)
-										.title(offer.getString("placename"))
-										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado, offer.getNumber("numbubble").toString()))));
+										.title(commerceMark.getString("placename"))
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado, commerceMark.getNumber("numbubble").toString()))));
 							break;
 							case("compras"):
 								markerBB = map.addMarker(new MarkerOptions()
-										.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
-															 offer.getLocation("placelocation").getLongitude()))
+										.position(new LatLng(commerceMark.getLocation("placelocation").getLatitude(),
+															 commerceMark.getLocation("placelocation").getLongitude()))
 										.draggable(false)
-										.title(offer.getString("placename"))
-										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa, offer.getNumber("numbubble").toString()))));
+										.title(commerceMark.getString("placename"))
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa, commerceMark.getNumber("numbubble").toString()))));
 							break;
 							case("otros"):
 								markerBB = map.addMarker(new MarkerOptions()
-										.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
-															 offer.getLocation("placelocation").getLongitude()))
+										.position(new LatLng(commerceMark.getLocation("placelocation").getLatitude(),
+															 commerceMark.getLocation("placelocation").getLongitude()))
 										.draggable(false)
-										.title(offer.getString("placename"))
-										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde, offer.getNumber("numbubble").toString()))));
+										.title(commerceMark.getString("placename"))
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde, commerceMark.getNumber("numbubble").toString()))));
 							break;
 							default: break;
 							}
 							idMarker.add(markerBB.getId());
-							util.log("2"+offer.getId());
+							util.log("2"+commerceMark.getId());
 							map.setOnMarkerClickListener(new OnMarkerClickListener() {
 								@Override
 								public boolean onMarkerClick(Marker marker) {
 									marker.showInfoWindow();
 									for(int i=0;i<placeName.size();i++){
 										if(marker.getTitle().equals(placeName.get(i))){
-											finalId=idData.get(i);
+											finalId=idcommerce.get(i);
 											break;
 										}
 									}
@@ -660,11 +671,11 @@ public class Map extends ActionBarActivity {
 									return true;
 								}
 							});
-							util.log("3"+offer.getId());
+							util.log("3"+commerceMark.getId());
 							map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 								@Override
 								public void onInfoWindowClick(Marker marker) {
-									util.log("4"+offer.getId());
+									util.log("4"+commerceMark.getId());
 									for(int i=0;i<idMarker.size();i++){
 									if(idMarker.get(i).contains(marker.getId())){
 									util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
@@ -684,7 +695,7 @@ public class Map extends ActionBarActivity {
 				});
 
 
-}*/
+}
 	public void filterQuery(final String filter){
 		final Intent info = new Intent(context,
 				OfferList.class);
