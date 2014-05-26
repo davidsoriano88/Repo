@@ -1,7 +1,9 @@
 package com.wikout;
 
+import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
+import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.util.ArrayList;
@@ -17,7 +19,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,17 +26,18 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnKeyListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -62,7 +64,7 @@ public class Map extends ActionBarActivity {
 	
 	private GoogleMap map;
 	Marker markerBB, mark;
-	String title, finalId, option;
+	String title, finalId, option,filter, searchResult;
 	LocationManager locationManager;
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
@@ -71,20 +73,15 @@ public class Map extends ActionBarActivity {
 	Util util = new Util();
     Context context;
     DrawerLayout navDrawerLayout;
-    ListView optionList;
-    String filter;
+    ListView optionList, optionList2;
+    
     ImageView filterView; 
     TextView tvFilterText;
     ImageButton filterButton, sbutton;
     EditText etSearch;
     
-    
-    
-    
-    //*******sdfsd**************************************************************************
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
- 
     // nav drawer title
     private CharSequence mDrawerTitle;
  
@@ -93,62 +90,16 @@ public class Map extends ActionBarActivity {
  
     // slide menu items
     private String[] navMenuTitles;
- 
     private ArrayList<NavDrawerItem> navDrawerItems;
     private NavDrawerListAdapter adapter;
+    View search;
     
-    //*******************************************************************************
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
 	 setContentView(R.layout.fragment_main);
 	 context=this;
-	 //************************************************************************************
-	 mTitle = mDrawerTitle = getTitle();
-	 
-     // load slide menu items
-     navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 
-     // nav drawer icons from resources
-
-     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-     mDrawerList = (ListView) findViewById(R.id.left_drawer);
-
-     navDrawerItems = new ArrayList<NavDrawerItem>();
-
-     // adding nav drawer items to array
-     // Home
-     navDrawerItems.add(new NavDrawerItem(navMenuTitles[0]));
-     // Find People
-     navDrawerItems.add(new NavDrawerItem(navMenuTitles[1]));
-     // Photos
-     navDrawerItems.add(new NavDrawerItem(navMenuTitles[2]));
-     // Communities, Will add a counter here
-     navDrawerItems.add(new NavDrawerItem(navMenuTitles[3]));
-     // Pages
-     navDrawerItems.add(new NavDrawerItem(navMenuTitles[4]));
-     // What's hot, We  will add a counter here
-     navDrawerItems.add(new NavDrawerItem(navMenuTitles[5]));
-      
-
-    
-    
-
-     // setting the nav drawer list adapter
-     adapter = new NavDrawerListAdapter(getApplicationContext(),
-             navDrawerItems);
-     mDrawerList.setAdapter(adapter);
-
-
-
-    
-
-
-
-    
- 
-	 
-	 //************************************************************************************
      util.projectData(context);
      initUI();  
  	
@@ -156,21 +107,39 @@ public class Map extends ActionBarActivity {
 
 	public void initUI(){
 		util.showProgressDialog(context);
-		
-		//Inicializamos las variables
+		mTitle = mDrawerTitle = getTitle();
 		 
-//		String[] values = getResources().getStringArray(R.array.options);
-//		navDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-//	    optionList = (ListView) findViewById(R.id.left_drawer);
-	    //String[] search = getResources().getStringArray(R.array.buscar);
+	     //load slide menu items
+	     navMenuTitles = getResources().getStringArray(R.array.options);     
+	     mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+	     mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+	     navDrawerItems = new ArrayList<NavDrawerItem>();
+	     LayoutInflater inflater = LayoutInflater.from(this);
+	    
+	    search = inflater.inflate(R.layout.item_drawer, null);
+	    etSearch=(EditText)search.findViewById(R.id.et01);
+	    
+	     mDrawerList.addHeaderView(search);
+	    // navDrawerItems.add(new NavDrawerItem();
+	     navDrawerItems.add(new NavDrawerItem(navMenuTitles[0]));
+	     // Find People
+	     navDrawerItems.add(new NavDrawerItem(navMenuTitles[1]));
+	     // Photos
+	     navDrawerItems.add(new NavDrawerItem(navMenuTitles[2]));
+	     // Communities, Will add a counter here
+
+
+	     // setting the nav drawer list adapter
+	     adapter = new NavDrawerListAdapter(context,
+	             navDrawerItems);
+	     mDrawerList.setAdapter(adapter);
+		//Inicializamos las variables
 	  
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
-	    //optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.search_drawer,search));
-	    
-//	    optionList.setAdapter(new ArrayAdapter<String>(this, R.layout.item_drawer, values));
-	    
-//	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    
 	    
 	    filterView = (ImageView) findViewById(R.id.filterText);
@@ -179,13 +148,13 @@ public class Map extends ActionBarActivity {
 	    filterVisible(false);
 	    //tvFilterText.setTextColor(Color.WHITE);
 	    //establecemos las opciones del menu deslizable:
-/*	    optionList.setOnItemClickListener(new OnItemClickListener() {
+	    mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
 				drawerOpener();
 					switch(pos){
 					case 0: break;
-					case 1: 	
+					case 1: 	searchResult=null;
 							final CharSequence[] items = { "Ocio",
 							"Servicios", "Compras", "Otros"};
 
@@ -218,15 +187,37 @@ public class Map extends ActionBarActivity {
 						break;
 					case 2: util.showInfoDialog(context, "Wikout", "Aplicación desarrollado por Uptimiza. 2014"); break;
 						
-					case 3: android.os.Process.killProcess(android.os.Process.myPid()); break;
+					case 3: android.os.Process.killProcess(android.os.Process.myPid());
+								break;
 					}
 					
 				}});
 	    
-*/	   
+	    etSearch.setOnKeyListener(new OnKeyListener() {
+	        public boolean onKey(View v, int keyCode, KeyEvent event) {
+	            // If the event is a key-down event on the "enter" button
+	            if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+	                (keyCode == KeyEvent.KEYCODE_ENTER)) {
+	              // Perform action on key press
+	            	filter=null;
+	            	searchResult=etSearch.getText().toString();
+	            	InputMethodManager imm = (InputMethodManager)getSystemService(
+	            		      Context.INPUT_METHOD_SERVICE);
+	            		imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+	              util.showToast(context,searchResult);
+	              tvFilterText.setText("Buscando por: " + etSearch.getText());
+					getSupportActionBar().setTitle("Resultados");
+					filterVisible(true);
+					//new MyData().execute();
+	              drawerOpener();
+	              return true;
+	            }
+	            return false;
+	        }
+	    });
 	    
 		map.setMyLocationEnabled(true);
-/*		filterButton.setOnClickListener(new View.OnClickListener() {
+		filterButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -239,7 +230,7 @@ public class Map extends ActionBarActivity {
 			}
 
 		});
-*/		/*map.setOnMapClickListener(new OnMapClickListener() {
+		/*map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
 				
@@ -325,10 +316,10 @@ public class Map extends ActionBarActivity {
 	
 	//comprueba si el menu está abierto o cerrado y lo abre o cierra en consecuencia:
 	public void drawerOpener(){
-		if(navDrawerLayout.isDrawerOpen(optionList)){
-			navDrawerLayout.closeDrawer(optionList);}
+		if(mDrawerLayout.isDrawerOpen(mDrawerList)){
+		mDrawerLayout.closeDrawer(mDrawerList);}
 		else{
-		navDrawerLayout.openDrawer(optionList);}
+		mDrawerLayout.openDrawer(mDrawerList);}
 	}
 	
 	//contains info about the viewposition, clientposition...:
@@ -453,10 +444,10 @@ public class Map extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
-			if(filter==null){
+			if(filter==null&&searchResult==null){
 			standardQuery();
-			}else{
-			filterQuery(filter);}
+			}else if(searchResult==null){
+			filterQuery(filter);}else{ commercesOnMap(searchResult);}
 		}
 
 		@Override
@@ -476,6 +467,8 @@ public class Map extends ActionBarActivity {
 		}
 	}
 
+	
+		
 	
 	public void standardQuery(){
 		final Intent info = new Intent(context,
@@ -583,7 +576,135 @@ public class Map extends ActionBarActivity {
 					}
 				});
 	}
-	
+	private void commercesOnMap(final String parameter) {
+		final ArrayList<String>idcommerce=new ArrayList<String>();
+		Query queryCommerce = new Query("commerce");
+		queryCommerce.setQuery("where placename like ?", parameter)
+				.fetch(100, 0, new FetchCallback() {
+					@Override
+					public void success(List<BackbeamObject> objects,
+							int totalCount, boolean fromCache) {
+						System.out.println("Numero de comercios con '"+parameter+"': "+totalCount);
+						for (BackbeamObject commerce : objects) {
+							if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
+								&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
+								&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
+								&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
+								// METO LOS IDCOMMERCE EN UN ARRAY
+								idcommerce.add(commerce.getId());
+							}
+						}
+					}
+
+				});
+		Query queryOffer = new Query("offer");
+		queryOffer.setQuery("where description like ? join commerce", parameter)
+		.fetch(100, 0, new FetchCallback() {
+			@Override
+			public void success(List<BackbeamObject> objects,
+					int totalCount, boolean fromCache) {
+				System.out.println("Numero de ofertas con '"+parameter+"': "+totalCount);
+				for (BackbeamObject offer : objects) {
+					BackbeamObject commerce = offer.getObject("commerce");
+					if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
+						&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
+						&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
+						&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
+								// COMPRUEBO SI EL ID YA ESTA DENTRO DEL ARRAY
+								if(!idcommerce.contains(commerce.getId())){
+									idcommerce.add(commerce.getId());
+								}
+							}
+						}
+				map.clear();
+				//CREAR MARCADOR EN EL MAPA (cambiar for por el de abajo)
+				for(String commerce: idcommerce){
+					Backbeam.read("commerce", commerce, new ObjectCallback() {
+					@Override
+					public void success(BackbeamObject offer) {
+						//CREAR MARCADOR
+						if(offer.getString("category").equals(filter)==true){
+							util.log("1"+offer.getId());
+							placeName.add(offer.getString("placename"));
+							idData.add(offer.getId());
+							
+							switch(offer.getString("category")){
+							case("ocio"):
+							markerBB = map.addMarker(new MarkerOptions()
+									.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
+											offer.getLocation("placelocation").getLongitude()))
+									.draggable(false)
+									.title(offer.getString("placename"))
+									.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul, offer.getNumber("numbubble").toString()))));
+							break;
+							case("servicios"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
+															 offer.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(offer.getString("placename"))
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado, offer.getNumber("numbubble").toString()))));
+							break;
+							case("compras"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
+															 offer.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(offer.getString("placename"))
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa, offer.getNumber("numbubble").toString()))));
+							break;
+							case("otros"):
+								markerBB = map.addMarker(new MarkerOptions()
+										.position(new LatLng(offer.getLocation("placelocation").getLatitude(),
+															 offer.getLocation("placelocation").getLongitude()))
+										.draggable(false)
+										.title(offer.getString("placename"))
+										.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde, offer.getNumber("numbubble").toString()))));
+							break;
+							default: break;
+							}
+							idMarker.add(markerBB.getId());
+							util.log("2"+offer.getId());
+							map.setOnMarkerClickListener(new OnMarkerClickListener() {
+								@Override
+								public boolean onMarkerClick(Marker marker) {
+									marker.showInfoWindow();
+									for(int i=0;i<placeName.size();i++){
+										if(marker.getTitle().equals(placeName.get(i))){
+											finalId=idData.get(i);
+											break;
+										}
+									}
+									util.log("marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle()
+										  + marker.getPosition() + "");
+									return true;
+								}
+							});
+							util.log("3"+offer.getId());
+							map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+								@Override
+								public void onInfoWindowClick(Marker marker) {
+									util.log("4"+offer.getId());
+									for(int i=0;i<idMarker.size();i++){
+									if(idMarker.get(i).contains(marker.getId())){
+									util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
+									info.putExtra("id", finalId);
+									startActivity(info);
+									}
+								}
+								}
+							});
+
+						}
+					}});
+				}
+				
+					}
+
+				});
+
+
+}
 	public void filterQuery(final String filter){
 		final Intent info = new Intent(context,
 				OfferList.class);
@@ -712,65 +833,7 @@ public class Map extends ActionBarActivity {
 		    }
 		
 	
-		private void commercesOnMap(final String parameter) {
-			final ArrayList<String>idcommerce=new ArrayList<String>();
-			Query queryCommerce = new Query("commerce");
-			queryCommerce.setQuery("where placename like ?", parameter)
-					.fetch(100, 0, new FetchCallback() {
-						@Override
-						public void success(List<BackbeamObject> objects,
-								int totalCount, boolean fromCache) {
-							System.out.println("Numero de comercios con '"+parameter+"': "+totalCount);
-							for (BackbeamObject commerce : objects) {
-								if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
-									&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
-									&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
-									&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
-									// METO LOS IDCOMMERCE EN UN ARRAY
-									idcommerce.add(commerce.getId());
-								}
-							}
-						}
 
-					});
-			Query queryOffer = new Query("offer");
-			queryOffer.setQuery("where description like ? join commerce", parameter)
-			.fetch(100, 0, new FetchCallback() {
-				@Override
-				public void success(List<BackbeamObject> objects,
-						int totalCount, boolean fromCache) {
-					System.out.println("Numero de ofertas con '"+parameter+"': "+totalCount);
-					for (BackbeamObject offer : objects) {
-						BackbeamObject commerce = offer.getObject("commerce");
-						if (commerce.getLocation("placelocation").getLatitude() < latitudeNE
-							&& commerce.getLocation("placelocation").getLatitude() > latitudeSW
-							&& commerce.getLocation("placelocation").getLongitude() < longitudeNE
-							&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
-									// COMPRUEBO SI EL ID YA ESTA DENTRO DEL ARRAY
-									if(!idcommerce.contains(commerce.getId())){
-										idcommerce.add(commerce.getId());
-									}
-								}
-							}
-					//CREAR MARCADOR EN EL MAPA (cambiar for por el de abajo)
-					for(String commerceid: idcommerce){
-						System.out.println(commerceid);
-					}
-					/*
-					for(String commerce: idcommerce){
-						Backbeam.read("commerce", commerce, new ObjectCallback() {
-						@Override
-						public void success(BackbeamObject offer) {
-							//CREAR MARCADOR
-						});
-					}
-					*/
-						}
-
-					});
-	
-
-}
 }
 
 	

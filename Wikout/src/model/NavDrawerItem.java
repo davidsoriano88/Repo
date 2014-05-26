@@ -1,9 +1,12 @@
 package model;
 
+import android.widget.EditText;
+
 public class NavDrawerItem {
 	
 	private String title;
 	private String count = "0";
+	
 	// boolean to set visiblity of the counter
 	private boolean isCounterVisible = false;
 	
@@ -12,11 +15,13 @@ public class NavDrawerItem {
 	public NavDrawerItem(String title){
 		this.title = title;
 	}
+
 	
-	public NavDrawerItem(String title, boolean isCounterVisible, String count){
+	public NavDrawerItem(String title,boolean isCounterVisible, String count){
 		this.title = title;
 		this.isCounterVisible = isCounterVisible;
 		this.count = count;
+		
 	}
 	
 	public String getTitle(){

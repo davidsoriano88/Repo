@@ -31,6 +31,7 @@
             android:choiceMode="singleChoice"
             android:background="#FFFFFF"/>
 
+
 	</android.support.v4.widget.DrawerLayout>
 
 
@@ -64,8 +65,6 @@
     	     android:text="Medium Text"
     	     android:textAppearance="?android:attr/textAppearanceMedium"
     	     android:textSize="15sp" />
-
-    	
 
 </FrameLayout>
 
