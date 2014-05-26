@@ -289,6 +289,7 @@ public class Map extends ActionBarActivity {
 	        case KeyEvent.KEYCODE_MENU:
 	        	drawerOpener();
         		return true;
+	        
 	    }
 
 	    return super.onKeyDown(keycode, e);
