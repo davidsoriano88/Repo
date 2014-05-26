@@ -294,7 +294,7 @@ public class Map extends ActionBarActivity {
 	    return super.onKeyDown(keycode, e);
 	}
 	
-	//comprueba si el menu est√° abierto o cerrado y lo abre o cierra en consecuencia:
+	//comprueba si el menu est· abierto o cerrado y lo abre o cierra en consecuencia:
 	public void drawerOpener(){
 		if(mDrawerLayout.isDrawerOpen(mDrawerList)){
 		mDrawerLayout.closeDrawer(mDrawerList);}

@@ -89,12 +89,10 @@ public class ViewOffer extends ActionBarActivity {
 				tvDescription.setText("Descripción: "+offer.getString("description"));
 				tvNumLike.setText(offer.getNumber("numlike").toString());
 				// Paso las fechas a los edittexts
-				SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
-				String deadline = format1.format(offer.getDay("deadline")
-						.getTime());
+				SimpleDateFormat datef = new SimpleDateFormat("dd-MM-yyyy");
+				String deadline = datef.format(offer.getDay("deadline").getTime());
 				tvDeadline.setText("Válido hasta: "+deadline);
-				String creation = format1.format(offer
-						.getDate("offercreationdate"));
+				String creation = datef.format(offer.getDate("offercreationdate"));
 				tvCreationDate.setText("Fecha de creación: "+creation);
 				// Tengo que leer el objeto commerce para poder acceder a sus datos
 				Backbeam.read("commerce", offer.getObject("commerce").getId(), new ObjectCallback() {
@@ -137,7 +135,6 @@ public class ViewOffer extends ActionBarActivity {
 			public void success(List<BackbeamObject> companies, int totalCount,
 					boolean fromCache) {
 				for (BackbeamObject company : companies) {
-					System.out.println("dentro de success foto");
 					BackbeamObject fileObject = company.getObject("file");
 					TreeMap<String, Object> options = new TreeMap<String, Object>();
 					options.put("width", 160);
@@ -156,9 +153,7 @@ public class ViewOffer extends ActionBarActivity {
 					try {
 						Bitmap mIcon_val = BitmapFactory.decodeStream(newurl
 								.openConnection().getInputStream());
-						util.log("icono cargado");
 						ivPhoto.setImageBitmap(mIcon_val);
-						// image.setImageBitmap(mIcon_val);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -206,7 +201,6 @@ public class ViewOffer extends ActionBarActivity {
 					@Override
 					public void onClick(DialogInterface dialog, int item) {
 						// Do something with the selection
-
 						switch (item) {
 						case 0:
 							insertReport(idofferparameter, "incorrecto");
@@ -227,9 +221,6 @@ public class ViewOffer extends ActionBarActivity {
 
 	// METODO PARA INSERTAR LIKE
 		private void insertLike(final String idoffer, final String idcommerce) {
-			//CONTADOR DE TIEMPO
-			final long start = Calendar.getInstance().getTimeInMillis();
-			
 			// CREO OBJETOS
 			btnLike.setEnabled(false);
 			
@@ -287,8 +278,7 @@ public class ViewOffer extends ActionBarActivity {
 												// Consulto los LIKE cuyo STATUSLIKE == "1".
 												query.setQuery("where statuslike = ? and offer is ? ",
 														"0", idoffer);
-												// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
-												// "1");
+												// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,"1");
 												System.out.println("Tras la consulta del success");
 												query.fetch(100, 0, new FetchCallback() {
 													@Override
@@ -306,7 +296,6 @@ public class ViewOffer extends ActionBarActivity {
 																System.out.println(object
 																		.getNumber("numlike"));
 																tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
-																System.out.println("tarda en ejecutarse 1: "+(Calendar.getInstance().getTimeInMillis()-start));
 																btnLike.setEnabled(true);
 															}
 														});
@@ -321,9 +310,6 @@ public class ViewOffer extends ActionBarActivity {
 						});
 						}
 					});
-			
-			
-			System.out.println("tarda en ejecutarse 2: "+(Calendar.getInstance().getTimeInMillis()-start));
 		}
 
 	// METODO PARA OBTENER LA UDID DEL SMARTPHONE

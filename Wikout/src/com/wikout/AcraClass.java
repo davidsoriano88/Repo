@@ -1,5 +1,6 @@
 package com.wikout;
 
+
 import org.acra.ACRA;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
