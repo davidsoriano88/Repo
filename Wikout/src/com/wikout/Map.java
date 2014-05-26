@@ -77,7 +77,7 @@ public class Map extends ActionBarActivity {
     EditText etSearch;
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
-    ArrayList<String>placeName,idcommerce,idMarker;
+    ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idMarker=new ArrayList<String>();
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +139,7 @@ public class Map extends ActionBarActivity {
 				drawerOpener();
 					switch(pos){
 					case 0: break;
-					case 1: 	searchResult=null;
+					case 1: 	
 							final CharSequence[] items = { "Ocio",
 							"Servicios", "Compras", "Otros"};
 
@@ -156,9 +156,9 @@ public class Map extends ActionBarActivity {
 							case 1:
 								util.showToast(context, "Servicios");filter="servicios"; break;
 								
-							case 3:
+							case 2:
 								util.showToast(context, "Compras");filter="compras"; break;
-							case 4:
+							case 3:
 								util.showToast(context, "Otros");filter="otros"; break;		
 							}
 							tvFilterText.setText("Filtrado por: " + filter);
@@ -169,6 +169,7 @@ public class Map extends ActionBarActivity {
 					});
 					AlertDialog alert = builder.create();
 					alert.show();
+					searchResult=null;
 						break;
 					case 2: util.showInfoDialog(context, "Wikout", "Aplicacion desarrollada por Uptimiza. 2014"); break;
 						
@@ -192,7 +193,7 @@ public class Map extends ActionBarActivity {
 	              tvFilterText.setText("Buscando por: " + etSearch.getText());
 					getSupportActionBar().setTitle("Resultados");
 					filterVisible(true);
-					//new MyData().execute();
+					new MyData().execute();
 	              drawerOpener();
 	              return true;
 	            }
@@ -208,6 +209,7 @@ public class Map extends ActionBarActivity {
 				// request your webservice here. Possible use of AsyncTask and
 				// ProgressDialog
 				filter=null;
+				searchResult=null;
 				filterVisible(false);
 				new MyData().execute();
 				getSupportActionBar().setTitle("Wikout");
@@ -377,6 +379,7 @@ public class Map extends ActionBarActivity {
 		
 		public GetPlaces(String places) {
 			util.log("recorremos getplaces");
+			
 		this.places = places;
 		}
 
@@ -428,10 +431,11 @@ public class Map extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
+			util.log("filtro: "+filter+" busqueda: "+searchResult);
 			if(filter==null&&searchResult==null){
 			standardQuery();
 			}else if(searchResult==null){
-			filterQuery(filter);}else{ /*commercesOnMap(searchResult);*/}
+			filterQuery(filter);}else{ commercesOnMap(searchResult);}
 		}
 
 		@Override
@@ -469,11 +473,11 @@ public class Map extends ActionBarActivity {
 							int totalCount, boolean fromCache) {
 						
 						map.clear();
-						placeName.clear();						
+						/*placeName.clear();						
 						idcommerce.clear();
 						idMarker.clear();
 						
-						/*Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
+						Bitmap.Config conf = Bitmap.Config.ARGB_8888; 
 						Bitmap bmp = Bitmap.createBitmap(200, 50, conf); 
 						Canvas canvas = new Canvas(bmp);
 						Paint paint = new Paint();
@@ -568,7 +572,7 @@ public class Map extends ActionBarActivity {
 		idcommerce.clear();
 		idMarker.clear();
 
-		
+		util.log("fff ha entrado en la funcion busqueda(1)");
 		Query queryCommerce = new Query("commerce");
 		queryCommerce.setQuery("where placename like ?", parameter)
 				.fetch(100, 0, new FetchCallback() {
@@ -583,6 +587,7 @@ public class Map extends ActionBarActivity {
 								&& commerce.getLocation("placelocation").getLongitude() > longitudeSW) {
 								// METO LOS IDCOMMERCE EN UN ARRAY
 								idcommerce.add(commerce.getId());
+								util.log("fff ha entrado en el success busqueda(2)");
 							}
 						}
 					}
@@ -594,6 +599,7 @@ public class Map extends ActionBarActivity {
 			@Override
 			public void success(List<BackbeamObject> objects,
 					int totalCount, boolean fromCache) {
+				util.log("fff ha entrado en el success oferta(3)");
 				System.out.println("Numero de ofertas con '"+parameter+"': "+totalCount);
 				for (BackbeamObject offer : objects) {
 					BackbeamObject commerce = offer.getObject("commerce");
@@ -604,6 +610,7 @@ public class Map extends ActionBarActivity {
 								// COMPRUEBO SI EL ID YA ESTA DENTRO DEL ARRAY
 								if(!idcommerce.contains(commerce.getId())){
 									idcommerce.add(commerce.getId());
+									util.log("fff comprueba bien (4)");
 								}
 							}
 						}
@@ -614,7 +621,8 @@ public class Map extends ActionBarActivity {
 					@Override
 					public void success(final BackbeamObject commerceMark) {
 						//CREAR MARCADOR
-						if(commerceMark.getString("category").equals(filter)==true){
+						util.log("fff creamos marcadores (5)");
+						
 							util.log("1"+commerceMark.getId());
 							placeName.add(commerceMark.getString("placename"));
 							idcommerce.add(commerceMark.getId());
@@ -686,7 +694,7 @@ public class Map extends ActionBarActivity {
 								}
 							});
 
-						}
+						
 					}});
 				}
 				
@@ -786,7 +794,7 @@ public class Map extends ActionBarActivity {
 								}
 							});
 
-						}
+						}//******
 					}}
 				});
 	}
@@ -822,7 +830,4 @@ public class Map extends ActionBarActivity {
 		    super.onRestart();
 		    new MyData().execute();
 		    }
-		
-	
-
 }
