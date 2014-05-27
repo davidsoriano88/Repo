@@ -581,8 +581,11 @@ public class Map extends ActionBarActivity {
 		final Intent info = new Intent(context,
 				OfferList.class);
 		map.clear();
-		placeName.clear();						
+		//Nombre Comercio
+		placeName.clear();
+		//Id Comercio
 		idcommerce.clear();
+		//Id Marcador
 		idMarker.clear();
 
 		util.log("fff ha entrado en la funcion busqueda(1)");
@@ -637,8 +640,7 @@ public class Map extends ActionBarActivity {
 						util.log("fff creamos marcadores (5)");
 						
 							util.log("1"+commerceMark.getId());
-							placeName.add(commerceMark.getString("placename"));
-							idcommerce.add(commerceMark.getId());
+
 							
 							switch(commerceMark.getString("category")){
 							case("ocio"):
@@ -675,6 +677,7 @@ public class Map extends ActionBarActivity {
 							break;
 							default: break;
 							}
+							placeName.add(commerceMark.getString("placename"));
 							idMarker.add(markerBB.getId());
 							util.log("2"+commerceMark.getId());
 							map.setOnMarkerClickListener(new OnMarkerClickListener() {
@@ -717,6 +720,7 @@ public class Map extends ActionBarActivity {
 
 
 }
+	
 	public void filterQuery(final String filter){
 		final Intent info = new Intent(context,
 				OfferList.class);
