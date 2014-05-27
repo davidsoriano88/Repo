@@ -26,7 +26,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -78,6 +80,7 @@ public class Map extends ActionBarActivity {
     ImageButton filterButton;
     EditText etSearch;
     DrawerLayout mDrawerLayout;
+    ActionBarDrawerToggle prueba;
     ListView mDrawerList;
     ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idcommerceonmap=new ArrayList<String>(),idMarker=new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
@@ -89,7 +92,7 @@ public class Map extends ActionBarActivity {
 	 supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	 setContentView(R.layout.fragment_main);
 	 context=this;
-
+	
      util.projectData(context);
      initUI();  
  	
@@ -130,9 +133,9 @@ public class Map extends ActionBarActivity {
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	
-	    //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    //getSupportActionBar().
-	    
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    getSupportActionBar().setDisplayShowCustomEnabled(true);
+	 
 	    filterView = (ImageView) findViewById(R.id.filterText);
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
 	    filterButton = (ImageButton) findViewById(R.id.filterButton);
