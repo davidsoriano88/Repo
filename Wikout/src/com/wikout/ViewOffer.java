@@ -30,6 +30,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -61,6 +62,7 @@ public class ViewOffer extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_view_offer);
 		context=this;
 		util.projectData(context);
@@ -119,7 +121,7 @@ public class ViewOffer extends ActionBarActivity {
 						//Habilito el boton para que el usuario pueda hacer like.
 						btnLike.setEnabled(true);
 						}});
-			}
+				setSupportProgressBarIndeterminateVisibility(false);}
 		});
 
 	}
@@ -297,6 +299,7 @@ public class ViewOffer extends ActionBarActivity {
 																		.getNumber("numlike"));
 																tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
 																btnLike.setEnabled(true);
+																setSupportProgressBarIndeterminateVisibility(false);
 															}
 														});
 													}
@@ -473,13 +476,14 @@ public class ViewOffer extends ActionBarActivity {
 			loadData(idofferparameter);
 			queryLike(idofferparameter);
 			getPhoto(idcommerceparameter);
+			
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			util.showProgressDialog(context);
+			setSupportProgressBarIndeterminateVisibility(true);
 			util.log("mostramos dialog mydata");
 		}
 
@@ -499,13 +503,14 @@ public class ViewOffer extends ActionBarActivity {
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
 			insertLike(idofferparameter, idcommerceparameter);
+			
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			util.showProgressDialog(context);
+			setSupportProgressBarIndeterminateVisibility(true);
 			util.log("mostramos dialog mydata");
 		}
 
