@@ -85,7 +85,7 @@ public class OfferList extends ListActivity {
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			viewHolder holder;
 			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.list_activity, null);
+				convertView = inflater.inflate(R.layout.offer_list_item, null);
 				holder = new viewHolder();
 
 				convertView.setTag(holder);
@@ -170,7 +170,7 @@ public class OfferList extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.listview_activity);
+		setContentView(R.layout.offer_list);
 		util.projectData(con);
 		initUi();
 		

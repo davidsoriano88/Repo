@@ -63,7 +63,7 @@ public class ViewOffer extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.activity_view_offer);
+		setContentView(R.layout.view_offer);
 		context=this;
 		util.projectData(context);
 		//util.showProgressDialog(context, 1900);

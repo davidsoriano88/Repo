@@ -74,7 +74,7 @@ public class InsertCommerce extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_insert);
+		setContentView(R.layout.insert_offer);
 		util.projectData(context);
 		initUI();
 		
@@ -150,7 +150,7 @@ public class InsertCommerce extends Activity {
 		AlertDialog.Builder dialogLocation = new AlertDialog.Builder(this);
 		dialogLocation.setTitle("Ubicacion");
 		dialogLocation.setMessage("Elija la direccion:");
-		dialogLocation.setCancelable(false);
+		dialogLocation.setCancelable(true);
 		dialogLocation.setPositiveButton("Ubicacion actual",
 				new DialogInterface.OnClickListener() {
 					@Override
