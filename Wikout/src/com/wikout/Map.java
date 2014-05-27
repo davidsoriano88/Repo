@@ -179,7 +179,8 @@ public class Map extends ActionBarActivity {
 				}});
 	    
 	    etSearch.setOnKeyListener(new OnKeyListener() {
-	        public boolean onKey(View v, int keyCode, KeyEvent event) {
+	        @Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
 	            // If the event is a key-down event on the "enter" button
 	            if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
 	                (keyCode == KeyEvent.KEYCODE_ENTER)) {
