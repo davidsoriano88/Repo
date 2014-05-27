@@ -710,9 +710,10 @@ public class Map extends ActionBarActivity {
 							map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 								@Override
 								public void onInfoWindowClick(Marker marker) {
-									util.log("4"+commerceMark.getId()+"   "+ commerceMark.getString("placename"));
-									for(int i=0;i<idMarker.size();i++){
-									if(idMarker.get(i).contains(marker.getId())){
+									
+									for(int i=0;i<placeName.size();i++){
+									if(marker.getTitle().equals(placeName.get(i))){
+									finalId=idcommerce.get(i);
 									util.log("titulo marcador mydata pulsado, id marcador:"+marker.getId()+","+marker.getTitle());
 									info.putExtra("id", finalId);
 									startActivity(info);
