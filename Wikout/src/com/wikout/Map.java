@@ -84,7 +84,7 @@ public class Map extends ActionBarActivity {
     EditText etSearch;
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
-    ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idMarker=new ArrayList<String>();
+    ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idcommerceonmap=new ArrayList<String>(),idMarker=new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
 	protected AsyncTask<Void, Integer, Boolean> asyncBackbeam;
     
@@ -608,6 +608,8 @@ public class Map extends ActionBarActivity {
 		idcommerce.clear();
 		//Id Marcador
 		idMarker.clear();
+		//ID comercios encuadrados
+		idcommerceonmap.clear();
 
 		util.log("fff ha entrado en la funcion busqueda(1)");
 		Query queryCommerce = new Query("commerce");
@@ -660,7 +662,7 @@ public class Map extends ActionBarActivity {
 						//CREAR MARCADOR
 						util.log("fff creamos marcadores (5)");
 						
-							util.log("1"+commerceMark.getId());
+							util.log("1 "+commerceMark.getId());
 
 							
 							switch(commerceMark.getString("category")){
@@ -699,6 +701,7 @@ public class Map extends ActionBarActivity {
 							default: break;
 							}
 							placeName.add(commerceMark.getString("placename"));
+							idcommerceonmap.add(commerceMark.getId());
 							idMarker.add(markerBB.getId());
 							util.log("2 "+commerceMark.getId()+"   "+ commerceMark.getString("placename"));
 							map.setOnMarkerClickListener(new OnMarkerClickListener() {
@@ -707,7 +710,7 @@ public class Map extends ActionBarActivity {
 									marker.showInfoWindow();
 									for(int i=0;i<placeName.size();i++){
 										if(marker.getTitle().equals(placeName.get(i))){
-											finalId=idcommerce.get(i);
+											finalId=idcommerceonmap.get(i);
 											break;
 										}
 									}
@@ -723,7 +726,7 @@ public class Map extends ActionBarActivity {
 									
 									for(int i=0;i<placeName.size();i++){
 									if(marker.getTitle().equals(placeName.get(i))){
-									finalId=idcommerce.get(i);
+									finalId=idcommerceonmap.get(i);
 									util.log("titulo marcador mydata pulsado, id marcador:"+marker.getId()+","+marker.getTitle());
 									info.putExtra("id", finalId);
 									startActivity(info);
