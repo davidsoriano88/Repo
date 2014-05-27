@@ -2,6 +2,7 @@ package com.wikout;
 
 import utils.Util;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.location.Criteria;
@@ -81,12 +82,14 @@ public class Mapv2 extends ActionBarActivity {
 				
 		
 		///establecemos el paso a la siguiente pantalla y le pasamos valores:
-		/*Intent insert = new Intent(context, InsertCommerce.class);
-		insert.putExtra("latiMain", point.latitude);
+		Intent commerceList = new Intent(context, CommerceList.class);
+		commerceList.putExtra("pointlat", point.latitude);
+		commerceList.putExtra("pointlon", point.longitude);
+		/*insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
-		insert.putExtra("enter", enter);
-		startActivity(insert);*/
+		insert.putExtra("enter", enter);*/
+		startActivity(commerceList);
 			}
 		});
 
@@ -159,7 +162,7 @@ public class Mapv2 extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
+		inflater.inflate(R.menu.menu2, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

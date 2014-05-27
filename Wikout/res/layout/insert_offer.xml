@@ -57,25 +57,19 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/btnInsertDeadline"
         android:layout_marginLeft="21dp"
+        android:layout_marginTop="20dp"
+        android:editable="false"
         android:ems="10"
-        android:hint="Nombre" />
+        android:hint="Nombre"
+        android:visibility="invisible" />
 
-    <TextView
-        android:id="@+id/tvInsertLocation"
+    <Button
+        android:id="@+id/btnLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/btnInsertOk"
         android:layout_alignLeft="@+id/etInsertPlacename"
-        android:layout_centerVertical="true"
-        android:text="[ubicacion]" />
-
-    <Spinner
-        android:id="@+id/spnInsertCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/tvInsertLocation"
-        android:layout_marginTop="15dp"
-        android:entries="@array/categorias"
-        android:prompt="@string/categorias_prompt" />
+        android:layout_marginBottom="28dp"
+        android:text="Comercio" />
 
 </RelativeLayout>

@@ -156,7 +156,7 @@ public class InsertCommerce extends Activity {
 	}
 	public void addListenerOnSpinnerItemSelection() {
 
-		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory);
+		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory1);
 		spnCategory.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 	}

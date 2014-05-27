@@ -9,10 +9,5 @@
         android:icon="@drawable/addicon"
         android:title="@string/hello_world"/>
     
-    <item
-        android:id="@+id/menu_load"
-        android:orderInCategory="100"
-        android:showAsAction="always"
-        android:icon="@drawable/initicon"
-        android:title="@string/oferta"/>
+
 </menu>

@@ -279,9 +279,7 @@ public class Map extends ActionBarActivity {
 			insert.putExtra("enter", enter);
 			startActivity(insert);
             return true;
-        case R.id.menu_load:
-        	util.showToast(context, "clik");
-        	return true;
+        
         	case android.R.id.home: 
         		drawerOpener();
         		return true;

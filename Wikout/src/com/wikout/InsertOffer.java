@@ -39,11 +39,11 @@ public class InsertOffer extends Activity {
 	
 	Double latitude, longitude;
 	int enter;
-	TextView etLocation;
+
 	String position;
 	ImageView ivPhoto;
 	EditText etDescription,etPlacename;
-	Button btnOk,dateLimit;
+	Button btnOk,dateLimit,btnLocation;
 	Spinner spnCategory;
 
 	// Otras variables
@@ -86,10 +86,10 @@ public class InsertOffer extends Activity {
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename);
 		btnOk = (Button) findViewById(R.id.btnInsertOk);
 		addListenerOnButton();
-		addListenerOnSpinnerItemSelection();
+	
 		setCurrentDateOnView();
 
-		etLocation = (TextView) findViewById(R.id.tvInsertLocation);
+		btnLocation = (Button) findViewById(R.id.btnLocation);
 		Bundle bundle = getIntent().getExtras();
 		enter = bundle.getInt("enter");
 		if (enter == 1) {
@@ -99,14 +99,14 @@ public class InsertOffer extends Activity {
 			util.log( latitude + "," + longitude);
 			position = String.valueOf(latitude) + ","
 					+ String.valueOf(longitude);
-			etLocation.setText(position);
+			btnLocation.setText(position);
 
 		} 
 		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
-		etLocation.setTextColor(Color.BLUE);
-		etLocation.setOnClickListener(new View.OnClickListener() {
+		
+		btnLocation.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -121,16 +121,13 @@ public class InsertOffer extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				if (etLocation.getText().equals("[ubicacion]")) {
-					dialogGetLocation();
-				} else {
-					if(etDescription.getText().length()==0 | etPlacename.getText().length()==0){
+				
+					if(etDescription.getText().length()==0){
 						util.log("aceptar1");
 					dialogIncompleteFields();
 					
 
-					}else{
-					if (existPhoto == 1) {
+					}else if(existPhoto == 1){
 						//Obtener Datos del INTENT
 						//insertNewOffer(actualDate(), idcommerce);
 						finish();
@@ -138,12 +135,12 @@ public class InsertOffer extends Activity {
 						imageClicked(v);
 					}
 					
-				}
+				
 				}
 
-			}
+			});
 
-		});
+	
  
 	 }
 
@@ -161,8 +158,12 @@ public class InsertOffer extends Activity {
 						latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefs.getString("longpos", "no id");
 						longitude = Double.parseDouble(myLongitude);
-						etLocation.setText(latitude +","+longitude);
-
+						//btnLocation.setText(latitude +","+longitude);
+						util.showToast(context,latitude+","+longitude);
+						Intent listCommerce = new Intent(context, CommerceList.class);
+						listCommerce.putExtra("userlat", latitude);
+						listCommerce.putExtra("userlon", longitude);
+						startActivity(listCommerce);
 					}
 
 				});
@@ -170,10 +171,12 @@ public class InsertOffer extends Activity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
-						Bundle bundle = getIntent().getExtras();
+						/*Bundle bundle = getIntent().getExtras();
 						latitude = bundle.getDouble("latiMain");
-						longitude = bundle.getDouble("longiMain");
-						finish();
+						longitude = bundle.getDouble("longiMain");*/
+						Intent mapv2 = new Intent(context, Mapv2.class);
+						startActivity(mapv2);
+						
 					}
 				});
 		dialogLocation.show();
@@ -195,12 +198,7 @@ public class InsertOffer extends Activity {
 		
 		dialogIncomplete.show();
 	}
-	public void addListenerOnSpinnerItemSelection() {
-
-		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory);
-		spnCategory.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-
-	}
+	
 
 	private void setCurrentDateOnView() {
 
@@ -414,4 +412,3 @@ public class InsertOffer extends Activity {
 		return createdate;
 	}
 }
-
