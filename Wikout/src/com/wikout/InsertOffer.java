@@ -131,7 +131,8 @@ public class InsertOffer extends Activity {
 
 					}else{
 					if (existPhoto == 1) {
-						insertPhoto();
+						//Obtener Datos del INTENT
+						//insertNewOffer(actualDate(), idcommerce);
 						finish();
 					} else {
 						imageClicked(v);
@@ -269,86 +270,65 @@ public class InsertOffer extends Activity {
 
 	
 	// METODO PARA INSERTAR OFERTA
-		private void insertOffer(Date createdate, final BackbeamObject commerce) {
-			//Creo el objeto "offer"
-			final BackbeamObject offer = new BackbeamObject("offer");
-			//inserto los valores de "offer"
-			offer.setString("description", etDescription.getText().toString());
-			offer.setDay("deadline", deadline);
-			offer.setString("udid", getId());
-			offer.setString("offerstatus", "ok");
-			offer.setDate("offercreationdate", createdate);
-			offer.setObject("commerce", commerce);
-			offer.setNumber("numlike", 0);
-			offer.save(new ObjectCallback() {
-				@Override
-				public void success(BackbeamObject offer) {
-					System.out.println("foto subida con éxito!! " + offer.getId());
-				
-				}
-			});
-		}
-	// METODO PARA SUBIR FOTO
-		private void insertPhoto() {
-			//Extraigo la fecha actual
-			Calendar calendar = new GregorianCalendar();
-			final Date createdate = calendar.getTime();
-			//Creo el objeto commerce
-			final BackbeamObject objectphoto = new BackbeamObject("file");
-			//Hay que pasarle el objeto de tipo file "foto"
-			objectphoto.uploadFile(new FileUpload(photo, "image/jpg"),
-					new ObjectCallback() {
-						@Override
-						public void success(BackbeamObject photo) {
-							System.out.println("success!! " + photo.getId());
-							photo.setString("idphoto", photo.getId());
-							photo.setDate("uploaddate", createdate);
-							photo.save(new ObjectCallback() {
-								@Override
-								public void success(BackbeamObject objetofoto) {
-									System.out.println("foto subida con éxito!! "
-											+ objetofoto.getId());
-									insertCommerce(objetofoto);
-								}
-							});
-						}
-
-						@Override
-						public void failure(BackbeamException exception) {
-							System.out.println("failure!");
-							exception.printStackTrace();
-						}
-					});
-		}
+	protected void insertNewOffer(final Date createdate, final String idcommerce) {
+		//Creo el objeto "offer"
+		final BackbeamObject offer = new BackbeamObject("offer");
+				//Sacar idcommerce del bundle al volver a esta activity
+		final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
+		//inserto los valores de "offer"
+		offer.setString("description", etDescription.getText().toString());
+		offer.setDay("deadline", deadline);
+		offer.setString("udid", getId());
+		offer.setString("offerstatus", "ok");
+		offer.setDate("offercreationdate", createdate);
+		offer.setObject("commerce", commerce);
+		offer.setNumber("numlike", 0);
+		//TODAVIA NO CONTEMPLO LIKE NI REPORT YA QUE SE ACABA DE CREAR
+		// offer.addObject("like");
+		// offer.addObject("report");
 		
-	// INSERTAR NUEVO "COMMERCE"
-		private void insertCommerce(BackbeamObject objectphoto) {
-			locationbm = new Location(latitude, longitude);
-			//Extraigo la fecha actual
-			Calendar calendar = new GregorianCalendar();
-			final Date createdate = calendar.getTime();
-			//Creo el objeto commerce
-			final BackbeamObject commerce = new BackbeamObject("commerce");
-			//Relleno los campos del objeto
-			commerce.setString("placename", etPlacename.getText().toString());
-			commerce.setLocation("placelocation", locationbm);
-			commerce.setString("category",(String) spnCategory.getSelectedItem() );
-			commerce.setDate("commercecreationdate", createdate);
-			commerce.setNumber("numbubble", 0);
-			commerce.setString("udid", getId());
-			commerce.setObject("file", objectphoto);
-			//Guardo el objeto
-			commerce.save(new ObjectCallback() {
-				@Override
-				public void success(BackbeamObject object) {
-					
-					//Llamo al metodo insertOffer para enlazarlo con la oferta
-					insertOffer(createdate, object);
+		offer.setNumber("numlike", 0);
+		offer.save(new ObjectCallback() {
+			@Override
+			public void success(BackbeamObject offer) {
+				System.out.println("foto subida con éxito!! " + offer.getId());
+				if(photo!=null){
+				insertOfferPhoto(createdate, offer);}
+				
+			}
+		});
+	}
+	
+	// METODO PARA SUBIR FOTO de offer
+	protected void insertOfferPhoto(final Date createdate,
+			final BackbeamObject offer) {
+		final BackbeamObject objectPhoto = new BackbeamObject("file");
+		//Hay que pasarle el objeto de tipo file "foto"
+		objectPhoto.uploadFile(new FileUpload(photo, "image/jpg"),
+				new ObjectCallback() {
+					@Override
+					public void success(BackbeamObject photo) {
+						System.out.println("success!! " + photo.getId());
+						photo.setString("idphoto", photo.getId());
+						photo.setDate("uploaddate", createdate);
+						photo.setObject("offer", offer);
+						photo.save(new ObjectCallback() {
+							@Override
+							public void success(BackbeamObject objetofoto) {
+								System.out.println("foto subida con éxito!! "
+										+ objetofoto.getId());
+							}
+						});
+					}
 
-				}
-			});
-
-		}
+					@Override
+					public void failure(BackbeamException exception) {
+						System.out.println("failure!");
+						exception.printStackTrace();
+					}
+				});
+	}
+		
 
 
 	private String getId() {
@@ -427,6 +407,11 @@ public class InsertOffer extends Activity {
 
 		}
 	}
-
+	// METODO PARA OBTENER LA FECHA ACTUAL
+	protected Date actualDate(){
+		Calendar calendar = new GregorianCalendar();
+		final Date createdate = calendar.getTime();
+		return createdate;
+	}
 }
 
