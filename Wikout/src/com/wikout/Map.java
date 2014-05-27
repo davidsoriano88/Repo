@@ -37,6 +37,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -88,6 +89,7 @@ public class Map extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 	 super.onCreate(savedInstanceState);
+	 supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	 setContentView(R.layout.fragment_main);
 	 context=this;
 
@@ -733,6 +735,9 @@ public class Map extends ActionBarActivity {
 	public void filterQuery(final String filter){
 		final Intent info = new Intent(context,
 				OfferList.class);
+		placeName.clear();
+		idcommerce.clear();
+		idMarker.clear();
 		Query query = new Query("commerce");
 		query.bounding("placelocation", latitudeSW, longitudeSW,
 				latitudeNE, longitudeNE, 40, new FetchCallback() {
@@ -742,16 +747,13 @@ public class Map extends ActionBarActivity {
 							int totalCount, boolean fromCache) {
 						
 						map.clear();
-						final ArrayList<String>placeName=new ArrayList<String>();
-						final ArrayList<String>idData=new ArrayList<String>();
-						final ArrayList<String>idMarker = new ArrayList<String>();
 						
 						util.log("map clear mydata");
 						for (final BackbeamObject object : objects) {
 						if(object.getString("category").equals(filter)==true){
 							util.log("1"+object.getId());
 							placeName.add(object.getString("placename"));
-							idData.add(object.getId());
+							idcommerce.add(object.getId());
 							
 							switch(object.getString("category")){
 							case("ocio"):
@@ -796,7 +798,7 @@ public class Map extends ActionBarActivity {
 									marker.showInfoWindow();
 									for(int i=0;i<placeName.size();i++){
 										if(marker.getTitle().equals(placeName.get(i))){
-											finalId=idData.get(i);
+											finalId=idcommerce.get(i);
 											break;
 										}
 									}
