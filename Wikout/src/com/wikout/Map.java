@@ -8,6 +8,8 @@ import io.backbeam.Query;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import model.NavDrawerItem;
 import utils.Place;
@@ -100,7 +102,8 @@ public class Map extends ActionBarActivity {
 
 	public void initUI(){
 		util.showProgressDialog(context);
-		
+		//setSupportProgressBarIndeterminateVisibility(true);
+        
 		 
 	     //load slide menu items
 		String[] navMenuTitles = getResources().getStringArray(R.array.options);     
@@ -247,7 +250,7 @@ public class Map extends ActionBarActivity {
 		startActivity(insert);*/
 			}
 		});
-		
+
 		
 		viewPort();	
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
@@ -264,15 +267,13 @@ public class Map extends ActionBarActivity {
 				//start both asyncTask:
 				 asyncBackbeam = new MyData().execute();
 				 asyncPlaces = new GetPlaces("").execute();
+				 
 			}
 		});	
+		
 	}
 	
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		util.showToast(context,"eoooo");
-		return super.onTouchEvent(event);
-	}
+	
 
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -423,13 +424,15 @@ public class Map extends ActionBarActivity {
 		.fromResource(R.drawable.pinplaces))
 		.snippet(result.get(i).getVicinity()));
 		}
+		//setSupportProgressBarIndeterminateVisibility(false);
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre-execute places");
-			util.showProgressDialog(context);	
+			//util.showProgressDialog(context);	
+			//setSupportProgressBarIndeterminateVisibility(true);
 		}
 
 		@Override
@@ -454,20 +457,25 @@ public class Map extends ActionBarActivity {
 
 		@Override
 		protected void onPostExecute(Boolean result) {
+			
 			util.log("recorremos post execute mydata");
 			util.log("filtro: "+filter+" busqueda: "+searchResult);
 			if(filter==null&&searchResult==null){
 			standardQuery();
 			}else if(searchResult==null){
 			filterQuery(filter);}else{ commercesOnMap(searchResult);}
+			
+			  
+			
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			util.log("recorremos pre execute");
+			/*util.log("recorremos pre execute");
 			util.showProgressDialog(context);
-			util.log("mostramos dialog mydata");
+			util.log("mostramos dialog mydata");*/
+			setSupportProgressBarIndeterminateVisibility(true);
 		}
 
 		@Override
@@ -585,8 +593,10 @@ public class Map extends ActionBarActivity {
 							});
 
 						}
+						setSupportProgressBarIndeterminateVisibility(false);
 					}
 				});
+		
 	}
 	private void commercesOnMap(final String parameter) {
 		final Intent info = new Intent(context,
