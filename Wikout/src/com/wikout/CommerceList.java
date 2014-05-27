@@ -7,7 +7,6 @@ import io.backbeam.Query;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import utils.Util;
 import android.app.Activity;
 import android.content.Context;
@@ -20,37 +19,42 @@ import android.widget.ListView;
 
 public class CommerceList extends Activity {
 Context context;
+ListView listview;
 final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
 final ArrayList<String> listIdCommerces = new ArrayList<String>();
+final Util util = new Util();
 	  @Override
 	  protected void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.commerce_list);
 	    context= this;
-	    final Util util = new Util();
+	    util.projectData(context);
+	    
 	    
 	    Bundle location = getIntent().getExtras();
-	    getBoundingLocation(location.getDouble("latiMain"),location.getDouble("longiMain"));
-	    final ListView listview = (ListView) findViewById(R.id.listcommerce);
+	    getBoundingLocation(location.getDouble("pointlat"),location.getDouble("pointlon"));
+	    listview = (ListView) findViewById(R.id.listcommerce);
+	    //listPlacenameCommerces.add("NUEVO");
 	    
-
-	    
-	    
-	    final StableArrayAdapter adapter = new StableArrayAdapter(this,
-	        android.R.layout.simple_list_item_1, listPlacenameCommerces);
-	    listview.setAdapter(adapter);
 
 	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 	      @Override
 	      public void onItemClick(AdapterView<?> parent, final View view,
 	          int position, long id) {
-	    	  
-	    	  util.showToast(context,"click"); 
+	    	  if(position==listPlacenameCommerces.size()-1){
+	    		   util.showToast(context,"click"); 
 	    	  Intent insertCommerce = new Intent(context,InsertCommerce.class);
-	    	  insertCommerce.putExtra("placename", listPlacenameCommerces.get(position));
-	    	  insertCommerce.putExtra("idcommerce", listIdCommerces.get(position));
 	    	  startActivity(insertCommerce);
+	    	  util.showToast(context, listPlacenameCommerces.get(position));
+	    	  }else{
+	    		  Intent insertOffer= new Intent(context, InsertOffer.class);
+		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
+		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
+		    	  startActivity(insertOffer);
+		    	  util.showToast(context, listPlacenameCommerces.get(position));
+	    	  }
+	    	 
 	    	  }
 	      /* final String item = (String) parent.getItemAtPosition(position);
 	        view.animate().setDuration(2000).alpha(0)
@@ -95,6 +99,8 @@ final ArrayList<String> listIdCommerces = new ArrayList<String>();
 	// METODO para localizar comercios cercanos respecto a las coordenadas del
 	// usuario
 	protected void getBoundingLocation(double userlat, double userlon) {
+		
+		util.log("coordenadas: "+userlat+", "+userlon);
 		// Vacio los arraylists
 		listPlacenameCommerces.clear();
 		listIdCommerces.clear();
@@ -116,12 +122,17 @@ final ArrayList<String> listIdCommerces = new ArrayList<String>();
 						// RECORRO CADA COMERCIO
 						for (BackbeamObject commerce : commerces) {
 							// CREAR ITEMS PARA LA LISTA
+							util.log(String.valueOf(totalCount));
 							listPlacenameCommerces.add(commerce
 									.getString("placename"));
 							listIdCommerces.add(commerce.getId());
 
 						}
 						listPlacenameCommerces.add("NUEVO");
+						listIdCommerces.add("null");
+						StableArrayAdapter adapter = new StableArrayAdapter(context,
+						        android.R.layout.simple_list_item_1, listPlacenameCommerces);
+						    listview.setAdapter(adapter);
 					}
 					
 				});
