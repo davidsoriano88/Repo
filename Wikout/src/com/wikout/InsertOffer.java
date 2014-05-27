@@ -1,4 +1,5 @@
 package com.wikout;
+import io.backbeam.Backbeam;
 import io.backbeam.BackbeamException;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FileUpload;
@@ -68,6 +69,9 @@ public class InsertOffer extends ActionBarActivity {
 	public Intent map;
 	Util util= new Util();
 	
+	//Para el bundle de ListCommerce e InsertCommerce
+	String idcommerce;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -126,7 +130,7 @@ public class InsertOffer extends ActionBarActivity {
 
 					}else if(existPhoto == 1){
 						//Obtener Datos del INTENT
-						//insertNewOffer(actualDate(), idcommerce);
+						insertNewOffer(actualDate(), idcommerce);
 						finish();
 					} else {
 						imageClicked(v);
@@ -401,6 +405,25 @@ public class InsertOffer extends ActionBarActivity {
 			existPhoto = 1;
 
 		}
+		if (requestCode==20){
+			Bundle commerceBundle = getIntent().getExtras();
+			idcommerce = commerceBundle.getString("idcommerce");
+			commerceData(idcommerce);
+		}
+	}
+	private void commerceData(String idcommerce) {
+		Backbeam.read("commerce", idcommerce, new ObjectCallback() {
+			@Override
+			public void success(BackbeamObject offer) {
+				offer.getString("placename");
+				offer.getLocation("placelocation");
+				offer.getString("category");
+				//Ocultar botón de comercio
+				//btnLocation.is;
+			}
+				
+			});
+		
 	}
 	// METODO PARA OBTENER LA FECHA ACTUAL
 	protected Date actualDate(){

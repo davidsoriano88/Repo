@@ -55,7 +55,7 @@ final Util util = new Util();
 	    		  Intent insertOffer= new Intent(context, InsertOffer.class);
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
-		    	  startActivity(insertOffer);
+		    	  startActivityForResult(insertOffer, 20);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }
 	    	 
