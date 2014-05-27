@@ -10,10 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import utils.CustomOnItemSelectedListener;
 import utils.Photo;
 import utils.Util;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -23,9 +21,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -33,9 +31,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-public class InsertOffer extends Activity {
+public class InsertOffer extends ActionBarActivity {
 	
 	Double latitude, longitude;
 	int enter;
@@ -86,7 +83,7 @@ public class InsertOffer extends Activity {
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename);
 		btnOk = (Button) findViewById(R.id.btnInsertOk);
 		addListenerOnButton();
-	
+		getSupportActionBar().setTitle("Nueva Oferta");
 		setCurrentDateOnView();
 
 		btnLocation = (Button) findViewById(R.id.btnLocation);

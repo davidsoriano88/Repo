@@ -130,8 +130,8 @@ public class Map extends ActionBarActivity {
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	
-	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    
+	    //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    //getSupportActionBar().
 	    
 	    filterView = (ImageView) findViewById(R.id.filterText);
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);

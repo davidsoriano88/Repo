@@ -13,29 +13,24 @@ import java.util.GregorianCalendar;
 import utils.CustomOnItemSelectedListener;
 import utils.Photo;
 import utils.Util;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-public class InsertCommerce extends Activity {
+public class InsertCommerce extends ActionBarActivity {
 	
 	Double latitude, longitude;
 	String position;
@@ -82,7 +77,7 @@ public class InsertCommerce extends Activity {
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename1);
 		btnOk = (Button) findViewById(R.id.btnInsertOk1);
 		addListenerOnSpinnerItemSelection();
-
+		getSupportActionBar().setTitle("Nuevo Comercio");
 		btnOk.setOnClickListener(new OnClickListener() {
 
 			@Override
