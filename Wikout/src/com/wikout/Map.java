@@ -80,7 +80,7 @@ public class Map extends ActionBarActivity {
     ImageButton filterButton;
     EditText etSearch;
     DrawerLayout mDrawerLayout;
-    ActionBarDrawerToggle prueba;
+    ActionBarDrawerToggle drawerToggle;
     ListView mDrawerList;
     ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idcommerceonmap=new ArrayList<String>(),idMarker=new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
@@ -134,8 +134,19 @@ public class Map extends ActionBarActivity {
 					.findFragmentById(R.id.map)).getMap();
 	
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    getSupportActionBar().setDisplayShowCustomEnabled(true);
-	 
+	    getSupportActionBar().setDisplayUseLogoEnabled(false);
+	    
+	    
+	    drawerToggle = new ActionBarDrawerToggle(
+	            this,                  /* host Activity */
+	            mDrawerLayout,         /* DrawerLayout object */
+	            R.drawable.ic_navigation_drawer,  /* nav drawer image to replace 'Up' caret */
+	            R.string.oferta,  /* "open drawer" description for accessibility */
+	            R.string.hello_world  /* "close drawer" description for accessibility */
+	    );
+	    //prueba.setDrawerIndicatorEnabled(true);
+	    mDrawerLayout.setDrawerListener(drawerToggle);
+	    
 	    filterView = (ImageView) findViewById(R.id.filterText);
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
 	    filterButton = (ImageButton) findViewById(R.id.filterButton);
@@ -271,7 +282,13 @@ public class Map extends ActionBarActivity {
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
 	
-	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+	    super.onPostCreate(savedInstanceState);
+	    // Sync the toggle state after onRestoreInstanceState has occurred.
+	     drawerToggle.syncState();
+	     
+	}
 
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
