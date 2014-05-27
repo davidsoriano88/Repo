@@ -244,7 +244,7 @@ public class ViewOffer extends ActionBarActivity {
 						commerce.setNumber("numbubble", numbubble+1);
 						System.out.println("1");
 						lastlike=false;
-						btnLike.setText(R.string.dislike);
+						
 						
 					} else {
 						like.setString("statuslike", "0");
@@ -252,7 +252,6 @@ public class ViewOffer extends ActionBarActivity {
 						commerce.setNumber("numbubble", numbubble-1);
 						System.out.println("0");
 						lastlike=true;
-						btnLike.setText(R.string.like);
 						
 					}
 							commerce.save(new ObjectCallback() {
@@ -299,7 +298,13 @@ public class ViewOffer extends ActionBarActivity {
 																		.getNumber("numlike"));
 																tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
 																btnLike.setEnabled(true);
+																if (lastlike == true){
+																	btnLike.setText(R.string.like);
+																	setSupportProgressBarIndeterminateVisibility(false);
+																}else{
+																	btnLike.setText(R.string.dislike);
 																setSupportProgressBarIndeterminateVisibility(false);
+																}
 															}
 														});
 													}
