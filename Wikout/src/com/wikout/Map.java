@@ -690,7 +690,7 @@ public class Map extends ActionBarActivity {
 							}
 							placeName.add(commerceMark.getString("placename"));
 							idMarker.add(markerBB.getId());
-							util.log("2"+commerceMark.getId());
+							util.log("2 "+commerceMark.getId()+"   "+ commerceMark.getString("placename"));
 							map.setOnMarkerClickListener(new OnMarkerClickListener() {
 								@Override
 								public boolean onMarkerClick(Marker marker) {
@@ -706,15 +706,15 @@ public class Map extends ActionBarActivity {
 									return true;
 								}
 							});
-							util.log("3"+commerceMark.getId());
+							util.log("3 "+commerceMark.getId() +"   "+ commerceMark.getString("placename"));
 							map.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
 								@Override
 								public void onInfoWindowClick(Marker marker) {
-									util.log("4"+commerceMark.getId());
+									util.log("4"+commerceMark.getId()+"   "+ commerceMark.getString("placename"));
 									for(int i=0;i<idMarker.size();i++){
 									if(idMarker.get(i).contains(marker.getId())){
 									util.log("titulo marcador mydata pulsado, id marcador:"+marker.getId()+","+marker.getTitle());
-									info.putExtra("id", marker.getId());
+									info.putExtra("id", finalId);
 									startActivity(info);
 									}
 								}
