@@ -734,7 +734,7 @@ public class Map extends ActionBarActivity {
 
 						
 					}});
-				}
+				}setSupportProgressBarIndeterminateVisibility(false);
 				
 					}
 
@@ -833,7 +833,8 @@ public class Map extends ActionBarActivity {
 								}
 							});
 						}
-					}}
+					}setSupportProgressBarIndeterminateVisibility(false);}
+					
 				});
 	}
 	
