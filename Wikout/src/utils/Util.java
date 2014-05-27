@@ -40,7 +40,7 @@ public class Util {
 		}
 	public void showProgressDialog(Context context){
 		final ProgressDialog dialog = new ProgressDialog(context);
-		dialog.setCancelable(false);
+		dialog.setCancelable(true);
 		dialog.setMessage("Cargando...");
 		dialog.isIndeterminate();
 		dialog.show();
