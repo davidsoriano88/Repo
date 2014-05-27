@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/ivInsertPhoto1"
+        android:layout_width="fill_parent"
+        android:layout_height="110px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:onClick="imageClicked"
+        android:src="@drawable/initicon" />
+
+    <Button
+        android:id="@+id/btnInsertOk1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="77dp"
+        android:layout_marginLeft="240dp"
+        android:text="Ok" />
+
+    <EditText
+        android:id="@+id/etInsertPlacename1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/ivInsertPhoto1"
+        android:layout_marginLeft="21dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="Nombre" />
+
+    <Spinner
+        android:id="@+id/spnInsertCategory1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/etInsertPlacename1"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="32dp"
+        android:entries="@array/categorias"
+        android:prompt="@string/categorias_prompt" />
+
+</RelativeLayout>

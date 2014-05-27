@@ -35,7 +35,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class InsertCommerce extends Activity {
+public class InsertOffer extends Activity {
 	
 	Double latitude, longitude;
 	int enter;

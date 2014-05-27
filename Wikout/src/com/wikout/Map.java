@@ -279,7 +279,7 @@ public class Map extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.action_next:
-        	Intent insert = new Intent(context, InsertCommerce.class);
+        	Intent insert = new Intent(context, InsertOffer.class);
 			enter = 0;
 			insert.putExtra("enter", enter);
 			startActivity(insert);
