@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -33,6 +34,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.inputmethod.InputMethodManager;
@@ -49,7 +51,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -219,11 +223,11 @@ public class Map extends ActionBarActivity {
 			}
 
 		});
-		/*map.setOnMapClickListener(new OnMapClickListener() {
+		map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
-				
-				Projection proj = map.getProjection();
+				util.showToast(context,"e");
+			/*	Projection proj = map.getProjection();
 				Point coord = proj.toScreenLocation(point);
 				
 				
@@ -238,9 +242,9 @@ public class Map extends ActionBarActivity {
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
 		insert.putExtra("enter", enter);
-		startActivity(insert);
+		startActivity(insert);*/
 			}
-		});*/
+		});
 		
 		
 		viewPort();	
@@ -262,6 +266,12 @@ public class Map extends ActionBarActivity {
 		});	
 	}
 	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		util.showToast(context,"eoooo");
+		return super.onTouchEvent(event);
+	}
+
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -298,6 +308,13 @@ public class Map extends ActionBarActivity {
 	        case KeyEvent.KEYCODE_MENU:
 	        	drawerOpener();
         		return true;
+	        case KeyEvent.KEYCODE_BACK:
+	        	if (asyncPlaces != null || asyncBackbeam != null) {
+	    			util.log("cancel task1");
+	    			asyncPlaces.cancel(true);
+	    			asyncBackbeam.cancel(true);
+	    		}
+	        
 	    }
 
 	    return super.onKeyDown(keycode, e);
@@ -347,6 +364,8 @@ public class Map extends ActionBarActivity {
 		
 	}
 
+
+
 	private LocationListener listener = new LocationListener() {
 
 		@Override
@@ -375,6 +394,7 @@ public class Map extends ActionBarActivity {
 		
 		}
 	};
+	
 	//gets data from google places:
 	private class GetPlaces extends AsyncTask<Void, Void, ArrayList<Place>> {
 
@@ -400,9 +420,7 @@ public class Map extends ActionBarActivity {
 		.icon(BitmapDescriptorFactory
 		.fromResource(R.drawable.pinplaces))
 		.snippet(result.get(i).getVicinity()));
-
 		}
-
 		}
 
 		@Override
@@ -426,15 +444,6 @@ public class Map extends ActionBarActivity {
 				util.log("places : " + placeDetail.getName());
 			}
 			return findPlaces;
-		}
-	}
-	
-	@Override
-	public void onBackPressed() {
-		if (asyncPlaces != null || asyncBackbeam != null) {
-			util.log("cancel task");
-			asyncPlaces.cancel(true);
-			asyncBackbeam.cancel(true);
 		}
 	}
 
@@ -806,8 +815,7 @@ public class Map extends ActionBarActivity {
 								}
 								}
 							});
-
-						}//******
+						}
 					}}
 				});
 	}
