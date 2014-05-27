@@ -78,6 +78,7 @@ public class Map extends ActionBarActivity {
     DrawerLayout mDrawerLayout;
     ListView mDrawerList;
     ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idMarker=new ArrayList<String>();
+	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -255,7 +256,7 @@ public class Map extends ActionBarActivity {
 				util.log("screen has been recharged");
 				//start both asyncTask:
 				 new MyData().execute();
-				 new GetPlaces("").execute();
+				 asyncPlaces = new GetPlaces("").execute();
 			}
 		});	
 	}
@@ -426,6 +427,14 @@ public class Map extends ActionBarActivity {
 			return findPlaces;
 		}
 	}
+	
+	@Override
+	public void onBackPressed() {
+		if (asyncPlaces != null) {
+			asyncPlaces.cancel(false);
+		}
+	}
+
 	//gets data from Backbeam:
 	private class MyData extends AsyncTask<Void, Integer, Boolean> {
 
