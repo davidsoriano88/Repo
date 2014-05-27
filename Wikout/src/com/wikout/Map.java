@@ -101,9 +101,9 @@ public class Map extends ActionBarActivity {
 	 }
 
 	public void initUI(){
-		util.showProgressDialog(context);
-		//setSupportProgressBarIndeterminateVisibility(true);
-        
+		
+		setSupportProgressBarIndeterminateVisibility(true);
+	
 		 
 	     //load slide menu items
 		String[] navMenuTitles = getResources().getStringArray(R.array.options);     
@@ -270,7 +270,7 @@ public class Map extends ActionBarActivity {
 				 
 			}
 		});	
-		
+		setSupportProgressBarIndeterminateVisibility(false);
 	}
 	
 	
@@ -311,13 +311,7 @@ public class Map extends ActionBarActivity {
 	        case KeyEvent.KEYCODE_MENU:
 	        	drawerOpener();
         		return true;
-	        case KeyEvent.KEYCODE_BACK:
-	        	if (asyncPlaces != null || asyncBackbeam != null) {
-	    			util.log("cancel task1");
-	    			asyncPlaces.cancel(true);
-	    			asyncBackbeam.cancel(true);
-	    		}
-	        
+	   
 	    }
 
 	    return super.onKeyDown(keycode, e);
