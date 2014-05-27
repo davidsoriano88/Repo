@@ -432,6 +432,7 @@ public class Map extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		if (asyncPlaces != null || asyncBackbeam != null) {
+			util.log("cancel task");
 			asyncPlaces.cancel(true);
 			asyncBackbeam.cancel(true);
 		}
