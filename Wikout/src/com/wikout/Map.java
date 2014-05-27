@@ -79,6 +79,7 @@ public class Map extends ActionBarActivity {
     ListView mDrawerList;
     ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idMarker=new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
+	protected AsyncTask<Void, Integer, Boolean> asyncBackbeam;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -255,7 +256,7 @@ public class Map extends ActionBarActivity {
 				util.log(String.valueOf(latitudeNE));
 				util.log("screen has been recharged");
 				//start both asyncTask:
-				 new MyData().execute();
+				 asyncBackbeam = new MyData().execute();
 				 asyncPlaces = new GetPlaces("").execute();
 			}
 		});	
@@ -430,8 +431,9 @@ public class Map extends ActionBarActivity {
 	
 	@Override
 	public void onBackPressed() {
-		if (asyncPlaces != null) {
-			asyncPlaces.cancel(false);
+		if (asyncPlaces != null || asyncBackbeam != null) {
+			asyncPlaces.cancel(true);
+			asyncBackbeam.cancel(true);
 		}
 	}
 
