@@ -711,8 +711,8 @@ public class Map extends ActionBarActivity {
 									util.log("4"+commerceMark.getId());
 									for(int i=0;i<idMarker.size();i++){
 									if(idMarker.get(i).contains(marker.getId())){
-									util.log("titulo marcador mydata pulsado, id marcador:"+finalId+","+marker.getTitle());
-									info.putExtra("id", finalId);
+									util.log("titulo marcador mydata pulsado, id marcador:"+marker.getId()+","+marker.getTitle());
+									info.putExtra("id", marker.getId());
 									startActivity(info);
 									}
 								}
