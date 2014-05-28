@@ -196,9 +196,9 @@ public class InsertCommerce extends ActionBarActivity {
 			//Creo el objeto commerce
 			final BackbeamObject commerce = new BackbeamObject("commerce");
 			//Relleno los campos del objeto
-			commerce.setString("placename", value);
+			commerce.setString("placename", etPlacename.getText().toString());
 			commerce.setLocation("placelocation", location);
-			commerce.setLocation("category", category);
+			commerce.setString("category", spnCategory.getSelectedItem().toString());
 			commerce.setDate("commercecreationdate", createdate);
 			commerce.setString("udid", getId());
 			commerce.setNumber("numbubble", 0);
