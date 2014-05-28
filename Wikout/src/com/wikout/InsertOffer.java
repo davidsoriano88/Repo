@@ -71,7 +71,7 @@ public class InsertOffer extends ActionBarActivity {
 	Util util= new Util();
 	
 	//Para el bundle de ListCommerce e InsertCommerce
-	String idcommerce;
+	String idcommerce, idObjectPhoto=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +140,7 @@ public class InsertOffer extends ActionBarActivity {
 							insertOfferPhoto(actualDate());
 							}else{
 								util.log("no hay foto");
+								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
 							}
 						
 						//imageClicked(v);
@@ -279,18 +280,23 @@ public class InsertOffer extends ActionBarActivity {
 
 	
 	// METODO PARA INSERTAR OFERTA
-	protected void insertNewOffer(final Date createdate, final String idcommerce, final BackbeamObject objectphoto) {
+	protected void insertNewOffer(final Date createdate, final String idcommerce, final String idfile) {
 		//Creo el objeto "offer"
 		final BackbeamObject offer = new BackbeamObject("offer");
 				//Sacar idcommerce del bundle al volver a esta activity
 		final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
+		
+		if(idfile!="null"){
+		final BackbeamObject file = new BackbeamObject("file", idfile);
+		offer.setObject("file", file);
+		}
 		//inserto los valores de "offer"
 		offer.setString("description", etDescription.getText().toString());
 		offer.setDay("deadline", deadline);
 		offer.setString("udid", getId());
 		offer.setString("offerstatus", "ok");
 		offer.setDate("offercreationdate", createdate);
-		offer.setObject("file", objectphoto);
+		
 		offer.setObject("commerce", commerce);
 		offer.setNumber("numlike", 0);
 		//TODAVIA NO CONTEMPLO LIKE NI REPORT YA QUE SE ACABA DE CREAR
@@ -323,7 +329,8 @@ public class InsertOffer extends ActionBarActivity {
 							public void success(BackbeamObject objectPhoto) {
 								System.out.println("foto subida con éxito!! "
 										+ objectPhoto.getId());
-								insertNewOffer(createdate, idcommerce,objectPhoto);
+								idObjectPhoto=objectPhoto.getId();
+								insertNewOffer(createdate, idcommerce,idObjectPhoto);
 							}
 						});
 					}
