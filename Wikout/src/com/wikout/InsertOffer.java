@@ -291,6 +291,7 @@ public class InsertOffer extends ActionBarActivity {
 		offer.setObject("file", file);
 		}
 		//inserto los valores de "offer"
+		//util.log(idfile);
 		offer.setString("description", etDescription.getText().toString());
 		offer.setDay("deadline", deadline);
 		offer.setString("udid", getId());
@@ -303,7 +304,6 @@ public class InsertOffer extends ActionBarActivity {
 		// offer.addObject("like");
 		// offer.addObject("report");
 		
-		offer.setNumber("numlike", 0);
 		offer.save(new ObjectCallback() {//**************************************************************************
 			@Override
 			public void success(BackbeamObject offer) {
