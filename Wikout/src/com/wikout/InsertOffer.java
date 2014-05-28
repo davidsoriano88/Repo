@@ -105,10 +105,10 @@ public class InsertOffer extends ActionBarActivity {
 			btnLocation.setText(position);
 
 		}else if(enter==2){
-			latitude = bundle.getDouble("pointlat");
-			longitude = bundle.getDouble("pointlon");
+			/*latitude = bundle.getDouble("pointlat");
+			longitude = bundle.getDouble("pointlon");*/
 			idcommerce = bundle.getString("idcommerce");
-			
+			util.log("entra al elseif"+idcommerce);
 		}
 		
 
