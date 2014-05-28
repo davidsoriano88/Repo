@@ -186,7 +186,7 @@ public class InsertOffer extends ActionBarActivity {
 						latitude = bundle.getDouble("latiMain");
 						longitude = bundle.getDouble("longiMain");*/
 						Intent mapv2 = new Intent(context, Mapv2.class);
-						startActivity(mapv2);
+						startActivityForResult(mapv2,3);
 						
 					}
 				});

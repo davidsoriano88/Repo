@@ -130,7 +130,7 @@ public class ViewOffer extends ActionBarActivity {
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
 
-		Query query = new Query("commerce");
+		Query query = new Query("offer");
 		query.setQuery("where this in ? join file", collection);
 		query.fetch(100, 0, new FetchCallback() {
 			@Override
@@ -410,15 +410,12 @@ public class ViewOffer extends ActionBarActivity {
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = false;
-						
 					} else {
 						// Habilitar boton
 						btnLike.setText(R.string.like);
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = true;
-						
-
 					}
 				}
 			}
@@ -480,7 +477,7 @@ public class ViewOffer extends ActionBarActivity {
 			util.log("recorremos post execute mydata");
 			loadData(idofferparameter);
 			queryLike(idofferparameter);
-			getPhoto(idcommerceparameter);
+			getPhoto(idofferparameter);//idcommerceparameter);
 			
 		}
 

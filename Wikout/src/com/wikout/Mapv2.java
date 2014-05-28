@@ -88,7 +88,7 @@ public class Mapv2 extends ActionBarActivity {
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
 		insert.putExtra("enter", enter);*/
-		startActivity(commerceList);
+		startActivityForResult(commerceList,3);
 		finish();
 			}
 		});
