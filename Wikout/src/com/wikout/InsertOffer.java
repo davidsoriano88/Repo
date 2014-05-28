@@ -105,10 +105,9 @@ public class InsertOffer extends ActionBarActivity {
 			btnLocation.setText(position);
 
 		}else if(enter==2){
-			/*latitude = bundle.getDouble("pointlat");
-			longitude = bundle.getDouble("pointlon");*/
+			latitude = bundle.getDouble("pointlat");
+			longitude = bundle.getDouble("pointlon");
 			idcommerce = bundle.getString("idcommerce");
-			util.log("entra al elseif"+idcommerce);
 		}
 		
 
@@ -175,7 +174,7 @@ public class InsertOffer extends ActionBarActivity {
 						Intent listCommerce = new Intent(context, CommerceList.class);
 						listCommerce.putExtra("pointlat", latitude);
 						listCommerce.putExtra("pointlon", longitude);
-						startActivity(listCommerce);
+						startActivityForResult(listCommerce,3);
 					}
 
 				});
@@ -193,6 +192,8 @@ public class InsertOffer extends ActionBarActivity {
 				});
 		dialogLocation.show();
 	}
+	
+	
 	public void dialogIncompleteFields() {
 		AlertDialog.Builder dialogIncomplete = new AlertDialog.Builder(this);
 		dialogIncomplete.setTitle("Información incompleta");
@@ -286,7 +287,7 @@ public class InsertOffer extends ActionBarActivity {
 				//Sacar idcommerce del bundle al volver a esta activity
 		final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
 		
-		if(idfile!="null"){
+		if(idfile!=null){
 		final BackbeamObject file = new BackbeamObject("file", idfile);
 		offer.setObject("file", file);
 		}
@@ -418,6 +419,17 @@ public class InsertOffer extends ActionBarActivity {
 			Bitmap cphoto = BitmapFactory.decodeFile(photoPath);
 			ivPhoto.setImageBitmap(cphoto);
 			existPhoto = 1;
+
+		}
+		if (resultCode == 3) {
+
+			 if(null!=data)
+        	 {	 	
+        		 // fetch the message String
+        		 idcommerce=data.getStringExtra("idcom"); 
+        		 // Set the message string in textView
+        		 util.log("Message from second Activity: " + idcommerce);
+        	 }
 
 		}
 		

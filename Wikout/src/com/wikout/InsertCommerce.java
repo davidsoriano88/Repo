@@ -134,7 +134,6 @@ public class InsertCommerce extends ActionBarActivity {
 	
 	// METODO PARA SUBIR FOTO de comercio
 	protected void insertComercePhoto(final Date createdate) {
-		
 		final BackbeamObject objectPhoto = new BackbeamObject("file");
 		//Hay que pasarle el objeto de tipo file "foto"
 		objectPhoto.uploadFile(new FileUpload(photo, "image/jpg"),

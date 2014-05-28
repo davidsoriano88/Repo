@@ -67,8 +67,17 @@ final Util util = new Util();
 		    	  insertOffer.putExtra("pointlat",latitude);
 		    	  insertOffer.putExtra("pointlon",longitude);
 		    	  insertOffer.putExtra("enter", 2);
-		    	  startActivity(insertOffer);
+		    	  //startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
+		    	  
+		    	  Intent intentMessage=new Intent();
+		    	  
+		          // put the message in Intent
+		          intentMessage.putExtra("idcom", listIdCommerces.get(position));
+		          // Set The Result in Intent
+		          setResult(3,intentMessage);
+		          // finish The activity 
+		          finish();
 	    	  }
 	    	 
 	    	  }
