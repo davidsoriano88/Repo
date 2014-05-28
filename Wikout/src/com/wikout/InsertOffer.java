@@ -104,7 +104,12 @@ public class InsertOffer extends ActionBarActivity {
 					+ String.valueOf(longitude);
 			btnLocation.setText(position);
 
-		} 
+		}else if(enter==2){
+			latitude = bundle.getDouble("pointlat");
+			longitude = bundle.getDouble("pointlon");
+			idcommerce = bundle.getString("idcommerce");
+			
+		}
 		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
@@ -130,16 +135,19 @@ public class InsertOffer extends ActionBarActivity {
 					dialogIncompleteFields();
 					
 
-					}else if(existPhoto == 1){
-						//Obtener Datos del INTENT
-						insertNewOffer(actualDate(), idcommerce);
-						finish();
 					} else {
-						imageClicked(v);
+						if(photo!=null){
+							insertOfferPhoto(actualDate());
+							}else{
+								util.log("no hay foto");
+							}
+						
+						//imageClicked(v);
+					}
 					}
 					
 				
-				}
+				
 
 			});
 
@@ -271,7 +279,7 @@ public class InsertOffer extends ActionBarActivity {
 
 	
 	// METODO PARA INSERTAR OFERTA
-	protected void insertNewOffer(final Date createdate, final String idcommerce) {
+	protected void insertNewOffer(final Date createdate, final String idcommerce, final BackbeamObject objectphoto) {
 		//Creo el objeto "offer"
 		final BackbeamObject offer = new BackbeamObject("offer");
 				//Sacar idcommerce del bundle al volver a esta activity
@@ -282,6 +290,7 @@ public class InsertOffer extends ActionBarActivity {
 		offer.setString("udid", getId());
 		offer.setString("offerstatus", "ok");
 		offer.setDate("offercreationdate", createdate);
+		offer.setObject("file", objectphoto);
 		offer.setObject("commerce", commerce);
 		offer.setNumber("numlike", 0);
 		//TODAVIA NO CONTEMPLO LIKE NI REPORT YA QUE SE ACABA DE CREAR
@@ -293,16 +302,13 @@ public class InsertOffer extends ActionBarActivity {
 			@Override
 			public void success(BackbeamObject offer) {
 				System.out.println("foto subida con éxito!! " + offer.getId());
-				if(photo!=null){
-				insertOfferPhoto(createdate, offer);}
 				
 			}
 		});
 	}
 	
 	// METODO PARA SUBIR FOTO de offer
-	protected void insertOfferPhoto(final Date createdate,
-			final BackbeamObject offer) {
+	protected void insertOfferPhoto(final Date createdate) {
 		final BackbeamObject objectPhoto = new BackbeamObject("file");
 		//Hay que pasarle el objeto de tipo file "foto"
 		objectPhoto.uploadFile(new FileUpload(photo, "image/jpg"),
@@ -312,12 +318,12 @@ public class InsertOffer extends ActionBarActivity {
 						System.out.println("success!! " + photo.getId());
 						photo.setString("idphoto", photo.getId());
 						photo.setDate("uploaddate", createdate);
-						photo.setObject("offer", offer);
 						photo.save(new ObjectCallback() {
 							@Override
-							public void success(BackbeamObject objetofoto) {
+							public void success(BackbeamObject objectPhoto) {
 								System.out.println("foto subida con éxito!! "
-										+ objetofoto.getId());
+										+ objectPhoto.getId());
+								insertNewOffer(createdate, idcommerce,objectPhoto);
 							}
 						});
 					}

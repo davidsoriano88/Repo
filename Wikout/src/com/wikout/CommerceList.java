@@ -66,6 +66,7 @@ final Util util = new Util();
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
 		    	  insertOffer.putExtra("pointlat",latitude);
 		    	  insertOffer.putExtra("pointlon",longitude);
+		    	  insertOffer.putExtra("enter", 2);
 		    	  startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }
