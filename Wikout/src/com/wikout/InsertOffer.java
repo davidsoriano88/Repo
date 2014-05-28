@@ -140,7 +140,7 @@ public class InsertOffer extends ActionBarActivity {
 							insertOfferPhoto(actualDate());
 							}else{
 								util.log("no hay foto");
-								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
+								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);//*********************************************************
 							}
 						
 						//imageClicked(v);
@@ -304,7 +304,7 @@ public class InsertOffer extends ActionBarActivity {
 		// offer.addObject("report");
 		
 		offer.setNumber("numlike", 0);
-		offer.save(new ObjectCallback() {
+		offer.save(new ObjectCallback() {//**************************************************************************
 			@Override
 			public void success(BackbeamObject offer) {
 				System.out.println("foto subida con éxito!! " + offer.getId());

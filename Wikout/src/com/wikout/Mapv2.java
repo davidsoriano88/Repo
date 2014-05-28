@@ -38,7 +38,6 @@ public class Mapv2 extends ActionBarActivity {
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	LocationClient mLocationClient;
     Context context;  
-
   
     
 	@Override
