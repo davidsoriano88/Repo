@@ -32,7 +32,7 @@ import android.widget.Spinner;
 
 public class InsertCommerce extends ActionBarActivity {
 	
-	Double latitude, longitude;
+	double latitude, longitude;
 	String position;
 	ImageView ivPhoto;
 	EditText etPlacename;
@@ -55,7 +55,7 @@ public class InsertCommerce extends ActionBarActivity {
 	static final int LOAD_IMAGE = 3;
 
 	// Location de prueba
-	public Location locationbm;
+	public Location location=null;
 
 	// Constante para el picker
 	
@@ -78,19 +78,28 @@ public class InsertCommerce extends ActionBarActivity {
 		btnOk = (Button) findViewById(R.id.btnInsertOk1);
 		addListenerOnSpinnerItemSelection();
 		getSupportActionBar().setTitle("Nuevo Comercio");
+		
+		
+		//util.log("david: "+latitude+","+longitude);
 		btnOk.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-					if( etPlacename.getText().length()==0){
+				if( etPlacename.getText().length()==0){
 						util.log("aceptar1");
 					dialogIncompleteFields();
-					}else if(existPhoto == 1){
-					
-						
-						finish();
 					} else {
-						imageClicked(v);
+						Bundle bundle = getIntent().getExtras();
+						latitude = bundle.getDouble("pointla");
+						longitude = bundle.getDouble("pointlo");
+						util.log("david1: "+latitude+","+longitude);
+						if(photo!=null){
+							insertComercePhoto(actualDate());
+							}else{
+								util.log("no hay foto");
+							}
+						
+						//imageClicked(v);
 					}
 					
 				}
@@ -98,40 +107,6 @@ public class InsertCommerce extends ActionBarActivity {
 		}
 	 
 
-
-	
-
-	public void dialogGetLocation() {
-		AlertDialog.Builder dialogLocation = new AlertDialog.Builder(this);
-		dialogLocation.setTitle("Ubicacion");
-		dialogLocation.setMessage("Elija la direccion:");
-		dialogLocation.setCancelable(true);
-		dialogLocation.setPositiveButton("Ubicacion actual",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogo1, int id) {
-						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-						String myLatitude = prefs.getString("latpos", "no id");
-						latitude = Double.parseDouble(myLatitude);
-						String myLongitude = prefs.getString("longpos", "no id");
-						longitude = Double.parseDouble(myLongitude);
-						
-
-					}
-
-				});
-		dialogLocation.setNegativeButton("Indicar en el mapa",
-				new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogo1, int id) {
-						Bundle bundle = getIntent().getExtras();
-						latitude = bundle.getDouble("latiMain");
-						longitude = bundle.getDouble("longiMain");
-						finish();
-					}
-				});
-		dialogLocation.show();
-	}
 	public void dialogIncompleteFields() {
 		AlertDialog.Builder dialogIncomplete = new AlertDialog.Builder(this);
 		dialogIncomplete.setTitle("Información incompleta");
@@ -158,8 +133,8 @@ public class InsertCommerce extends ActionBarActivity {
 
 	
 	// METODO PARA SUBIR FOTO de comercio
-	protected void insertComercePhoto(final Date createdate,
-			final BackbeamObject commerce) {
+	protected void insertComercePhoto(final Date createdate) {
+		
 		final BackbeamObject objectPhoto = new BackbeamObject("file");
 		//Hay que pasarle el objeto de tipo file "foto"
 		objectPhoto.uploadFile(new FileUpload(photo, "image/jpg"),
@@ -169,12 +144,12 @@ public class InsertCommerce extends ActionBarActivity {
 						System.out.println("success!! " + photo.getId());
 						photo.setString("idphoto", photo.getId());
 						photo.setDate("uploaddate", createdate);
-						photo.setObject("commerce", commerce);
 						photo.save(new ObjectCallback() {
 							@Override
 							public void success(BackbeamObject objetofoto) {
 								System.out.println("foto subida con éxito!! "
 										+ objetofoto.getId());
+								insertNewCommerce(objectPhoto);
 							}
 						});
 					}
@@ -188,8 +163,9 @@ public class InsertCommerce extends ActionBarActivity {
 	}
 		
 		// INSERTAR NUEVO "NEW COMMERCE"
-		protected void insertNewCommerce() {
+		protected void insertNewCommerce(BackbeamObject objetphoto) {
 			
+			location= new Location(latitude,longitude);
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
@@ -197,19 +173,22 @@ public class InsertCommerce extends ActionBarActivity {
 			final BackbeamObject commerce = new BackbeamObject("commerce");
 			//Relleno los campos del objeto
 			commerce.setString("placename", etPlacename.getText().toString());
+			util.log("david2: "+latitude+","+longitude);
+			
 			commerce.setLocation("placelocation", location);
 			commerce.setString("category", spnCategory.getSelectedItem().toString());
 			commerce.setDate("commercecreationdate", createdate);
 			commerce.setString("udid", getId());
+			commerce.setObject("file", objetphoto);
 			commerce.setNumber("numbubble", 0);
 			//Guardo el objeto
 			commerce.save(new ObjectCallback() {
 				@Override
 				public void success(BackbeamObject commerce) {
 					//Llamo al metodo insertPhoto para enlazarlo con la foto
-					if(photo!=null){
-					insertComercePhoto(createdate, commerce);
-					}
+					
+						util.log("subido");
+					
 				}
 			});
 		}

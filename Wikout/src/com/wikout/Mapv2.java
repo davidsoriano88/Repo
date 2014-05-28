@@ -61,7 +61,7 @@ public class Mapv2 extends ActionBarActivity {
 	     //load slide menu items
 		
 	    map = ((SupportMapFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.map)).getMap();
+					.findFragmentById(R.id.map1)).getMap();
 	
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    getSupportActionBar().setTitle("Seleccione un punto del mapa");
@@ -90,6 +90,7 @@ public class Mapv2 extends ActionBarActivity {
 		enter = 1;
 		insert.putExtra("enter", enter);*/
 		startActivity(commerceList);
+		finish();
 			}
 		});
 

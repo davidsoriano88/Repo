@@ -136,32 +136,38 @@ public class OfferList extends ListActivity {
 				for (BackbeamObject company : companies) {
 					System.out.println("dentro de success foto");
 					BackbeamObject fileObject = company.getObject("file");
-					TreeMap<String, Object> options = new TreeMap<String, Object>();
-					options.put("width", 160);
-					options.put("height", 80);
-					String logoURL = fileObject.composeFileURL(options);
-
-					//Codigo para poner la foto en el imageView
-					URL newurl = null;
-					try {
-						newurl = new URL(logoURL);
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					}
+					if(fileObject!=null){
+						TreeMap<String, Object> options = new TreeMap<String, Object>();
+						options.put("width", 160);
+						options.put("height", 80);
+						String logoURL = fileObject.composeFileURL(options);
+	
+						//Codigo para poner la foto en el imageView
+						URL newurl = null;
+						try {
+							newurl = new URL(logoURL);
+						} catch (MalformedURLException e) {
+							e.printStackTrace();
+						}
+						
+						try {
+							
+							bmPhoto = BitmapFactory.decodeStream(newurl
+									.openConnection().getInputStream());
+							util.log("icono cargado");
+							
+							
+							//image.setImageBitmap(mIcon_val);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 					
-					try {
-						bmPhoto = BitmapFactory.decodeStream(newurl
-								.openConnection().getInputStream());
-						util.log("icono cargado");
 						ivPhoto.setImageBitmap(bmPhoto);
-						//image.setImageBitmap(mIcon_val);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-					
+				}else{
+					ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.ic_launcher));
 					
 				}
-			}
+				}}
 		});
 	}
 

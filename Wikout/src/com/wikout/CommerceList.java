@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -36,6 +37,7 @@ final Util util = new Util();
 	    
 	    getSupportActionBar().setTitle("Comercios cercanos");
 	    setSupportProgressBarIndeterminateVisibility(true);
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	    Bundle location = getIntent().getExtras();
 	    latitude=location.getDouble("pointlat");
 	    longitude=location.getDouble("pointlon");
@@ -52,14 +54,18 @@ final Util util = new Util();
 	    	  if(position==listPlacenameCommerces.size()-1){
 	    		   util.showToast(context,"click"); 
 	    	  Intent insertCommerce = new Intent(context,InsertCommerce.class);
-	    	  insertCommerce.putExtra("pointlat",latitude);
-	    	  insertCommerce.putExtra("pointlon",longitude);
+	    	  
+	    	  insertCommerce.putExtra("pointla",latitude);
+	    	  insertCommerce.putExtra("pointlo",longitude);
+	    	  util.showToast(context,String.valueOf(latitude));
 	    	  startActivity(insertCommerce);
 	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
 	    		  Intent insertOffer= new Intent(context, InsertOffer.class);
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
+		    	  insertOffer.putExtra("pointlat",latitude);
+		    	  insertOffer.putExtra("pointlon",longitude);
 		    	  startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }
@@ -104,6 +110,16 @@ final Util util = new Util();
 	    }
 
 	  }
+	  @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {
+	        	case android.R.id.home: 
+	        		this.finish();
+	        		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	        }
+	    }
 	  
 	// METODO para localizar comercios cercanos respecto a las coordenadas del
 	// usuario
@@ -131,6 +147,8 @@ final Util util = new Util();
 						// RECORRO CADA COMERCIO
 						if (totalCount==0){
 							Intent insertCommerce = new Intent(context, InsertCommerce.class);
+							insertCommerce.putExtra("pointla",latitude);
+					    	insertCommerce.putExtra("pointlo",longitude);
 					    	startActivity(insertCommerce);
 						}else{
 						for (BackbeamObject commerce : commerces) {
