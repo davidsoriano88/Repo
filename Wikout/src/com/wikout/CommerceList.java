@@ -22,6 +22,7 @@ import android.widget.ListView;
 public class CommerceList extends ActionBarActivity {
 Context context;
 ListView listview;
+double latitude,longitude;
 final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
 final ArrayList<String> listIdCommerces = new ArrayList<String>();
 final Util util = new Util();
@@ -36,7 +37,9 @@ final Util util = new Util();
 	    getSupportActionBar().setTitle("Comercios cercanos");
 	    setSupportProgressBarIndeterminateVisibility(true);
 	    Bundle location = getIntent().getExtras();
-	    getBoundingLocation(location.getDouble("pointlat"),location.getDouble("pointlon"));
+	    latitude=location.getDouble("pointlat");
+	    longitude=location.getDouble("pointlon");
+	    getBoundingLocation(latitude,longitude);
 	    listview = (ListView) findViewById(R.id.listcommerce);
 	    //listPlacenameCommerces.add("NUEVO");
 	    
@@ -49,6 +52,8 @@ final Util util = new Util();
 	    	  if(position==listPlacenameCommerces.size()-1){
 	    		   util.showToast(context,"click"); 
 	    	  Intent insertCommerce = new Intent(context,InsertCommerce.class);
+	    	  insertCommerce.putExtra("pointlat",latitude);
+	    	  insertCommerce.putExtra("pointlon",longitude);
 	    	  startActivity(insertCommerce);
 	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
