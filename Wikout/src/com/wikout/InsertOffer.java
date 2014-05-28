@@ -162,8 +162,8 @@ public class InsertOffer extends ActionBarActivity {
 						//btnLocation.setText(latitude +","+longitude);
 						util.showToast(context,latitude+","+longitude);
 						Intent listCommerce = new Intent(context, CommerceList.class);
-						listCommerce.putExtra("userlat", latitude);
-						listCommerce.putExtra("userlon", longitude);
+						listCommerce.putExtra("pointlat", latitude);
+						listCommerce.putExtra("pointlon", longitude);
 						startActivity(listCommerce);
 					}
 
@@ -405,11 +405,7 @@ public class InsertOffer extends ActionBarActivity {
 			existPhoto = 1;
 
 		}
-		if (requestCode==20){
-			Bundle commerceBundle = getIntent().getExtras();
-			idcommerce = commerceBundle.getString("idcommerce");
-			commerceData(idcommerce);
-		}
+		
 	}
 	private void commerceData(String idcommerce) {
 		Backbeam.read("commerce", idcommerce, new ObjectCallback() {
@@ -420,6 +416,7 @@ public class InsertOffer extends ActionBarActivity {
 				offer.getString("category");
 				//Ocultar botón de comercio
 				//btnLocation.is;
+			
 			}
 				
 			});

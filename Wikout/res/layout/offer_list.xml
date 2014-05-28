@@ -9,7 +9,6 @@
         android:id="@+id/tvOfferListPlacename"
         android:layout_width="136dp"
         android:layout_height="wrap_content" />
-
     <ImageView
         android:id="@+id/ivOfferListPhoto"
         android:layout_width="match_parent"

@@ -26,7 +26,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -78,6 +80,7 @@ public class Map extends ActionBarActivity {
     ImageButton filterButton;
     EditText etSearch;
     DrawerLayout mDrawerLayout;
+    ActionBarDrawerToggle drawerToggle;
     ListView mDrawerList;
     ArrayList<String>placeName=new ArrayList<String>(),idcommerce=new ArrayList<String>(),idcommerceonmap=new ArrayList<String>(),idMarker=new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
@@ -89,7 +92,7 @@ public class Map extends ActionBarActivity {
 	 supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	 setContentView(R.layout.fragment_main);
 	 context=this;
-
+	
      util.projectData(context);
      initUI();  
  	
@@ -130,8 +133,19 @@ public class Map extends ActionBarActivity {
 	    map = ((SupportMapFragment) getSupportFragmentManager()
 					.findFragmentById(R.id.map)).getMap();
 	
-	    //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    //getSupportActionBar().
+	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+	    getSupportActionBar().setDisplayUseLogoEnabled(false);
+	    
+	    
+	    drawerToggle = new ActionBarDrawerToggle(
+	            this,                  /* host Activity */
+	            mDrawerLayout,         /* DrawerLayout object */
+	            R.drawable.ic_navigation_drawer,  /* nav drawer image to replace 'Up' caret */
+	            R.string.oferta,  /* "open drawer" description for accessibility */
+	            R.string.hello_world  /* "close drawer" description for accessibility */
+	    );
+	    //prueba.setDrawerIndicatorEnabled(true);
+	    mDrawerLayout.setDrawerListener(drawerToggle);
 	    
 	    filterView = (ImageView) findViewById(R.id.filterText);
 	    tvFilterText=(TextView)findViewById(R.id.tvFilterText);
@@ -268,7 +282,13 @@ public class Map extends ActionBarActivity {
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
 	
-	
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+	    super.onPostCreate(savedInstanceState);
+	    // Sync the toggle state after onRestoreInstanceState has occurred.
+	     drawerToggle.syncState();
+	     
+	}
 
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {

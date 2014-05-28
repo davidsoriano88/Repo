@@ -40,7 +40,7 @@ final Util util = new Util();
 	    listview = (ListView) findViewById(R.id.listcommerce);
 	    //listPlacenameCommerces.add("NUEVO");
 	    
-
+	   
 	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 	      @Override
@@ -55,7 +55,7 @@ final Util util = new Util();
 	    		  Intent insertOffer= new Intent(context, InsertOffer.class);
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
-		    	  startActivityForResult(insertOffer, 20);
+		    	  startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }
 	    	 
@@ -124,6 +124,10 @@ final Util util = new Util();
 					public void success(List<BackbeamObject> commerces,
 							int totalCount, boolean fromCache) {
 						// RECORRO CADA COMERCIO
+						if (totalCount==0){
+							Intent insertCommerce = new Intent(context, InsertCommerce.class);
+					    	startActivity(insertCommerce);
+						}else{
 						for (BackbeamObject commerce : commerces) {
 							// CREAR ITEMS PARA LA LISTA
 							util.log(String.valueOf(totalCount));
@@ -138,6 +142,7 @@ final Util util = new Util();
 						        android.R.layout.simple_list_item_1, listPlacenameCommerces);
 						    listview.setAdapter(adapter);
 						    setSupportProgressBarIndeterminateVisibility(false);
+						}
 					}
 					
 				});
