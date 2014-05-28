@@ -25,6 +25,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -88,6 +89,7 @@ public class InsertOffer extends ActionBarActivity {
 		btnOk = (Button) findViewById(R.id.btnInsertOk);
 		addListenerOnButton();
 		getSupportActionBar().setTitle("Nueva Oferta");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setCurrentDateOnView();
 
 		btnLocation = (Button) findViewById(R.id.btnLocation);
@@ -422,6 +424,16 @@ public class InsertOffer extends ActionBarActivity {
 			});
 		
 	}
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {     
+        	case android.R.id.home: 
+        		finish();
+        		return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }
 	// METODO PARA OBTENER LA FECHA ACTUAL
 	protected Date actualDate(){
 		Calendar calendar = new GregorianCalendar();
