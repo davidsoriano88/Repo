@@ -87,7 +87,7 @@ public class InsertCommerce extends ActionBarActivity {
 					dialogIncompleteFields();
 					}else if(existPhoto == 1){
 					
-						insertPhoto();
+						
 						finish();
 					} else {
 						imageClicked(v);
@@ -157,66 +157,61 @@ public class InsertCommerce extends ActionBarActivity {
 	}
 
 	
-	// METODO PARA SUBIR FOTO
-		private void insertPhoto() {
-			//Extraigo la fecha actual
-			Calendar calendar = new GregorianCalendar();
-			final Date createdate = calendar.getTime();
-			//Creo el objeto commerce
-			final BackbeamObject objectphoto = new BackbeamObject("file");
-			//Hay que pasarle el objeto de tipo file "foto"
-			objectphoto.uploadFile(new FileUpload(photo, "image/jpg"),
-					new ObjectCallback() {
-						@Override
-						public void success(BackbeamObject photo) {
-							System.out.println("success!! " + photo.getId());
-							photo.setString("idphoto", photo.getId());
-							photo.setDate("uploaddate", createdate);
-							photo.save(new ObjectCallback() {
-								@Override
-								public void success(BackbeamObject objetofoto) {
-									System.out.println("foto subida con éxito!! "
-											+ objetofoto.getId());
-									insertCommerce(objetofoto);
-								}
-							});
-						}
+	// METODO PARA SUBIR FOTO de comercio
+	protected void insertComercePhoto(final Date createdate,
+			final BackbeamObject commerce) {
+		final BackbeamObject objectPhoto = new BackbeamObject("file");
+		//Hay que pasarle el objeto de tipo file "foto"
+		objectPhoto.uploadFile(new FileUpload(photo, "image/jpg"),
+				new ObjectCallback() {
+					@Override
+					public void success(BackbeamObject photo) {
+						System.out.println("success!! " + photo.getId());
+						photo.setString("idphoto", photo.getId());
+						photo.setDate("uploaddate", createdate);
+						photo.setObject("commerce", commerce);
+						photo.save(new ObjectCallback() {
+							@Override
+							public void success(BackbeamObject objetofoto) {
+								System.out.println("foto subida con éxito!! "
+										+ objetofoto.getId());
+							}
+						});
+					}
 
-						@Override
-						public void failure(BackbeamException exception) {
-							System.out.println("failure!");
-							exception.printStackTrace();
-						}
-					});
-		}
+					@Override
+					public void failure(BackbeamException exception) {
+						System.out.println("failure!");
+						exception.printStackTrace();
+					}
+				});
+	}
 		
-	// INSERTAR NUEVO "COMMERCE"
-		private void insertCommerce(BackbeamObject objectphoto) {
-			locationbm = new Location(latitude, longitude);
+		// INSERTAR NUEVO "NEW COMMERCE"
+		protected void insertNewCommerce() {
+			
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
 			//Creo el objeto commerce
 			final BackbeamObject commerce = new BackbeamObject("commerce");
 			//Relleno los campos del objeto
-			commerce.setString("placename", etPlacename.getText().toString());
-			commerce.setLocation("placelocation", locationbm);
-			commerce.setString("category",(String) spnCategory.getSelectedItem() );
+			commerce.setString("placename", value);
+			commerce.setLocation("placelocation", location);
+			commerce.setLocation("category", category);
 			commerce.setDate("commercecreationdate", createdate);
-			commerce.setNumber("numbubble", 0);
 			commerce.setString("udid", getId());
-			commerce.setObject("file", objectphoto);
+			commerce.setNumber("numbubble", 0);
 			//Guardo el objeto
 			commerce.save(new ObjectCallback() {
 				@Override
-				public void success(BackbeamObject object) {
-					
-					//Llamo al metodo insertOffer para enlazarlo con la oferta
-					//insertOffer(createdate, object);****************************REVISAR
-
+				public void success(BackbeamObject commerce) {
+					//Llamo al metodo insertPhoto para enlazarlo con la foto
+					if(photo!=null){
+					insertComercePhoto(createdate, commerce);
+					}
 				}
 			});
-
 		}
 
 
@@ -296,6 +291,12 @@ public class InsertCommerce extends ActionBarActivity {
 
 		}
 	}
+	// METODO PARA OBTENER LA FECHA ACTUAL
+		protected Date actualDate(){
+			Calendar calendar = new GregorianCalendar();
+			final Date createdate = calendar.getTime();
+			return createdate;
+		}
 
 }
 
