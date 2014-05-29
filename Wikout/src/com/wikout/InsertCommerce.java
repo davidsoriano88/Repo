@@ -196,6 +196,7 @@ public class InsertCommerce extends ActionBarActivity {
 					insertoffer.putExtra("idcommerce", commerce.getId());
 					insertoffer.putExtra("placename", commerce.getString("placename"));
 					startActivity(insertoffer);
+					Mapv2.fa.finish();
 					finish();
 					
 				}

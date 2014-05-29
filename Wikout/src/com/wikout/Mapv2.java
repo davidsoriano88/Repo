@@ -38,7 +38,7 @@ public class Mapv2 extends ActionBarActivity {
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
 	LocationClient mLocationClient;
     Context context;  
-  
+    public static ActionBarActivity fa;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +46,11 @@ public class Mapv2 extends ActionBarActivity {
 	 supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	 setContentView(R.layout.fragment_mapv2);
 	 context=this;
-
+	 fa = this;
      util.projectData(context);
      initUI();  
+     
+ 	    
  	
 	 }
 
@@ -121,6 +123,9 @@ public class Mapv2 extends ActionBarActivity {
 		});	
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
+	
+	
+	
 	
 	
 	//contains info about the viewposition, clientposition...:
