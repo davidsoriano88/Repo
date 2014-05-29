@@ -87,6 +87,7 @@ public class InsertOffer extends ActionBarActivity {
 			placename=bundle.getString("placename");
 			etPlacename.setVisibility(0);
 			etPlacename.setText(placename);
+			btnLocation.setVisibility(4);
 		}
 	}
 	 private void initUI(){
@@ -101,14 +102,7 @@ public class InsertOffer extends ActionBarActivity {
 		setCurrentDateOnView();
 
 		btnLocation = (Button) findViewById(R.id.btnLocation);
-		Bundle bundle = getIntent().getExtras();
 		
-		if (bundle != null) {
-			idcommerce=bundle.getString("idcommerce");
-			placename=bundle.getString("placename");
-			etPlacename.setText(placename);
-			btnLocation.setVisibility(4);
-		}
 		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
