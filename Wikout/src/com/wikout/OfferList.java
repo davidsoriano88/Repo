@@ -202,7 +202,7 @@ public class OfferList extends ListActivity {
 				Intent addOffer=new Intent(con,InsertOffer.class);
 				addOffer.putExtra("idcommerce",idcommerce);
 				addOffer.putExtra("placename",placeName);
-				startActivityForResult(addOffer,1);
+				startActivity(addOffer);
 					
 				}
 				
