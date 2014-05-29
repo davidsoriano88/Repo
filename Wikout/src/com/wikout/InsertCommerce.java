@@ -192,11 +192,18 @@ public class InsertCommerce extends ActionBarActivity {
 					//Llamo al metodo insertPhoto para enlazarlo con la foto
 					
 						util.log("subido");
-					Intent insertoffer = new Intent(context,InsertOffer.class);
+					/*Intent insertoffer = new Intent(context,InsertOffer.class);
 					insertoffer.putExtra("idcommerce", commerce.getId());
 					insertoffer.putExtra("placename", commerce.getString("placename"));
-					startActivity(insertoffer);
-					Mapv2.fa.finish();
+					startActivity(insertoffer);*/
+					Intent intentMessage=new Intent();
+				    	  
+				          // put the message in Intent
+				    intentMessage.putExtra("idcom", commerce.getId());
+				    intentMessage.putExtra("placename",commerce.getString("placename"));
+				     // Set The Result in Intent
+				    setResult(4,intentMessage);
+					//Mapv2.fa.finish();
 					finish();
 					
 				}
@@ -243,6 +250,7 @@ public class InsertCommerce extends ActionBarActivity {
 		Intent picture = new Intent(this, Photo.class);
 		picture.putExtra("ACTION_REQUESTED", "CAMERA");
 		startActivityForResult(picture, REQUEST_IMAGE_CAPTURE);
+		
 	}
 
 	// if gallery has been pushed

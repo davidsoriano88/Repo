@@ -48,6 +48,7 @@ final Util util = new Util();
 	    	util.log("entra dentro del if del commerceList");
 	    	Intent mapv2 = new Intent(this,Mapv2.class);
 	    	startActivityForResult(mapv2, 1);
+	    	finish();
 	    }else{
 	    util.log("entra tras el if del commerceList");
 	    latitude=location.getDouble("pointlat");
@@ -69,8 +70,8 @@ final Util util = new Util();
 	    	  insertCommerce.putExtra("pointla",latitude);
 	    	  insertCommerce.putExtra("pointlo",longitude);
 	    	  util.showToast(context,String.valueOf(latitude));
-	    	  startActivity(insertCommerce);
-	    	  finish();
+	    	  startActivityForResult(insertCommerce,4);
+	    	  //finish();
 	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
 	    		 /* Intent insertOffer= new Intent(context, InsertOffer.class);
@@ -113,9 +114,10 @@ final Util util = new Util();
 		@Override
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			super.onActivityResult(requestCode, resultCode, data);
-
+			util.log("fallo onActivityResult entra");
 			if (requestCode == 1) {
 		        if(resultCode == RESULT_OK){
+		        	util.log("fallo result ok code1 ENTRA");
 		        	latitude=data.getDoubleExtra("latitude",0);
 	        		 longitude=data.getDoubleExtra("longitude", 0);
 	        		 util.log("onActivityResult de CommerceList");
@@ -124,7 +126,29 @@ final Util util = new Util();
 		        }
 		        if (resultCode == RESULT_CANCELED) {
 		            //Write your code if there's no result
-		        }
+		        	util.log("fallo result code1 cancel ENTRA");
+		        }}
+		        if (requestCode == 4) {
+		        	util.log("fallo result code4");
+					 if(null!=data)
+		        	 {	 	
+						 util.log("fallo result code4 ENTRA");
+		        		 // fetch the message String
+						 String idcommerce=data.getStringExtra("idcom"); 
+		        		 String placename=data.getStringExtra("placename");
+		        		 // Set the message string in textView
+		        		 util.log("Message from second Activity: " + idcommerce);
+		        		 Intent intentMessage=new Intent();
+				    	  
+				          // put the message in Intent
+		        		 intentMessage.putExtra("idcom", idcommerce);
+		        		 intentMessage.putExtra("placename",placename);
+				     // Set The Result in Intent
+		        		 setResult(4,intentMessage);
+		        		 finish();
+		        	 }else{util.log("fallo result code4 NO ENTRA");}
+
+				
 		    }
 			
 		}
@@ -188,10 +212,11 @@ final Util util = new Util();
 							int totalCount, boolean fromCache) {
 						// RECORRO CADA COMERCIO
 						if (totalCount==0){
+
 							Intent insertCommerce = new Intent(context, InsertCommerce.class);
 							insertCommerce.putExtra("pointla",latitude);
 					    	insertCommerce.putExtra("pointlo",longitude);
-					    	startActivity(insertCommerce);
+					    	startActivityForResult(insertCommerce,4);
 						}else{
 						for (BackbeamObject commerce : commerces) {
 							// CREAR ITEMS PARA LA LISTA

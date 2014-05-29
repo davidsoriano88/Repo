@@ -38,7 +38,8 @@ public class InsertOffer extends ActionBarActivity {
 	
 	Double latitude, longitude;
 	int enter;
-
+	public ActionBarActivity fio;
+	
 	String position;
 	ImageView ivPhoto;
 	EditText etDescription,etPlacename;
@@ -63,7 +64,7 @@ public class InsertOffer extends ActionBarActivity {
 
 	// Location de prueba
 	public Location locationbm;
-
+	Bundle bundle;
 	// Constante para el picker
 	static final int DATE_DIALOG_ID = 999;
 	final Context context = this;
@@ -77,9 +78,16 @@ public class InsertOffer extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.insert_offer);
+		fio=this;
 		util.projectData(context);
+		bundle = getIntent().getExtras();
 		initUI();
-		
+		if(bundle!=null){
+			idcommerce=bundle.getString("idcommerce");
+			placename=bundle.getString("placename");
+			etPlacename.setVisibility(0);
+			etPlacename.setText(placename);
+		}
 	}
 	 private void initUI(){
 		map = new Intent(getApplicationContext(), Map.class);
@@ -134,25 +142,35 @@ public class InsertOffer extends ActionBarActivity {
 					dialogIncompleteFields();
 					
 
-					} else {
-						if(photo!=null){
+					} else if(etPlacename.getText().length()==0) {
+						AlertDialog.Builder dialogIncomplete = new AlertDialog.Builder(context);
+						dialogIncomplete.setTitle("Información incompleta");
+						dialogIncomplete.setMessage("Seleccione el comercio de la oferta, por favor.");
+						dialogIncomplete.setCancelable(false);
+						dialogIncomplete.setNeutralButton("Aceptar",
+								new DialogInterface.OnClickListener() {
+									@Override
+									public void onClick(DialogInterface dialogo1, int id) {
+										
+
+									}
+
+								});
+						
+						dialogIncomplete.show();
+					}
+					else if(photo!=null){
 							insertOfferPhoto(actualDate());
 							}else{
 								util.log("no hay foto");
-								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);//*********************************************************
+								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
+								finish();//*********************************************************
 							}
 						
 						//imageClicked(v);
 					}
-					}
+					});
 					
-				
-				
-
-			});
-		
-	
-	
 			
 	 }
 
@@ -439,6 +457,20 @@ public class InsertOffer extends ActionBarActivity {
         		 etPlacename.setText(placename);
         		 etPlacename.setVisibility(0);
         	 }
+
+		}
+		if (resultCode == 4) {
+
+			 if(null!=data)
+       	 {	 	
+       		 // fetch the message String
+       		 idcommerce=data.getStringExtra("idcom"); 
+       		 placename=data.getStringExtra("placename");
+       		 // Set the message string in textView
+       		 util.log("Message from second Activity: " + idcommerce);
+       		 etPlacename.setText(placename);
+       		 etPlacename.setVisibility(0);
+       	 }
 
 		}
 		
