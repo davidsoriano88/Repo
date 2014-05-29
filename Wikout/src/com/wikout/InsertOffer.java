@@ -101,22 +101,14 @@ public class InsertOffer extends ActionBarActivity {
 		setCurrentDateOnView();
 
 		btnLocation = (Button) findViewById(R.id.btnLocation);
-		/*Bundle bundle = getIntent().getExtras();
-		enter = bundle.getInt("enter");
-		if (enter == 1) {
-
-			latitude = bundle.getDouble("latiMain");
-			longitude = bundle.getDouble("longiMain");
-			util.log( latitude + "," + longitude);
-			position = String.valueOf(latitude) + ","
-					+ String.valueOf(longitude);
-			btnLocation.setText(position);
-
-		}else if(enter==2){
-			latitude = bundle.getDouble("pointlat");
-			longitude = bundle.getDouble("pointlon");
-			idcommerce = bundle.getString("idcommerce");
-		}*/
+		Bundle bundle = getIntent().getExtras();
+		
+		if (bundle != null) {
+			idcommerce=bundle.getString("idcommerce");
+			placename=bundle.getString("placename");
+			etPlacename.setText(placename);
+			btnLocation.setVisibility(4);
+		}
 		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
