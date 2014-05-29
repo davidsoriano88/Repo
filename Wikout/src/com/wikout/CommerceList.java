@@ -4,6 +4,7 @@ import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
 import io.backbeam.Query;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,8 @@ import java.util.List;
 import utils.Util;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
@@ -38,11 +41,19 @@ final Util util = new Util();
 	    getSupportActionBar().setTitle("Comercios cercanos");
 	    setSupportProgressBarIndeterminateVisibility(true);
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    Bundle location = getIntent().getExtras();
+	   listview = (ListView) findViewById(R.id.listcommerce);
+	   Bundle location = getIntent().getExtras();
+	    
+	    if(location.getInt("enter")==1){
+	    	util.log("entra dentro del if del commerceList");
+	    	Intent mapv2 = new Intent(this,Mapv2.class);
+	    	startActivityForResult(mapv2, 1);
+	    }else{
+	    util.log("entra tras el if del commerceList");
 	    latitude=location.getDouble("pointlat");
 	    longitude=location.getDouble("pointlon");
-	    getBoundingLocation(latitude,longitude);
-	    listview = (ListView) findViewById(R.id.listcommerce);
+	    getBoundingLocation(latitude,longitude);}
+	    
 	    //listPlacenameCommerces.add("NUEVO");
 	    
 	   
@@ -59,14 +70,15 @@ final Util util = new Util();
 	    	  insertCommerce.putExtra("pointlo",longitude);
 	    	  util.showToast(context,String.valueOf(latitude));
 	    	  startActivity(insertCommerce);
+	    	  finish();
 	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
-	    		  Intent insertOffer= new Intent(context, InsertOffer.class);
+	    		 /* Intent insertOffer= new Intent(context, InsertOffer.class);
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
 		    	  insertOffer.putExtra("pointlat",latitude);
 		    	  insertOffer.putExtra("pointlon",longitude);
-		    	  insertOffer.putExtra("enter", 2);
+		    	  insertOffer.putExtra("enter", 2);*/
 		    	  //startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
 		    	  
@@ -74,6 +86,7 @@ final Util util = new Util();
 		    	  
 		          // put the message in Intent
 		          intentMessage.putExtra("idcom", listIdCommerces.get(position));
+		          intentMessage.putExtra("placename", listPlacenameCommerces.get(position));
 		          // Set The Result in Intent
 		          setResult(3,intentMessage);
 		          // finish The activity 
@@ -81,6 +94,7 @@ final Util util = new Util();
 	    	  }
 	    	 
 	    	  }
+	      
 	      /* final String item = (String) parent.getItemAtPosition(position);
 	        view.animate().setDuration(2000).alpha(0)
 	            .withEndAction(new Runnable() {
@@ -95,7 +109,25 @@ final Util util = new Util();
 
 	    });
 	  }
+	// load image in imageView
+		@Override
+		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			super.onActivityResult(requestCode, resultCode, data);
 
+			if (requestCode == 1) {
+		        if(resultCode == RESULT_OK){
+		        	latitude=data.getDoubleExtra("latitude",0);
+	        		 longitude=data.getDoubleExtra("longitude", 0);
+	        		 util.log("onActivityResult de CommerceList");
+			    	  
+	        		 getBoundingLocation(latitude,longitude);
+		        }
+		        if (resultCode == RESULT_CANCELED) {
+		            //Write your code if there's no result
+		        }
+		    }
+			
+		}
 	  private class StableArrayAdapter extends ArrayAdapter<String> {
 
 	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();

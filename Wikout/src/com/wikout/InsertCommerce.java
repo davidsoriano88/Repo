@@ -41,6 +41,7 @@ public class InsertCommerce extends ActionBarActivity {
 
 	// Otras variables
 	String photoPath, idoferta, idphoto = "";
+	BackbeamObject objectphoto;
 
 	// Variables para controlar la fecha
 
@@ -97,6 +98,7 @@ public class InsertCommerce extends ActionBarActivity {
 							insertComercePhoto(actualDate());
 							}else{
 								util.log("no hay foto");
+								insertNewCommerce(objectphoto);
 							}
 						
 						//imageClicked(v);
@@ -162,7 +164,7 @@ public class InsertCommerce extends ActionBarActivity {
 	}
 		
 		// INSERTAR NUEVO "NEW COMMERCE"
-		protected void insertNewCommerce(BackbeamObject objetphoto) {
+		protected void insertNewCommerce(BackbeamObject objectphoto) {
 			
 			location= new Location(latitude,longitude);
 			//Extraigo la fecha actual
@@ -170,6 +172,9 @@ public class InsertCommerce extends ActionBarActivity {
 			final Date createdate = calendar.getTime();
 			//Creo el objeto commerce
 			final BackbeamObject commerce = new BackbeamObject("commerce");
+			if(objectphoto!=null){
+			commerce.setObject("file", objectphoto);
+			}
 			//Relleno los campos del objeto
 			commerce.setString("placename", etPlacename.getText().toString());
 			util.log("david2: "+latitude+","+longitude);
@@ -178,7 +183,7 @@ public class InsertCommerce extends ActionBarActivity {
 			commerce.setString("category", spnCategory.getSelectedItem().toString());
 			commerce.setDate("commercecreationdate", createdate);
 			commerce.setString("udid", getId());
-			commerce.setObject("file", objetphoto);
+			
 			commerce.setNumber("numbubble", 0);
 			//Guardo el objeto
 			commerce.save(new ObjectCallback() {
@@ -187,6 +192,11 @@ public class InsertCommerce extends ActionBarActivity {
 					//Llamo al metodo insertPhoto para enlazarlo con la foto
 					
 						util.log("subido");
+					Intent insertoffer = new Intent(context,InsertOffer.class);
+					insertoffer.putExtra("idcommerce", commerce.getId());
+					insertoffer.putExtra("placename", commerce.getString("placename"));
+					startActivity(insertoffer);
+					finish();
 					
 				}
 			});

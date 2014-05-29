@@ -138,6 +138,7 @@ public class ViewOffer extends ActionBarActivity {
 					boolean fromCache) {
 				for (BackbeamObject company : companies) {
 					BackbeamObject fileObject = company.getObject("file");
+					if(fileObject!=null){
 					TreeMap<String, Object> options = new TreeMap<String, Object>();
 					options.put("width", 160);
 					options.put("height", 80);
@@ -156,9 +157,14 @@ public class ViewOffer extends ActionBarActivity {
 						Bitmap mIcon_val = BitmapFactory.decodeStream(newurl
 								.openConnection().getInputStream());
 						ivPhoto.setImageBitmap(mIcon_val);
+					
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					}
+					}else{
+						ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.ic_launcher));
+						
 					}
 
 				}

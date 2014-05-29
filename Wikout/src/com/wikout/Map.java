@@ -72,7 +72,6 @@ public class Map extends ActionBarActivity {
 	LocationManager locationManager;
 	Location location;
 	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
-	int enter;
 	LocationClient mLocationClient;
     Context context;  
     ImageView filterView; 
@@ -295,8 +294,6 @@ public class Map extends ActionBarActivity {
         switch (item.getItemId()) {
         case R.id.action_next:
         	Intent insert = new Intent(context, InsertOffer.class);
-			enter = 0;
-			insert.putExtra("enter", enter);
 			startActivity(insert);
             return true;
         

@@ -73,23 +73,33 @@ public class Mapv2 extends ActionBarActivity {
 				
 				Projection proj = map.getProjection();
 				Point coord = proj.toScreenLocation(point);
-				
-				
-		util.showToast(Mapv2.this, "Click\n" + "Lat: " + point.latitude + "\n" + "Lng: "
+
+
+		    	   Intent mapLocation=new Intent();
+		          // put the message in Intent
+		          mapLocation.putExtra("latitude", point.latitude);
+		          mapLocation.putExtra("longitude", point.longitude);
+		          util.log("latitud del mapv2"+String.valueOf(point.latitude));
+		          // Set The Result in Intent
+		          setResult(RESULT_OK,mapLocation);
+		          // finish The activity 
+		        //if(point.latitude!=0.0){ 
+		         finish();
+		/*util.showToast(Mapv2.this, "Click\n" + "Lat: " + point.latitude + "\n" + "Lng: "
 						+ point.longitude + "\n" + "X: " + coord.x
-						+ " - Y: " + coord.y);
+						+ " - Y: " + coord.y);*/
 				
 		
 		///establecemos el paso a la siguiente pantalla y le pasamos valores:
-		Intent commerceList = new Intent(context, CommerceList.class);
+		/*Intent commerceList = new Intent(context, CommerceList.class);
 		commerceList.putExtra("pointlat", point.latitude);
 		commerceList.putExtra("pointlon", point.longitude);
 		/*insert.putExtra("latiMain", point.latitude);
 		insert.putExtra("longiMain", point.longitude);
 		enter = 1;
 		insert.putExtra("enter", enter);*/
-		startActivityForResult(commerceList,3);
-		finish();
+		/*startActivityForResult(commerceList,3);
+		finish();*/
 			}
 		});
 

@@ -71,7 +71,7 @@ public class InsertOffer extends ActionBarActivity {
 	Util util= new Util();
 	
 	//Para el bundle de ListCommerce e InsertCommerce
-	String idcommerce, idObjectPhoto=null;
+	String idcommerce,placename, idObjectPhoto=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class InsertOffer extends ActionBarActivity {
 		setCurrentDateOnView();
 
 		btnLocation = (Button) findViewById(R.id.btnLocation);
-		Bundle bundle = getIntent().getExtras();
+		/*Bundle bundle = getIntent().getExtras();
 		enter = bundle.getInt("enter");
 		if (enter == 1) {
 
@@ -108,7 +108,7 @@ public class InsertOffer extends ActionBarActivity {
 			latitude = bundle.getDouble("pointlat");
 			longitude = bundle.getDouble("pointlon");
 			idcommerce = bundle.getString("idcommerce");
-		}
+		}*/
 		
 
 		// Lo ponemos a escuchar para cuando sea pulsado
@@ -150,9 +150,10 @@ public class InsertOffer extends ActionBarActivity {
 				
 
 			});
-
+		
 	
- 
+	
+			
 	 }
 
 	public void dialogGetLocation() {
@@ -164,7 +165,9 @@ public class InsertOffer extends ActionBarActivity {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
+						enter=0;
 						SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+						
 						String myLatitude = prefs.getString("latpos", "no id");
 						latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefs.getString("longpos", "no id");
@@ -185,8 +188,10 @@ public class InsertOffer extends ActionBarActivity {
 						/*Bundle bundle = getIntent().getExtras();
 						latitude = bundle.getDouble("latiMain");
 						longitude = bundle.getDouble("longiMain");*/
-						Intent mapv2 = new Intent(context, Mapv2.class);
-						startActivityForResult(mapv2,3);
+						enter=1;
+						Intent listCommerce = new Intent(context, CommerceList.class);
+						listCommerce.putExtra("enter", enter);
+						startActivityForResult(listCommerce,3);
 						
 					}
 				});
@@ -331,6 +336,7 @@ public class InsertOffer extends ActionBarActivity {
 								System.out.println("foto subida con éxito!! "
 										+ objectPhoto.getId());
 								idObjectPhoto=objectPhoto.getId();
+								
 								insertNewOffer(createdate, idcommerce,idObjectPhoto);
 							}
 						});
@@ -427,8 +433,11 @@ public class InsertOffer extends ActionBarActivity {
         	 {	 	
         		 // fetch the message String
         		 idcommerce=data.getStringExtra("idcom"); 
+        		 placename=data.getStringExtra("placename");
         		 // Set the message string in textView
         		 util.log("Message from second Activity: " + idcommerce);
+        		 etPlacename.setText(placename);
+        		 etPlacename.setVisibility(0);
         	 }
 
 		}
@@ -465,4 +474,6 @@ public class InsertOffer extends ActionBarActivity {
 		final Date createdate = calendar.getTime();
 		return createdate;
 	}
+
+
 }
