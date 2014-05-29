@@ -52,7 +52,8 @@ public class OfferList extends ListActivity {
 	TextView tvPlacename;
 	static TextView tvLocation;
 	String idcommerce="",placeName;
-
+	Button btnAdd;
+	
 	
 	public static class viewHolder {
 		TextView tvOffer,tvLike,tvId;
@@ -188,12 +189,24 @@ public class OfferList extends ListActivity {
 			ivPhoto=new ImageView(this);
 			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
 			tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
-			
+			btnAdd=(Button)findViewById(R.id.btnAddOffer);
 			//queryOffer(bundle.getString("id"));
 			util.log(bundle.getString("id"));
 			idcommerce = bundle.getString("id");
 			//getPhoto(bundle.getString("id"));
 			new LoadDataTask().execute();
+			btnAdd.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				Intent addOffer=new Intent(con,InsertOffer.class);
+				addOffer.putExtra("idcommerce",idcommerce);
+				addOffer.putExtra("placename",placeName);
+				startActivityForResult(addOffer,1);
+					
+				}
+				
+				});
 		}
 	
 
