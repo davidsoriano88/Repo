@@ -77,7 +77,7 @@ public class Mapv2 extends ActionBarActivity {
 				Point coord = proj.toScreenLocation(point);
 
 
-		    	   Intent mapLocation=new Intent();
+		    	/*   Intent mapLocation=new Intent();*******************************
 		          // put the message in Intent
 		          mapLocation.putExtra("latitude", point.latitude);
 		          mapLocation.putExtra("longitude", point.longitude);
@@ -86,7 +86,7 @@ public class Mapv2 extends ActionBarActivity {
 		          setResult(RESULT_OK,mapLocation);
 		          // finish The activity 
 		        //if(point.latitude!=0.0){ 
-		         finish();
+		         finish();*/
 		/*util.showToast(Mapv2.this, "Click\n" + "Lat: " + point.latitude + "\n" + "Lng: "
 						+ point.longitude + "\n" + "X: " + coord.x
 						+ " - Y: " + coord.y);*/

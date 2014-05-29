@@ -90,9 +90,9 @@ public class InsertCommerce extends ActionBarActivity {
 						util.log("aceptar1");
 					dialogIncompleteFields();
 					} else {
-						Bundle bundle = getIntent().getExtras();
+						/*Bundle bundle = getIntent().getExtras();**************************
 						latitude = bundle.getDouble("pointla");
-						longitude = bundle.getDouble("pointlo");
+						longitude = bundle.getDouble("pointlo");*/
 						util.log("david1: "+latitude+","+longitude);
 						if(photo!=null){
 							insertComercePhoto(actualDate());
@@ -196,7 +196,8 @@ public class InsertCommerce extends ActionBarActivity {
 					insertoffer.putExtra("idcommerce", commerce.getId());
 					insertoffer.putExtra("placename", commerce.getString("placename"));
 					startActivity(insertoffer);*/
-					Intent intentMessage=new Intent();
+						
+					/*Intent intentMessage=new Intent();**************************
 				    	  
 				          // put the message in Intent
 				    intentMessage.putExtra("idcom", commerce.getId());
@@ -204,7 +205,7 @@ public class InsertCommerce extends ActionBarActivity {
 				     // Set The Result in Intent
 				    setResult(4,intentMessage);
 					//Mapv2.fa.finish();
-					finish();
+					finish();*/
 					
 				}
 			});

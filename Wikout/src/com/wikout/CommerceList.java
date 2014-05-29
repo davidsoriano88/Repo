@@ -42,20 +42,20 @@ final Util util = new Util();
 	    setSupportProgressBarIndeterminateVisibility(true);
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	   listview = (ListView) findViewById(R.id.listcommerce);
-	   Bundle location = getIntent().getExtras();
+	   Bundle location = getIntent().getExtras();//***************atencion
 	    
 	    if(location.getInt("enter")==1){
 	    	util.log("entra dentro del if del commerceList");
-	    	Intent mapv2 = new Intent(this,Mapv2.class);
+	    	/*Intent mapv2 = new Intent(this,Mapv2.class);****************************
 	    	startActivityForResult(mapv2, 1);
-	    	finish();
+	    	finish();*/
 	    }else{
 	    util.log("entra tras el if del commerceList");
-	    latitude=location.getDouble("pointlat");
+	   /* latitude=location.getDouble("pointlat");****************************
 	    longitude=location.getDouble("pointlon");
-	    getBoundingLocation(latitude,longitude);}
+	    getBoundingLocation(latitude,longitude);*/}
 	    
-	    //listPlacenameCommerces.add("NUEVO");
+	    
 	    
 	   
 	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -65,12 +65,12 @@ final Util util = new Util();
 	          int position, long id) {
 	    	  if(position==listPlacenameCommerces.size()-1){
 	    		   util.showToast(context,"click"); 
-	    	  Intent insertCommerce = new Intent(context,InsertCommerce.class);
+	    	 /* Intent insertCommerce = new Intent(context,InsertCommerce.class);****************
 	    	  
 	    	  insertCommerce.putExtra("pointla",latitude);
 	    	  insertCommerce.putExtra("pointlo",longitude);
 	    	  util.showToast(context,String.valueOf(latitude));
-	    	  startActivityForResult(insertCommerce,4);
+	    	  startActivityForResult(insertCommerce,4);*/
 	    	  //finish();
 	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
@@ -83,7 +83,7 @@ final Util util = new Util();
 		    	  //startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
 		    	  
-		    	  Intent intentMessage=new Intent();
+		    	/*  Intent intentMessage=new Intent();**********************************************
 		    	  
 		          // put the message in Intent
 		          intentMessage.putExtra("idcom", listIdCommerces.get(position));
@@ -91,21 +91,12 @@ final Util util = new Util();
 		          // Set The Result in Intent
 		          setResult(3,intentMessage);
 		          // finish The activity 
-		          finish();
+		          finish();*/
 	    	  }
 	    	 
 	    	  }
 	      
-	      /* final String item = (String) parent.getItemAtPosition(position);
-	        view.animate().setDuration(2000).alpha(0)
-	            .withEndAction(new Runnable() {
-	              @Override
-	              public void run() {
-	                list.remove(item);
-	                adapter.notifyDataSetChanged();
-	                view.setAlpha(1);
-	              }
-	            });*/
+	    
 	      
 
 	    });
@@ -114,44 +105,12 @@ final Util util = new Util();
 		@Override
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			super.onActivityResult(requestCode, resultCode, data);
-			util.log("fallo onActivityResult entra");
-			if (requestCode == 1) {
-		        if(resultCode == RESULT_OK){
-		        	util.log("fallo result ok code1 ENTRA");
-		        	latitude=data.getDoubleExtra("latitude",0);
-	        		 longitude=data.getDoubleExtra("longitude", 0);
-	        		 util.log("onActivityResult de CommerceList");
-			    	  
-	        		 getBoundingLocation(latitude,longitude);
-		        }
-		        if (resultCode == RESULT_CANCELED) {
-		            //Write your code if there's no result
-		        	util.log("fallo result code1 cancel ENTRA");
-		        }}
-		        if (requestCode == 4) {
-		        	util.log("fallo result code4");
-					 if(null!=data)
-		        	 {	 	
-						 util.log("fallo result code4 ENTRA");
-		        		 // fetch the message String
-						 String idcommerce=data.getStringExtra("idcom"); 
-		        		 String placename=data.getStringExtra("placename");
-		        		 // Set the message string in textView
-		        		 util.log("Message from second Activity: " + idcommerce);
-		        		 Intent intentMessage=new Intent();
-				    	  
-				          // put the message in Intent
-		        		 intentMessage.putExtra("idcom", idcommerce);
-		        		 intentMessage.putExtra("placename",placename);
-				     // Set The Result in Intent
-		        		 setResult(4,intentMessage);
-		        		 finish();
-		        	 }else{util.log("fallo result code4 NO ENTRA");}
+			
 
 				
 		    }
 			
-		}
+		
 	  private class StableArrayAdapter extends ArrayAdapter<String> {
 
 	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
@@ -213,10 +172,10 @@ final Util util = new Util();
 						// RECORRO CADA COMERCIO
 						if (totalCount==0){
 
-							Intent insertCommerce = new Intent(context, InsertCommerce.class);
+						/*	Intent insertCommerce = new Intent(context, InsertCommerce.class);**************
 							insertCommerce.putExtra("pointla",latitude);
 					    	insertCommerce.putExtra("pointlo",longitude);
-					    	startActivityForResult(insertCommerce,4);
+					    	startActivityForResult(insertCommerce,4);*/
 						}else{
 						for (BackbeamObject commerce : commerces) {
 							// CREAR ITEMS PARA LA LISTA

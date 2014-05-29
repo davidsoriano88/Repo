@@ -192,10 +192,10 @@ public class InsertOffer extends ActionBarActivity {
 						longitude = Double.parseDouble(myLongitude);
 						//btnLocation.setText(latitude +","+longitude);
 						util.showToast(context,latitude+","+longitude);
-						Intent listCommerce = new Intent(context, CommerceList.class);
+						/*Intent listCommerce = new Intent(context, CommerceList.class);*************
 						listCommerce.putExtra("pointlat", latitude);
 						listCommerce.putExtra("pointlon", longitude);
-						startActivityForResult(listCommerce,3);
+						startActivityForResult(listCommerce,3);*/
 					}
 
 				});
@@ -207,9 +207,9 @@ public class InsertOffer extends ActionBarActivity {
 						latitude = bundle.getDouble("latiMain");
 						longitude = bundle.getDouble("longiMain");*/
 						enter=1;
-						Intent listCommerce = new Intent(context, CommerceList.class);
+						/*Intent listCommerce = new Intent(context, CommerceList.class);********************
 						listCommerce.putExtra("enter", enter);
-						startActivityForResult(listCommerce,3);
+						startActivityForResult(listCommerce,3);*/
 						
 					}
 				});
@@ -445,34 +445,9 @@ public class InsertOffer extends ActionBarActivity {
 			existPhoto = 1;
 
 		}
-		if (resultCode == 3) {
+		
 
-			 if(null!=data)
-        	 {	 	
-        		 // fetch the message String
-        		 idcommerce=data.getStringExtra("idcom"); 
-        		 placename=data.getStringExtra("placename");
-        		 // Set the message string in textView
-        		 util.log("Message from second Activity: " + idcommerce);
-        		 etPlacename.setText(placename);
-        		 etPlacename.setVisibility(0);
-        	 }
-
-		}
-		if (resultCode == 4) {
-
-			 if(null!=data)
-       	 {	 	
-       		 // fetch the message String
-       		 idcommerce=data.getStringExtra("idcom"); 
-       		 placename=data.getStringExtra("placename");
-       		 // Set the message string in textView
-       		 util.log("Message from second Activity: " + idcommerce);
-       		 etPlacename.setText(placename);
-       		 etPlacename.setVisibility(0);
-       	 }
-
-		}
+			
 		
 	}
 	private void commerceData(String idcommerce) {
