@@ -192,10 +192,10 @@ public class InsertOffer extends ActionBarActivity {
 						longitude = Double.parseDouble(myLongitude);
 						//btnLocation.setText(latitude +","+longitude);
 						util.showToast(context,latitude+","+longitude);
-						/*Intent listCommerce = new Intent(context, CommerceList.class);*************
+						Intent listCommerce = new Intent(context, CommerceList.class);
 						listCommerce.putExtra("pointlat", latitude);
 						listCommerce.putExtra("pointlon", longitude);
-						startActivityForResult(listCommerce,3);*/
+						startActivityForResult(listCommerce,30);
 					}
 
 				});
@@ -207,9 +207,9 @@ public class InsertOffer extends ActionBarActivity {
 						latitude = bundle.getDouble("latiMain");
 						longitude = bundle.getDouble("longiMain");*/
 						enter=1;
-						/*Intent listCommerce = new Intent(context, CommerceList.class);********************
+						Intent listCommerce = new Intent(context, CommerceList.class);
 						listCommerce.putExtra("enter", enter);
-						startActivityForResult(listCommerce,3);*/
+						startActivityForResult(listCommerce,30);
 						
 					}
 				});
@@ -332,7 +332,7 @@ public class InsertOffer extends ActionBarActivity {
 			@Override
 			public void success(BackbeamObject offer) {
 				System.out.println("foto subida con éxito!! " + offer.getId());
-				
+				finish();
 			}
 		});
 	}
@@ -427,7 +427,7 @@ public class InsertOffer extends ActionBarActivity {
 
 		
 		// if there's no errors, the image is loaded
-		if (resultCode == RESULT_OK) {
+		if (resultCode == 10000) {
 
 			Bundle photoBundle = new Bundle();
 			util.log("bundle created");
@@ -444,7 +444,16 @@ public class InsertOffer extends ActionBarActivity {
 			ivPhoto.setImageBitmap(cphoto);
 			existPhoto = 1;
 
+		}if(requestCode==30 && resultCode==RESULT_OK){
+			Bundle commerce = new Bundle();
+			util.log("bundle created");
+			commerce = data.getExtras();
+			idcommerce = commerce.getString("idcommerce");
+			placename = commerce.getString("placename");
+			etPlacename.setText(placename);
+			etPlacename.setVisibility(0);
 		}
+		
 		
 
 			

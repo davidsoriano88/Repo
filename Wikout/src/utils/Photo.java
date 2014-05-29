@@ -135,7 +135,7 @@ public class Photo extends Activity {
 				pictureIntent.putExtra("url", url);
 				pictureIntent.putExtra("photo", image);
 
-				setResult(RESULT_OK, pictureIntent);
+				setResult(10000, pictureIntent);
 				finish();
 			}
 		}
@@ -151,7 +151,7 @@ public class Photo extends Activity {
 			pictureIntent.putExtra("url", url);
 			pictureIntent.putExtra("photo", image);
 
-			setResult(RESULT_OK, pictureIntent);
+			setResult(10000, pictureIntent);
 			finish();
 		}
 	}

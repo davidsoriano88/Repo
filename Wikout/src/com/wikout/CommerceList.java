@@ -27,6 +27,9 @@ public class CommerceList extends ActionBarActivity {
 Context context;
 ListView listview;
 double latitude,longitude;
+static final int REQUESTCODEMAP = 101;
+static final int REQUESTCODECOMMERCE = 102;
+public static final int RESULTOK = 100;
 final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
 final ArrayList<String> listIdCommerces = new ArrayList<String>();
 final Util util = new Util();
@@ -46,14 +49,14 @@ final Util util = new Util();
 	    
 	    if(location.getInt("enter")==1){
 	    	util.log("entra dentro del if del commerceList");
-	    	/*Intent mapv2 = new Intent(this,Mapv2.class);****************************
-	    	startActivityForResult(mapv2, 1);
-	    	finish();*/
+	    	Intent mapv2 = new Intent(this,Mapv2.class);
+	    	startActivityForResult(mapv2, REQUESTCODEMAP);
+	    	//finish();
 	    }else{
 	    util.log("entra tras el if del commerceList");
-	   /* latitude=location.getDouble("pointlat");****************************
+	    latitude=location.getDouble("pointlat");
 	    longitude=location.getDouble("pointlon");
-	    getBoundingLocation(latitude,longitude);*/}
+	    getBoundingLocation(latitude,longitude);}
 	    
 	    
 	    
@@ -65,24 +68,22 @@ final Util util = new Util();
 	          int position, long id) {
 	    	  if(position==listPlacenameCommerces.size()-1){
 	    		   util.showToast(context,"click"); 
-	    	 /* Intent insertCommerce = new Intent(context,InsertCommerce.class);****************
+	    	 Intent insertCommerce = new Intent(context,InsertCommerce.class);
 	    	  
-	    	  insertCommerce.putExtra("pointla",latitude);
-	    	  insertCommerce.putExtra("pointlo",longitude);
+	    	  insertCommerce.putExtra("pointlat",latitude);
+	    	  insertCommerce.putExtra("pointlon",longitude);
 	    	  util.showToast(context,String.valueOf(latitude));
-	    	  startActivityForResult(insertCommerce,4);*/
+	    	  startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
 	    	  //finish();
 	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
-	    		 /* Intent insertOffer= new Intent(context, InsertOffer.class);
+	    		 Intent insertOffer= new Intent();
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
-		    	  insertOffer.putExtra("pointlat",latitude);
-		    	  insertOffer.putExtra("pointlon",longitude);
-		    	  insertOffer.putExtra("enter", 2);*/
+		    	  setResult(RESULT_OK, insertOffer);
 		    	  //startActivity(insertOffer);
 		    	  util.showToast(context, listPlacenameCommerces.get(position));
-		    	  
+		    	  finish();
 		    	/*  Intent intentMessage=new Intent();**********************************************
 		    	  
 		          // put the message in Intent
@@ -91,7 +92,7 @@ final Util util = new Util();
 		          // Set The Result in Intent
 		          setResult(3,intentMessage);
 		          // finish The activity 
-		          finish();*/
+		          ;*/
 	    	  }
 	    	 
 	    	  }
@@ -105,8 +106,25 @@ final Util util = new Util();
 		@Override
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			super.onActivityResult(requestCode, resultCode, data);
-			
+		    if (requestCode == REQUESTCODEMAP) {
+		        if(resultCode == RESULT_OK){
+		        	System.out.println("entra en result code");
+		        	Bundle d = data.getExtras();
+		            latitude=d.getDouble("pointlat");
+		            longitude=d.getDouble("pointlon");
+		            getBoundingLocation(latitude, longitude);
+		        }
 
+		    }if(requestCode== REQUESTCODECOMMERCE && resultCode==RESULT_OK){
+		    	Bundle d=data.getExtras();
+		    	String placename =d.getString("placename");
+		    	String idcommerce = d.getString("idcommerce");
+		    	Intent i = new Intent();
+		    	i.putExtra("placename", placename);
+		    	i.putExtra("idcommerce", idcommerce);
+		    	setResult(RESULT_OK, i);
+		    	finish();
+		    }
 				
 		    }
 			
@@ -172,10 +190,10 @@ final Util util = new Util();
 						// RECORRO CADA COMERCIO
 						if (totalCount==0){
 
-						/*	Intent insertCommerce = new Intent(context, InsertCommerce.class);**************
-							insertCommerce.putExtra("pointla",latitude);
-					    	insertCommerce.putExtra("pointlo",longitude);
-					    	startActivityForResult(insertCommerce,4);*/
+						Intent insertCommerce = new Intent(context, InsertCommerce.class);
+							insertCommerce.putExtra("pointlat",latitude);
+					    	insertCommerce.putExtra("pointlon",longitude);
+					    	startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
 						}else{
 						for (BackbeamObject commerce : commerces) {
 							// CREAR ITEMS PARA LA LISTA
