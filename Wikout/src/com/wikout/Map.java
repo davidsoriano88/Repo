@@ -139,7 +139,7 @@ public class Map extends ActionBarActivity {
 	    drawerToggle = new ActionBarDrawerToggle(
 	            this,                  /* host Activity */
 	            mDrawerLayout,         /* DrawerLayout object */
-	            R.drawable.ic_navigation_drawer,  /* nav drawer image to replace 'Up' caret */
+	            R.drawable.ic_navigation_drawer3,  /* nav drawer image to replace 'Up' caret */
 	            R.string.oferta,  /* "open drawer" description for accessibility */
 	            R.string.hello_world  /* "close drawer" description for accessibility */
 	    );
