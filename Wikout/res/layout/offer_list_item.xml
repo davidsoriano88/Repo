@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
+            android:layout_weight="0.01"
             android:clickable="true"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -39,7 +41,6 @@
             android:focusableInTouchMode="false"
             android:text="Code"
             android:textSize="6pt" />
-
     </LinearLayout>
 
 </LinearLayout>
