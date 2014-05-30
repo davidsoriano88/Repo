@@ -8,11 +8,12 @@
     <ImageView
         android:id="@+id/ivInsertPhoto"
         android:layout_width="fill_parent"
-        android:layout_height="110px"
+        android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:onClick="imageClicked"
-        android:src="@drawable/initicon" />
+        android:scaleType="fitCenter"
+        android:src="@drawable/no_photo" />
 
     <Button
         android:id="@+id/btnInsertOk"
@@ -68,9 +69,9 @@
         android:id="@+id/btnLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnInsertOk"
+        android:layout_alignBottom="@+id/btnInsertOk"
         android:layout_alignLeft="@+id/etInsertPlacename"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="14dp"
         android:text="Comercio" />
 
 </RelativeLayout>

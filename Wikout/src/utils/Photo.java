@@ -107,8 +107,8 @@ public class Photo extends Activity {
 			photoPickerIntent.putExtra("crop", "true");
 			photoPickerIntent.putExtra("aspectX", 2);
 			photoPickerIntent.putExtra("aspectY", 1);
-			photoPickerIntent.putExtra("outputX", 512);
-			photoPickerIntent.putExtra("outputY", 256);
+			photoPickerIntent.putExtra("outputX", 400);
+			photoPickerIntent.putExtra("outputY", 200);
 
 			// Lanzo el activity de la galeria.
 			startActivityForResult(photoPickerIntent, LOAD_IMAGE);
@@ -200,8 +200,8 @@ public class Photo extends Activity {
 		cropIntent.putExtra("aspectX", 2);
 		cropIntent.putExtra("aspectY", 1);
 		// Resolucion de salida.
-		cropIntent.putExtra("outputX", 512);
-		cropIntent.putExtra("outputY", 256);
+		cropIntent.putExtra("outputX", 400);
+		cropIntent.putExtra("outputY", 200);
 
 		// Que lo guarde en ese uri
 		cropIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
