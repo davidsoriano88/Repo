@@ -15,4 +15,14 @@
         android:layout_marginTop="185dp"
         android:background="@drawable/ic_launcher" />
 
+    <ProgressBar
+        android:id="@+id/Initprogress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivTitleReference"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="38dp"
+        android:minWidth="200dp" />
+
 </RelativeLayout>
