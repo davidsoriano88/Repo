@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.TreeMap;
 
 import utils.Util;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -39,7 +38,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class OfferList extends ActionBarActivity {
 
@@ -47,22 +45,22 @@ public class OfferList extends ActionBarActivity {
 	private ArrayList<String> dataoffer = new ArrayList<String>();
 	private ArrayList<String> datalike = new ArrayList<String>();
 	private ArrayList<String> dataid = new ArrayList<String>();
+	private ArrayList<Bitmap> dataphoto = new ArrayList<Bitmap>();
 	
 	ActionBar ab;
 	Context con = this;
 	Util util = new Util();
 	Bitmap bmPhoto =null;
-	ImageView ivPhoto;
-	TextView tvPlacename;
+	ImageView ivPhoto, ivOfferPhoto;
 	static TextView tvLocation;
 	String idcommerce="",placeName;
-	Button btnAdd;
 	ListView list;
+	private Button btnAdd;
 	
 	
 	public static class viewHolder {
 		TextView tvOffer,tvLike,tvId;
-		Button btnView;	
+		ImageView ivOfferPhoto;
 		
 	}
 
@@ -104,17 +102,17 @@ public class OfferList extends ActionBarActivity {
 					.findViewById(R.id.textViewName);
 			holder.tvLike = (TextView) convertView
 					.findViewById(R.id.textViewCode);
-			holder.btnView = (Button) convertView.findViewById(R.id.btnListOfferOpen);
+			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferPhoto);
 			
 			
 			holder.tvOffer.setText(dataoffer.get(position));
 			holder.tvLike.setText("Likes: "+datalike.get(position));
-			
+			//holder.ivOfferPhoto.setImageBitmap(dataphoto.get(position));
 			
 			
 			//holder.tid.setText(dataid.get(position));
 
-			holder.btnView.setOnClickListener(new OnClickListener() {
+			/*holder.btnView.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -125,7 +123,7 @@ public class OfferList extends ActionBarActivity {
 					startActivity(intent);
 					
 				}
-			});
+			});*/
 			return convertView;
 		}
 
@@ -195,7 +193,6 @@ public class OfferList extends ActionBarActivity {
 			Bundle bundle = getIntent().getExtras();
 			ivPhoto=new ImageView(this);
 			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
-			tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
 			btnAdd=(Button)findViewById(R.id.btnAddOffer);
 			list=(ListView)findViewById(R.id.listOff);
 			//queryOffer(bundle.getString("id"));
@@ -203,6 +200,7 @@ public class OfferList extends ActionBarActivity {
 			idcommerce = bundle.getString("id");
 			//getPhoto(bundle.getString("id"));
 			new LoadDataTask().execute();
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			btnAdd.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -215,7 +213,7 @@ public class OfferList extends ActionBarActivity {
 				}
 				
 				});
-			list.setAdapter(new EfficientAdapter(con) );
+			
 		}
 	
 
@@ -254,21 +252,74 @@ public class OfferList extends ActionBarActivity {
 				BackbeamObject commerce = objects.get(0);
 				JoinResult join = commerce.getJoinResult("offer");
 				placeName=commerce.getString("placename");
-				tvPlacename.setText(commerce.getString("placename")+" Num de likes total: "+ commerce.getNumber("numbubble"));
+				getSupportActionBar().setTitle(placeName);
 				List<BackbeamObject> offers = join.getResults();
 				// Contemplo si alguna referencia NO TIENE ofertas
 				if (offers.size() == 0) {
 					// No hay ofertas disponibles
+					util.log("oferta no existente");
 				} else {
 					// Hay ofertas
+					util.log("oferta existentes");
 					for (BackbeamObject offer : offers) {
+						
 						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 						String formatted = format1.format(offer.getDay("deadline").getTime());
 						dataoffer.add(offer.getString("description")+ " Hasta: " + formatted);
 						datalike.add(offer.getNumber("numlike").toString());
 						dataid.add(offer.getId());
+						
+						/*CollectionConstraint collection = new CollectionConstraint();
+						collection.addIdentifier(offer.getId());
+
+						Query query = new Query("offer");
+						query.setQuery("where this in ? join file", collection);
+						query.fetch(100, 0, new FetchCallback() {
+							@Override
+							public void success(List<BackbeamObject> companies, int totalCount,
+									boolean fromCache) {
+								for (BackbeamObject company : companies) {
+									System.out.println("dentro de success foto");
+									BackbeamObject fileObject = company.getObject("file");
+									if(fileObject!=null){
+										TreeMap<String, Object> options = new TreeMap<String, Object>();
+										options.put("width", 50);
+										options.put("height", 25);
+										String logoURL = fileObject.composeFileURL(options);
+					
+										//Codigo para poner la foto en el imageView
+										URL newurl = null;
+										try {
+											newurl = new URL(logoURL);
+										} catch (MalformedURLException e) {
+											e.printStackTrace();
+										}
+										
+										try {
+											
+											bmPhoto = BitmapFactory.decodeStream(newurl
+													.openConnection().getInputStream());
+											util.log("icono cargado");
+											dataphoto.add(bmPhoto);
+											
+											//image.setImageBitmap(mIcon_val);
+										} catch (IOException e) {
+											e.printStackTrace();
+										}
+									
+										
+								}else{
+									
+									dataphoto.add(BitmapFactory.decodeResource(con.getResources(), R.drawable.ic_launcher));
+								}
+								}}
+						});*/
+						
+						
+						
+						
 						// Anadir al set Adapter
-						//setListAdapter(new EfficientAdapter(con));
+						list.setAdapter(new EfficientAdapter(con) );
 
 					}
 				}

@@ -9,11 +9,11 @@
         android:layout_height="wrap_content"
         android:gravity="left" >
 
-        <Button
-            android:id="@+id/btnListOfferOpen"
+        <ImageView
+            android:id="@+id/ivOfferPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Open" />
+            android:src="@drawable/addicon" />
 
         <TextView
             android:id="@+id/textViewName"
