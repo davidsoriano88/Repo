@@ -215,6 +215,7 @@ public class OfferList extends ActionBarActivity {
 				}
 				
 				});
+			list.setAdapter(new EfficientAdapter(con) );
 		}
 	
 
