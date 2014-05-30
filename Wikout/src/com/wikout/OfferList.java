@@ -17,8 +17,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
 
+
+
 import utils.Util;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,11 +37,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class OfferList extends ActionBarActivity {
 
@@ -213,10 +219,28 @@ public class OfferList extends ActionBarActivity {
 				}
 				
 				});
+			 list.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
+						
+							Intent intent = new Intent(con,ViewOffer.class);	 
+							intent.putExtra("idoffer", dataid.get(pos));
+							intent.putExtra("idcommerce", idcommerce);
+							intent.putExtra("placename",placeName);
+							startActivity(intent);
+							
+						
+					
+							
+						}});
 			
-		}
+	}
 	
-
+	
+				
+		
+					
+				
 	/*@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
