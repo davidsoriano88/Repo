@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
 
 import utils.Util;
@@ -24,6 +25,8 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -104,8 +107,24 @@ public class ViewOffer extends ActionBarActivity {
 						// paso la dirección/coordenadas al textView correspondiente
 						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
 								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/
-						tvLocation.setText(commerce.getLocation("placelocation").getAddress());
-						
+						//tvLocation.setText(commerce.getLocation("placelocation").getAddress());
+						//**********************************************************
+						Geocoder geocoder;
+						List<Address> addresses = null;
+						geocoder = new Geocoder(context);
+						try {
+							addresses = geocoder.getFromLocation(commerce.getLocation("placelocation").getLatitude(), commerce.getLocation("placelocation").getLongitude(), 1);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+						String address = addresses.get(0).getAddressLine(0);
+						String city = addresses.get(0).getAddressLine(1);
+						String country = addresses.get(0).getAddressLine(2);
+						util.log("pancratio: "+address + city + country);
+						tvLocation.setText(address+"\n"+city+", "+country);
+						//***********************************************************
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
 						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
 						String myLatitude = prefers.getString("latpos", "null");
