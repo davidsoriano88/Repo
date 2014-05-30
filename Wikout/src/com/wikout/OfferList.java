@@ -25,7 +25,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -37,14 +41,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class OfferList extends ListActivity {
+public class OfferList extends ActionBarActivity {
 
 	
 	private ArrayList<String> dataoffer = new ArrayList<String>();
 	private ArrayList<String> datalike = new ArrayList<String>();
 	private ArrayList<String> dataid = new ArrayList<String>();
 	
-	
+	ActionBar ab;
 	Context con = this;
 	Util util = new Util();
 	Bitmap bmPhoto =null;
@@ -53,11 +57,13 @@ public class OfferList extends ListActivity {
 	static TextView tvLocation;
 	String idcommerce="",placeName;
 	Button btnAdd;
+	ListView list;
 	
 	
 	public static class viewHolder {
 		TextView tvOffer,tvLike,tvId;
 		Button btnView;	
+		
 	}
 
 	private class EfficientAdapter extends BaseAdapter {
@@ -179,6 +185,7 @@ public class OfferList extends ListActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.offer_list);
 		util.projectData(con);
+		
 		initUi();
 		
 		
@@ -190,6 +197,7 @@ public class OfferList extends ListActivity {
 			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
 			tvPlacename=(TextView)findViewById(R.id.tvOfferListPlacename);
 			btnAdd=(Button)findViewById(R.id.btnAddOffer);
+			list=(ListView)findViewById(R.id.listOff);
 			//queryOffer(bundle.getString("id"));
 			util.log(bundle.getString("id"));
 			idcommerce = bundle.getString("id");
@@ -210,11 +218,11 @@ public class OfferList extends ListActivity {
 		}
 	
 
-	@Override
+	/*@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		Toast.makeText(con, "Item :" + position, Toast.LENGTH_LONG).show();
-	}
+	}*/
 	
 	public String getId() {
 	String id = android.provider.Settings.System.getString(
@@ -259,7 +267,7 @@ public class OfferList extends ListActivity {
 						datalike.add(offer.getNumber("numlike").toString());
 						dataid.add(offer.getId());
 						// Anadir al set Adapter
-						setListAdapter(new EfficientAdapter(con));
+						//setListAdapter(new EfficientAdapter(con));
 
 					}
 				}
@@ -308,4 +316,11 @@ protected Date actualDate(){
 	    super.onRestart();
 	    new LoadDataTask().execute();
 	    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    // Inflate the menu items for use in the action bar
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.menu2, menu);
+	    return super.onCreateOptionsMenu(menu);
+	}
 }
