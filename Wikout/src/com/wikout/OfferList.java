@@ -52,6 +52,7 @@ public class OfferList extends ActionBarActivity {
 	private ArrayList<String> datalike = new ArrayList<String>();
 	private ArrayList<String> dataid = new ArrayList<String>();
 	private ArrayList<Bitmap> dataphoto = new ArrayList<Bitmap>();
+	private ArrayList<String> datadeadline = new ArrayList<String>();
 	
 	ActionBar ab;
 	Context con = this;
@@ -65,7 +66,7 @@ public class OfferList extends ActionBarActivity {
 	
 	
 	public static class viewHolder {
-		TextView tvOffer,tvLike,tvId;
+		TextView tvOffer,tvLike,tvId,tvDeadline;
 		ImageView ivOfferPhoto;
 		
 	}
@@ -105,12 +106,13 @@ public class OfferList extends ActionBarActivity {
 				holder = (viewHolder) convertView.getTag();
 			}
 			holder.tvOffer = (TextView) convertView
-					.findViewById(R.id.textViewName);
+					.findViewById(R.id.tvOfferListDescription);
 			holder.tvLike = (TextView) convertView
-					.findViewById(R.id.textViewCode);
+					.findViewById(R.id.tvOfferListNumlike);
+			holder.tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListDeadline);
 			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferPhoto);
 			
-			
+			holder.tvDeadline.setText("Hasta: "+ datadeadline.get(position));
 			holder.tvOffer.setText(dataoffer.get(position));
 			holder.tvLike.setText("Likes: "+datalike.get(position));
 			//holder.ivOfferPhoto.setImageBitmap(dataphoto.get(position));
@@ -262,7 +264,7 @@ public class OfferList extends ActionBarActivity {
 //METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
 	private void queryOffer(String idcommerce) {
 		//vacio los arraylists
-		
+		datadeadline.clear();
 		dataoffer.clear();
 		datalike.clear();
 		dataid.clear();
@@ -292,9 +294,10 @@ public class OfferList extends ActionBarActivity {
 						
 						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 						String formatted = format1.format(offer.getDay("deadline").getTime());
-						dataoffer.add(offer.getString("description")+ " Hasta: " + formatted);
+						dataoffer.add(offer.getString("description"));
 						datalike.add(offer.getNumber("numlike").toString());
 						dataid.add(offer.getId());
+						datadeadline.add("Hasta: " + formatted);
 						
 						/*CollectionConstraint collection = new CollectionConstraint();
 						collection.addIdentifier(offer.getId());
