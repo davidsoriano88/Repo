@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/ivViewOfferPhoto"
          android:layout_width="match_parent"
-        android:layout_height="99dp"
+        android:layout_height="150dp"
         android:layout_weight="0.16"
         android:layout_alignParentLeft="true"
         android:src="@drawable/initicon" />

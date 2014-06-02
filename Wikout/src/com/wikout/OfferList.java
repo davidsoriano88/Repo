@@ -392,25 +392,6 @@ protected Date actualDate(){
 	    super.onRestart();
 	    new LoadDataTask().execute();
 	    }
-	/*@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    // Inflate the menu items for use in the action bar
-	    MenuInflater inflater = getMenuInflater();
-<<<<<<< HEAD
-<<<<<<< HEAD
-	    inflater.inflate(R.menu.menu_refresh, menu);
-=======
-	    inflater.inflate(R.menu.main, menu);
->>>>>>> branch 'master' of https://github.com/Shezek/Repositorio.git
-=======
-	    inflater.inflate(R.menu.main, menu);
->>>>>>> branch 'master' of https://github.com/Shezek/Repositorio.git
-	    return super.onCreateOptionsMenu(menu);
-<<<<<<< HEAD
-<<<<<<< HEAD
-	}*/
 
-=======
-	}
->>>>>>> branch 'master' of https://github.com/Shezek/Repositorio.git
+	
 }
