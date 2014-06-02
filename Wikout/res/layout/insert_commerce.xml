@@ -12,7 +12,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:onClick="imageClicked"
-        android:src="@drawable/initicon" />
+        android:src="@drawable/nophoto" />
 
     <Button
         android:id="@+id/btnInsertOk1"

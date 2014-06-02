@@ -88,6 +88,7 @@ public class InsertCommerce extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				btnOk.setEnabled(false);
+				ivPhoto.setEnabled(false);
 				if( etPlacename.getText().length()==0){
 						
 					dialogIncompleteFields();
@@ -197,7 +198,7 @@ public class InsertCommerce extends ActionBarActivity {
 					insertoffer.putExtra("idcommerce", commerce.getId());
 					insertoffer.putExtra("placename", commerce.getString("placename"));
 					setResult(RESULT_OK, insertoffer);
-					util.log("comercio creado");
+					util.showToast(context, "comercio creado");
 					finish();	
 					
 					

@@ -10,7 +10,7 @@
         android:layout_height="150dp"
         android:layout_weight="0.16"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/initicon" />
+        android:src="@drawable/nophoto" />
 
     <TextView
         android:id="@+id/tvViewOfferDeadline"
