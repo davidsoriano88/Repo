@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="185dp"
-        android:background="@drawable/ic_launcher" />
+        android:background="@drawable/pin" />
 
     <ProgressBar
         android:id="@+id/Initprogress"
