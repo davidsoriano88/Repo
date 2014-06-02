@@ -172,15 +172,16 @@ public class OfferList extends ActionBarActivity {
 					ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.ic_launcher));
 					
 				}
-				}}
+				}setSupportProgressBarIndeterminateVisibility(false);}
 		});
+		
 	}
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.offer_list);
 		util.projectData(con);
 		
@@ -190,6 +191,7 @@ public class OfferList extends ActionBarActivity {
 		}
 
 	private void initUi(){
+		setSupportProgressBarIndeterminateVisibility(true);
 			Bundle bundle = getIntent().getExtras();
 			ivPhoto=new ImageView(this);
 			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
@@ -199,8 +201,9 @@ public class OfferList extends ActionBarActivity {
 			util.log(bundle.getString("id"));
 			idcommerce = bundle.getString("id");
 			//getPhoto(bundle.getString("id"));
-			new LoadDataTask().execute();
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			new LoadDataTask().execute();
+			
 			btnAdd.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -320,7 +323,7 @@ public class OfferList extends ActionBarActivity {
 						
 						// Anadir al set Adapter
 						list.setAdapter(new EfficientAdapter(con) );
-
+						//setSupportProgressBarIndeterminateVisibility(false);
 					}
 				}
 			}
@@ -351,7 +354,7 @@ protected Date actualDate(){
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			util.showProgressDialog(con);
+			//setSupportProgressBarIndeterminateVisibility(true);
 			util.log("mostramos dialog mydata");
 		}
 
