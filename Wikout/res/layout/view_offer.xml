@@ -61,14 +61,14 @@
 
     <Button
         android:id="@+id/btnViewOfferLike"
-        style="?android:attr/buttonStyleSmall"
+        style="@style/ButtonColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/vViewOfferSeparator"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
-        android:background="#dc0606"
+        
         android:textSize="30sp" />
 
     <Button
@@ -79,6 +79,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/btnViewOfferLike"
         android:layout_marginRight="29dp"
+        android:background="#dc0606"
         android:text="Flag" />
 
     <TextView

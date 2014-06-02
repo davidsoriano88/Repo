@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/ivInsertPhoto"
@@ -11,67 +12,69 @@
         android:layout_height="200dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:onClick="imageClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/nophoto" />
 
-    <Button
-        android:id="@+id/btnInsertOk"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignRight="@+id/btnInsertDeadline"
-        android:layout_marginBottom="77dp"
-        android:layout_marginRight="17dp"
-        android:text="Ok" />
-
-    <Button
-        android:id="@+id/btnInsertDeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etInsertDescription"
-        android:layout_toRightOf="@+id/tvInsertText"
-        android:text="Seleccionar Fecha" />
-
-    <TextView
-        android:id="@+id/tvInsertText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnInsertDeadline"
-        android:layout_alignBottom="@+id/btnInsertDeadline"
-        android:layout_alignLeft="@+id/etInsertDescription"
-        android:text="Válido hasta:" />
-
     <EditText
         android:id="@+id/etInsertDescription"
-        android:layout_width="wrap_content"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/etInsertPlacename"
-        android:layout_below="@+id/ivInsertPhoto"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:ems="10"
         android:hint="Oferta" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvInsertText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
+            android:text="Válido hasta:" />
+
+        <Button
+            android:id="@+id/btnInsertDeadline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccionar Fecha" />
+
+    </LinearLayout>
+
     <EditText
         android:id="@+id/etInsertPlacename"
-        android:layout_width="wrap_content"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/btnInsertDeadline"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="20dp"
-        android:editable="false"
-        android:enabled="false"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:ems="10"
+        android:enabled="false"
         android:hint="Nombre"
-        android:visibility="invisible" />
+        android:visibility="invisible" >
+
+        <requestFocus />
+    </EditText>
 
     <Button
-        android:id="@+id/btnLocation"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnCommerce"
+        style="@style/ButtonColor"
+        android:layout_width="282dp"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnInsertOk"
+        android:layout_above="@+id/btnInsertOffer"
         android:layout_alignLeft="@+id/etInsertPlacename"
-        android:layout_marginBottom="14dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="20dp"
         android:text="Comercio" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/btnInsertOffer"
+        android:layout_width="284dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="Insertar" />
+
+</LinearLayout>
