@@ -48,13 +48,12 @@
 
     <EditText
         android:id="@+id/etInsertPlacename"
-        android:layout_width="276dp"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
-        android:editable="false"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:ems="10"
         android:enabled="false"
         android:hint="Nombre"
-        android:layout_gravity="center_vertical"
         android:visibility="invisible" >
 
         <requestFocus />
