@@ -95,13 +95,13 @@ public class InsertOffer extends ActionBarActivity {
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
 		etDescription = (EditText) findViewById(R.id.etInsertDescription);
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename);
-		btnOk = (Button) findViewById(R.id.btnInsertOk);
+		btnOk = (Button) findViewById(R.id.btnInsertOffer);
 		addListenerOnButton();
 		getSupportActionBar().setTitle("Nueva Oferta");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setCurrentDateOnView();
 
-		btnLocation = (Button) findViewById(R.id.btnLocation);
+		btnLocation = (Button) findViewById(R.id.btnCommerce);
 		
 		
 
