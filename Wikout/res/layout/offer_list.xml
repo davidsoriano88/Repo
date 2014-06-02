@@ -27,6 +27,7 @@
         style="@style/ButtonColor"
         android:layout_width="298dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:text="Nueva Oferta" />
 

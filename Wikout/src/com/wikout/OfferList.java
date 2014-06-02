@@ -289,7 +289,7 @@ public class OfferList extends ActionBarActivity {
 					util.log("oferta no existente");
 				} else {
 					// Hay ofertas
-					util.log("oferta existentes");
+					util.log("ofertas existentes");
 					for (BackbeamObject offer : offers) {
 						
 						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
