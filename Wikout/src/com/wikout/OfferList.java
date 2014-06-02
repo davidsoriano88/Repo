@@ -302,7 +302,7 @@ public class OfferList extends ActionBarActivity {
 						/*CollectionConstraint collection = new CollectionConstraint();
 						collection.addIdentifier(offer.getId());
 
-						Query query = new Query("offer");
+						Query query = new Query("offer");kjgkhl
 						query.setQuery("where this in ? join file", collection);
 						query.fetch(100, 0, new FetchCallback() {
 							@Override
