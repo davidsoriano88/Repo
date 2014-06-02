@@ -1,5 +1,8 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent" >
 
-	<EditText xmlns:android="http://schemas.android.com/apk/res/android"
+	<EditText 
 	    android:id="@+id/search1"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
@@ -11,5 +14,15 @@
 	    android:paddingRight="16dp"
 	    android:hint="@string/buscar"
 	    android:textSize="20sp" />
-	    
-	   
+
+	<TextView
+	    android:id="@+id/menuHeader"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="#34495e"
+	    android:textColor="#FFFFFF"
+	    android:layout_alignParentLeft="true"
+	    android:layout_below="@+id/search1"
+	    android:text="Menu" />
+	
+</RelativeLayout>

@@ -107,15 +107,16 @@ public class Map extends ActionBarActivity {
 		String[] navMenuTitles = getResources().getStringArray(R.array.options);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		lvDrawer = (ListView) findViewById(R.id.left_drawer);
-
+		
 		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 		LayoutInflater inflater = LayoutInflater.from(this);
 
 		View search = inflater.inflate(R.layout.search_drawer, null);
 		etSearch = (EditText) search.findViewById(R.id.search1);
-
+		
 		lvDrawer.addHeaderView(search);
 		// navDrawerItems.add(new NavDrawerItem();
+		
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0]));
 		// Find People
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1]));
@@ -141,7 +142,7 @@ public class Map extends ActionBarActivity {
 		);
 		// prueba.setDrawerIndicatorEnabled(true);
 		drawerLayout.setDrawerListener(drawerToggle);
-
+		
 		filterView = (ImageView) findViewById(R.id.filterText);
 		tvFilterText = (TextView) findViewById(R.id.tvFilterText);
 		ibFilter = (ImageButton) findViewById(R.id.filterButton);
