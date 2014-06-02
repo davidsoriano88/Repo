@@ -159,8 +159,8 @@ public class ViewOffer extends ActionBarActivity {
 					BackbeamObject fileObject = company.getObject("file");
 					if(fileObject!=null){
 					TreeMap<String, Object> options = new TreeMap<String, Object>();
-					options.put("width", 400);
-					options.put("height",200);
+					options.put("width", 160);
+					options.put("height",80);
 					String logoURL = fileObject.composeFileURL(options);
 
 					// Codigo para poner la foto en el imageView

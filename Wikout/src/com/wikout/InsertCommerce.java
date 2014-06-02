@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -86,14 +87,14 @@ public class InsertCommerce extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+				btnOk.setEnabled(false);
 				if( etPlacename.getText().length()==0){
-						util.log("aceptar1");
+						
 					dialogIncompleteFields();
 					} else {
 						Bundle bundle = getIntent().getExtras();
 						latitude = bundle.getDouble("pointlat");
 						longitude = bundle.getDouble("pointlon");
-						util.log("david1: "+latitude+","+longitude);
 						if(photo!=null){
 							insertComercePhoto(actualDate());
 							}else{
@@ -198,20 +199,23 @@ public class InsertCommerce extends ActionBarActivity {
 					setResult(RESULT_OK, insertoffer);
 					util.log("comercio creado");
 					finish();	
-					/*Intent intentMessage=new Intent();**************************
-				    	  
-				          // put the message in Intent
-				    intentMessage.putExtra("idcom", commerce.getId());
-				    intentMessage.putExtra("placename",commerce.getString("placename"));
-				     // Set The Result in Intent
-				    setResult(4,intentMessage);
-					//Mapv2.fa.finish();
-					*/
+					
 					
 				}
 			});
 		}
-
+		@Override
+		public boolean onKeyDown(int keycode, KeyEvent e) {
+		    switch(keycode) {
+		        case KeyEvent.KEYCODE_BACK:
+		        	System.out.println("entra aqui");
+		        	CommerceList.fa.finish();
+		        	finish();
+		        	
+		            return true;
+		    }
+		    return false;
+		}
 
 	private String getId() {
 		String id = android.provider.Settings.System.getString(

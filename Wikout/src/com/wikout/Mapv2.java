@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -87,21 +88,7 @@ public class Mapv2 extends ActionBarActivity {
 		          // finish The activity 
 		        //if(point.latitude!=0.0){ 
 		         finish();
-		util.showToast(Mapv2.this, "Click\n" + "Lat: " + point.latitude + "\n" + "Lng: "
-						+ point.longitude + "\n" + "X: " + coord.x
-						+ " - Y: " + coord.y);
-				
-		
-		///establecemos el paso a la siguiente pantalla y le pasamos valores:
-		/*Intent commerceList = new Intent(context, CommerceList.class);
-		commerceList.putExtra("pointlat", point.latitude);
-		commerceList.putExtra("pointlon", point.longitude);
-		/*insert.putExtra("latiMain", point.latitude);
-		insert.putExtra("longiMain", point.longitude);
-		enter = 1;
-		insert.putExtra("enter", enter);*/
-		/*startActivityForResult(commerceList,3);
-		finish();*/
+
 			}
 		});
 
@@ -179,6 +166,18 @@ public class Mapv2 extends ActionBarActivity {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu2, menu);
 		return super.onCreateOptionsMenu(menu);
+	}
+	@Override
+	public boolean onKeyDown(int keycode, KeyEvent e) {
+	    switch(keycode) {
+	        case KeyEvent.KEYCODE_BACK:
+	        	System.out.println("entra aqui");
+	        	CommerceList.fa.finish();
+	        	finish();
+	        	
+	            return true;
+	    }
+	    return false;
 	}
 
 	private LocationListener listener = new LocationListener() {

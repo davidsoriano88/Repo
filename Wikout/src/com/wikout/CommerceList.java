@@ -30,6 +30,7 @@ double latitude,longitude;
 static final int REQUESTCODEMAP = 101;
 static final int REQUESTCODECOMMERCE = 102;
 public static final int RESULTOK = 100;
+public static ActionBarActivity fa;
 final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
 final ArrayList<String> listIdCommerces = new ArrayList<String>();
 final Util util = new Util();
@@ -40,6 +41,7 @@ final Util util = new Util();
 	    setContentView(R.layout.commerce_list);
 	    context= this;
 	    util.projectData(context);
+	    fa=this;
 	    
 	    getSupportActionBar().setTitle("Comercios cercanos");
 	    setSupportProgressBarIndeterminateVisibility(true);
@@ -106,6 +108,9 @@ final Util util = new Util();
 		@Override
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 			super.onActivityResult(requestCode, resultCode, data);
+			if(data==null){
+				
+			}
 		    if (requestCode == REQUESTCODEMAP) {
 		        if(resultCode == RESULT_OK){
 		        	System.out.println("entra en result code");

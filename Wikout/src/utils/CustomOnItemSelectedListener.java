@@ -10,7 +10,6 @@ public class CustomOnItemSelectedListener implements OnItemSelectedListener {
 	@Override
 	public void onItemSelected(AdapterView<?> parent, View view, int pos,
 			long id) {
-		util.showToast(parent.getContext(),"OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString());
 		
 	}
 
