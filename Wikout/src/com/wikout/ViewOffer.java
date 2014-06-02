@@ -182,7 +182,7 @@ public class ViewOffer extends ActionBarActivity {
 						e.printStackTrace();
 					}
 					}else{
-						ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.ic_launcher));
+						ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 						
 					}
 

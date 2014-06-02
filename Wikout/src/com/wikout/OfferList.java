@@ -177,7 +177,7 @@ public class OfferList extends ActionBarActivity {
 					
 						ivPhoto.setImageBitmap(bmPhoto);
 				}else{
-					ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.ic_launcher));
+					ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 					
 				}
 				}setSupportProgressBarIndeterminateVisibility(false);}
