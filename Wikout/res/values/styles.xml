@@ -33,7 +33,11 @@
   	<style name="boldText" parent="@android:style/TextAppearance.Medium">
     <item name="android:typeface">normal</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:height">50dp</item>
+	</style>
+	
+  	<style name="grayText" parent="@android:style/TextAppearance.Medium">
+    <item name="android:typeface">normal</item>
+    <item name="android:textColor">#8a8989</item>
 	</style>
 	
     <!-- Application theme. -->

@@ -17,23 +17,64 @@
         android:scaleType="fitCenter"
         android:src="@drawable/nophoto" />
 
+    <TextView
+        android:id="@+id/tvInsertCommerce"
+        style="@style/grayText"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Inserte nombre del comercio:" />
+
     <EditText
         android:id="@+id/etInsertPlacename1"
-        android:layout_width="wrap_content"
+        android:layout_width="286dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="21dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
         android:ems="10"
         android:hint="Nombre" />
 
-    <Spinner
-        android:id="@+id/spnInsertCategory1"
-        android:layout_width="150dp"
+    <TextView style="@style/grayText"
+        android:id="@+id/tvAddresslabel"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="32dp"
-        android:entries="@array/categorias"
-        android:prompt="@string/categorias_prompt" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Direccion:" />
+
+    <TextView
+        android:id="@+id/tvAddress"
+        style="@style/boldText"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="0.07"
+        android:text="Calle el Coso, 56, 50001 Zaragoza, España" />
+
+    <LinearLayout
+        android:layout_width="282dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/tvCategory"
+            style="@style/grayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Elija categoría:" />
+
+        <Spinner
+            android:id="@+id/spnInsertCategory1"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="0.27"
+            android:entries="@array/categorias"
+            android:prompt="@string/categorias_prompt" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnInsertOk1"
@@ -41,6 +82,7 @@
         android:layout_width="290dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="10dp"
         android:text="Insertar" />
 

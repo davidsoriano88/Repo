@@ -34,6 +34,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class InsertOffer extends ActionBarActivity {
 	
@@ -46,7 +47,7 @@ public class InsertOffer extends ActionBarActivity {
 	EditText etDescription,etPlacename;
 	Button btnOk,dateLimit,btnLocation;
 	Spinner spnCategory;
-
+	TextView tvCommerce;
 	// Otras variables
 	String photoPath, idoferta, idphoto = "";
 
@@ -87,6 +88,7 @@ public class InsertOffer extends ActionBarActivity {
 			idcommerce=bundle.getString("idcommerce");
 			placename=bundle.getString("placename");
 			etPlacename.setVisibility(0);
+			tvCommerce.setVisibility(0);
 			etPlacename.setText(placename);
 			btnLocation.setVisibility(4);
 		}
@@ -96,6 +98,7 @@ public class InsertOffer extends ActionBarActivity {
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
 		etDescription = (EditText) findViewById(R.id.etInsertDescription);
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename);
+		tvCommerce=(TextView) findViewById(R.id.tvPlaceNameInfo);
 		btnOk = (Button) findViewById(R.id.btnInsertOffer);
 		addListenerOnButton();
 		getSupportActionBar().setTitle("Nueva Oferta");
@@ -438,6 +441,7 @@ public class InsertOffer extends ActionBarActivity {
 			idcommerce = commerce.getString("idcommerce");
 			placename = commerce.getString("placename");
 			etPlacename.setText(placename);
+			tvCommerce.setVisibility(0);
 			etPlacename.setVisibility(0);
 			if(etPlacename.getText().length()!=0){
 				btnOk.setBackgroundColor(getResources().getColor(R.color.mainColor));

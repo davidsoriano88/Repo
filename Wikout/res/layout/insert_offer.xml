@@ -13,11 +13,17 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
         android:cropToPadding="true"
         android:onClick="imageClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/nophoto" />
+
+    <TextView style="@style/grayText"
+        android:id="@+id/tvOfferDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:text="Inserte Oferta:" />
 
     <EditText
         android:id="@+id/etInsertDescription"
@@ -34,7 +40,7 @@
         android:layout_marginLeft="20dp"
         android:orientation="horizontal" >
 
-        <TextView
+        <TextView style="@style/grayText"
             android:id="@+id/tvInsertText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,6 +54,14 @@
             android:text="Seleccionar Fecha" />
 
     </LinearLayout>
+
+    <TextView style="@style/grayText"
+        android:id="@+id/tvPlaceNameInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:visibility="invisible"
+        android:text="Comercio:" />
 
     <EditText
         android:id="@+id/etInsertPlacename"
@@ -72,7 +86,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
         android:text="Comercio" />
 
     <Button

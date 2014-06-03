@@ -6,9 +6,11 @@ import io.backbeam.Location;
 import io.backbeam.ObjectCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import utils.CustomOnItemSelectedListener;
 import utils.Photo;
@@ -20,6 +22,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -30,6 +34,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class InsertCommerce extends ActionBarActivity {
 	
@@ -39,7 +44,7 @@ public class InsertCommerce extends ActionBarActivity {
 	EditText etPlacename;
 	Button btnOk;
 	Spinner spnCategory;
-
+	TextView tvLocation;
 	// Otras variables
 	String photoPath, idoferta, idphoto = "";
 	BackbeamObject objectphoto;
@@ -79,9 +84,28 @@ public class InsertCommerce extends ActionBarActivity {
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename1);
 		btnOk = (Button) findViewById(R.id.btnInsertOk1);
 		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory1);
+		tvLocation=(TextView) findViewById(R.id.tvAddress);
 		addListenerOnSpinnerItemSelection();
 		getSupportActionBar().setTitle("Nuevo Comercio");
+		Bundle bundle = getIntent().getExtras();
+		latitude = bundle.getDouble("pointlat");
+		longitude = bundle.getDouble("pointlon");
 		
+		Geocoder geocoder;
+		List<Address> addresses = null;
+		geocoder = new Geocoder(context);
+		try {
+			addresses = geocoder.getFromLocation(latitude, longitude, 1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		String address = addresses.get(0).getAddressLine(0);
+		String city = addresses.get(0).getAddressLine(1);
+		String country = addresses.get(0).getAddressLine(2);
+		util.log("pancratio: "+address + city + country);
+		tvLocation.setText(address+"\n"+city+", "+country);
 		
 		//util.log("david: "+latitude+","+longitude);
 		btnOk.setOnClickListener(new OnClickListener() {
