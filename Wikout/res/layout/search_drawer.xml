@@ -2,27 +2,37 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent" >
 
-	<EditText 
+<TextView 
+    android:id="@+id/menuSearchHeader"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentLeft="true"
+    android:background="#34495e"
+    android:text="BUSQUEDA"
+    android:textColor="#c1c7ca" />
+
+	<EditText
 	    android:id="@+id/search1"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
+	    android:layout_marginTop="18dp"
 	    android:focusable="true"
 	    android:gravity="center_vertical"
 	    android:height="50dp"
-	    android:paddingLeft="16dp"
-	    android:singleLine="true"
-	    android:paddingRight="16dp"
 	    android:hint="@string/buscar"
+	    android:paddingLeft="16dp"
+	    android:paddingRight="16dp"
+	    android:singleLine="true"
 	    android:textSize="20sp" />
 
-	<TextView
+	<TextView 
 	    android:id="@+id/menuHeader"
 	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
-	    android:background="#34495e"
-	    android:textColor="#FFFFFF"
 	    android:layout_alignParentLeft="true"
-	    android:layout_below="@+id/search1"
-	    android:text="Menu" />
+	    android:layout_marginTop="60dp"
+	    android:background="#34495e"
+	    android:text="MENU"
+	    android:textColor="#c1c7ca" />
 	
 </RelativeLayout>
