@@ -113,10 +113,12 @@ public class OfferList extends ActionBarActivity {
 			       holder.tvDeadline.setText("Hasta: " + formatted);
 					holder.tvOffer.setText(offer.getString("description"));
 					holder.tvLike.setText("Likes: "+offer.getNumber("numlike").toString()); 
+					holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 			    }
 			});
 
 			
+			/*
 			//CONSULTA PARA LA FOTO
 			
 			CollectionConstraint collection = new CollectionConstraint();
@@ -134,8 +136,8 @@ public class OfferList extends ActionBarActivity {
 						BackbeamObject fileObject = company.getObject("file");
 						if(fileObject!=null){
 							TreeMap<String, Object> options = new TreeMap<String, Object>();
-							options.put("width", 75);
-							options.put("height", 75);
+							options.put("width", 25);
+							options.put("height", 25);
 							String logoURL = fileObject.composeFileURL(options);
 		
 							//Codigo para poner la foto en el imageView
@@ -164,7 +166,7 @@ public class OfferList extends ActionBarActivity {
 						
 					}setSupportProgressBarIndeterminateVisibility(false);
 					}}
-			});
+			});*/
 			
 			return convertView;
 		}
