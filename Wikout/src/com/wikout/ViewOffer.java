@@ -42,7 +42,7 @@ import android.widget.TextView;
 
 public class ViewOffer extends ActionBarActivity {
 
-	TextView tvDescription, tvDeadline, tvCreationDate,tvLocation,tvNumLike;
+	TextView tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;//, tvCreationDate,,;
 	static TextView tvDistance;
 	Button btnLike;
 	ImageButton btnFlag;
@@ -125,7 +125,7 @@ public class ViewOffer extends ActionBarActivity {
 						String city = addresses.get(0).getAddressLine(1);
 						String country = addresses.get(0).getAddressLine(2);
 						util.log("pancratio: "+address + city + country);
-						tvLocation.setText(address+"\n"+city+", "+country);
+				tvLocation.setText(address+"\n"+city+", "+country);
 						//***********************************************************
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
 						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
@@ -140,7 +140,7 @@ public class ViewOffer extends ActionBarActivity {
 								latitude, 
 								longitude);
 						//Habilito el boton para que el usuario pueda hacer like.
-						btnLike.setEnabled(true);
+					btnLike.setEnabled(true);
 						}});
 				setSupportProgressBarIndeterminateVisibility(false);}
 		});
@@ -207,6 +207,7 @@ public class ViewOffer extends ActionBarActivity {
 		// IMAGEVIEW
 		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
 		
+		
 		btnLike.setEnabled(false);
 		btnLike.setOnClickListener(new OnClickListener() {
 
@@ -245,7 +246,7 @@ public class ViewOffer extends ActionBarActivity {
 				AlertDialog alert = builder.create();
 				alert.show();
 			}
-		});	
+		});
 	}
 
 	// METODO PARA INSERTAR LIKE
@@ -323,13 +324,13 @@ public class ViewOffer extends ActionBarActivity {
 																		.getString("description"));
 																System.out.println(object
 																		.getNumber("numlike"));
-																tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
-																btnLike.setEnabled(true);
+														tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
+														btnLike.setEnabled(true);
 																if (lastlike == true){
-																	btnLike.setText(R.string.like);
+																	//btnLike.setText(R.string.like);
 																	setSupportProgressBarIndeterminateVisibility(false);
 																}else{
-																	btnLike.setText(R.string.dislike);
+																	//btnLike.setText(R.string.dislike);
 																setSupportProgressBarIndeterminateVisibility(false);
 																}
 															}
@@ -419,7 +420,7 @@ public class ViewOffer extends ActionBarActivity {
 					boolean fromCache) {
 				if (totalCount == 0) {
 					// NO HA HECHO CLIC ANTES
-					btnLike.setText(R.string.like);
+					//btnLike.setText(R.string.like);
 					System.out.println("no ha hecho clic antes");
 					lastlike = true;
 					System.out.println("Estado del boolean: " + lastlike);
@@ -433,13 +434,13 @@ public class ViewOffer extends ActionBarActivity {
 
 					if (status.equals("1")) {
 						// Deshabilitar boton
-						btnLike.setText(R.string.dislike);
+						//btnLike.setText(R.string.dislike);
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = false;
 					} else {
 						// Habilitar boton
-						btnLike.setText(R.string.like);
+						//btnLike.setText(R.string.like);
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = true;
@@ -475,11 +476,11 @@ public class ViewOffer extends ActionBarActivity {
 			distancedouble = (double)Math.round(distancedouble * 10) /10;
 			distancestring = distancedouble.toString();
 			util.log("Dist: "+distancestring+" km.");
-			tvDistance.setText(distancestring+" km.");
+			tvDistance.setText("Dist: "+distancestring+" km.");
 		}else{
 			int distanceint = distancedouble.intValue();
 			util.log("Dist: "+distanceint+" m.");
-			tvDistance.setText(distanceint+" m.");
+			tvDistance.setText("Dist: "+distanceint+" m.");
 		}
 		
 		

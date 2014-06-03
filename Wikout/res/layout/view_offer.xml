@@ -1,107 +1,117 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/ivViewOfferPhoto"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_width="fill_parent"
+        android:layout_height="160dp"
         android:layout_alignParentLeft="true"
-        android:layout_weight="0.16"
+        android:layout_gravity="fill"
+        android:clickable="false"
         android:src="@drawable/nophoto" />
 
     <TextView
-        android:id="@+id/tvViewOfferNumlike"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvViewOfferDescription"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/btnViewOfferFlag"
-        android:layout_alignBottom="@+id/btnViewOfferFlag"
-        android:layout_toRightOf="@+id/tvViewOfferDeadline" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/ivViewOfferPhoto"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:text="@string/oferta"
+        android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/tvViewOfferDistance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/tvViewOfferLocation"
-        android:layout_alignBottom="@+id/tvViewOfferLocation"
-        android:layout_alignRight="@+id/btnViewOfferFlag"
-        android:text="Distancia:" />
-
-    <ImageButton
-        android:id="@+id/btnViewOfferFlag"
-        style="@style/ButtonColor"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginRight="21dp"
-        android:background="#8f0707"
-        android:src="@drawable/flag_icon"
-        android:width="100dp" />
-
-    <Button
-        android:id="@+id/btnViewOfferLike"
-        style="@style/ButtonColor"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvViewOfferDeadline"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignTop="@+id/btnViewOfferFlag"
-        android:layout_marginLeft="18dp"
-        android:textSize="30sp"
-        android:width="100dp" />
+        android:layout_below="@id/tvViewOfferDescription"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:maxLines="1"
+        android:text="Válido hasta:" />
+
+    <TextView
+        android:id="@+id/tvViewOfferCreationDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/tvViewOfferDeadline"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:maxLines="1"
+        android:text="TextView" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/tvViewOfferLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="2"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/tvViewOfferDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:gravity="bottom|right"
+            android:text="TextView" />
+    </LinearLayout>
 
     <View
         android:id="@+id/vViewOfferSeparator"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/btnViewOfferFlag"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="24dp"
         android:background="@android:color/darker_gray" />
 
-    <TextView
-        android:id="@+id/tvViewOfferCreationDate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvViewOfferLocation"
-        android:layout_alignLeft="@+id/tvViewOfferDeadline"
-        android:layout_marginBottom="15dp"
-        android:text="Creado el: "
-        android:textAlignment="viewEnd"
-        android:textColor="#9a9a9a"
-        android:width="200dp" />
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" >
 
-    <TextView
-        android:id="@+id/tvViewOfferDeadline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/tvViewOfferCreationDate"
-        android:layout_alignLeft="@+id/btnViewOfferLike"
-        android:layout_marginBottom="16dp"
-        android:text="Válido hasta:" />
+        <Button
+            android:id="@+id/btnViewOfferLike"
+            style="@style/ButtonColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
+            android:textSize="30sp" />
 
-    <TextView
-        android:id="@+id/tvViewOfferDescription"
-        style="@style/boldText"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_alignLeft="@+id/tvViewOfferDeadline"
-        android:layout_alignRight="@+id/tvViewOfferDistance"
-        android:layout_below="@+id/ivViewOfferPhoto"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:text="@string/oferta" />
+        <TextView
+            android:id="@+id/tvViewOfferNumlike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView" />
 
-    <TextView
-        android:id="@+id/tvViewOfferLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/vViewOfferSeparator"
-        android:layout_alignLeft="@+id/tvViewOfferCreationDate"
-        android:layout_marginBottom="20dp"
-        android:text="[ubicacion]" />
+        <ImageButton
+            android:id="@+id/btnViewOfferFlag"
+            style="@style/ButtonColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:background="#8f0707"
+            android:src="@drawable/flag_icon"/>
 
-</RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
