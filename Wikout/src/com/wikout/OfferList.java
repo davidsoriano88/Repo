@@ -29,6 +29,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -346,6 +349,17 @@ protected Date actualDate(){
 	final Date createdate = calendar.getTime();
 	return createdate;
 }
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+	switch (item.getItemId()) {
+
+	case android.R.id.home:
+		finish();
+		return true;
+	default:
+		return super.onOptionsItemSelected(item);
+	}
+}
 //Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
 
@@ -378,6 +392,12 @@ protected Date actualDate(){
 	    super.onRestart();
 	    new LoadDataTask().execute();
 	    }
-
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu2, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
 }
