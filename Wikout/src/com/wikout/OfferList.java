@@ -1,9 +1,11 @@
 package com.wikout;
 
+import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.CollectionConstraint;
 import io.backbeam.FetchCallback;
 import io.backbeam.JoinResult;
+import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.io.IOException;
@@ -16,6 +18,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
+
+
 
 
 
@@ -52,11 +56,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class OfferList extends ActionBarActivity {
 
 	
-	private ArrayList<String> dataoffer = new ArrayList<String>();
-	private ArrayList<String> datalike = new ArrayList<String>();
 	private ArrayList<String> dataid = new ArrayList<String>();
-	private ArrayList<String> dataphoto = new ArrayList<String>();
-	private ArrayList<String> datadeadline = new ArrayList<String>();
 	
 	ActionBar ab;
 	Context con = this;
@@ -86,7 +86,7 @@ public class OfferList extends ActionBarActivity {
 		}
 
 		@Override
-		public int getCount() {return datalike.size();
+		public int getCount() {return dataid.size();
 		}
 
 		@Override
@@ -117,10 +117,21 @@ public class OfferList extends ActionBarActivity {
 			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferPhoto);
 			
 			
+			Backbeam.read("offer", dataid.get(position), new ObjectCallback() {
+			    @Override
+			    public void success(BackbeamObject offer) {
+					SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+					String formatted = format1.format(offer.getDay("deadline").getTime());
+			       holder.tvDeadline.setText("Hasta: " + formatted);
+					holder.tvOffer.setText(offer.getString("description"));
+					holder.tvLike.setText("Likes: "+offer.getNumber("numlike").toString()); 
+			    }
+			});
 			
-			holder.tvDeadline.setText(datadeadline.get(position));
-			holder.tvOffer.setText(dataoffer.get(position));
-			holder.tvLike.setText("Likes: "+datalike.get(position));
+			
+			
+			
+			
 			//CONSULTA PARA LA FOTO
 			
 			CollectionConstraint collection = new CollectionConstraint();
@@ -169,38 +180,6 @@ public class OfferList extends ActionBarActivity {
 					}}
 			});
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
-			
-			
-		    
-			//holder.tid.setText(dataid.get(position));
-
-
 			return convertView;
 		}
 
@@ -333,9 +312,7 @@ public class OfferList extends ActionBarActivity {
 //METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
 	private void queryOffer(String idcommerce) {
 		//vacio los arraylists
-		datadeadline.clear();
-		dataoffer.clear();
-		datalike.clear();
+
 		dataid.clear();
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
@@ -361,14 +338,7 @@ public class OfferList extends ActionBarActivity {
 					// Hay ofertas
 					util.log("ofertas existentes");
 					for (BackbeamObject offer : offers) {
-						
-						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
-						String formatted = format1.format(offer.getDay("deadline").getTime());
-						dataoffer.add(offer.getString("description"));
-						datalike.add(offer.getNumber("numlike").toString());
 						dataid.add(offer.getId());
-						datadeadline.add("Hasta: " + formatted);
-
 						// Anadir al set Adapter
 						list.setAdapter(new EfficientAdapter(con) );
 						//setSupportProgressBarIndeterminateVisibility(false);
