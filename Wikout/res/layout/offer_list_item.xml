@@ -23,16 +23,13 @@
             android:layout_weight="0.95"
             android:orientation="vertical" >
 
-            <TextView
+            <TextView style="@style/boldText"
                 android:id="@+id/tvOfferListDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
                 android:layout_marginTop="2dp"
                 android:layout_weight="0.01"
-                android:clickable="true"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 android:text="Descripcion"
                 android:textSize="7pt" />
 
@@ -46,9 +43,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:text="Hasta:"
                     android:textSize="6pt" />
 
@@ -57,9 +51,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:gravity="right"
                     android:text="Numlike"
                     android:textSize="6pt" />

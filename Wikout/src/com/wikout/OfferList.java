@@ -143,6 +143,7 @@ public class OfferList extends ActionBarActivity {
 				@Override
 				public void success(List<BackbeamObject> companies, int totalCount,
 						boolean fromCache) {
+					
 					for (BackbeamObject company : companies) {
 						System.out.println("dentro de success foto");
 						BackbeamObject fileObject = company.getObject("file");
@@ -176,7 +177,7 @@ public class OfferList extends ActionBarActivity {
 					}else{
 						holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 						
-					}
+					}setSupportProgressBarIndeterminateVisibility(false);
 					}}
 			});
 			
@@ -194,6 +195,7 @@ public class OfferList extends ActionBarActivity {
 			@Override
 			public void success(List<BackbeamObject> companies, int totalCount,
 					boolean fromCache) {
+				
 				for (BackbeamObject company : companies) {
 					System.out.println("dentro de success foto");
 					BackbeamObject fileObject = company.getObject("file");
@@ -228,7 +230,7 @@ public class OfferList extends ActionBarActivity {
 					ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 					
 				}
-				}setSupportProgressBarIndeterminateVisibility(false);}
+				}}
 		});
 		
 	}
@@ -324,7 +326,7 @@ public class OfferList extends ActionBarActivity {
 			@Override
 			public void success(List<BackbeamObject> objects, int totalCount,
 					boolean fromCache) {
-				
+			
 				BackbeamObject commerce = objects.get(0);
 				JoinResult join = commerce.getJoinResult("offer");
 				placeName=commerce.getString("placename");
@@ -333,6 +335,7 @@ public class OfferList extends ActionBarActivity {
 				// Contemplo si alguna referencia NO TIENE ofertas
 				if (offers.size() == 0) {
 					// No hay ofertas disponibles
+					setSupportProgressBarIndeterminateVisibility(false);
 					util.log("oferta no existente");
 				} else {
 					// Hay ofertas
