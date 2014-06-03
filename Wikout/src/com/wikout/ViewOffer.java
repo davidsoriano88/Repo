@@ -36,6 +36,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -43,7 +44,8 @@ public class ViewOffer extends ActionBarActivity {
 
 	TextView tvDescription, tvDeadline, tvCreationDate,tvLocation,tvNumLike;
 	static TextView tvDistance;
-	Button btnLike, btnFlag;
+	Button btnLike;
+	ImageButton btnFlag;
 	ImageView ivPhoto;
 	String idofferparameter = "",idcommerceparameter = "";
 	Context context;
@@ -91,7 +93,7 @@ public class ViewOffer extends ActionBarActivity {
 		Backbeam.read("offer", idoffer, new ObjectCallback() {
 			@Override
 			public void success(BackbeamObject offer) {
-				tvDescription.setText("Descripción: "+offer.getString("description"));
+				tvDescription.setText(offer.getString("description"));
 				tvNumLike.setText(offer.getNumber("numlike").toString());
 				// Paso las fechas a los edittexts
 				SimpleDateFormat datef = new SimpleDateFormat("dd-MM-yyyy");
@@ -201,7 +203,7 @@ public class ViewOffer extends ActionBarActivity {
 		tvDistance = (TextView) findViewById(R.id.tvViewOfferDistance);
 		// BOTONES
 		btnLike = (Button) findViewById(R.id.btnViewOfferLike);
-		btnFlag = (Button) findViewById(R.id.btnViewOfferFlag);
+		btnFlag = (ImageButton) findViewById(R.id.btnViewOfferFlag);
 		// IMAGEVIEW
 		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
 		
