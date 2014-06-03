@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -104,7 +105,7 @@ public class InsertOffer extends ActionBarActivity {
 		btnLocation = (Button) findViewById(R.id.btnCommerce);
 		
 		
-
+		
 		// Lo ponemos a escuchar para cuando sea pulsado
 		
 		btnLocation.setOnClickListener(new View.OnClickListener() {
@@ -438,6 +439,10 @@ public class InsertOffer extends ActionBarActivity {
 			placename = commerce.getString("placename");
 			etPlacename.setText(placename);
 			etPlacename.setVisibility(0);
+			if(etPlacename.getText().length()!=0){
+				btnOk.setBackgroundColor(getResources().getColor(R.color.mainColor));
+				btnLocation.setBackgroundColor(Color.GRAY);
+			}
 		}
 		
 		

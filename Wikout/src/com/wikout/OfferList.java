@@ -115,10 +115,7 @@ public class OfferList extends ActionBarActivity {
 					holder.tvLike.setText("Likes: "+offer.getNumber("numlike").toString()); 
 			    }
 			});
-			
-			
-			
-			
+
 			
 			//CONSULTA PARA LA FOTO
 			

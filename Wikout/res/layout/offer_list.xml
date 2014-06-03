@@ -8,9 +8,9 @@
     <ImageView
         android:id="@+id/ivOfferListPhoto"
         android:layout_width="match_parent"
-        android:layout_height="99dp"
-        android:layout_weight="0.18"
-        android:contentDescription="@string/description" />
+        android:layout_height="160dp"
+        android:contentDescription="@string/description"
+        android:scaleType="fitCenter" />
 
     <ListView
         android:id="@+id/listOff"

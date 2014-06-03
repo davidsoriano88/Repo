@@ -9,17 +9,19 @@
     <ImageView
         android:id="@+id/ivInsertPhoto"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="160dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:cropToPadding="true"
         android:onClick="imageClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/nophoto" />
 
     <EditText
         android:id="@+id/etInsertDescription"
-        android:layout_width="275dp"
+        android:layout_width="282dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:ems="10"
@@ -28,7 +30,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="left"
+        android:layout_marginLeft="20dp"
         android:orientation="horizontal" >
 
         <TextView
@@ -48,7 +51,7 @@
 
     <EditText
         android:id="@+id/etInsertPlacename"
-        android:layout_width="275dp"
+        android:layout_width="282dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
         android:ems="10"
@@ -67,14 +70,18 @@
         android:layout_above="@+id/btnInsertOffer"
         android:layout_alignLeft="@+id/etInsertPlacename"
         android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
         android:text="Comercio" />
 
     <Button
         android:id="@+id/btnInsertOffer"
-        android:layout_width="284dp"
+        style="@style/ButtonColor"
+        android:layout_width="282dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
+        android:background="#7e7b7b"
         android:text="Insertar" />
 
 </LinearLayout>
