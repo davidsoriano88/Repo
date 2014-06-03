@@ -78,6 +78,7 @@ public class InsertCommerce extends ActionBarActivity {
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto1);
 		etPlacename = (EditText) findViewById(R.id.etInsertPlacename1);
 		btnOk = (Button) findViewById(R.id.btnInsertOk1);
+		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory1);
 		addListenerOnSpinnerItemSelection();
 		getSupportActionBar().setTitle("Nuevo Comercio");
 		
@@ -130,7 +131,7 @@ public class InsertCommerce extends ActionBarActivity {
 	}
 	public void addListenerOnSpinnerItemSelection() {
 
-		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory1);
+		
 		spnCategory.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 	}
