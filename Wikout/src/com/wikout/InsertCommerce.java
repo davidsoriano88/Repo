@@ -29,6 +29,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,6 +74,7 @@ public class InsertCommerce extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_commerce);
 		util.projectData(context);
 		initUI();
@@ -122,8 +124,10 @@ public class InsertCommerce extends ActionBarActivity {
 						latitude = bundle.getDouble("pointlat");
 						longitude = bundle.getDouble("pointlon");
 						if(photo!=null){
+							setSupportProgressBarIndeterminateVisibility(true);
 							insertComercePhoto(actualDate());
 							}else{
+								setSupportProgressBarIndeterminateVisibility(true);
 								util.log("no hay foto");
 								insertNewCommerce(objectphoto);
 							}
@@ -224,6 +228,7 @@ public class InsertCommerce extends ActionBarActivity {
 					insertoffer.putExtra("placename", commerce.getString("placename"));
 					setResult(RESULT_OK, insertoffer);
 					util.showToast(context, "comercio creado");
+					setSupportProgressBarIndeterminateVisibility(false);
 					finish();	
 					
 					

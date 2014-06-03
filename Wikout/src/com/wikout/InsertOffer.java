@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -79,6 +80,7 @@ public class InsertOffer extends ActionBarActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_offer);
 		fio=this;
 		util.projectData(context);
@@ -150,8 +152,10 @@ public class InsertOffer extends ActionBarActivity {
 						dialogIncomplete.show();
 					}
 					else if(photo!=null){
+						setSupportProgressBarIndeterminateVisibility(true);
 							insertOfferPhoto(actualDate());
 							}else{
+								setSupportProgressBarIndeterminateVisibility(true);
 								util.log("no hay foto");
 								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
 								finish();//*********************************************************
@@ -323,6 +327,7 @@ public class InsertOffer extends ActionBarActivity {
 			public void success(BackbeamObject offer) {
 				System.out.println("foto subida con éxito!! " + offer.getId());
 				finish();
+				setSupportProgressBarIndeterminateVisibility(false);
 			}
 		});
 	}
