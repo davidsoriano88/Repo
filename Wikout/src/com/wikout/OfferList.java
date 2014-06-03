@@ -19,6 +19,8 @@ import java.util.TreeMap;
 
 
 
+
+
 import utils.Util;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,6 +28,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -51,7 +55,7 @@ public class OfferList extends ActionBarActivity {
 	private ArrayList<String> dataoffer = new ArrayList<String>();
 	private ArrayList<String> datalike = new ArrayList<String>();
 	private ArrayList<String> dataid = new ArrayList<String>();
-	private ArrayList<Bitmap> dataphoto = new ArrayList<Bitmap>();
+	private ArrayList<String> dataphoto = new ArrayList<String>();
 	private ArrayList<String> datadeadline = new ArrayList<String>();
 	
 	ActionBar ab;
@@ -95,7 +99,7 @@ public class OfferList extends ActionBarActivity {
 
 		@Override
 		public View getView(final int position, View convertView, ViewGroup parent) {
-			viewHolder holder;
+			final viewHolder holder;
 			if (convertView == null) {
 				convertView = inflater.inflate(R.layout.offer_list_item, null);
 				holder = new viewHolder();
@@ -112,26 +116,91 @@ public class OfferList extends ActionBarActivity {
 			holder.tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListDeadline);
 			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferPhoto);
 			
-			holder.tvDeadline.setText("Hasta: "+ datadeadline.get(position));
+			
+			
+			holder.tvDeadline.setText(datadeadline.get(position));
 			holder.tvOffer.setText(dataoffer.get(position));
 			holder.tvLike.setText("Likes: "+datalike.get(position));
-			//holder.ivOfferPhoto.setImageBitmap(dataphoto.get(position));
+			//CONSULTA PARA LA FOTO
+			
+			CollectionConstraint collection = new CollectionConstraint();
+			collection.addIdentifier(dataid.get(position));
+
+			Query query = new Query("offer");
+			query.setQuery("where this in ? join file", collection);
+			query.fetch(100, 0, new FetchCallback() {
+				@Override
+				public void success(List<BackbeamObject> companies, int totalCount,
+						boolean fromCache) {
+					for (BackbeamObject company : companies) {
+						System.out.println("dentro de success foto");
+						BackbeamObject fileObject = company.getObject("file");
+						if(fileObject!=null){
+							TreeMap<String, Object> options = new TreeMap<String, Object>();
+							options.put("width", 75);
+							options.put("height", 75);
+							String logoURL = fileObject.composeFileURL(options);
+		
+							//Codigo para poner la foto en el imageView
+							URL newurl = null;
+							try {
+								newurl = new URL(logoURL);
+							} catch (MalformedURLException e) {
+								e.printStackTrace();
+							}
+							
+							try {
+								
+								bmPhoto = BitmapFactory.decodeStream(newurl
+										.openConnection().getInputStream());
+								util.log("icono cargado");
+								
+								
+								//image.setImageBitmap(mIcon_val);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						
+							holder.ivOfferPhoto.setImageBitmap(bmPhoto);
+					}else{
+						holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
+						
+					}
+					}}
+			});
 			
 			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+
+			
+			
+		    
 			//holder.tid.setText(dataid.get(position));
 
-			/*holder.btnView.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					Intent intent = new Intent(context,ViewOffer.class);	 
-					intent.putExtra("idoffer", dataid.get(position));
-					intent.putExtra("idcommerce", idcommerce);
-					intent.putExtra("placename",placeName);
-					startActivity(intent);
-					
-				}
-			});*/
 			return convertView;
 		}
 
@@ -278,6 +347,7 @@ public class OfferList extends ActionBarActivity {
 			@Override
 			public void success(List<BackbeamObject> objects, int totalCount,
 					boolean fromCache) {
+				
 				BackbeamObject commerce = objects.get(0);
 				JoinResult join = commerce.getJoinResult("offer");
 				placeName=commerce.getString("placename");
@@ -298,59 +368,11 @@ public class OfferList extends ActionBarActivity {
 						datalike.add(offer.getNumber("numlike").toString());
 						dataid.add(offer.getId());
 						datadeadline.add("Hasta: " + formatted);
-						
-						/*CollectionConstraint collection = new CollectionConstraint();
-						collection.addIdentifier(offer.getId());
 
-						Query query = new Query("offer");kjgkhl
-						query.setQuery("where this in ? join file", collection);
-						query.fetch(100, 0, new FetchCallback() {
-							@Override
-							public void success(List<BackbeamObject> companies, int totalCount,
-									boolean fromCache) {
-								for (BackbeamObject company : companies) {
-									System.out.println("dentro de success foto");
-									BackbeamObject fileObject = company.getObject("file");
-									if(fileObject!=null){
-										TreeMap<String, Object> options = new TreeMap<String, Object>();
-										options.put("width", 50);
-										options.put("height", 25);
-										String logoURL = fileObject.composeFileURL(options);
-					
-										//Codigo para poner la foto en el imageView
-										URL newurl = null;
-										try {
-											newurl = new URL(logoURL);
-										} catch (MalformedURLException e) {
-											e.printStackTrace();
-										}
-										
-										try {
-											
-											bmPhoto = BitmapFactory.decodeStream(newurl
-													.openConnection().getInputStream());
-											util.log("icono cargado");
-											dataphoto.add(bmPhoto);
-											
-											//image.setImageBitmap(mIcon_val);
-										} catch (IOException e) {
-											e.printStackTrace();
-										}
-									
-										
-								}else{
-									
-									dataphoto.add(BitmapFactory.decodeResource(con.getResources(), R.drawable.ic_launcher));
-								}
-								}}
-						});*/
-						
-						
-						
-						
 						// Anadir al set Adapter
 						list.setAdapter(new EfficientAdapter(con) );
 						//setSupportProgressBarIndeterminateVisibility(false);
+						
 					}
 				}
 			}
