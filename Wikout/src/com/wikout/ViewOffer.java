@@ -331,15 +331,18 @@ public class ViewOffer extends ActionBarActivity {
 																		.getString("description"));
 																System.out.println(object
 																		.getNumber("numlike"));
-														tvNumLike.setText(String.valueOf(object.getNumber("numlike")));
-														btnLike.setEnabled(true);
-																if (lastlike == true){
-																	//btnLike.setText(R.string.like);
-																	setSupportProgressBarIndeterminateVisibility(false);
+																if(offer.getNumber("numlike").intValue()==0){
+																	tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
 																}else{
-																	//btnLike.setText(R.string.dislike);
-																setSupportProgressBarIndeterminateVisibility(false);
+																	if(offer.getNumber("numlike").intValue()==1){
+																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
+																}else{
+																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuarios han dado a Me Gusta");
+																	}
 																}
+																	btnLike.setEnabled(true);
+																	setSupportProgressBarIndeterminateVisibility(false);
+																
 															}
 														});
 													}
