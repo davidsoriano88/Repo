@@ -114,6 +114,9 @@ public class OfferList extends ActionBarActivity {
 					SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 					String formatted = format1.format(offer.getDay("deadline").getTime());
 			       holder.tvDeadline.setText("Hasta: " + formatted);
+			       if(offer.getString("description").length()>200){
+			    	   
+			       }
 					holder.tvOffer.setText(offer.getString("description"));
 					holder.tvLike.setText("Likes: "+offer.getNumber("numlike").toString()); 
 					holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));

@@ -31,7 +31,7 @@
                 android:layout_marginTop="2dp"
                 android:layout_weight="0.01"
                 android:text="Descripcion"
-                android:textSize="7pt" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
                     android:text="Hasta:"
-                    android:textSize="6pt" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvOfferListNumlike"
@@ -53,7 +53,7 @@
                     android:layout_marginLeft="8dp"
                     android:gravity="right"
                     android:text="Numlike"
-                    android:textSize="6pt" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
         </LinearLayout>
