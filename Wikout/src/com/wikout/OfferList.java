@@ -358,7 +358,9 @@ protected Date actualDate(){
 @Override
 public boolean onOptionsItemSelected(MenuItem item) {
 	switch (item.getItemId()) {
-
+	case R.id.refresh:
+		util.showToast(con, "wololooooo");
+		return true;
 	case android.R.id.home:
 		finish();
 		return true;
@@ -402,7 +404,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu2, menu);
+		inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 	
