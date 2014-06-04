@@ -41,7 +41,7 @@ import android.widget.TextView;
 
 public class ViewOffer extends ActionBarActivity {
 
-	TextView tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;//, tvCreationDate,,;
+	TextView tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
 	static TextView tvDistance;
 	Button btnLike;
 	ImageButton btnFlag;
@@ -93,7 +93,15 @@ public class ViewOffer extends ActionBarActivity {
 			@Override
 			public void success(BackbeamObject offer) {
 				tvDescription.setText(offer.getString("description"));
-				tvNumLike.setText(offer.getNumber("numlike").toString());
+				if(offer.getNumber("numlike").intValue()==0){
+					tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
+				}else{
+					if(offer.getNumber("numlike").intValue()==1){
+					tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
+				}else{
+					tvNumLike.setText(offer.getNumber("numlike").toString()+" usuarios han dado a Me Gusta");
+					}
+				}
 				// Paso las fechas a los edittexts
 				SimpleDateFormat datef = new SimpleDateFormat("dd-MM-yyyy");
 				String deadline = datef.format(offer.getDay("deadline").getTime());
