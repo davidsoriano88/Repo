@@ -83,7 +83,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp" >
 
-            <Button
+            <ImageButton
                 android:id="@+id/btnViewOfferLike"
                 style="@style/ButtonColor"
                 android:layout_width="100dp"
@@ -91,7 +91,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:src="@drawable/flag_icon" />
 
             <ImageButton
                 android:id="@+id/btnViewOfferFlag"
