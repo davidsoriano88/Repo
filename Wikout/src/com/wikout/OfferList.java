@@ -174,7 +174,7 @@ public class OfferList extends ActionBarActivity {
 					}setSupportProgressBarIndeterminateVisibility(false);
 					}}
 			});*/
-			
+			setSupportProgressBarIndeterminateVisibility(false);
 			return convertView;
 		}
 
