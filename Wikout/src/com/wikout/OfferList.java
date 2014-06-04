@@ -359,7 +359,7 @@ protected Date actualDate(){
 public boolean onOptionsItemSelected(MenuItem item) {
 	switch (item.getItemId()) {
 	case R.id.refresh:
-		util.showToast(con, "wololooooo");
+		new LoadDataTask().execute();
 		return true;
 	case android.R.id.home:
 		finish();

@@ -503,7 +503,7 @@ public class ViewOffer extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
         case R.id.refresh:
-			util.showToast(context, "wololooooo");
+			new LoadDataTask().execute();
 			return true;
         	case android.R.id.home: 
 			finish();
