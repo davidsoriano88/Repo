@@ -23,6 +23,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -120,7 +122,9 @@ public class InsertOffer extends ActionBarActivity {
 			public void onClick(View v) {
 				// request your webservice here. Possible use of AsyncTask and
 				// ProgressDialog
+				if(isNetworkAvailable()==true){
 				dialogGetLocation();
+			}else{util.showInfoDialog(context, "Lo sentimos", "Es necesaria conexión a internet");}
 			}
 
 		});
@@ -129,7 +133,7 @@ public class InsertOffer extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				
+			if(isNetworkAvailable()==true){
 					if(etDescription.getText().length()==0){
 						util.log("aceptar1");
 					dialogIncompleteFields();
@@ -163,7 +167,8 @@ public class InsertOffer extends ActionBarActivity {
 							}
 						
 						//imageClicked(v);
-					}
+			}else{util.showInfoDialog(context, "Lo sentimos", "Es necesaria conexión a internet");}
+			}
 					});
 					
 			
@@ -460,6 +465,12 @@ public class InsertOffer extends ActionBarActivity {
 
 			
 		
+	}
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 	private void commerceData(String idcommerce) {
 		Backbeam.read("commerce", idcommerce, new ObjectCallback() {

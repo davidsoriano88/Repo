@@ -14,6 +14,8 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -65,7 +67,7 @@ public class Util {
 			}
 		}
 	
-		
+	
 
 		public void projectData(Context context) {
 			Backbeam.setProject("pruebaapp");

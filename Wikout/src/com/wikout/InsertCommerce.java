@@ -24,6 +24,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -116,6 +118,7 @@ public class InsertCommerce extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+				if(isNetworkAvailable()==true){
 				btnOk.setEnabled(false);
 				ivPhoto.setEnabled(false);
 				if( etPlacename.getText().length()==0){
@@ -136,7 +139,7 @@ public class InsertCommerce extends ActionBarActivity {
 						
 						//imageClicked(v);
 					}
-					
+				}else{util.showInfoDialog(context, "Lo sentimos", "Es necesaria conexión a internet");}
 				}
 				});
 		}
@@ -257,7 +260,13 @@ public class InsertCommerce extends ActionBarActivity {
 		return id;
 	}
 
-
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager 
+	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
+	
 	public void imageClicked(View imageView) {
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
