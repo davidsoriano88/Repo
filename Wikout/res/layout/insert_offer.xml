@@ -80,7 +80,7 @@
         android:id="@+id/btnCommerce"
         style="@style/ButtonColor"
         android:layout_width="282dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_above="@+id/btnInsertOffer"
         android:layout_alignLeft="@+id/etInsertPlacename"
         android:layout_alignParentRight="true"
@@ -92,7 +92,7 @@
         android:id="@+id/btnInsertOffer"
         style="@style/ButtonColor"
         android:layout_width="282dp"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginLeft="20dp"
         android:background="#7e7b7b"
         android:text="Insertar" />
