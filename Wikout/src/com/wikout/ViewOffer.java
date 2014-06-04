@@ -46,8 +46,8 @@ public class ViewOffer extends ActionBarActivity {
 
 	TextView tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
 	static TextView tvDistance;
-	Button btnLike;
-	ImageButton btnFlag;
+
+	ImageButton btnFlag,btnLike;
 	ImageView ivPhoto;
 	String idofferparameter = "",idcommerceparameter = "";
 	Context context;
@@ -212,7 +212,7 @@ public class ViewOffer extends ActionBarActivity {
 		tvNumLike = (TextView) findViewById(R.id.tvViewOfferNumlike);
 		tvDistance = (TextView) findViewById(R.id.tvViewOfferDistance);
 		// BOTONES
-		btnLike = (Button) findViewById(R.id.btnViewOfferLike);
+		btnLike = (ImageButton) findViewById(R.id.btnViewOfferLike);
 		btnFlag = (ImageButton) findViewById(R.id.btnViewOfferFlag);
 		// IMAGEVIEW
 		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
