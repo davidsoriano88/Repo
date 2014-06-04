@@ -14,7 +14,7 @@
         android:clickable="false"
         android:src="@drawable/nophoto" />
 
-    <TextView
+    <TextView style="@style/boldText"
         android:id="@+id/tvViewOfferDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,6 +50,7 @@
         android:maxLines="1"
         android:text="Creado:"
         android:textColor="#8a8989" 
+        android:textSize="15sp"
         android:layout_marginBottom="5dp"/>
 
     <LinearLayout
@@ -72,7 +73,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text=" " />
+            android:text=" " 
+            android:textSize="15sp"/>
 
         <LinearLayout
             android:layout_width="match_parent"

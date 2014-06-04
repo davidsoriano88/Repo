@@ -21,6 +21,7 @@ import utils.Util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -30,6 +31,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -499,6 +502,9 @@ public class ViewOffer extends ActionBarActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+        case R.id.refresh:
+			util.showToast(context, "wololooooo");
+			return true;
         	case android.R.id.home: 
 			finish();
         		return true;
@@ -506,6 +512,14 @@ public class ViewOffer extends ActionBarActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu3, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
 	//Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
