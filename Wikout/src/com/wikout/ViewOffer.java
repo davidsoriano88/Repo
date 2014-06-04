@@ -46,7 +46,6 @@ public class ViewOffer extends ActionBarActivity {
 
 	TextView tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
 	static TextView tvDistance;
-
 	ImageButton btnFlag,btnLike;
 	ImageView ivPhoto;
 	String idofferparameter = "",idcommerceparameter = "";
