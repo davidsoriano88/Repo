@@ -326,7 +326,8 @@ public class InsertOffer extends ActionBarActivity {
 		offer.save(new ObjectCallback() {//**************************************************************************
 			@Override
 			public void success(BackbeamObject offer) {
-				System.out.println("foto subida con éxito!! " + offer.getId());
+
+				util.showToast(context, "comercio creado");
 				finish();
 				setSupportProgressBarIndeterminateVisibility(false);
 			}

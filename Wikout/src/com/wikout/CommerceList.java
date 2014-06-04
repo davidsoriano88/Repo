@@ -69,22 +69,18 @@ final Util util = new Util();
 	      public void onItemClick(AdapterView<?> parent, final View view,
 	          int position, long id) {
 	    	  if(position==listPlacenameCommerces.size()-1){
-	    		   util.showToast(context,"click"); 
 	    	 Intent insertCommerce = new Intent(context,InsertCommerce.class);
 	    	  
 	    	  insertCommerce.putExtra("pointlat",latitude);
 	    	  insertCommerce.putExtra("pointlon",longitude);
-	    	  util.showToast(context,String.valueOf(latitude));
 	    	  startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
 	    	  //finish();
-	    	  util.showToast(context, listPlacenameCommerces.get(position));
 	    	  }else{
 	    		 Intent insertOffer= new Intent();
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
 		    	  setResult(RESULT_OK, insertOffer);
 		    	  //startActivity(insertOffer);
-		    	  util.showToast(context, listPlacenameCommerces.get(position));
 		    	  finish();
 		    	/*  Intent intentMessage=new Intent();**********************************************
 		    	  
