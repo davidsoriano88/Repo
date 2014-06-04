@@ -84,7 +84,7 @@
             <Button
                 android:id="@+id/btnViewOfferLike"
                 style="@style/ButtonColor"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="10dp"
@@ -94,7 +94,7 @@
             <ImageButton
                 android:id="@+id/btnViewOfferFlag"
                 style="@style/ButtonColor"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="10dp"
