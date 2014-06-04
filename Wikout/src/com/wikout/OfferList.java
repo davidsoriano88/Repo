@@ -119,7 +119,7 @@ public class OfferList extends ActionBarActivity {
 			       }else{
 					holder.tvOffer.setText(offer.getString("description"));
 					}
-					holder.tvLike.setText("Likes: "+offer.getNumber("numlike").toString()); 
+					holder.tvLike.setText(offer.getNumber("numlike").toString()+" Me Gusta"); 
 					holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 			    }
 			});

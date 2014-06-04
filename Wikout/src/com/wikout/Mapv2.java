@@ -146,7 +146,7 @@ public class Mapv2 extends ActionBarActivity {
 			util.log("location"+String.valueOf(location.getLatitude()));
 		}else
 		{
-			util.showToast(context, "location null");
+			//util.showToast(context, "location null");
 		}
 		
 	}
