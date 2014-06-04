@@ -115,7 +115,7 @@ public class OfferList extends ActionBarActivity {
 					String formatted = format1.format(offer.getDay("deadline").getTime());
 			       holder.tvDeadline.setText("Hasta: " + formatted);
 			       if(offer.getString("description").length()>55){
-			    	   holder.tvOffer.setText(offer.getString("description").substring(0, 59)+"...");
+			    	   holder.tvOffer.setText(offer.getString("description").substring(0, 53)+"...");
 			       }else{
 					holder.tvOffer.setText(offer.getString("description"));
 					}
