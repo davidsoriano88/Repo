@@ -155,6 +155,7 @@ public class Mapv2 extends ActionBarActivity {
         switch (item.getItemId()) {
         	case android.R.id.home: 
         		this.finish();
+        		CommerceList.fa.finish();
         		return true;
         default:
             return super.onOptionsItemSelected(item);

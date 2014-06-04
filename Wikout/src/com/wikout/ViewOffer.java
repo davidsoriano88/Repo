@@ -15,7 +15,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.TreeMap;
 
 import utils.Util;
@@ -33,8 +32,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;

@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
@@ -89,6 +90,7 @@ public class InsertCommerce extends ActionBarActivity {
 		tvLocation=(TextView) findViewById(R.id.tvAddress);
 		addListenerOnSpinnerItemSelection();
 		getSupportActionBar().setTitle("Nuevo Comercio");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		Bundle bundle = getIntent().getExtras();
 		latitude = bundle.getDouble("pointlat");
 		longitude = bundle.getDouble("pointlon");
@@ -331,6 +333,19 @@ public class InsertCommerce extends ActionBarActivity {
 			final Date createdate = calendar.getTime();
 			return createdate;
 		}
+		
+		
+		
+		@Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        switch (item.getItemId()) {     
+	        	case android.R.id.home: 
+	        		finish();
+	        		return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	        }
+	    }
 
 }
 

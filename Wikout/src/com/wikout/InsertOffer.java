@@ -93,6 +93,7 @@ public class InsertOffer extends ActionBarActivity {
 			tvCommerce.setVisibility(0);
 			etPlacename.setText(placename);
 			btnLocation.setVisibility(4);
+			btnOk.setBackgroundColor(getResources().getColor(R.color.mainColor));
 		}
 	}
 	 private void initUI(){
