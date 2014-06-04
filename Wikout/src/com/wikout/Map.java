@@ -130,7 +130,7 @@ public class Map extends ActionBarActivity {
 				.findFragmentById(R.id.map)).getMap();
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setDisplayUseLogoEnabled(false);
+		//getSupportActionBar().setDisplayUseLogoEnabled(false);
 
 		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		drawerLayout, /* DrawerLayout object */
@@ -186,6 +186,9 @@ public class Map extends ActionBarActivity {
 									getSupportActionBar()
 											.setTitle("Resultados");
 									filterVisible(true);
+									etSearch.setText("");
+									InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+									imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);//****************************************************
 									new MyData().execute();
 								}
 							});
