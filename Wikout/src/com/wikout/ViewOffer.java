@@ -58,9 +58,7 @@ public class ViewOffer extends ActionBarActivity {
 	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
 	int numbubble = 0;
-	int iconlike = R.drawable.like_icon;
-	int icondislike = R.drawable.unlike_icon;
-
+	
 	
 	//Radio de la tierra (en metros)
 	final static double radio = 6371000;
@@ -282,7 +280,7 @@ public class ViewOffer extends ActionBarActivity {
 						numbubble = commerce.getNumber("numbubble").intValue();
 						commerce.setNumber("numbubble", numbubble+1);
 						System.out.println("1");
-						btnLike.setBackgroundResource(R.drawable.unlike_icon);
+						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.unlike_icon));
 						lastlike=false;
 						
 						
@@ -291,7 +289,7 @@ public class ViewOffer extends ActionBarActivity {
 						numbubble = commerce.getNumber("numbubble").intValue();
 						commerce.setNumber("numbubble", numbubble-1);
 						System.out.println("0");
-						btnLike.setBackgroundResource(R.drawable.like_icon);
+						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
 						lastlike=true;
 						
 					}
@@ -437,7 +435,7 @@ public class ViewOffer extends ActionBarActivity {
 				if (totalCount == 0) {
 					// NO HA HECHO CLIC ANTES
 					//btnLike.setText(R.string.like);
-					btnLike.setBackgroundResource(R.drawable.like_icon);
+					btnLike.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
 					System.out.println("no ha hecho clic antes");
 					lastlike = true;
 					
@@ -453,7 +451,7 @@ public class ViewOffer extends ActionBarActivity {
 					if (status.equals("1")) {
 						// Deshabilitar boton
 						//btnLike.setText(R.string.dislike);
-						btnLike.setBackgroundResource(R.drawable.unlike_icon);
+						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.unlike_icon));
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = false;
@@ -461,7 +459,7 @@ public class ViewOffer extends ActionBarActivity {
 						// Habilitar boton
 						//btnLike.setText(R.string.like);
 
-						btnLike.setBackgroundResource(R.drawable.like_icon);
+						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = true;

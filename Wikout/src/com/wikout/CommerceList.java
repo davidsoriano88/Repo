@@ -82,15 +82,7 @@ final Util util = new Util();
 		    	  setResult(RESULT_OK, insertOffer);
 		    	  //startActivity(insertOffer);
 		    	  finish();
-		    	/*  Intent intentMessage=new Intent();**********************************************
-		    	  
-		          // put the message in Intent
-		          intentMessage.putExtra("idcom", listIdCommerces.get(position));
-		          intentMessage.putExtra("placename", listPlacenameCommerces.get(position));
-		          // Set The Result in Intent
-		          setResult(3,intentMessage);
-		          // finish The activity 
-		          ;*/
+
 	    	  }
 	    	 
 	    	  }

@@ -349,7 +349,7 @@ public class OfferList extends ActionBarActivity {
 	}
 	
 
-// METODO PARA OBTENER LA FECHA ACTUAL
+// METODO PARA OBTENER LA FECHA ACTUAL  
 protected Date actualDate(){
 	Calendar calendar = new GregorianCalendar();
 	final Date createdate = calendar.getTime();
