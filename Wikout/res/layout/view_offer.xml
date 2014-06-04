@@ -23,8 +23,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
-        android:text="@string/oferta"
-        android:textSize="20sp" />
+        android:textSize="23sp" />
 
     <TextView
         android:id="@+id/tvViewOfferDeadline"
@@ -46,7 +45,67 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:maxLines="1"
-        android:text="TextView" />
+        android:text="Creado:"
+        android:textColor="#8a8989" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            android:id="@+id/vViewOfferSeparator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/tvViewOfferNumlike"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
+            android:text="TextView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp" >
+
+            <Button
+                android:id="@+id/btnViewOfferLike"
+                style="@style/ButtonColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_weight="1"
+                android:textSize="30sp" />
+
+            <ImageButton
+                android:id="@+id/btnViewOfferFlag"
+                style="@style/ButtonColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_weight="1"
+                android:background="#8f0707"
+                android:src="@drawable/flag_icon" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/View01"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/darker_gray" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -59,7 +118,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_weight="2"
-            android:text="TextView" />
+            android:text="Direccion" />
 
         <TextView
             android:id="@+id/tvViewOfferDistance"
@@ -68,50 +127,7 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:gravity="bottom|right"
-            android:text="TextView" />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/vViewOfferSeparator"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="24dp"
-        android:background="@android:color/darker_gray" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
-
-        <Button
-            android:id="@+id/btnViewOfferLike"
-            style="@style/ButtonColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_weight="1"
-            android:textSize="30sp" />
-
-        <TextView
-            android:id="@+id/tvViewOfferNumlike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-
-        <ImageButton
-            android:id="@+id/btnViewOfferFlag"
-            style="@style/ButtonColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_weight="1"
-            android:background="#8f0707"
-            android:src="@drawable/flag_icon"/>
-
+            android:text="Distancia" />
     </LinearLayout>
 
 </LinearLayout>
