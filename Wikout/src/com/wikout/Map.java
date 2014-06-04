@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -103,6 +104,7 @@ public class Map extends ActionBarActivity {
 
 		// load slide menu items
 		String[] navMenuTitles = getResources().getStringArray(R.array.options);
+		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		lvDrawer = (ListView) findViewById(R.id.left_drawer);
 		
@@ -115,11 +117,11 @@ public class Map extends ActionBarActivity {
 		lvDrawer.addHeaderView(search);
 		// navDrawerItems.add(new NavDrawerItem();
 		
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0]));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0],R.drawable.filter_icon));
 		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1]));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1],R.drawable.info_icon));
 		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2]));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2],R.drawable.logout_icon));
 		// Communities, Will add a counter here
 
 		// setting the nav drawer list adapter
