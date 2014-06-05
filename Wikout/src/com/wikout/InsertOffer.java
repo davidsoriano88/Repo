@@ -100,17 +100,17 @@ public class InsertOffer extends ActionBarActivity {
 	}
 	 private void initUI(){
 		map = new Intent(getApplicationContext(), Map.class);
-		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto);
-		etDescription = (EditText) findViewById(R.id.etInsertDescription);
-		etPlacename = (EditText) findViewById(R.id.etInsertPlacename);
-		tvCommerce=(TextView) findViewById(R.id.tvPlaceNameInfo);
-		btnOk = (Button) findViewById(R.id.btnInsertOffer);
+		ivPhoto = (ImageView) findViewById(R.id.ivInsertOfferPhoto);
+		etDescription = (EditText) findViewById(R.id.etInsertOfferDescription);
+		etPlacename = (EditText) findViewById(R.id.etInsertOfferPlacename);
+		tvCommerce=(TextView) findViewById(R.id.tvInsertOfferPlacenamelabel);
+		btnOk = (Button) findViewById(R.id.btnInsertOfferOk);
 		addListenerOnButton();
 		getSupportActionBar().setTitle("Nueva Oferta");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setCurrentDateOnView();
 
-		btnLocation = (Button) findViewById(R.id.btnCommerce);
+		btnLocation = (Button) findViewById(R.id.btnInsertOfferCommerce);
 		
 		
 		
@@ -254,7 +254,7 @@ public class InsertOffer extends ActionBarActivity {
 
 	private void addListenerOnButton() {
 
-		dateLimit = (Button) findViewById(R.id.btnInsertDeadline);
+		dateLimit = (Button) findViewById(R.id.btnInsertOfferDeadline);
 		dateLimit.setOnClickListener(new OnClickListener() {
 
 			@SuppressWarnings("deprecation")

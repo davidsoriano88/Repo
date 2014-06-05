@@ -11,7 +11,7 @@
         android:gravity="left" >
 
         <ImageView
-            android:id="@+id/ivOfferPhoto"
+            android:id="@+id/ivOfferListOfferPhoto"
             android:layout_width="wrap_content"
             android:layout_height="68dp"
             android:layout_weight="0.00"
@@ -23,8 +23,9 @@
             android:layout_weight="0.95"
             android:orientation="vertical" >
 
-            <TextView style="@style/boldText"
-                android:id="@+id/tvOfferListDescription"
+            <TextView
+                android:id="@+id/tvOfferListOfferDescription"
+                style="@style/boldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -39,7 +40,7 @@
                 android:layout_weight="0.01" >
 
                 <TextView
-                    android:id="@+id/tvOfferListDeadline"
+                    android:id="@+id/tvOfferListOfferDeadline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
@@ -47,7 +48,7 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/tvOfferListNumlike"
+                    android:id="@+id/tvOfferListOfferNumlike"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
