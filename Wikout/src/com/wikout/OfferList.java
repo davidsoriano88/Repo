@@ -53,22 +53,21 @@ import android.widget.TextView;
 
 public class OfferList extends ActionBarActivity {
 
-	
 	private ArrayList<String> dataid = new ArrayList<String>();
-	
+
 	ActionBar ab;
 	Context con = this;
 	Util util = new Util();
-	Bitmap bmPhoto =null;
+	Bitmap bmPhoto = null;
 	ImageView ivPhoto, ivOfferPhoto;
 	static TextView tvLocation;
-	String idcommerce="",placeName;
+	String idcommerce = "", placeName;
 	ListView list;
 	private Button btnAdd;
-    LazyAdapter adapter;
-	TextView tvOffer,tvLike,tvId,tvDeadline;
+	LazyAdapter adapter;
+	TextView tvOffer, tvLike, tvId, tvDeadline;
 	// XML node keys
-	
+
 	static final String KEY_ID = "id";
 
 	static final String KEY_THUMB_URL = "thumb_url";
@@ -77,78 +76,87 @@ public class OfferList extends ActionBarActivity {
 	static final String KEY_DEADLINE = "deadline";
 
 	public class LazyAdapter extends BaseAdapter {
-	    
-	    private Activity activity;
-	    private ArrayList<HashMap<String, String>> data;
-	    private LayoutInflater inflater=null;
-	    public ImageLoader imageLoader; 
-	    
-	    public LazyAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
-	        activity = a;
-	        data=d;
-	        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	        imageLoader=new ImageLoader(activity.getApplicationContext());
-	    }
 
-	    public int getCount() {
-	        return data.size();
-	    }
+		private Activity activity;
+		private ArrayList<HashMap<String, String>> data;
+		private LayoutInflater inflater = null;
+		public ImageLoader imageLoader;
 
-	    public Object getItem(int position) {
-	        return position;
-	    }
+		public LazyAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+			activity = a;
+			data = d;
+			inflater = (LayoutInflater) activity
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			imageLoader = new ImageLoader(activity.getApplicationContext());
+		}
 
-	    public long getItemId(int position) {
-	        return position;
-	    }
-	    
-	    public View getView(int position, View convertView, ViewGroup parent) {
-	        
-	       
-	            convertView = inflater.inflate(R.layout.offer_list_item, null);
-	        tvOffer = (TextView) convertView
+		public int getCount() {
+			return data.size();
+		}
+
+		public Object getItem(int position) {
+			return position;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			convertView = inflater.inflate(R.layout.offer_list_item, null);
+			tvOffer = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDescription);
 			tvLike = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferNumlike);
-			tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListOfferDeadline);
-			ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferListOfferPhoto);
+			tvDeadline = (TextView) convertView
+					.findViewById(R.id.tvOfferListOfferDeadline);
+			ivOfferPhoto = (ImageView) convertView
+					.findViewById(R.id.ivOfferListOfferPhoto);
 
-	        
-			
-	        HashMap<String, String> song = new HashMap<String, String>();
-	        song = data.get(position);
-	        
-	        // Setting all values in listview
-	        tvOffer.setText(song.get(KEY_DESCRIPTION));
-	        tvLike.setText(song.get(KEY_LIKES));
-	        tvDeadline.setText(song.get(KEY_DEADLINE));
-	        
-	        if(song.get(KEY_DEADLINE)!="null"){
-	        	URL newurl = null;
-	        
-			try {
-				newurl = new URL(song.get(KEY_THUMB_URL));
-			} catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			} 
-	        try {
-				bmPhoto = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}}else{
-	        
-	        
-		ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
-						
+			HashMap<String, String> song = new HashMap<String, String>();
+			song = data.get(position);
+
+			// Setting all values in listview
+			if (song.get(KEY_DESCRIPTION).length() > 52) {
+				tvOffer.setText(song.get(KEY_DESCRIPTION).substring(0, 49)
+						+ "...");
+			} else {
+				tvOffer.setText(song.get(KEY_DESCRIPTION));
 			}
+			if (song.get(KEY_LIKES).equals("1")==true){
+				tvLike.setText(song.get(KEY_LIKES)+" Like");
+			}else{
+			tvLike.setText(song.get(KEY_LIKES)+" Likes");}
+			tvDeadline.setText("Válido hasta: "+song.get(KEY_DEADLINE));
 
-	        return convertView;
-	    }
+			/*if (song.get(KEY_DEADLINE) != null) {
+				URL newurl = null;
+
+				try {
+					newurl = new URL(song.get(KEY_THUMB_URL));
+				} catch (MalformedURLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					bmPhoto = BitmapFactory.decodeStream(newurl
+							.openConnection().getInputStream());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {*/
+
+				ivOfferPhoto.setImageDrawable(getResources().getDrawable(
+						R.drawable.nophoto));
+
+			
+
+			return convertView;
+		}
 	}
-	
-	
+
 	private void getPhoto(String idcommerce) {
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
@@ -159,44 +167,45 @@ public class OfferList extends ActionBarActivity {
 			@Override
 			public void success(List<BackbeamObject> companies, int totalCount,
 					boolean fromCache) {
-				
+
 				for (BackbeamObject company : companies) {
 					System.out.println("foto comercio");
 					BackbeamObject fileObject = company.getObject("file");
-					if(fileObject!=null){
+					if (fileObject != null) {
 						TreeMap<String, Object> options = new TreeMap<String, Object>();
 						options.put("width", 100);
 						options.put("height", 50);
 						String logoURL = fileObject.composeFileURL(options);
-	
-						//Codigo para poner la foto en el imageView
+
+						// Codigo para poner la foto en el imageView
 						URL newurl = null;
 						try {
 							newurl = new URL(logoURL);
 						} catch (MalformedURLException e) {
 							e.printStackTrace();
 						}
-						
+
 						try {
-							
+
 							bmPhoto = BitmapFactory.decodeStream(newurl
 									.openConnection().getInputStream());
 							util.log("icono cargado");
-							
-							
-							//image.setImageBitmap(mIcon_val);
+
+							// image.setImageBitmap(mIcon_val);
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
-					
+
 						ivPhoto.setImageBitmap(bmPhoto);
-				}else{
-					ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
-					
+					} else {
+						ivPhoto.setImageDrawable(getResources().getDrawable(
+								R.drawable.nophoto));
+
+					}
 				}
-				}}
+			}
 		});
-		
+
 	}
 
 	/** Called when the activity is first created. */
@@ -206,74 +215,67 @@ public class OfferList extends ActionBarActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.offer_list);
 		util.projectData(con);
-		
+
 		initUi();
-		
-		
-		}
 
-	private void initUi(){
-		setSupportProgressBarIndeterminateVisibility(true);
-			Bundle bundle = getIntent().getExtras();
-			ivPhoto=new ImageView(this);
-			ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
-			btnAdd=(Button)findViewById(R.id.btnAddOffer);
-			list=(ListView)findViewById(R.id.listOff);
-			//queryOffer(bundle.getString("id"));
-			util.log(bundle.getString("id"));
-			idcommerce = bundle.getString("id");
-			//getPhoto(bundle.getString("id"));
-			
-			
-			
-			
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			new LoadDataTask().execute();
-			
-			btnAdd.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-				Intent addOffer=new Intent(con,InsertOffer.class);
-				addOffer.putExtra("idcommerce",idcommerce);
-				addOffer.putExtra("placename",placeName);
-				startActivity(addOffer);
-					
-				}
-				
-				});
-			 list.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> arg0, View arg1, int pos,long arg3) {
-						
-							Intent intent = new Intent(con,ViewOffer.class);	 
-							intent.putExtra("idoffer", dataid.get(pos));
-							intent.putExtra("idcommerce", idcommerce);
-							intent.putExtra("placename",placeName);
-							startActivity(intent);
-							
-						
-					
-							
-						}});
-			
 	}
-	
 
-	
+	private void initUi() {
+		setSupportProgressBarIndeterminateVisibility(true);
+		Bundle bundle = getIntent().getExtras();
+		ivPhoto = new ImageView(this);
+		ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
+		btnAdd = (Button) findViewById(R.id.btnAddOffer);
+		list = (ListView) findViewById(R.id.listOff);
+		// queryOffer(bundle.getString("id"));
+		util.log(bundle.getString("id"));
+		idcommerce = bundle.getString("id");
+		// getPhoto(bundle.getString("id"));
+
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		new LoadDataTask().execute();
+
+		btnAdd.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent addOffer = new Intent(con, InsertOffer.class);
+				addOffer.putExtra("idcommerce", idcommerce);
+				addOffer.putExtra("placename", placeName);
+				startActivity(addOffer);
+
+			}
+
+		});
+		list.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
+					long arg3) {
+
+				Intent intent = new Intent(con, ViewOffer.class);
+				intent.putExtra("idoffer", dataid.get(pos));
+				intent.putExtra("idcommerce", idcommerce);
+				intent.putExtra("placename", placeName);
+				startActivity(intent);
+
+			}
+		});
+
+	}
+
 	public String getId() {
-	String id = android.provider.Settings.System.getString(
-			super.getContentResolver(),
-			android.provider.Settings.Secure.ANDROID_ID);
-	return id;
-}
+		String id = android.provider.Settings.System.getString(
+				super.getContentResolver(),
+				android.provider.Settings.Secure.ANDROID_ID);
+		return id;
+	}
 
-	public void queryOffer(String idcommerce){
+	public void queryOffer(String idcommerce) {
 		final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-		
+
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
-		
+
 		Query query = new Query("commerce");
 		query.setQuery("where this in ? join last 100 offer", collection);
 		query.fetch(100, 0, new FetchCallback() {
@@ -281,10 +283,10 @@ public class OfferList extends ActionBarActivity {
 			@Override
 			public void success(List<BackbeamObject> objects, int totalCount,
 					boolean fromCache) {
-			
+
 				BackbeamObject commerce = objects.get(0);
 				JoinResult join = commerce.getJoinResult("offer");
-				placeName=commerce.getString("placename");
+				placeName = commerce.getString("placename");
 				getSupportActionBar().setTitle(placeName);
 				List<BackbeamObject> offers = join.getResults();
 				// Contemplo si alguna referencia NO TIENE ofertas
@@ -300,97 +302,98 @@ public class OfferList extends ActionBarActivity {
 						// Anadir al set Adapter
 						// creating new HashMap
 						final HashMap<String, String> map = new HashMap<String, String>();
-						
-						//CONSULTA PARA LA FOTO
-						
-						CollectionConstraint collection = new CollectionConstraint();
+
+						// CONSULTA PARA LA FOTO
+
+						/*CollectionConstraint collection = new CollectionConstraint();
 						collection.addIdentifier(offer.getId());
 
 						Query query = new Query("offer");
 						query.setQuery("where this in ? join file", collection);
 						query.fetch(100, 0, new FetchCallback() {
 							@Override
-							public void success(List<BackbeamObject> companies, int totalCount,
-									boolean fromCache) {
-								if(totalCount==0){
+							public void success(List<BackbeamObject> companies,
+									int totalCount, boolean fromCache) {
+								if (totalCount == 0) {
 									System.out.println("totalcount0");
-									map.put(KEY_THUMB_URL,"null");
-								}else{
-								
-								for (BackbeamObject company : companies) {
-									
-									
-									
-									BackbeamObject fileObject = company.getObject("file");
-							if(fileObject!=null){
-										TreeMap<String, Object> options = new TreeMap<String, Object>();
-										options.put("width", 25);
-										options.put("height", 25);
-										String logoURL = fileObject.composeFileURL(options);
-										System.out.println(logoURL);
-										map.put(KEY_THUMB_URL, logoURL);
-										
-									
-										
-							}else{
 									map.put(KEY_THUMB_URL, "null");
+								} else {
+
+									for (BackbeamObject company : companies) {
+
+										BackbeamObject fileObject = company
+												.getObject("file");
+										if (fileObject != null) {
+											TreeMap<String, Object> options = new TreeMap<String, Object>();
+											options.put("width", 25);
+											options.put("height", 25);
+											String logoURL = fileObject
+													.composeFileURL(options);
+											System.out.println(logoURL);
+											map.put(KEY_THUMB_URL, logoURL);
+
+										} else {
+											map.put(KEY_THUMB_URL, "null");
+										}
+									}
 								}
-								}}}});
-						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
-						String formatted = format1.format(offer.getDay("deadline").getTime());
+							}
+						});*/
+						SimpleDateFormat format1 = new SimpleDateFormat(
+								"dd-MM-yyyy");
+						String formatted = format1.format(offer.getDay(
+								"deadline").getTime());
 						// adding each child node to HashMap key => value
 						map.put(KEY_ID, offer.getId());
-						map.put(KEY_DESCRIPTION,offer.getString("description"));
-						map.put(KEY_LIKES, offer.getNumber("numlike").toString());
+						map.put(KEY_DESCRIPTION, offer.getString("description"));
+						map.put(KEY_LIKES, offer.getNumber("numlike")
+								.toString());
 						map.put(KEY_DEADLINE, formatted);
-						
 
 						// adding HashList to ArrayList
 						songsList.add(map);
-						
-						
+
 						setSupportProgressBarIndeterminateVisibility(false);
 					}
 				}
 			}
 
 		});
-		
+
 		// Getting adapter by passing data ArrayList
-        adapter=new LazyAdapter(this, songsList);        
-        list.setAdapter(adapter);
+		adapter = new LazyAdapter(this, songsList);
+		list.setAdapter(adapter);
 	}
 
-
-	
-
-// METODO PARA OBTENER LA FECHA ACTUAL  
-protected Date actualDate(){
-	Calendar calendar = new GregorianCalendar();
-	final Date createdate = calendar.getTime();
-	return createdate;
-}
-@Override
-public boolean onOptionsItemSelected(MenuItem item) {
-	switch (item.getItemId()) {
-	case R.id.refresh:
-		new LoadDataTask().execute();
-		return true;
-	case android.R.id.home:
-		finish();
-		return true;
-	default:
-		return super.onOptionsItemSelected(item);
+	// METODO PARA OBTENER LA FECHA ACTUAL
+	protected Date actualDate() {
+		Calendar calendar = new GregorianCalendar();
+		final Date createdate = calendar.getTime();
+		return createdate;
 	}
-}
-//Async Task para cargar datos al abrir la activity
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.refresh:
+			new LoadDataTask().execute();
+			return true;
+		case android.R.id.home:
+			finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
+	// Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
 
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
 			queryOffer(idcommerce);
-			
+
 			getPhoto(idcommerce);
 		}
 
@@ -398,7 +401,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			//setSupportProgressBarIndeterminateVisibility(true);
+			// setSupportProgressBarIndeterminateVisibility(true);
 			util.log("mostramos dialog mydata");
 		}
 
@@ -410,11 +413,13 @@ public boolean onOptionsItemSelected(MenuItem item) {
 			return true;
 		}
 	}
+
 	@Override
 	protected void onRestart() {
-	    super.onRestart();
-	    new LoadDataTask().execute();
-	    }
+		super.onRestart();
+		new LoadDataTask().execute();
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
@@ -422,7 +427,7 @@ public boolean onOptionsItemSelected(MenuItem item) {
 		inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+
 }
 /*
 */
