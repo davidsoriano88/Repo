@@ -16,10 +16,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import utils.ImageLoader;
 import utils.Util;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -58,113 +65,69 @@ public class OfferList extends ActionBarActivity {
 	String idcommerce="",placeName;
 	ListView list;
 	private Button btnAdd;
+    LazyAdapter adapter;
+	TextView tvOffer,tvLike,tvId,tvDeadline;
+	// XML node keys
 	
-	
-	public static class viewHolder {
-		TextView tvOffer,tvLike,tvId,tvDeadline;
-		ImageView ivOfferPhoto;
-		
-	}
+	static final String KEY_ID = "id";
 
-	private class EfficientAdapter extends BaseAdapter {
+	static final String KEY_THUMB_URL = "thumb_url";
+	static final String KEY_DESCRIPTION = "description";
+	static final String KEY_LIKES = "likes";
+	static final String KEY_DEADLINE = "deadline";
 
-		private Context context;
-		LayoutInflater inflater;
+	public class LazyAdapter extends BaseAdapter {
+	    
+	    private Activity activity;
+	    private ArrayList<HashMap<String, String>> data;
+	    private LayoutInflater inflater=null;
+	    public ImageLoader imageLoader; 
+	    
+	    public LazyAdapter(Activity a, ArrayList<HashMap<String, String>> d) {
+	        activity = a;
+	        data=d;
+	        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	        imageLoader=new ImageLoader(activity.getApplicationContext());
+	    }
 
-		public EfficientAdapter(Context context) {this.context = context;
-			inflater = LayoutInflater.from(context);
+	    public int getCount() {
+	        return data.size();
+	    }
 
-		}
+	    public Object getItem(int position) {
+	        return position;
+	    }
 
-		@Override
-		public int getCount() {return dataid.size();
-		}
-
-		@Override
-		public Object getItem(int position) {return position;
-		}
-
-		@Override
-		public long getItemId(int position) {return position;
-		}
-
-		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
-			final viewHolder holder;
-			if (convertView == null) {
-				convertView = inflater.inflate(R.layout.offer_list_item, null);
-				holder = new viewHolder();
-
-				convertView.setTag(holder);
-
-			} else {
-				holder = (viewHolder) convertView.getTag();
-			}
-			holder.tvOffer = (TextView) convertView
+	    public long getItemId(int position) {
+	        return position;
+	    }
+	    
+	    public View getView(int position, View convertView, ViewGroup parent) {
+	        View vi=convertView;
+	        if(convertView==null)
+	            vi = inflater.inflate(R.layout.offer_list_item, null);
+	        tvOffer = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDescription);
-			holder.tvLike = (TextView) convertView
+			tvLike = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferNumlike);
-			holder.tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListOfferDeadline);
-			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferListOfferPhoto);
-			
-			
-			
+			tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListOfferDeadline);
+			ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferListOfferPhoto);
 
+	        
 			
-			/*
-			//CONSULTA PARA LA FOTO
-			
-			CollectionConstraint collection = new CollectionConstraint();
-			collection.addIdentifier(dataid.get(position));
-
-			Query query = new Query("offer");
-			query.setQuery("where this in ? join file", collection);
-			query.fetch(100, 0, new FetchCallback() {
-				@Override
-				public void success(List<BackbeamObject> companies, int totalCount,
-						boolean fromCache) {
-					
-					for (BackbeamObject company : companies) {
-						System.out.println("dentro de success foto");
-						BackbeamObject fileObject = company.getObject("file");
-						if(fileObject!=null){
-							TreeMap<String, Object> options = new TreeMap<String, Object>();
-							options.put("width", 25);
-							options.put("height", 25);
-							String logoURL = fileObject.composeFileURL(options);
-		
-							//Codigo para poner la foto en el imageView
-							URL newurl = null;
-							try {
-								newurl = new URL(logoURL);
-							} catch (MalformedURLException e) {
-								e.printStackTrace();
-							}
-							
-							try {
-								
-								bmPhoto = BitmapFactory.decodeStream(newurl
-										.openConnection().getInputStream());
-								util.log("icono cargado");
-								
-								
-								//image.setImageBitmap(mIcon_val);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						
-							holder.ivOfferPhoto.setImageBitmap(bmPhoto);
-					}else{
-						holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
-						
-					}setSupportProgressBarIndeterminateVisibility(false);
-					}}
-			});*/
-			setSupportProgressBarIndeterminateVisibility(false);
-			return convertView;
-		}
-
+	        HashMap<String, String> song = new HashMap<String, String>();
+	        song = data.get(position);
+	        
+	        // Setting all values in listview
+	        tvOffer.setText(song.get(KEY_DESCRIPTION));
+	        tvLike.setText(song.get(KEY_LIKES));
+	        tvDeadline.setText(song.get(KEY_DEADLINE));
+	        imageLoader.DisplayImage(song.get(KEY_THUMB_URL), ivOfferPhoto);
+	        return vi;
+	    }
 	}
+	
+	
 	private void getPhoto(String idcommerce) {
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
@@ -239,6 +202,10 @@ public class OfferList extends ActionBarActivity {
 			util.log(bundle.getString("id"));
 			idcommerce = bundle.getString("id");
 			//getPhoto(bundle.getString("id"));
+			
+			
+			
+			
 			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 			new LoadDataTask().execute();
 			
@@ -271,16 +238,7 @@ public class OfferList extends ActionBarActivity {
 			
 	}
 	
-	
-				
-		
-					
-				
-	/*@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Toast.makeText(con, "Item :" + position, Toast.LENGTH_LONG).show();
-	}*/
+
 	
 	public String getId() {
 	String id = android.provider.Settings.System.getString(
@@ -289,13 +247,9 @@ public class OfferList extends ActionBarActivity {
 	return id;
 }
 
-
-
-//METODO PARA OBTENER LOS DATOS DE LAS OFERTAS
-	private void queryOffer(String idcommerce) {
-		//vacio los arraylists
-
-		dataid.clear();
+	public void queryOffer(String idcommerce){
+		final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
+		
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
 		
@@ -323,16 +277,65 @@ public class OfferList extends ActionBarActivity {
 					for (BackbeamObject offer : offers) {
 						dataid.add(offer.getId());
 						// Anadir al set Adapter
-						list.setAdapter(new EfficientAdapter(con) );
-						//setSupportProgressBarIndeterminateVisibility(false);
+						// creating new HashMap
+						final HashMap<String, String> map = new HashMap<String, String>();
+						
+						//CONSULTA PARA LA FOTO
+						
+						CollectionConstraint collection = new CollectionConstraint();
+						collection.addIdentifier(offer.getId());
+
+						Query query = new Query("offer");
+						query.setQuery("where this in ? join file", collection);
+						query.fetch(100, 0, new FetchCallback() {
+							@Override
+							public void success(List<BackbeamObject> companies, int totalCount,
+									boolean fromCache) {
+								
+								for (BackbeamObject company : companies) {
+									
+									
+									System.out.println("dentro de success foto");
+									BackbeamObject fileObject = company.getObject("file");
+							//if(fileObject!=null){
+										TreeMap<String, Object> options = new TreeMap<String, Object>();
+										options.put("width", 25);
+										options.put("height", 25);
+										String logoURL = fileObject.composeFileURL(options);
+
+										map.put(KEY_THUMB_URL, logoURL);
+									
+										
+								//}else{
+									map.put(KEY_THUMB_URL, "null");
+								//}
+								}}});
+						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
+						String formatted = format1.format(offer.getDay("deadline").getTime());
+						// adding each child node to HashMap key => value
+						map.put(KEY_ID, offer.getId());
+						map.put(KEY_DESCRIPTION,offer.getString("description"));
+						map.put(KEY_LIKES, offer.getNumber("numlike").toString());
+						map.put(KEY_DEADLINE, formatted);
+						
+
+						// adding HashList to ArrayList
+						songsList.add(map);
+						
+						
 						
 					}
 				}
 			}
 
 		});
-
+		
+		// Getting adapter by passing data ArrayList
+        adapter=new LazyAdapter(this, songsList);        
+        list.setAdapter(adapter);
 	}
+
+
 	
 
 // METODO PARA OBTENER LA FECHA ACTUAL  
@@ -395,3 +398,5 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	}
 	
 }
+/*
+setSupportProgressBarIndeterminateVisibility(false);*/
