@@ -96,8 +96,9 @@ public class ViewOffer extends ActionBarActivity {
 			public void success(BackbeamObject offer) {
 				tvDescription.setText(offer.getString("description"));
 				if(offer.getNumber("numlike").intValue()==0){
-					tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
-				}else{
+					//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
+					tvNumLike.setVisibility(4);
+				}else{tvNumLike.setVisibility(0);
 					if(offer.getNumber("numlike").intValue()==1){
 					tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
 				}else{
@@ -135,6 +136,7 @@ public class ViewOffer extends ActionBarActivity {
 						String country = addresses.get(0).getAddressLine(2);
 						util.log("pancratio: "+address + city + country);
 				tvLocation.setText(address+"\n"+city+", "+country);
+				setSupportProgressBarIndeterminateVisibility(false);
 						//***********************************************************
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
 						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
@@ -151,7 +153,7 @@ public class ViewOffer extends ActionBarActivity {
 						//Habilito el boton para que el usuario pueda hacer like.
 					btnLike.setEnabled(true);
 						}});
-				setSupportProgressBarIndeterminateVisibility(false);}
+				;}
 		});
 
 	}
@@ -187,14 +189,14 @@ public class ViewOffer extends ActionBarActivity {
 						Bitmap mIcon_val = BitmapFactory.decodeStream(newurl
 								.openConnection().getInputStream());
 						ivPhoto.setImageBitmap(mIcon_val);
-					
+						setSupportProgressBarIndeterminateVisibility(false);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					}else{
 						ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
-						
+						setSupportProgressBarIndeterminateVisibility(false);
 					}
 
 				}
@@ -203,6 +205,7 @@ public class ViewOffer extends ActionBarActivity {
 	}
 
 	private void initUi() {
+		setSupportProgressBarIndeterminateVisibility(true);
 		// EDITEXTS
 		tvDescription = (TextView) findViewById(R.id.tvViewOfferDescription);
 		tvDeadline = (TextView) findViewById(R.id.tvViewOfferDeadline);
@@ -313,17 +316,20 @@ public class ViewOffer extends ActionBarActivity {
 											@Override
 											public void success(List<BackbeamObject> objects,
 													final int totalCountLike, boolean fromCache) {
+												
 												System.out.println("totalCount: " + totalCountLike);
 												Query query = new Query("like");
 												// Consulto los LIKE cuyo STATUSLIKE == "1".
 												query.setQuery("where statuslike = ? and offer is ? ",
 														"0", idoffer);
+												
 												// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,"1");
 												System.out.println("Tras la consulta del success");
 												query.fetch(100, 0, new FetchCallback() {
 													@Override
 													public void success(List<BackbeamObject> objects,
 															int totalCountDislike, boolean fromCache) {
+														
 														System.out.println("totalCount: "
 																+ totalCountDislike);
 														offer.setNumber("numlike", totalCountLike
@@ -331,19 +337,22 @@ public class ViewOffer extends ActionBarActivity {
 														offer.save(new ObjectCallback() {
 															@Override
 															public void success(BackbeamObject object) {
+																
 																System.out.println(object
 																		.getString("description"));
 																System.out.println(object
 																		.getNumber("numlike"));
 																if(offer.getNumber("numlike").intValue()==0){
-																	tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
-																}else{
+																	//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
+																	tvNumLike.setVisibility(4);
+																}else{ tvNumLike.setVisibility(0);
 																	if(offer.getNumber("numlike").intValue()==1){
 																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
 																}else{
 																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuarios han dado a Me Gusta");
 																	}
 																}
+																
 																	btnLike.setEnabled(true);
 																	setSupportProgressBarIndeterminateVisibility(false);
 																
