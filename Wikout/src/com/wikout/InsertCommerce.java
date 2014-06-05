@@ -85,11 +85,11 @@ public class InsertCommerce extends ActionBarActivity {
 	}
 	 private void initUI(){
 		
-		ivPhoto = (ImageView) findViewById(R.id.ivInsertPhoto1);
-		etPlacename = (EditText) findViewById(R.id.etInsertPlacename1);
-		btnOk = (Button) findViewById(R.id.btnInsertOk1);
-		spnCategory = (Spinner) findViewById(R.id.spnInsertCategory1);
-		tvLocation=(TextView) findViewById(R.id.tvAddress);
+		ivPhoto = (ImageView) findViewById(R.id.ivInsertCommercePhoto);
+		etPlacename = (EditText) findViewById(R.id.etInsertCommercePlacename);
+		btnOk = (Button) findViewById(R.id.btnInsertCommerceOk);
+		spnCategory = (Spinner) findViewById(R.id.spnInsertCommerceCategory);
+		tvLocation=(TextView) findViewById(R.id.tvInsertCommerceAddress);
 		addListenerOnSpinnerItemSelection();
 		getSupportActionBar().setTitle("Nuevo Comercio");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);

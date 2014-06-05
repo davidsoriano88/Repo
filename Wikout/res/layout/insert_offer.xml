@@ -7,7 +7,7 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/ivInsertPhoto"
+        android:id="@+id/ivInsertOfferPhoto"
         android:layout_width="fill_parent"
         android:layout_height="160dp"
         android:layout_alignParentLeft="true"
@@ -18,15 +18,16 @@
         android:scaleType="fitCenter"
         android:src="@drawable/nophoto" />
 
-    <TextView style="@style/grayText"
-        android:id="@+id/tvOfferDescription"
+    <TextView
+        android:id="@+id/tvInsertOfferDescription"
+        style="@style/grayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:text="Inserte Oferta:" />
 
     <EditText
-        android:id="@+id/etInsertDescription"
+        android:id="@+id/etInsertOfferDescription"
         android:layout_width="282dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -40,31 +41,33 @@
         android:layout_marginLeft="20dp"
         android:orientation="horizontal" >
 
-        <TextView style="@style/grayText"
-            android:id="@+id/tvInsertText"
+        <TextView
+            android:id="@+id/tvInsertOfferDeadlinelabel"
+            style="@style/grayText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:text="Válido hasta:" />
 
         <Button
-            android:id="@+id/btnInsertDeadline"
+            android:id="@+id/btnInsertOfferDeadline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Seleccionar Fecha" />
 
     </LinearLayout>
 
-    <TextView style="@style/grayText"
-        android:id="@+id/tvPlaceNameInfo"
+    <TextView
+        android:id="@+id/tvInsertOfferPlacenamelabel"
+        style="@style/grayText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:visibility="invisible"
-        android:text="Comercio:" />
+        android:text="Comercio:"
+        android:visibility="invisible" />
 
     <EditText
-        android:id="@+id/etInsertPlacename"
+        android:id="@+id/etInsertOfferPlacename"
         android:layout_width="282dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
@@ -77,19 +80,19 @@
     </EditText>
 
     <Button
-        android:id="@+id/btnCommerce"
+        android:id="@+id/btnInsertOfferCommerce"
         style="@style/ButtonColor"
         android:layout_width="282dp"
         android:layout_height="50dp"
-        android:layout_above="@+id/btnInsertOffer"
-        android:layout_alignLeft="@+id/etInsertPlacename"
+        android:layout_above="@+id/btnInsertOfferOk"
+        android:layout_alignLeft="@+id/etInsertOfferPlacename"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
         android:text="Comercio" />
 
     <Button
-        android:id="@+id/btnInsertOffer"
+        android:id="@+id/btnInsertOfferOk"
         style="@style/ButtonColor"
         android:layout_width="282dp"
         android:layout_height="50dp"

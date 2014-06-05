@@ -101,11 +101,11 @@ public class OfferList extends ActionBarActivity {
 				holder = (viewHolder) convertView.getTag();
 			}
 			holder.tvOffer = (TextView) convertView
-					.findViewById(R.id.tvOfferListDescription);
+					.findViewById(R.id.tvOfferListOfferDescription);
 			holder.tvLike = (TextView) convertView
-					.findViewById(R.id.tvOfferListNumlike);
-			holder.tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListDeadline);
-			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferPhoto);
+					.findViewById(R.id.tvOfferListOfferNumlike);
+			holder.tvDeadline = (TextView) convertView.findViewById(R.id.tvOfferListOfferDeadline);
+			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferListOfferPhoto);
 			
 			
 			
@@ -232,7 +232,7 @@ public class OfferList extends ActionBarActivity {
 		setSupportProgressBarIndeterminateVisibility(true);
 			Bundle bundle = getIntent().getExtras();
 			ivPhoto=new ImageView(this);
-			ivPhoto = (ImageView) findViewById(R.id.ivOfferListPhoto);
+			ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
 			btnAdd=(Button)findViewById(R.id.btnAddOffer);
 			list=(ListView)findViewById(R.id.listOff);
 			//queryOffer(bundle.getString("id"));
