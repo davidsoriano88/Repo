@@ -21,16 +21,19 @@
     <TextView
         android:id="@+id/tvInsertOfferDescription"
         style="@style/grayText"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="Inserte Oferta:" />
 
     <EditText
         android:id="@+id/etInsertOfferDescription"
-        android:layout_width="282dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:ems="10"
         android:hint="Oferta" />
 
@@ -54,7 +57,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Seleccionar Fecha" />
-
     </LinearLayout>
 
     <TextView
@@ -68,9 +70,11 @@
 
     <EditText
         android:id="@+id/etInsertOfferPlacename"
-        android:layout_width="282dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:ems="10"
         android:enabled="false"
         android:hint="Nombre"
@@ -82,21 +86,22 @@
     <Button
         android:id="@+id/btnInsertOfferCommerce"
         style="@style/ButtonColor"
-        android:layout_width="282dp"
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:layout_above="@+id/btnInsertOfferOk"
-        android:layout_alignLeft="@+id/etInsertOfferPlacename"
-        android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:text="Comercio" />
 
     <Button
         android:id="@+id/btnInsertOfferOk"
         style="@style/ButtonColor"
-        android:layout_width="282dp"
+        android:layout_width="fill_parent"
         android:layout_height="50dp"
+        android:layout_alignParentRight="true"
         android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="#7e7b7b"
         android:text="Insertar" />
 
