@@ -61,7 +61,7 @@ public class Util {
 	   cronometro.start(); }
 
 		public void log(String mensaje){
-			boolean debug=true;
+			boolean debug=false;
 			if(debug){
 				Log.i("log",mensaje);
 			}

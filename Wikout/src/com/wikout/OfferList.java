@@ -108,21 +108,7 @@ public class OfferList extends ActionBarActivity {
 			holder.ivOfferPhoto = (ImageView) convertView.findViewById(R.id.ivOfferPhoto);
 			
 			
-			Backbeam.read("offer", dataid.get(position), new ObjectCallback() {
-			    @Override
-			    public void success(BackbeamObject offer) {
-					SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
-					String formatted = format1.format(offer.getDay("deadline").getTime());
-			       holder.tvDeadline.setText("Hasta: " + formatted);
-			       if(offer.getString("description").length()>55){
-			    	   holder.tvOffer.setText(offer.getString("description").substring(0, 53)+"...");
-			       }else{
-					holder.tvOffer.setText(offer.getString("description"));
-					}
-					holder.tvLike.setText(offer.getNumber("numlike").toString()+" Me Gusta"); 
-					holder.ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
-			    }
-			});
+			
 
 			
 			/*
