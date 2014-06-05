@@ -122,7 +122,28 @@ public class OfferList extends ActionBarActivity {
 	        tvOffer.setText(song.get(KEY_DESCRIPTION));
 	        tvLike.setText(song.get(KEY_LIKES));
 	        tvDeadline.setText(song.get(KEY_DEADLINE));
-	        imageLoader.DisplayImage(song.get(KEY_THUMB_URL), ivOfferPhoto);
+	        
+	        if(song.get(KEY_DEADLINE)!="null"){
+	        	URL newurl = null;
+	        
+			try {
+				newurl = new URL(song.get(KEY_THUMB_URL));
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} 
+	        try {
+				bmPhoto = BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}}else{
+	        
+	        
+		ivOfferPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
+						
+			}
+
 	        return convertView;
 	    }
 	}
@@ -140,7 +161,7 @@ public class OfferList extends ActionBarActivity {
 					boolean fromCache) {
 				
 				for (BackbeamObject company : companies) {
-					System.out.println("dentro de success foto");
+					System.out.println("foto comercio");
 					BackbeamObject fileObject = company.getObject("file");
 					if(fileObject!=null){
 						TreeMap<String, Object> options = new TreeMap<String, Object>();
@@ -291,25 +312,30 @@ public class OfferList extends ActionBarActivity {
 							@Override
 							public void success(List<BackbeamObject> companies, int totalCount,
 									boolean fromCache) {
+								if(totalCount==0){
+									System.out.println("totalcount0");
+									map.put(KEY_THUMB_URL,"null");
+								}else{
 								
 								for (BackbeamObject company : companies) {
 									
 									
-									System.out.println("dentro de success foto");
+									
 									BackbeamObject fileObject = company.getObject("file");
-							//if(fileObject!=null){
+							if(fileObject!=null){
 										TreeMap<String, Object> options = new TreeMap<String, Object>();
 										options.put("width", 25);
 										options.put("height", 25);
-									/*	String logoURL = fileObject.composeFileURL(options);
-
-										map.put(KEY_THUMB_URL, logoURL);*/
+										String logoURL = fileObject.composeFileURL(options);
+										System.out.println(logoURL);
+										map.put(KEY_THUMB_URL, logoURL);
+										
 									
 										
-								//}else{
+							}else{
 									map.put(KEY_THUMB_URL, "null");
-								//}
-								}}});
+								}
+								}}}});
 						SimpleDateFormat format1 = new SimpleDateFormat("dd-MM-yyyy");
 						String formatted = format1.format(offer.getDay("deadline").getTime());
 						// adding each child node to HashMap key => value
@@ -323,7 +349,7 @@ public class OfferList extends ActionBarActivity {
 						songsList.add(map);
 						
 						
-						
+						setSupportProgressBarIndeterminateVisibility(false);
 					}
 				}
 			}
@@ -399,4 +425,4 @@ public boolean onOptionsItemSelected(MenuItem item) {
 	
 }
 /*
-setSupportProgressBarIndeterminateVisibility(false);*/
+*/
