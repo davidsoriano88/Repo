@@ -103,9 +103,9 @@ public class OfferList extends ActionBarActivity {
 	    }
 	    
 	    public View getView(int position, View convertView, ViewGroup parent) {
-	        View vi=convertView;
-	        if(convertView==null)
-	            vi = inflater.inflate(R.layout.offer_list_item, null);
+	        
+	       
+	            convertView = inflater.inflate(R.layout.offer_list_item, null);
 	        tvOffer = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDescription);
 			tvLike = (TextView) convertView
@@ -123,7 +123,7 @@ public class OfferList extends ActionBarActivity {
 	        tvLike.setText(song.get(KEY_LIKES));
 	        tvDeadline.setText(song.get(KEY_DEADLINE));
 	        imageLoader.DisplayImage(song.get(KEY_THUMB_URL), ivOfferPhoto);
-	        return vi;
+	        return convertView;
 	    }
 	}
 	
@@ -301,9 +301,9 @@ public class OfferList extends ActionBarActivity {
 										TreeMap<String, Object> options = new TreeMap<String, Object>();
 										options.put("width", 25);
 										options.put("height", 25);
-										String logoURL = fileObject.composeFileURL(options);
+									/*	String logoURL = fileObject.composeFileURL(options);
 
-										map.put(KEY_THUMB_URL, logoURL);
+										map.put(KEY_THUMB_URL, logoURL);*/
 									
 										
 								//}else{
