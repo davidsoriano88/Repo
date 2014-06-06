@@ -346,7 +346,7 @@ public class Map extends ActionBarActivity {
 
 		location = locationManager.getLastKnownLocation(locationManager
 				.getBestProvider(criteria, false));
-
+	
 		if (location != null) {
 			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
 					location.getLatitude(), location.getLongitude()), 15.0F));
@@ -363,6 +363,7 @@ public class Map extends ActionBarActivity {
 			util.log("location" + String.valueOf(location.getLatitude()));
 		} else {
 			util.showToast(context, "location null");
+			
 		}
 
 	}
