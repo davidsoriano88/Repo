@@ -4,7 +4,7 @@
     android:layout_height="wrap_content" >
 
     <!-- REGLAS PARA LAYOUTS
-    El linearLayout tendra NECESARIAMENTE estos parametros
+    El linearLayout tendra NECESARIAMENTE estos parametros*
     	android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -19,6 +19,9 @@
             android:layout_marginRight="10dp"
     		(opcionalmente incluir MARGEN INFERIOR, pero NUNCA SUPERIOR)
     		android:layout_marginBottom="10dp"
+    		
+    		
+    * Si se pone margen lateral a nivel de layout, NO ponerlo en los componentes 
      -->
      
     <LinearLayout
@@ -30,13 +33,15 @@
         <ImageView
             android:id="@+id/ivViewOfferPhoto"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:clickable="false"
             android:contentDescription="@string/oferta"
-            android:src="@drawable/nophoto"
-            android:layout_marginBottom="10dp" />
+            android:scaleType="fitXY"
+            android:src="@drawable/nophoto" />
 
         <TextView
             android:id="@+id/tvViewOfferDescription"
@@ -46,7 +51,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textSize="18sp"
-            android:layout_marginBottom="10dp" />
+            android:layout_marginBottom="5dp" />
 
         <TextView
             android:id="@+id/tvViewOfferDeadline"
@@ -55,8 +60,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:maxLines="1"
-            android:textSize="15sp"
-            android:layout_marginBottom="5dp" />
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/tvViewOfferCreationDate"
