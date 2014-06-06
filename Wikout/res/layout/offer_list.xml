@@ -7,14 +7,16 @@
 
     <ImageView
         android:id="@+id/ivOfferListCommercePhoto"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="fill"
+        android:clickable="false"
         android:contentDescription="@string/description" />
 
     <ListView
         android:id="@+id/listOff"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="240dp"
         android:layout_marginBottom="5dp"
         android:dividerHeight="0.5dp" >
 
