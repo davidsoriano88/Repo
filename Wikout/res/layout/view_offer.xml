@@ -1,8 +1,10 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+	android:layout_height="wrap_content" >
+    <LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <ImageView
@@ -12,6 +14,7 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="fill"
         android:clickable="false"
+        android:contentDescription="@string/oferta"
         android:src="@drawable/nophoto" />
 
     <TextView style="@style/boldText"
@@ -136,3 +139,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>

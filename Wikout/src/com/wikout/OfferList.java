@@ -151,7 +151,7 @@ public class OfferList extends ActionBarActivity {
 				ivOfferPhoto.setImageDrawable(getResources().getDrawable(
 						R.drawable.nophoto));
 
-			
+			System.out.println("items cargandose");
 
 			return convertView;
 		}
