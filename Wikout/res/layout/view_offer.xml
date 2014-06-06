@@ -18,7 +18,7 @@
 	        android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
     		(opcionalmente incluir MARGEN INFERIOR, pero NUNCA SUPERIOR)
-    		android:layout_marginBottom="10dp"
+    		android:layout_marginBottom="20dp"
     		
     		
     * Si se pone margen lateral a nivel de layout, NO ponerlo en los componentes 
@@ -27,25 +27,25 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        
         android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/ivViewOfferPhoto"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_height="0dip"
+            android:layout_marginBottom="20dp"
+            android:layout_weight="0.74"
             android:clickable="false"
             android:contentDescription="@string/oferta"
-            android:scaleType="fitXY"
-            android:src="@drawable/nophoto" />
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tvViewOfferDescription"
             style="@style/boldText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textSize="18sp" />
@@ -56,6 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="5dp"
             android:maxLines="1"
             android:textSize="15sp" />
 
@@ -63,7 +64,7 @@
             android:id="@+id/tvViewOfferCreationDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="25dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:maxLines="1"
@@ -73,21 +74,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:orientation="vertical" >
 
             <View
                 android:id="@+id/View01"
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="3dp"
+                android:layout_marginBottom="20dp"
                 android:background="@android:color/darker_gray" />
 
             <TextView
                 android:id="@+id/tvViewOfferNumlike"
                 android:layout_width="wrap_content"
                 android:layout_height="0dip"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="14dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:textSize="15sp" />
@@ -126,13 +127,13 @@
             android:id="@+id/vViewOfferSeparator2"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="20dp"
             android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal" >
 
             <TextView
