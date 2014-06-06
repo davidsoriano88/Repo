@@ -195,7 +195,7 @@ public class ViewOffer extends ActionBarActivity {
 						e.printStackTrace();
 					}
 					}else{
-						ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
+						//ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
 						setSupportProgressBarIndeterminateVisibility(false);
 					}
 
