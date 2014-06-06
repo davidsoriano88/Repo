@@ -10,16 +10,13 @@
 <LinearLayout
     android:id="@+id/container1"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/ivInsertCommercePhoto"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
         android:onClick="imageClicked"
         android:scaleType="fitCenter"
         android:src="@drawable/nophoto" />

@@ -62,6 +62,7 @@
     	     android:layout_gravity="bottom|left"
     	     android:layout_marginBottom="8dp"
     	     android:layout_marginLeft="5dp"
+    	     android:maxLines="1"
     	     android:text="Medium Text"
     	     android:textAppearance="?android:attr/textAppearanceMedium"
     	     android:textSize="15sp" />
