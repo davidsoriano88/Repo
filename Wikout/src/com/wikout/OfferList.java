@@ -173,8 +173,8 @@ public class OfferList extends ActionBarActivity {
 					BackbeamObject fileObject = company.getObject("file");
 					if (fileObject != null) {
 						TreeMap<String, Object> options = new TreeMap<String, Object>();
-						options.put("width", 100);
-						options.put("height", 50);
+						options.put("width", 120);
+						options.put("height", 40);
 						String logoURL = fileObject.composeFileURL(options);
 
 						// Codigo para poner la foto en el imageView

@@ -173,7 +173,7 @@ public class ViewOffer extends ActionBarActivity {
 					if(fileObject!=null){
 					TreeMap<String, Object> options = new TreeMap<String, Object>();
 					options.put("width", 300);
-					options.put("height",150);
+					options.put("height",100);
 					String logoURL = fileObject.composeFileURL(options);
 
 					// Codigo para poner la foto en el imageView
