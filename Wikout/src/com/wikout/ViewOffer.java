@@ -172,7 +172,7 @@ public class ViewOffer extends ActionBarActivity {
 					BackbeamObject fileObject = company.getObject("file");
 					if(fileObject!=null){
 					TreeMap<String, Object> options = new TreeMap<String, Object>();
-					options.put("width", 300);
+					options.put("width", 200);
 					options.put("height",100);
 					String logoURL = fileObject.composeFileURL(options);
 
