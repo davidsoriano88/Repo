@@ -5,7 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center_horizontal"
-    android:layout_margin="5dp" >
+     >
 
 <LinearLayout
     android:id="@+id/container1"
@@ -16,73 +16,83 @@
     <ImageView
         android:id="@+id/ivInsertCommercePhoto"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="140dp"
         android:onClick="imageClicked"
-        android:scaleType="fitCenter"
+        android:scaleType="centerCrop"
         android:src="@drawable/nophoto" />
-
-    <TextView
-        android:id="@+id/tvInsertCommercePlacename"
-        style="@style/grayText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Inserte nombre del comercio:" />
-
-    <EditText
-        android:id="@+id/etInsertCommercePlacename"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:ems="10"
-        android:hint="Nombre" />
-
-    <TextView
-        android:id="@+id/tvInsertCommerceAddresslabel"
-        style="@style/grayText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Direccion:" />
-
-    <TextView
-        android:id="@+id/tvInsertCommerceAddress"
-        style="@style/boldText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Calle el Coso, 56, 50001 Zaragoza, España" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp" >
+        android:layout_margin="5dp"
+        android:orientation="vertical" >
 
         <TextView
-            android:id="@+id/tvInsertCommerceCategory"
+            android:id="@+id/tvInsertCommercePlacename"
+            style="@style/grayText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Inserte nombre del comercio:" />
+
+        <EditText
+            android:id="@+id/etInsertCommercePlacename"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ems="10"
+            android:hint="Nombre" >
+
+            <requestFocus />
+        </EditText>
+
+        <TextView
+            android:id="@+id/tvInsertCommerceAddresslabel"
             style="@style/grayText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Elija categoría:" />
+            android:layout_marginTop="10dp"
+            android:text="Direccion:" />
 
-        <Spinner
-            android:id="@+id/spnInsertCommerceCategory"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tvInsertCommerceAddress"
+            style="@style/boldText"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:entries="@array/categorias"
-            android:prompt="@string/categorias_prompt" />
+            android:text="Calle el Coso, 56, 50001 Zaragoza, España" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp" >
+
+            <TextView
+                android:id="@+id/tvInsertCommerceCategory"
+                style="@style/grayText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Elija categoría:" />
+
+            <Spinner
+                android:id="@+id/spnInsertCommerceCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:entries="@array/categorias"
+                android:prompt="@string/categorias_prompt" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnInsertCommerceOk"
+            style="@style/ButtonColor"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
+            android:text="Insertar" />
 
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btnInsertCommerceOk"
-        style="@style/ButtonColor"
-        android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center_vertical|center_horizontal"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="10dp"
-        android:text="Insertar" />
 
 </LinearLayout>
 </ScrollView>
