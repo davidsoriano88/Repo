@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -8,18 +7,18 @@
     <ImageView
         android:id="@+id/ivOfferListCommercePhoto"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/description"
-        android:scaleType="fitCenter" />
+        android:layout_height="126dp"
+        android:clickable="false"
+        android:contentDescription="@string/oferta"
+        android:scaleType="fitXY"
+        android:src="@drawable/nophoto" />
 
     <ListView
         android:id="@+id/listOff"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="0.7"
-        android:dividerHeight="0.5dp" >
-
+        android:layout_width="fill_parent"
+        android:layout_weight="1"
+        android:layout_height="277dp"
+        android:layout_marginBottom="5dp">
     </ListView>
 
     <Button
