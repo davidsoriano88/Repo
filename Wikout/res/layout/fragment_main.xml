@@ -37,14 +37,11 @@
 
 	</android.support.v4.widget.DrawerLayout>
 
-
- 
-
     	 <ImageView
     	     android:id="@+id/filterText"
     	     android:layout_width="262dp"
     	     android:layout_height="38dp"
-    	     android:layout_gravity="bottom"
+    	     android:layout_gravity="bottom|left"
     	     android:scaleType="fitXY"
     	     android:src="@drawable/abc_ab_bottom_solid_light_holo" />
 
@@ -52,19 +49,19 @@
     	     android:id="@+id/filterButton"
     	     android:layout_width="wrap_content"
     	     android:layout_height="38dp"
-    	     android:layout_gravity="bottom|right"
-    	     android:layout_marginRight="55dp"
+    	     android:layout_gravity="bottom|left"
+    	     android:layout_marginLeft="215dp"
     	     android:layout_marginTop="3dp"
     	     android:baselineAlignBottom="false"
     	     android:src="@drawable/abc_ic_clear_search_api_holo_light" />
 
     	 <TextView
     	     android:id="@+id/tvFilterText"
-    	     android:layout_width="168dp"
+    	     android:layout_width="209dp"
     	     android:layout_height="wrap_content"
-    	     android:layout_gravity="bottom|center"
+    	     android:layout_gravity="bottom|left"
     	     android:layout_marginBottom="8dp"
-    	     android:layout_marginRight="30dp"
+    	     android:layout_marginLeft="5dp"
     	     android:text="Medium Text"
     	     android:textAppearance="?android:attr/textAppearanceMedium"
     	     android:textSize="15sp" />

@@ -305,6 +305,7 @@ public class Map extends ActionBarActivity {
 			ibFilter.setVisibility(4);
 			tvFilterText.setVisibility(4);
 			filterView.setVisibility(4);
+			
 		} else {
 			ibFilter.setVisibility(0);
 			tvFilterText.setVisibility(0);
