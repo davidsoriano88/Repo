@@ -103,53 +103,43 @@ public class Map extends ActionBarActivity {
 	public void initUI() {
 
 		setSupportProgressBarIndeterminateVisibility(true);
-
-		// load slide menu items
-		String[] navMenuTitles = getResources().getStringArray(R.array.options);
 		
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		lvDrawer = (ListView) findViewById(R.id.left_drawer);
-		
-		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
-		LayoutInflater inflater = LayoutInflater.from(this);
-
-		View search = inflater.inflate(R.layout.search_drawer, null);
-		etSearch = (EditText) search.findViewById(R.id.search1);
-		
-		lvDrawer.addHeaderView(search);
-		// navDrawerItems.add(new NavDrawerItem();
-		
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0],R.drawable.filter_icon));
-		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1],R.drawable.info_icon));
-		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2],R.drawable.logout_icon));
-		// Communities, Will add a counter here
-
-		// setting the nav drawer list adapter
-		lvDrawer.setAdapter(new NavDrawerListAdapter(context, navDrawerItems));
-		// Inicializamos las variables
-
+		//inicializamos las variables:
 		map = ((SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
-
+		map.setMyLocationEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		//getSupportActionBar().setDisplayUseLogoEnabled(false);
-
-		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
-		drawerLayout, /* DrawerLayout object */
-		R.drawable.ic_navigation_drawer3, /* nav drawer image to replace 'Up'caret*/
-		R.string.oferta, /* "open drawer" description for accessibility */
-		R.string.hello_world /* "close drawer" description for accessibility */
-		);
-		// prueba.setDrawerIndicatorEnabled(true);
-		drawerLayout.setDrawerListener(drawerToggle);
-		
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		lvDrawer = (ListView) findViewById(R.id.left_drawer);
+		String[] navMenuTitles = getResources().getStringArray(R.array.options);
+		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 		filterView = (ImageView) findViewById(R.id.filterText);
 		tvFilterText = (TextView) findViewById(R.id.tvFilterText);
 		ibFilter = (ImageButton) findViewById(R.id.filterButton);
 		filterVisible(false);
-		// tvFilterText.setTextColor(Color.WHITE);
+		
+		//incializamos el header del ListView:
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View search = inflater.inflate(R.layout.search_drawer, null);
+		etSearch = (EditText) search.findViewById(R.id.search1);
+		lvDrawer.addHeaderView(search);
+		
+		//asignamos los items con su icono:
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0],R.drawable.filter_icon));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1],R.drawable.info_icon));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2],R.drawable.logout_icon));
+		lvDrawer.setAdapter(new NavDrawerListAdapter(context, navDrawerItems));
+		
+		//asignamos la funcionalidad drawerToggle:
+		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
+				drawerLayout, /* DrawerLayout object */
+				R.drawable.ic_navigation_drawer3, /* nav drawer image to replace 'Up'caret*/
+				R.string.oferta, /* "open drawer" description for accessibility */
+				R.string.hello_world /* "close drawer" description for accessibility */
+				);
+				// prueba.setDrawerIndicatorEnabled(true);
+				drawerLayout.setDrawerListener(drawerToggle);
+
 		// establecemos las opciones del menu deslizable:
 		lvDrawer.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -237,7 +227,7 @@ public class Map extends ActionBarActivity {
 			}
 		});
 
-		map.setMyLocationEnabled(true);
+		
 		ibFilter.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -319,9 +309,7 @@ public class Map extends ActionBarActivity {
 		case KeyEvent.KEYCODE_MENU:
 			drawerOpener();
 			return true;
-
 		}
-
 		return super.onKeyDown(keycode, e);
 	}
 
@@ -348,24 +336,23 @@ public class Map extends ActionBarActivity {
 		location = locationManager.getLastKnownLocation(locationManager
 				.getBestProvider(criteria, false));
 	
-		if (location != null) {
-			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
-					location.getLatitude(), location.getLongitude()), 15.0F));
-
-			CameraPosition cameraPosition = new CameraPosition.Builder()
-					.target(new LatLng(location.getLatitude(), location
-							.getLongitude())) // Sets the center of the map to
-												// location user
-					.zoom(15.0F) // Sets the zoom
-					.build(); // Creates a CameraPosition from the builder
-			map.animateCamera(CameraUpdateFactory
-					.newCameraPosition(cameraPosition));
-
-			util.log("location" + String.valueOf(location.getLatitude()));
-		} else {
-			util.showToast(context, "location null");
-			
+		if (location == null) {
+			util.showInfoDialog(context, "Lo sentimos", "No podemos detectar tu posición");
+				location=new Location(LocationManager.NETWORK_PROVIDER);
+				location.setLatitude(41.6561);
+				location.setLongitude(-0.8773);
 		}
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+				location.getLatitude(), location.getLongitude()), 15.0F));
+
+		CameraPosition cameraPosition = new CameraPosition.Builder()
+				.target(new LatLng(location.getLatitude(), location
+						.getLongitude())) // Sets the center of the map to
+											// location user
+				.zoom(15.0F) // Sets the zoom
+				.build(); // Creates a CameraPosition from the builder
+		map.animateCamera(CameraUpdateFactory
+				.newCameraPosition(cameraPosition));
 
 	}
 

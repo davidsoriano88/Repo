@@ -392,6 +392,7 @@ public class OfferList extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
+			dataid.clear();
 			queryOffer(idcommerce);
 
 			getPhoto(idcommerce);
