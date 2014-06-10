@@ -182,12 +182,10 @@ public class Mapv2 extends ActionBarActivity {
 	 @Override
      public boolean onPrepareOptionsMenu(Menu menu) {
 
-        // menu.clear();
+       
          MenuInflater inflater = getMenuInflater();
-
-         if (pulsed==true) {
-             inflater.inflate(R.menu.main, menu);
-         }
+         inflater.inflate(R.menu.main, menu);
+         
          
 
      return super.onPrepareOptionsMenu(menu);
