@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -80,6 +81,7 @@ public class InsertCommerce extends ActionBarActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_commerce);
 		util.projectData(context);
+	
 		initUI();
 		
 	}
@@ -91,6 +93,9 @@ public class InsertCommerce extends ActionBarActivity {
 		spnCategory = (Spinner) findViewById(R.id.spnInsertCommerceCategory);
 		tvLocation=(TextView) findViewById(R.id.tvInsertCommerceAddress);
 		addListenerOnSpinnerItemSelection();
+		if(etPlacename.isFocused()){
+			btnOk.requestFocus();
+		}
 		getSupportActionBar().setTitle("Nuevo Comercio");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		Bundle bundle = getIntent().getExtras();

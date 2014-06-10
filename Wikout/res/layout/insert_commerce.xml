@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    
     android:id="@+id/scrollView1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center" >
 
-<LinearLayout
+<LinearLayout 
     android:id="@+id/container1"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -26,7 +27,7 @@
         android:layout_margin="5dp"
         android:orientation="vertical" >
 
-        <TextView
+        <TextView 
             android:id="@+id/tvInsertCommercePlacename"
             style="@style/grayText"
             android:layout_width="fill_parent"
@@ -34,7 +35,7 @@
             android:layout_marginTop="10dp"
             android:text="Inserte nombre del comercio:" />
 
-        <EditText
+        <EditText 
             android:id="@+id/etInsertCommercePlacename"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
             <requestFocus />
         </EditText>
 
-        <TextView
+        <TextView 
             android:id="@+id/tvInsertCommerceAddresslabel"
             style="@style/grayText"
             android:layout_width="wrap_content"
@@ -82,7 +83,7 @@
                 android:prompt="@string/categorias_prompt" />
         </LinearLayout>
 
-        <Button
+        <Button android:focusable="true" android:focusableInTouchMode="true"
             android:id="@+id/btnInsertCommerceOk"
             style="@style/ButtonColor"
             android:layout_width="fill_parent"

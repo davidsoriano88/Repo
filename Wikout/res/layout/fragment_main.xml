@@ -39,7 +39,7 @@
 
     	 <ImageView
     	     android:id="@+id/filterText"
-    	     android:layout_width="262dp"
+    	     android:layout_width="fill_parent"
     	     android:layout_height="38dp"
     	     android:layout_gravity="bottom|left"
     	     android:scaleType="fitXY"
@@ -50,18 +50,18 @@
     	     android:layout_width="wrap_content"
     	     android:layout_height="38dp"
     	     android:layout_gravity="bottom|left"
-    	     android:layout_marginLeft="215dp"
-    	     android:layout_marginTop="3dp"
+    	     android:layout_marginTop="5dp"
     	     android:baselineAlignBottom="false"
     	     android:src="@drawable/abc_ic_clear_search_api_holo_light" />
 
     	 <TextView
     	     android:id="@+id/tvFilterText"
-    	     android:layout_width="209dp"
+    	     android:layout_width="fill_parent"
     	     android:layout_height="wrap_content"
     	     android:layout_gravity="bottom|left"
     	     android:layout_marginBottom="8dp"
-    	     android:layout_marginLeft="5dp"
+    	     android:layout_marginLeft="50dp"
+    	     android:gravity="left"
     	     android:maxLines="1"
     	     android:text="Medium Text"
     	     android:textAppearance="?android:attr/textAppearanceMedium"

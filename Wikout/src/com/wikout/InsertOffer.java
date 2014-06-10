@@ -112,6 +112,9 @@ public class InsertOffer extends ActionBarActivity {
 
 		btnLocation = (Button) findViewById(R.id.btnInsertOfferCommerce);
 		
+		if(etDescription.isFocused()){
+			btnOk.requestFocus();
+		}
 		
 		
 		// Lo ponemos a escuchar para cuando sea pulsado
@@ -332,7 +335,7 @@ public class InsertOffer extends ActionBarActivity {
 			@Override
 			public void success(BackbeamObject offer) {
 
-				util.showToast(context, "comercio creado");
+				util.showToast(context, "Oferta insertada");
 				finish();
 				setSupportProgressBarIndeterminateVisibility(false);
 			}

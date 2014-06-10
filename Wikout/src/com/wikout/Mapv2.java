@@ -25,9 +25,11 @@ import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class Mapv2 extends ActionBarActivity {
@@ -40,6 +42,7 @@ public class Mapv2 extends ActionBarActivity {
 	LocationClient mLocationClient;
     Context context;  
     public static ActionBarActivity fa;
+    boolean pulsed=false;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -73,21 +76,32 @@ public class Mapv2 extends ActionBarActivity {
 		map.setOnMapClickListener(new OnMapClickListener() {
 			@Override
 			public void onMapClick(LatLng point) {
-				
+				map.clear();
 				Projection proj = map.getProjection();
 				Point coord = proj.toScreenLocation(point);
 
-
-		    	Intent mapLocation=new Intent();
+				map.addMarker(new MarkerOptions()
+						.position(new LatLng(point.latitude,
+										point.longitude))
+						.draggable(true)
+						.title("comercio")
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.pin)));
+								pulsed=true;
+				
+							/*MenuInflater inflater = getMenuInflater();
+							inflater.inflate(R.menu.main, menu);*/
+				
+		    	/*Intent mapLocation=new Intent();
 		          // put the message in Intent
 		          mapLocation.putExtra("pointlat", point.latitude);
 		          mapLocation.putExtra("pointlon", point.longitude);
-		          util.log("latitud del mapv2"+String.valueOf(point.latitude));
+		          util.log("latitud del mapv2"+String.valueOf(point.latitude));*/
 		          // Set The Result in Intent
-		          setResult(RESULT_OK,mapLocation);
+		        //  setResult(RESULT_OK,mapLocation);
 		          // finish The activity 
 		        //if(point.latitude!=0.0){ 
-		         finish();
+		       //  finish();
 
 			}
 		});
@@ -150,6 +164,9 @@ public class Mapv2 extends ActionBarActivity {
 		}
 		
 	}
+	
+
+	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -161,6 +178,23 @@ public class Mapv2 extends ActionBarActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+	
+	 @Override
+     public boolean onPrepareOptionsMenu(Menu menu) {
+
+        // menu.clear();
+         MenuInflater inflater = getMenuInflater();
+
+         if (pulsed==true) {
+             inflater.inflate(R.menu.main, menu);
+         }
+         
+
+     return super.onPrepareOptionsMenu(menu);
+     }
+	
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar

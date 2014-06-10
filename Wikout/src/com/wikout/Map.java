@@ -215,12 +215,12 @@ public class Map extends ActionBarActivity {
 					searchResult = etSearch.getText().toString();
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
-
 					tvFilterText.setText("Buscando por: " + etSearch.getText());
 					getSupportActionBar().setTitle("Resultados");
 					filterVisible(true);
 					new MyData().execute();
 					drawerOpener();
+					etSearch.setText("");
 					return true;
 				}
 				return false;
@@ -270,7 +270,6 @@ public class Map extends ActionBarActivity {
 		super.onPostCreate(savedInstanceState);
 		// Sync the toggle state after onRestoreInstanceState has occurred.
 		drawerToggle.syncState();
-
 	}
 
 	@Override
