@@ -97,7 +97,7 @@ public class ViewOffer extends ActionBarActivity {
 				tvDescription.setText(offer.getString("description"));
 				if(offer.getNumber("numlike").intValue()==0){
 					//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
-					tvNumLike.setVisibility(4);
+					tvNumLike.setVisibility(View.GONE);
 				}else{tvNumLike.setVisibility(0);
 					if(offer.getNumber("numlike").intValue()==1){
 					tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
@@ -136,7 +136,7 @@ public class ViewOffer extends ActionBarActivity {
 						String country = addresses.get(0).getAddressLine(2);
 						util.log("pancratio: "+address + city + country);
 				tvLocation.setText(address+"\n"+city+", "+country);
-				setSupportProgressBarIndeterminateVisibility(false);
+				
 						//***********************************************************
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
 						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
@@ -189,14 +189,14 @@ public class ViewOffer extends ActionBarActivity {
 						Bitmap mIcon_val = BitmapFactory.decodeStream(newurl
 								.openConnection().getInputStream());
 						ivPhoto.setImageBitmap(mIcon_val);
-						setSupportProgressBarIndeterminateVisibility(false);
+						//setSupportProgressBarIndeterminateVisibility(false);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					}else{
 						//ivPhoto.setImageDrawable(getResources().getDrawable( R.drawable.nophoto));
-						setSupportProgressBarIndeterminateVisibility(false);
+						//setSupportProgressBarIndeterminateVisibility(false);
 					}
 
 				}
@@ -344,7 +344,7 @@ public class ViewOffer extends ActionBarActivity {
 																		.getNumber("numlike"));
 																if(offer.getNumber("numlike").intValue()==0){
 																	//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
-																	tvNumLike.setVisibility(4);
+																	tvNumLike.setVisibility(View.GONE);
 																}else{ tvNumLike.setVisibility(0);
 																	if(offer.getNumber("numlike").intValue()==1){
 																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
@@ -510,7 +510,7 @@ public class ViewOffer extends ActionBarActivity {
 			util.log("Dist: "+distanceint+" m.");
 			tvDistance.setText("Dist: "+distanceint+" m.");
 		}
-		
+		setSupportProgressBarIndeterminateVisibility(false);
 		
 	}
 

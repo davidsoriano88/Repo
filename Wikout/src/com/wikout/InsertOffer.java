@@ -194,7 +194,7 @@ public class InsertOffer extends ActionBarActivity {
 						String myLongitude = prefs.getString("longpos", "no id");
 						longitude = Double.parseDouble(myLongitude);
 						//btnLocation.setText(latitude +","+longitude);
-						util.showToast(context,latitude+","+longitude);
+						//util.showToast(context,latitude+","+longitude);
 						Intent listCommerce = new Intent(context, CommerceList.class);
 						listCommerce.putExtra("pointlat", latitude);
 						listCommerce.putExtra("pointlon", longitude);

@@ -10,8 +10,7 @@
         android:layout_height="126dp"
         android:clickable="false"
         android:contentDescription="@string/oferta"
-        android:scaleType="fitXY"
-        android:src="@drawable/nophoto" />
+        android:scaleType="fitXY" />
 
     <ListView
         android:id="@+id/listOff"

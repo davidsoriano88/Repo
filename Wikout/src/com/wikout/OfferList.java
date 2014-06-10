@@ -35,6 +35,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.HideReturnsTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -161,6 +162,8 @@ public class OfferList extends ActionBarActivity {
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
 
+		ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
+
 		Query query = new Query("commerce");
 		query.setQuery("where this in ? join file", collection);
 		query.fetch(100, 0, new FetchCallback() {
@@ -198,8 +201,10 @@ public class OfferList extends ActionBarActivity {
 
 						ivPhoto.setImageBitmap(bmPhoto);
 					} else {
-						ivPhoto.setImageDrawable(getResources().getDrawable(
-								R.drawable.nophoto));
+						//ivPhoto.getLayoutParams().height = 0;
+						
+						ivPhoto.setVisibility(View.GONE);
+					//ivPhoto.setImageDrawable(getResources().getDrawable(	R.drawable.nophoto));
 
 					}
 				}
@@ -223,8 +228,7 @@ public class OfferList extends ActionBarActivity {
 	private void initUi() {
 		setSupportProgressBarIndeterminateVisibility(true);
 		Bundle bundle = getIntent().getExtras();
-		ivPhoto = new ImageView(this);
-		ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
+		//ivPhoto = new ImageView(this);
 		btnAdd = (Button) findViewById(R.id.btnAddOffer);
 		list = (ListView) findViewById(R.id.listOff);
 		// queryOffer(bundle.getString("id"));
