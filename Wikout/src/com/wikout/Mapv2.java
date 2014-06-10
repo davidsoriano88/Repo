@@ -1,6 +1,7 @@
 package com.wikout;
 
 import utils.Util;
+import android.content.ClipData.Item;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -42,7 +43,10 @@ public class Mapv2 extends ActionBarActivity {
 	LocationClient mLocationClient;
     Context context;  
     public static ActionBarActivity fa;
-    boolean pulsed=false;
+    
+    private static final int MENUITEM = Menu.FIRST;
+    
+    
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +91,11 @@ public class Mapv2 extends ActionBarActivity {
 						.title("comercio")
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.pin)));
-								pulsed=true;
-				
+			
+			
 							/*MenuInflater inflater = getMenuInflater();
 							inflater.inflate(R.menu.main, menu);*/
-				
+								
 		    	/*Intent mapLocation=new Intent();
 		          // put the message in Intent
 		          mapLocation.putExtra("pointlat", point.latitude);
@@ -179,17 +183,8 @@ public class Mapv2 extends ActionBarActivity {
         }
     }
 	
-	 @Override
-     public boolean onPrepareOptionsMenu(Menu menu) {
 
-       
-         MenuInflater inflater = getMenuInflater();
-         inflater.inflate(R.menu.main, menu);
-         
-         
 
-     return super.onPrepareOptionsMenu(menu);
-     }
 	
 	
 	
@@ -198,6 +193,7 @@ public class Mapv2 extends ActionBarActivity {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu2, menu);
+		
 		return super.onCreateOptionsMenu(menu);
 	}
 	@Override
