@@ -88,13 +88,9 @@ public class Mapv2 extends ActionBarActivity {
 						.position(new LatLng(point.latitude,
 										point.longitude))
 						.draggable(true)
-						.title("comercio")
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.pin)));
 			
-			
-							/*MenuInflater inflater = getMenuInflater();
-							inflater.inflate(R.menu.main, menu);*/
 								
 		    	/*Intent mapLocation=new Intent();
 		          // put the message in Intent
@@ -104,7 +100,7 @@ public class Mapv2 extends ActionBarActivity {
 		          // Set The Result in Intent
 		        //  setResult(RESULT_OK,mapLocation);
 		          // finish The activity 
-		        //if(point.latitude!=0.0){ 
+		 
 		       //  finish();
 
 			}
