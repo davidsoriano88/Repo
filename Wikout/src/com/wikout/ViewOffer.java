@@ -517,12 +517,12 @@ public class ViewOffer extends ActionBarActivity {
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.refresh:
+       /* case R.id.refresh:
 			new LoadDataTask().execute();
 			return true;
         	case android.R.id.home: 
 			finish();
-        		return true;
+        		return true;*/
         default:
             return super.onOptionsItemSelected(item);
         }

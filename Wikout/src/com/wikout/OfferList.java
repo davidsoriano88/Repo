@@ -29,6 +29,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,13 +55,15 @@ public class OfferList extends ActionBarActivity {
 	Util util = new Util();
 	Bitmap bmPhoto = null;
 	ImageView ivPhoto, ivOfferPhoto;
-	static TextView tvLocation;
+	//static TextView tvLocation;
 	String idcommerce = "", placeName;
 	ListView list;
 	private Button btnAdd;
 	LazyAdapter adapter;
-	TextView tvOffer, tvLike, tvId, tvDeadline;
+	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer;
 	// XML node keys
+
+
 
 	static final String KEY_ID = "id";
 
@@ -223,6 +226,7 @@ public class OfferList extends ActionBarActivity {
 		Bundle bundle = getIntent().getExtras();
 		//ivPhoto = new ImageView(this);
 		btnAdd = (Button) findViewById(R.id.btnAddOffer);
+		tvNoOffer = (TextView) findViewById(R.id.tvListOfferNoOffer);
 		list = (ListView) findViewById(R.id.listOff);
 		// queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));
@@ -291,9 +295,17 @@ public class OfferList extends ActionBarActivity {
 					// No hay ofertas disponibles
 					setSupportProgressBarIndeterminateVisibility(false);
 					util.log("oferta no existente");
+					list.setVisibility(View.GONE);
+					tvNoOffer.setVisibility(0);
+					tvNoOffer.setTextSize(20);
+					tvNoOffer.setPadding(0, 5, 0, 5);
+					tvNoOffer.setGravity(Gravity.CENTER);
+					tvNoOffer.setText("No hay ofertas");
 				} else {
 					// Hay ofertas
 					util.log("ofertas existentes");
+					tvNoOffer.setVisibility(View.GONE);
+					songsList.clear();
 					for (BackbeamObject offer : offers) {
 						dataid.add(offer.getId());
 						// Anadir al set Adapter
@@ -373,9 +385,12 @@ public class OfferList extends ActionBarActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case R.id.refresh:
-			new LoadDataTask().execute();
-			return true;
+		/*case R.id.refresh:
+			//new LoadDataTask().execute();
+			/*Intent intent = getIntent();
+			finish();
+			startActivity(intent);
+			return true; */
 		case android.R.id.home:
 			finish();
 			return true;
@@ -390,7 +405,7 @@ public class OfferList extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
-			dataid.clear();
+			//dataid.clear();
 			getPhoto(idcommerce);
 			queryOffer(idcommerce);
 
@@ -417,7 +432,7 @@ public class OfferList extends ActionBarActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		new LoadDataTask().execute();
+		//new LoadDataTask().execute();
 	}
 
 	@Override

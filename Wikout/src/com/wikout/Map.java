@@ -153,6 +153,7 @@ public class Map extends ActionBarActivity {
 				case 1:
 					final String [] filterItems = new String[] {"Ocio", "Servicios","Compras", "Otros"};
 					final Integer[] filterIcons = new Integer[] {R.drawable.pinazul, R.drawable.pinmorado, R.drawable.pinrosa, R.drawable.pinverde};
+					filterVisible(true);
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							context);
 					ListAdapter adapter = new ArrayAdapterWithIcon(context, filterItems, filterIcons);
@@ -180,7 +181,7 @@ public class Map extends ActionBarActivity {
 									+ filter);
 							getSupportActionBar()
 									.setTitle("Resultados");
-							filterVisible(true);
+							
 							etSearch.setText("");
 							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 							imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);//****************************************************
