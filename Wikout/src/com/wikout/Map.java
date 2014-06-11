@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.NavDrawerItem;
+import utils.ArrayAdapterWithIcon;
 import utils.Place;
 import utils.PlacesService;
 import utils.Util;
@@ -19,7 +20,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.TypedArray;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -46,6 +46,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -81,6 +82,7 @@ public class Map extends ActionBarActivity {
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle drawerToggle;
 	ListView lvDrawer;
+	
 	ArrayList<String> placeName = new ArrayList<String>(),
 			idcommerce = new ArrayList<String>(),
 			idcommerceonmap = new ArrayList<String>(),
@@ -149,14 +151,44 @@ public class Map extends ActionBarActivity {
 				case 0:
 					break;
 				case 1:
-					final CharSequence[] items = { "Ocio", "Servicios",
-							"Compras", "Otros" };
-					
+					final String [] filterItems = new String[] {"Ocio", "Servicios","Compras", "Otros"};
+					final Integer[] filterIcons = new Integer[] {R.drawable.pinazul, R.drawable.pinmorado, R.drawable.pinrosa, R.drawable.pinverde};
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							context);
-					
+					ListAdapter adapter = new ArrayAdapterWithIcon(context, filterItems, filterIcons);
 					builder.setTitle("Filtrar por: ");
-					builder.setItems(items,
+					builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog,
+								int item) {
+							// Do something with the selection
+							switch (item) {
+							case 0:
+								filter = "ocio";
+								break;
+							case 1:
+								filter = "servicios";
+								break;
+							case 2:
+								filter = "compras";
+								break;
+							case 3:
+								filter = "otros";
+								break;
+							}
+							tvFilterText.setText("Filtrado por: "
+									+ filter);
+							getSupportActionBar()
+									.setTitle("Resultados");
+							filterVisible(true);
+							etSearch.setText("");
+							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+							imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);//****************************************************
+							new MyData().execute();
+						}
+
+				});
+					/*builder.setItems(items,
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialog,
@@ -185,8 +217,12 @@ public class Map extends ActionBarActivity {
 									InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 									imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);//****************************************************
 									new MyData().execute();
-								}
-							});
+								}*/
+			            
+			                
+			                
+
+			                
 					AlertDialog alert = builder.create();
 					alert.show();
 					searchResult = null;

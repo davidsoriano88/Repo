@@ -1,11 +1,9 @@
 package com.wikout;
 
-import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.CollectionConstraint;
 import io.backbeam.FetchCallback;
 import io.backbeam.JoinResult;
-import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.io.IOException;
@@ -20,10 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import utils.ImageLoader;
 import utils.Util;
 import android.app.Activity;
@@ -35,7 +29,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.method.HideReturnsTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -153,7 +146,7 @@ public class OfferList extends ActionBarActivity {
 						R.drawable.nophoto));
 
 			System.out.println("items cargandose");
-
+			setSupportProgressBarIndeterminateVisibility(false);
 			return convertView;
 		}
 	}
@@ -343,6 +336,7 @@ public class OfferList extends ActionBarActivity {
 								}
 							}
 						});*/
+						
 						SimpleDateFormat format1 = new SimpleDateFormat(
 								"dd-MM-yyyy");
 						String formatted = format1.format(offer.getDay(
@@ -357,7 +351,7 @@ public class OfferList extends ActionBarActivity {
 						// adding HashList to ArrayList
 						songsList.add(map);
 
-						setSupportProgressBarIndeterminateVisibility(false);
+						
 					}
 				}
 			}
@@ -397,16 +391,17 @@ public class OfferList extends ActionBarActivity {
 		protected void onPostExecute(Boolean result) {
 			util.log("recorremos post execute mydata");
 			dataid.clear();
+			getPhoto(idcommerce);
 			queryOffer(idcommerce);
 
-			getPhoto(idcommerce);
+			
 		}
 
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
 			util.log("recorremos pre execute");
-			// setSupportProgressBarIndeterminateVisibility(true);
+			setSupportProgressBarIndeterminateVisibility(true);
 			util.log("mostramos dialog mydata");
 		}
 
