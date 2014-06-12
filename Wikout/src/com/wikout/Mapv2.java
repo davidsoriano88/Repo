@@ -39,10 +39,12 @@ public class Mapv2 extends ActionBarActivity {
 	private GoogleMap map;
 	LocationManager locationManager;
 	Location location;
-	double longitudeSW, latitudeSW, longitudeNE, latitudeNE;
+	double longitudeSW, latitudeSW, longitudeNE, latitudeNE, selectedLat, selectedLon;
 	LocationClient mLocationClient;
     Context context;  
+    boolean enableOk = false;
     public static ActionBarActivity fa;
+    
     
     private static final int MENUITEM = Menu.FIRST;
     
@@ -90,8 +92,11 @@ public class Mapv2 extends ActionBarActivity {
 						.draggable(true)
 						.icon(BitmapDescriptorFactory
 								.fromResource(R.drawable.pin)));
-			
-								
+				enableOk=true;
+				supportInvalidateOptionsMenu();
+				selectedLat = point.latitude;
+				selectedLon = point.longitude;
+				
 		    	/*Intent mapLocation=new Intent();
 		          // put the message in Intent
 		          mapLocation.putExtra("pointlat", point.latitude);
@@ -174,15 +179,61 @@ public class Mapv2 extends ActionBarActivity {
         		this.finish();
         		CommerceList.fa.finish();
         		return true;
+        	case R.id.btnOkMap :
+        		Intent mapLocation=new Intent();
+		          // put the message in Intent
+		          mapLocation.putExtra("pointlat", selectedLat);
+		          mapLocation.putExtra("pointlon", selectedLon);
+		          //util.log("latitud del mapv2"+String.valueOf(point.latitude));*/
+		          // Set The Result in Intent
+		        setResult(RESULT_OK,mapLocation);
+		          // finish The activity 
+		 
+		       finish();
+
+        		return true;
         default:
             return super.onOptionsItemSelected(item);
         }
-    }
+    } 
+	/*
+	 	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+       case R.id.refresh:
+			new LoadDataTask().execute();
+			return true;
+        	case android.R.id.home: 
+			finish();
+        		return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
+    }*/
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		
+		MenuInflater inflater = getMenuInflater();
+		
+		
+		inflater.inflate(R.menu.menu2, menu);
+		menu.findItem(R.id.btnOkMap).setEnabled(enableOk)
+									.setVisible(enableOk);
+		return super.onCreateOptionsMenu(menu);
+	}
 	
 
 
 	
-	
+	@Override
+	public void supportInvalidateOptionsMenu() {
+		
+		super.supportInvalidateOptionsMenu();
+	}
+
+	/*
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -191,7 +242,7 @@ public class Mapv2 extends ActionBarActivity {
 		inflater.inflate(R.menu.menu2, menu);
 		
 		return super.onCreateOptionsMenu(menu);
-	}
+	}*/
 	@Override
 	public boolean onKeyDown(int keycode, KeyEvent e) {
 	    switch(keycode) {

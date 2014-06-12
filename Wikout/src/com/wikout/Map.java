@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -89,6 +90,8 @@ public class Map extends ActionBarActivity {
 			idMarker = new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
 	protected AsyncTask<Void, Integer, Boolean> asyncBackbeam;
+	
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +99,8 @@ public class Map extends ActionBarActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.fragment_main);
 		context = this;
-		
 		util.projectData(context);
+		
 		initUI();
 		
 	}
@@ -189,41 +192,7 @@ public class Map extends ActionBarActivity {
 						}
 
 				});
-					/*builder.setItems(items,
-							new DialogInterface.OnClickListener() {
-								@Override
-								public void onClick(DialogInterface dialog,
-										int item) {
-									// Do something with the selection
-									switch (item) {
-									case 0:
-										filter = "ocio";
-										break;
-									case 1:
-										filter = "servicios";
-										break;
-									case 2:
-										filter = "compras";
-										break;
-									case 3:
-										filter = "otros";
-										break;
-									}
-									tvFilterText.setText("Filtrado por: "
-											+ filter);
-									getSupportActionBar()
-											.setTitle("Resultados");
-									filterVisible(true);
-									etSearch.setText("");
-									InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-									imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);//****************************************************
-									new MyData().execute();
-								}*/
-			            
-			                
-			                
-
-			                
+								                
 					AlertDialog alert = builder.create();
 					alert.show();
 					searchResult = null;
@@ -296,7 +265,8 @@ public class Map extends ActionBarActivity {
 				if(isNetworkAvailable()==true){
 				asyncBackbeam = new MyData().execute();
 				asyncPlaces = new GetPlaces("").execute();
-				}else{util.showInfoDialog(context, "Lo sentimos", "Es necesaria conexión a internet");}
+				}else{
+					util.showInfoDialog(context, "Lo sentimos", "Es necesaria conexión a internet");}
 			}
 		});
 		setSupportProgressBarIndeterminateVisibility(false);

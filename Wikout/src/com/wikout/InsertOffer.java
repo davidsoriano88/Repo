@@ -160,6 +160,7 @@ public class InsertOffer extends ActionBarActivity {
 						dialogIncomplete.show();
 					}
 					else if(photo!=null){
+						btnOk.setEnabled(false);
 						setSupportProgressBarIndeterminateVisibility(true);
 						btnOk.setEnabled(false);
 							insertOfferPhoto(actualDate());
@@ -338,6 +339,7 @@ public class InsertOffer extends ActionBarActivity {
 
 				util.showToast(context, "Oferta insertada");
 				finish();
+				btnOk.setEnabled(true);
 				setSupportProgressBarIndeterminateVisibility(false);
 			}
 		});

@@ -3,14 +3,14 @@
     
     
     
-   <!--   <item android:id="@+id/refresh" 
+<item android:id="@+id/refresh" 
      android:showAsAction="always"
      app:showAsAction="always"
      android:orderInCategory="100"
      android:icon="@drawable/refresh_icon"
      android:title="@string/hello_world"></item>
     
- -->
+
     
 
 </menu>

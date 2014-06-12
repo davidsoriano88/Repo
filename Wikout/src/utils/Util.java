@@ -1,10 +1,14 @@
 package utils;
 
+import java.util.List;
+
 import io.backbeam.*;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -16,6 +20,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -40,6 +45,83 @@ public class Util {
 			
 			info.show();
 		}
+	 public void checkVersion(final Context context, final String minversion){
+		
+		 final AlertDialog.Builder info = new AlertDialog.Builder(context);
+		 info.setTitle("Actualización");
+		 Query query = new Query("settings");
+		 System.out.println("Después de query");
+		 query.fetch(100, 0, new FetchCallback() {
+
+		      @Override
+		      public void success(List<BackbeamObject> objects,
+		        int totalCount, boolean fromCache) {
+		        // pick a place (in real code check the objects.size() first)
+		    
+		    	  System.out.println("Llega al success");
+		    	  for (BackbeamObject setting : objects) {
+		    		  //cojo el objeto minversion
+		    		  System.out.println("Entra en el for");
+		    		  
+		    		  
+		    			  //Si la versión es menor que la del market
+		    			  if(Integer.parseInt(setting.getString("minversion"))>Integer.parseInt(minversion)){
+		    				  System.out.println("Valor de required update: "+  setting.getBoolean("requiredupdate"));
+		    				  if(setting.getBoolean("requiredupdate")==true ){
+				    				  //obligo a ir al market
+				    					info.setMessage("Existe una nueva versión de Wikout.");
+				    					info.setCancelable(false);
+				    					info.setNeutralButton("¡Descárgatela!",
+				    							new DialogInterface.OnClickListener() {
+				    								@Override
+				    								public void onClick(final DialogInterface dialogo1, final int id) {
+				    									Uri uri = Uri.parse("http://www.google.com");
+				    									Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				    									context.startActivity(intent);
+				    									android.os.Process.killProcess(android.os.Process.myPid());
+				    								}
+
+				    							});
+				    					
+				    					info.show();
+				    			  }else{
+				    				  //ofrezco ir al market
+				    					info.setMessage("Existe una actualización de Wikout.\n ¿Quieres descargártela?");
+				    					info.setCancelable(true);
+				    					info.setPositiveButton("Sí. ¡Claro!",
+				    							new DialogInterface.OnClickListener() {
+				    								@Override
+				    								public void onClick(DialogInterface dialogo1, int id) {
+				    									Uri uri = Uri.parse("http://www.google.com");
+				    									Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+				    									context.startActivity(intent);
+				    								}});
+				    					info.setNegativeButton("Por ahora no.",
+				    							new DialogInterface.OnClickListener() {
+						    						@Override
+						    						public void onClick(DialogInterface dialogo1, int id) {
+						    							
+						    						}});
+				    					info.show();
+				    			  }
+		    		  
+		    		  
+		    			  
+		    		  
+		    		  
+		    			  
+		    		  }
+		    			  
+		    	  }
+		      }
+		});
+		 
+
+		}
+	 
+	 
+	 
+	 
 	public void showProgressDialog(Context context){
 		final ProgressDialog dialog = new ProgressDialog(context);
 		dialog.setCancelable(true);

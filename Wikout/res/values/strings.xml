@@ -16,6 +16,8 @@
     <string name="titleName">title</string>
   	<string name="buscar">Buscar</string>
   	<string name="description">description</string>
+  	
+  	<string name="ok">OK!</string>
   
     <string-array name="categorias">
         <item>ocio</item>
@@ -40,6 +42,7 @@
        <item>Buscar</item>
     </string-array>
     
-
+<string name="min_version">0</string>
+<string name="required_update">false</string>
 
 </resources>
