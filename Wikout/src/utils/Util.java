@@ -195,7 +195,7 @@ public class Util {
 		    paint.setColor(Color.WHITE);
 		    paint.setTypeface(tf);
 		    paint.setTextAlign(Align.CENTER);
-		    paint.setTextSize(convertToPixels(context, 11));
+		    paint.setTextSize(convertToPixels(context, 80));
 
 		    Rect textRect = new Rect();
 		    paint.getTextBounds(text, 0, text.length(), textRect);
@@ -210,11 +210,23 @@ public class Util {
 		    int xPos = (canvas.getWidth() / 2) - 2;     //-2 is for regulating the x position offset
 
 		    //"- ((paint.descent() + paint.ascent()) / 2)" is the distance from the baseline to the center.
-		    int yPos = (int) ((canvas.getHeight() /3) - ((paint.descent() + paint.ascent())/4)) ;  
+		    int yPos = (int) ((canvas.getHeight() /2) - ((paint.descent() + paint.ascent())/4)) ;  
 
 		    canvas.drawText(text, xPos, yPos, paint);
+		    
+		    int width = bm.getWidth();
+	        int height = bm.getHeight();
 
-		    return  bm;
+	        float bitmapRatio = (float)width / (float) height;
+	        if (bitmapRatio > 0) {
+	            width = 40; //MAXsize
+	            height = (int) (width / bitmapRatio);
+	        } else {
+	            height = 40; //MAXsize
+	            width = (int) (height * bitmapRatio);
+	        }
+	        return Bitmap.createScaledBitmap(bm, width, height, true);
+		   
 		}
 
 

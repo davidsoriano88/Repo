@@ -9,9 +9,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import utils.RateMeMaybe;
+import utils.RateMeMaybeFragment;
 import utils.Settings;
 import utils.Util;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,9 +21,15 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-public class SplashScreen extends Activity {
+public class SplashScreen extends ActionBarActivity {
 	
 
   private long splashDelay = 500; //6 seconds.
@@ -40,12 +47,17 @@ public class SplashScreen extends Activity {
   protected void onCreate(Bundle savedInstanceState) 
   {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.splash_screen);
-    /*
-    RateMeMaybe rmm = new RateMeMaybe( );
+    setContentView(R.layout.splash_activity);
+    
+    RateMeMaybe rmm = new RateMeMaybe(this);
     rmm.setPromptMinimums(10, 14, 10, 30);
+    rmm.setDialogMessage("You really seem to like this app, "
+                    +"since you have already used it %totalLaunchCount% times! "
+                    +"It would be great if you took a moment to rate it.");
+    rmm.setDialogTitle("Rate this app");
+    rmm.setPositiveBtn("Yeeha!");
     rmm.run();
-*/
+
 	Backbeam.setProject("pruebaapp");
 	Backbeam.setEnvironment("dev");
 	Backbeam.setContext(context);
@@ -147,28 +159,50 @@ public class SplashScreen extends Activity {
     }else{
     	initUI();
     }
-    
+    if (savedInstanceState == null) {
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.container, new PlaceholderFragment()).commit();
+	}
     
     
   
   }
+
+	/**
+	 * A placeholder fragment containing a simple view.
+	 */
+	public static class PlaceholderFragment extends Fragment {
+
+		public PlaceholderFragment() {
+		}
+
+		@Override
+		public View onCreateView(LayoutInflater inflater, ViewGroup container,
+				Bundle savedInstanceState) {
+			View rootView = inflater.inflate(R.layout.splash_screen, container,
+					false);
+			return rootView;
+		}
+	}
+  
   
   public void initUI(){
-	  progressBar=(ProgressBar)findViewById(R.id.Initprogress);
+	 /* progressBar=(ProgressBar)findViewById(R.id.Initprogress);
 	  TimerTask task = new TimerTask(){
 		 @Override
 		 public void run(){
-			 beginYourTask();
+			 beginYourTask();*/
 	        Intent mainIntent = new Intent().setClass(SplashScreen.this, Map.class);
 	        
-	        startActivity(mainIntent);
-	        finish();
+	     startActivity(mainIntent);
+	        finish();/*   
 		 }
 	  };
 
 	  Timer timer = new Timer();
 	  timer.schedule(task, splashDelay);//after 6 seconds throws the task.
-  }
+  
+  */}
   public void beginYourTask()
   {
   	myProgress=0;

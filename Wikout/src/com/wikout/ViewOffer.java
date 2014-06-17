@@ -10,6 +10,7 @@ import io.backbeam.Query;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -106,11 +107,12 @@ public class ViewOffer extends ActionBarActivity {
 					}
 				}
 				// Paso las fechas a los edittexts
-				SimpleDateFormat datef = new SimpleDateFormat("dd-MM-yyyy");
-				String deadline = datef.format(offer.getDay("deadline").getTime());
+				DateFormat df4 = DateFormat.getDateInstance(DateFormat.FULL);
+				//SimpleDateFormat datef = new SimpleDateFormat("EEEE, d de MM del yyyy");
+				String deadline = df4.format(offer.getDay("deadline").getTime());
 				tvDeadline.setText("Válido hasta: "+deadline);
-				String creation = datef.format(offer.getDate("offercreationdate"));
-				tvCreationDate.setText("Fecha de creación: "+creation);
+				String creation = df4.format(offer.getDate("offercreationdate"));
+				tvCreationDate.setText("Creado el: "+creation);
 				// Tengo que leer el objeto commerce para poder acceder a sus datos
 				Backbeam.read("commerce", offer.getObject("commerce").getId(), new ObjectCallback() {
 					@Override

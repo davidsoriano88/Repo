@@ -12,37 +12,34 @@
     <string name="dislike">-1</string>
     <string name="toast_crash">Fallo de la aplicacion, lo sentimos.</string>
     <string name="report_prompt">Report</string>
-    <string name="oferta">Oferta</string>  
+    <string name="oferta">Oferta</string>
     <string name="titleName">title</string>
-  	<string name="buscar">Buscar</string>
-  	<string name="description">description</string>
-  	
-  	<string name="ok">OK!</string>
-  
+    <string name="buscar">Buscar</string>
+    <string name="description">description</string>
+    <string name="ok">OK!</string>
+
     <string-array name="categorias">
         <item>ocio</item>
         <item>compras</item>
         <item>servicios</item>
         <item>otros</item>
     </string-array>
-    
     <string-array name="report">
         <item>Referencia incorrecta</item>
         <item>Contenido ofensivo</item>
         <item>Cancelar</item>
     </string-array>
-    
     <string-array name="options">
         <item>Filtrar</item>
         <item>Info</item>
         <item>Salir</item>
     </string-array>
-    
     <string-array name="buscar">
-       <item>Buscar</item>
+        <item>Buscar</item>
     </string-array>
-    
-<string name="min_version">0</string>
-<string name="required_update">false</string>
+
+    <string name="min_version">0</string>
+    <string name="required_update">false</string>
+    <string name="title_activity_start_fragment">StartFragment</string>
 
 </resources>

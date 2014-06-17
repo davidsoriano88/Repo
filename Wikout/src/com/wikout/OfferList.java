@@ -21,14 +21,18 @@ import java.util.TreeMap;
 import utils.ImageLoader;
 import utils.Util;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -51,7 +55,7 @@ public class OfferList extends ActionBarActivity {
 	private ArrayList<String> dataid = new ArrayList<String>();
 
 	ActionBar ab;
-	Context con = this;
+	Context context = this;
 	Util util = new Util();
 	Bitmap bmPhoto = null;
 	ImageView ivPhoto, ivOfferPhoto;
@@ -121,10 +125,8 @@ public class OfferList extends ActionBarActivity {
 			} else {
 				tvOffer.setText(song.get(KEY_DESCRIPTION));
 			}
-			if (song.get(KEY_LIKES).equals("1")==true){
-				tvLike.setText(song.get(KEY_LIKES)+" Like");
-			}else{
-			tvLike.setText(song.get(KEY_LIKES)+" Likes");}
+			
+			tvLike.setText(song.get(KEY_LIKES)+" "+getResources().getString(R.string.like));
 			tvDeadline.setText("Válido hasta: "+song.get(KEY_DEADLINE));
 
 			/*if (song.get(KEY_DEADLINE) != null) {
@@ -215,7 +217,7 @@ public class OfferList extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.offer_list);
-		util.projectData(con);
+		util.projectData(context);
 
 		initUi();
 
@@ -231,7 +233,10 @@ public class OfferList extends ActionBarActivity {
 		// queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));
 		idcommerce = bundle.getString("id");
+		
 		// getPhoto(bundle.getString("id"));
+		
+
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		new LoadDataTask().execute();
@@ -240,11 +245,25 @@ public class OfferList extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				Intent addOffer = new Intent(con, InsertOffer.class);
-				addOffer.putExtra("idcommerce", idcommerce);
-				addOffer.putExtra("placename", placeName);
-				startActivity(addOffer);
 
+				AlertDialog.Builder info = new AlertDialog.Builder(context);
+				info.setTitle("Insertar Nueva Oferta");
+				info.setMessage("Está a punto de insertar una nueva oferta");
+				info.setCancelable(true);
+				info.setNeutralButton("Aceptar",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialogo1, int id) {
+								Intent addOffer = new Intent(context,
+										InsertOffer.class);
+								addOffer.putExtra("idcommerce", idcommerce);
+								addOffer.putExtra("placename", placeName);
+								startActivity(addOffer);
+							}
+
+						});
+
+				info.show();
 			}
 
 		});
@@ -253,7 +272,7 @@ public class OfferList extends ActionBarActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int pos,
 					long arg3) {
 
-				Intent intent = new Intent(con, ViewOffer.class);
+				Intent intent = new Intent(context, ViewOffer.class);
 				intent.putExtra("idoffer", dataid.get(pos));
 				intent.putExtra("idcommerce", idcommerce);
 				intent.putExtra("placename", placeName);
@@ -438,8 +457,8 @@ public class OfferList extends ActionBarActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu3, menu);
+		//MenuInflater inflater = getMenuInflater();
+		//inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

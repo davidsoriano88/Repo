@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
-    <!-- REGLAS PARA LAYOUTS
+    <!--
+    REGLAS PARA LAYOUTS
     El linearLayout tendra NECESARIAMENTE estos parametros*
     	android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,13 +22,12 @@
     		android:layout_marginBottom="20dp"
     		
     		
-    * Si se pone margen lateral a nivel de layout, NO ponerlo en los componentes 
-     -->
-     
+    * Si se pone margen lateral a nivel de layout, NO ponerlo en los componentes
+    -->
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        
         android:orientation="vertical" >
 
         <ImageView
@@ -54,10 +54,9 @@
             android:id="@+id/tvViewOfferDeadline"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            android:maxLines="1"
             android:textSize="15sp" />
 
         <TextView
@@ -67,7 +66,6 @@
             android:layout_marginBottom="25dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:maxLines="1"
             android:textColor="#8a8989"
             android:textSize="15sp" />
 
@@ -84,18 +82,9 @@
                 android:layout_marginBottom="20dp"
                 android:background="@android:color/darker_gray" />
 
-            <TextView
-                android:id="@+id/tvViewOfferNumlike"
-                android:layout_width="wrap_content"
-                android:layout_height="0dip"
-                android:layout_marginBottom="14dp"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:textSize="15sp" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
                 android:paddingLeft="10dp"
                 android:paddingRight="10dp" >
@@ -103,23 +92,21 @@
                 <ImageButton
                     android:id="@+id/btnViewOfferLike"
                     style="@style/ButtonColor"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
                     android:contentDescription="@string/oferta"
                     android:textSize="30sp" />
 
-                <ImageButton
-                    android:id="@+id/btnViewOfferFlag"
-                    style="@style/ButtonColor"
-                    android:layout_width="100dp"
-                    android:layout_height="50dp"
+                <TextView
+                    android:id="@+id/tvViewOfferNumlike"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="14dp"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:background="#8f0707"
-                    android:contentDescription="@string/oferta"
-                    android:src="@drawable/flag_icon" />
+                    android:textSize="15sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -134,30 +121,80 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:orientation="horizontal" >
+            android:baselineAligned="false" >
 
-            <TextView
-                android:id="@+id/tvViewOfferLocation"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="2" />
+                android:layout_weight="2"
+                android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/tvViewOfferDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                <TextView
+                    android:id="@+id/tvViewOfferLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp" />
+
+                <TextView
+                    android:id="@+id/tvViewOfferDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="3dp"
+                    android:gravity="bottom|right" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_marginRight="10dp"
-                android:layout_weight="1"
-                android:gravity="bottom|right" />
+                android:layout_weight="3"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/btnViewOfferGo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/btnmylocation" />
+
+                <ImageButton
+                    android:id="@+id/btnViewOfferShare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/btnshare" />
+            </LinearLayout>
         </LinearLayout>
 
         <View
             android:id="@+id/vViewOfferSeparator"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="0dp"
+            android:layout_marginBottom="10dp"
             android:background="@android:color/darker_gray" />
+
+        <ImageButton
+            android:id="@+id/btnViewOfferFlag"
+            style="@style/ButtonColor"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="#8f0707"
+            android:contentDescription="@string/oferta"
+            android:src="@drawable/flag_icon" />
+        <TextView
+        android:id="@+id/tvViewOfferReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:drawableStart="@drawable/flag_icon"
+        android:drawablePadding="5dp"
+        android:singleLine="true"
+        android:text=""/>
     </LinearLayout>
 
 </ScrollView>

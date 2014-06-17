@@ -19,7 +19,7 @@
         android:layout_height="140dp"
         android:onClick="imageClicked"
         android:scaleType="centerCrop"
-        android:src="@drawable/nophoto" />
+        android:src="@drawable/insertphoto" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -90,7 +90,7 @@
             android:layout_height="50dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="10dp"
-            android:text="Insertar" />
+            android:text="Insertar Comercio" />
 
     </LinearLayout>
 

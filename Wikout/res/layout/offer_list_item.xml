@@ -16,10 +16,21 @@
         android:layout_weight="0.95"
         android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_marginTop="2dp"
+        <TextView
+            android:id="@+id/tvOfferListOfferDescription"
+            style="@style/boldText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="1dp"
+            android:layout_weight="0.01"
+            android:text="Descripcion"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
             android:layout_weight="0.01" >
 
             <TextView
@@ -41,16 +52,6 @@
                 android:textSize="12sp" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvOfferListOfferDescription"
-            style="@style/boldText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginTop="1dp"
-            android:layout_weight="0.01"
-            android:text="Descripcion"
-            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,14 @@ public ArrayAdapterWithIcon(Context context, String[] items, Integer[] images) {
 public View getView(int position, View convertView, ViewGroup parent) {
     View view = super.getView(position, convertView, parent);
     TextView textView = (TextView) view.findViewById(android.R.id.text1);
+    textView.setBackgroundColor(Color.WHITE);
     textView.setCompoundDrawablesWithIntrinsicBounds(images.get(position), 0, 0, 0);
+    //textView.setMaxHeight(maxHeight);
     textView.setCompoundDrawablePadding(
-            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getContext().getResources().getDisplayMetrics()));
+            (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 12, getContext().getResources().getDisplayMetrics()));
     return view;
+    
+    
 }
 
 }

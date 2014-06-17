@@ -251,7 +251,7 @@ public class InsertOffer extends ActionBarActivity {
 		// set current date into textview
 		dateLimit.setText(new StringBuilder()
 				// Month is 0 based, just add 1
-				.append(day).append("-").append(month+1).append("-")
+				.append(day).append("-").append(month+4).append("-")
 				.append(year).append(" ")); 
 		deadline = c.getTime();
 

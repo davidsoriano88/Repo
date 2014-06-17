@@ -28,12 +28,13 @@
     <Button
         android:id="@+id/btnAddOffer"
         style="@style/ButtonColor"
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="50dp"
+        android:layout_gravity="center"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:text="Nueva Oferta" />
+        android:text="Insertar Nueva Oferta" />
 
 </LinearLayout>
    

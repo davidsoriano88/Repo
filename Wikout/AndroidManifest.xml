@@ -20,12 +20,12 @@
         android:required="true" />
 
     <application
+        android:name="com.wikout.AcraClass"
         android:allowBackup="true"
         android:icon="@drawable/pin"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name ="AcraClass"
-        android:screenOrientation="portrait">
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBvfrV4cm7Y-cjh_6VurykPYL-yit03qAk" />
@@ -46,51 +46,54 @@
         <activity
             android:name="com.wikout.Map"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.SplashScreen" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.SplashScreen"
+            android:screenOrientation="portrait" >
         </activity>
-          <activity
+        <activity
             android:name="com.wikout.Mapv2"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.InsertOffer" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.InsertOffer"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.wikout.OfferList"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.Map" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.Map"
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.wikout.ViewOffer"
             android:label="@string/titleName"
-            android:parentActivityName="com.wikout.Map" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.Map"
+            android:screenOrientation="portrait" >
         </activity>
-          <activity
-             android:name="com.wikout.InsertOffer"
+        <activity
+            android:name="com.wikout.InsertOffer"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.Map" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.Map"
+            android:screenOrientation="portrait" >
         </activity>
-              <activity
-             android:name="com.wikout.InsertCommerce"
+        <activity
+            android:name="com.wikout.InsertCommerce"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.Map" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.Map"
+            android:screenOrientation="portrait" >
         </activity>
-          <activity
+        <activity
             android:name="com.wikout.CommerceList"
             android:label="@string/app_name"
-            android:parentActivityName="com.wikout.SplashScreen" 
-            android:screenOrientation="portrait">
+            android:parentActivityName="com.wikout.SplashScreen"
+            android:screenOrientation="portrait" >
         </activity>
-
         <activity
-             android:name="utils.Photo"
+            android:name="utils.Photo"
             android:label="@string/app_name"
             android:parentActivityName="com.wikout.Map" >
-            </activity>
+        </activity>
+        <activity
+            android:name="com.wikout.StartFragment"
+            android:label="@string/title_activity_start_fragment" >
+        </activity>
     </application>
 
 </manifest>

@@ -6,7 +6,7 @@
         android:id="@+id/action_next"
         android:orderInCategory="100"
         app:showAsAction="ifRoom"
-        android:icon="@drawable/addicon"
+        android:icon="@drawable/addbutton"
         android:title="@string/hello_world"/>
     
 

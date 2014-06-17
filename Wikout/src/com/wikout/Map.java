@@ -7,6 +7,7 @@ import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import model.NavDrawerItem;
@@ -21,6 +22,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -40,10 +43,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -83,6 +88,7 @@ public class Map extends ActionBarActivity {
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle drawerToggle;
 	ListView lvDrawer;
+	protected int mDpi = 0;
 	
 	ArrayList<String> placeName = new ArrayList<String>(),
 			idcommerce = new ArrayList<String>(),
@@ -98,12 +104,15 @@ public class Map extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.fragment_main);
+		mDpi = getResources().getDisplayMetrics().densityDpi;
 		context = this;
 		util.projectData(context);
 		
 		initUI();
 		
 	}
+
+
 
 	public void initUI() {
 
@@ -138,7 +147,7 @@ public class Map extends ActionBarActivity {
 		//asignamos la funcionalidad drawerToggle:
 		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 				drawerLayout, /* DrawerLayout object */
-				R.drawable.ic_navigation_drawer3, /* nav drawer image to replace 'Up'caret*/
+				R.drawable.menubutton, /* nav drawer image to replace 'Up'caret*/
 				R.string.oferta, /* "open drawer" description for accessibility */
 				R.string.hello_world /* "close drawer" description for accessibility */
 				);
@@ -187,7 +196,7 @@ public class Map extends ActionBarActivity {
 							
 							etSearch.setText("");
 							InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-							imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);//****************************************************
+							imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
 							new MyData().execute();
 						}
 
@@ -418,7 +427,7 @@ public class Map extends ActionBarActivity {
 								.fromResource(R.drawable.pinplaces))
 						.snippet(result.get(i).getVicinity()));
 			}
-			// setSupportProgressBarIndeterminateVisibility(false);
+			 setSupportProgressBarIndeterminateVisibility(false);
 		}
 
 		@Override
@@ -517,24 +526,14 @@ public class Map extends ActionBarActivity {
 							case ("ocio"):
 								markB = map
 										.addMarker(new MarkerOptions()
-												.position(
-														new LatLng(
-																object.getLocation(
-																		"placelocation")
-																		.getLatitude(),
-																object.getLocation(
-																		"placelocation")
-																		.getLongitude()))
+												.position(new LatLng(
+																object.getLocation("placelocation").getLatitude(),
+																object.getLocation("placelocation").getLongitude()))
 												.draggable(false)
-												.title(object
-														.getString("placename"))
-												.icon(BitmapDescriptorFactory.fromBitmap(util
-														.writeTextOnDrawable(
-																context,
-																R.drawable.pinazul,
-																object.getNumber(
-																		"numbubble")
-																		.toString()))));
+												.title(object.getString("placename"))
+												.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul,object.getNumber("numbubble").toString()))));
+									
+						
 								/*
 								 * .icon(BitmapDescriptorFactory
 								 * .fromResource(R.drawable.pinazul)));
@@ -554,13 +553,7 @@ public class Map extends ActionBarActivity {
 												.draggable(false)
 												.title(object
 														.getString("placename"))
-												.icon(BitmapDescriptorFactory.fromBitmap(util
-														.writeTextOnDrawable(
-																context,
-																R.drawable.pinmorado,
-																object.getNumber(
-																		"numbubble")
-																		.toString()))));
+												.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado,object.getNumber("numbubble").toString()))));
 								break;
 							case ("compras"):
 								markB = map
@@ -576,13 +569,7 @@ public class Map extends ActionBarActivity {
 												.draggable(false)
 												.title(object
 														.getString("placename"))
-												.icon(BitmapDescriptorFactory.fromBitmap(util
-														.writeTextOnDrawable(
-																context,
-																R.drawable.pinrosa,
-																object.getNumber(
-																		"numbubble")
-																		.toString()))));
+												.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa,object.getNumber("numbubble").toString()))));
 								break;
 							case ("otros"):
 								markB = map
@@ -598,13 +585,7 @@ public class Map extends ActionBarActivity {
 												.draggable(false)
 												.title(object
 														.getString("placename"))
-												.icon(BitmapDescriptorFactory.fromBitmap(util
-														.writeTextOnDrawable(
-																context,
-																R.drawable.pinverde,
-																object.getNumber(
-																		"numbubble")
-																		.toString()))));
+												.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde,object.getNumber("numbubble").toString()))));
 								break;
 							default:
 								break;
@@ -650,7 +631,7 @@ public class Map extends ActionBarActivity {
 							});
 
 						}
-						setSupportProgressBarIndeterminateVisibility(false);
+						//setSupportProgressBarIndeterminateVisibility(false);
 					}
 				});
 
@@ -757,14 +738,7 @@ public class Map extends ActionBarActivity {
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
-																				.writeTextOnDrawable(
-																						context,
-																						R.drawable.pinazul,
-																						commerceMark
-																								.getNumber(
-																										"numbubble")
-																								.toString()))));
+																		.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul,commerceMark.getNumber("numbubble").toString()))));
 												break;
 											case ("servicios"):
 												markB = map
@@ -784,14 +758,7 @@ public class Map extends ActionBarActivity {
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
-																				.writeTextOnDrawable(
-																						context,
-																						R.drawable.pinmorado,
-																						commerceMark
-																								.getNumber(
-																										"numbubble")
-																								.toString()))));
+																		.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado,commerceMark.getNumber("numbubble").toString()))));
 												break;
 											case ("compras"):
 												markB = map
@@ -811,14 +778,7 @@ public class Map extends ActionBarActivity {
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
-																				.writeTextOnDrawable(
-																						context,
-																						R.drawable.pinrosa,
-																						commerceMark
-																								.getNumber(
-																										"numbubble")
-																								.toString()))));
+																		.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa,commerceMark.getNumber("numbubble").toString()))));
 												break;
 											case ("otros"):
 												markB = map
@@ -838,14 +798,7 @@ public class Map extends ActionBarActivity {
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
-																				.writeTextOnDrawable(
-																						context,
-																						R.drawable.pinverde,
-																						commerceMark
-																								.getNumber(
-																										"numbubble")
-																								.toString()))));
+																		.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde,commerceMark.getNumber("numbubble").toString()))));
 												break;
 											default:
 												break;
@@ -963,13 +916,7 @@ public class Map extends ActionBarActivity {
 													.draggable(false)
 													.title(object
 															.getString("placename"))
-													.icon(BitmapDescriptorFactory.fromBitmap(util
-															.writeTextOnDrawable(
-																	context,
-																	R.drawable.pinazul,
-																	object.getNumber(
-																			"numbubble")
-																			.toString()))));
+													.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinazul,object.getNumber("numbubble").toString()))));
 									break;
 								case ("servicios"):
 									markB = map
@@ -985,13 +932,7 @@ public class Map extends ActionBarActivity {
 													.draggable(false)
 													.title(object
 															.getString("placename"))
-													.icon(BitmapDescriptorFactory.fromBitmap(util
-															.writeTextOnDrawable(
-																	context,
-																	R.drawable.pinmorado,
-																	object.getNumber(
-																			"numbubble")
-																			.toString()))));
+													.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinmorado,object.getNumber("numbubble").toString()))));
 									break;
 								case ("compras"):
 									markB = map
@@ -1007,13 +948,7 @@ public class Map extends ActionBarActivity {
 													.draggable(false)
 													.title(object
 															.getString("placename"))
-													.icon(BitmapDescriptorFactory.fromBitmap(util
-															.writeTextOnDrawable(
-																	context,
-																	R.drawable.pinrosa,
-																	object.getNumber(
-																			"numbubble")
-																			.toString()))));
+													.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinrosa,object.getNumber("numbubble").toString()))));
 									break;
 								case ("otros"):
 									markB = map
@@ -1029,13 +964,7 @@ public class Map extends ActionBarActivity {
 													.draggable(false)
 													.title(object
 															.getString("placename"))
-													.icon(BitmapDescriptorFactory.fromBitmap(util
-															.writeTextOnDrawable(
-																	context,
-																	R.drawable.pinverde,
-																	object.getNumber(
-																			"numbubble")
-																			.toString()))));
+													.icon(BitmapDescriptorFactory.fromBitmap(util.writeTextOnDrawable(context,R.drawable.pinverde,object.getNumber("numbubble").toString()))));
 									break;
 								default:
 									break;
@@ -1078,10 +1007,10 @@ public class Map extends ActionBarActivity {
 											}
 										}
 									}
-								});
+								});setSupportProgressBarIndeterminateVisibility(false);
 							}
 						}
-						setSupportProgressBarIndeterminateVisibility(false);
+						
 					}
 
 				});
@@ -1128,4 +1057,6 @@ public class Map extends ActionBarActivity {
 		super.onRestart();
 		new MyData().execute();
 	}
+	
 }
+
