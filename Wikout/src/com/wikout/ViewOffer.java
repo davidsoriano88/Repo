@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,14 +25,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.URLSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -45,13 +53,13 @@ import android.widget.TextView;
 
 public class ViewOffer extends ActionBarActivity {
 
-	TextView tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
+	TextView tvReport,tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
 	static TextView tvDistance;
-	ImageButton btnFlag,btnLike;
 	ImageView ivPhoto;
 	String idofferparameter = "",idcommerceparameter = "";
 	Context context;
 	Util util = new Util();
+	ImageButton btnRoute;
 	
 	long startui;
 	
@@ -59,6 +67,9 @@ public class ViewOffer extends ActionBarActivity {
 	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
 	int numbubble = 0;
+	protected boolean enableOk=true;
+	double latitude, longitude;
+	double commercelat, commercelon;
 	
 	
 	//Radio de la tierra (en metros)
@@ -73,6 +84,7 @@ public class ViewOffer extends ActionBarActivity {
 		setContentView(R.layout.view_offer);
 		context=this;
 		util.projectData(context);
+		
 		//util.showProgressDialog(context, 1900);
 		initUi();
 		initQueries();
@@ -84,6 +96,8 @@ public class ViewOffer extends ActionBarActivity {
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
+		latitude = bundle.getDouble("latitude");
+		longitude = bundle.getDouble("longitude");
 		new LoadDataTask().execute();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(bundle.getString("placename"));
@@ -99,18 +113,35 @@ public class ViewOffer extends ActionBarActivity {
 				if(offer.getNumber("numlike").intValue()==0){
 					//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
 					tvNumLike.setVisibility(View.GONE);
+					
 				}else{tvNumLike.setVisibility(0);
 					if(offer.getNumber("numlike").intValue()==1){
-					tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
+					
+					tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" persona");
 				}else{
-					tvNumLike.setText(offer.getNumber("numlike").toString()+" usuarios han dado a Me Gusta");
+
+					tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" personas");
 					}
 				}
 				// Paso las fechas a los edittexts
 				DateFormat df4 = DateFormat.getDateInstance(DateFormat.FULL);
 				//SimpleDateFormat datef = new SimpleDateFormat("EEEE, d de MM del yyyy");
 				String deadline = df4.format(offer.getDay("deadline").getTime());
-				tvDeadline.setText("Válido hasta: "+deadline);
+				int duration = fechasdiferenciaendias(offer.getDay("deadline").getTime());
+				
+				if (duration < 10) {
+					tvDeadline.setTextColor(Color.RED);
+					tvDeadline.setText("Válido hasta: " + duration + " días");
+				} else if (duration == 1) {
+					tvDeadline.setTextColor(Color.RED);
+					tvDeadline.setText("Válido hasta mañana");
+				} else if (duration == 0) {
+					tvDeadline.setTextColor(Color.RED);
+					tvDeadline.setText("Válido hasta hoy");
+				} else {
+					tvDeadline.setText("Válido hasta: " + duration + " días");
+				}
+				
 				String creation = df4.format(offer.getDate("offercreationdate"));
 				tvCreationDate.setText("Creado el: "+creation);
 				// Tengo que leer el objeto commerce para poder acceder a sus datos
@@ -137,7 +168,7 @@ public class ViewOffer extends ActionBarActivity {
 						String city = addresses.get(0).getAddressLine(1);
 						String country = addresses.get(0).getAddressLine(2);
 						util.log("pancratio: "+address + city + country);
-				tvLocation.setText(address+"\n"+city+", "+country);
+				tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
 				
 						//***********************************************************
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
@@ -146,6 +177,8 @@ public class ViewOffer extends ActionBarActivity {
 						double latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefers.getString("longpos", "null");
 						double longitude = Double.parseDouble(myLongitude);
+						commercelat=commerce.getLocation("placelocation").getLatitude();
+						commercelon=commerce.getLocation("placelocation").getLongitude();
 						
 						//Mando latitud y long del usuario y del comercio para calcular la distancia
 						haversine(commerce.getLocation("placelocation").getLatitude(),
@@ -153,11 +186,36 @@ public class ViewOffer extends ActionBarActivity {
 								latitude, 
 								longitude);
 						//Habilito el boton para que el usuario pueda hacer like.
-					btnLike.setEnabled(true);
+//					btnLike.setEnabled(true);
 						}});
 				;}
 		});
 
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu3, menu);
+		if (enableOk == true) {
+			menu.findItem(R.id.actionlike).setEnabled(true).setVisible(true);
+			menu.findItem(R.id.actionunlike).setEnabled(false).setVisible(false);
+		} else {
+			menu.findItem(R.id.actionlike).setEnabled(false).setVisible(false);
+			menu.findItem(R.id.actionunlike).setEnabled(true).setVisible(true);
+
+		}
+		return super.onCreateOptionsMenu(menu);
+	}
+	
+
+
+	
+	@Override
+	public void supportInvalidateOptionsMenu() {
+		
+		super.supportInvalidateOptionsMenu();
 	}
 
 	private void getPhoto(String idcommerce) {
@@ -215,27 +273,21 @@ public class ViewOffer extends ActionBarActivity {
 		tvLocation = (TextView) findViewById(R.id.tvViewOfferLocation);
 		tvNumLike = (TextView) findViewById(R.id.tvViewOfferNumlike);
 		tvDistance = (TextView) findViewById(R.id.tvViewOfferDistance);
-		// BOTONES
-		btnLike = (ImageButton) findViewById(R.id.btnViewOfferLike);
-		btnFlag = (ImageButton) findViewById(R.id.btnViewOfferFlag);
-		// IMAGEVIEW
-		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
+		btnRoute = (ImageButton)findViewById(R.id.btnViewOfferGo);
+		tvReport = (TextView) findViewById(R.id.tvViewOfferReport);
+		Drawable img;
+		Resources res = getResources();
+		img = res.getDrawable(R.drawable.flag_icon);
+		//You need to setBounds before setCompoundDrawables , or it couldn't display
+		img.setBounds(0, 0, 20, 20);
+		tvReport.setCompoundDrawables(img, null, null, null); 
+		tvReport.setText(getResources().getString(R.string.report));
+		makeTextViewHyperlink(tvReport);
 		
-		
-		btnLike.setEnabled(false);
-		btnLike.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				//insertLike(idofferparameter);
-				new RefreshDataTask().execute();
-			}
-		});
-		btnFlag.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				final CharSequence[] items = { "Referencia Incorrecta",
+		tvReport.setOnClickListener(new OnClickListener() {
+		  @Override
+		  public void onClick(View v) {
+			  final CharSequence[] items = { "Referencia Incorrecta",
 						"Contenido Ofensivo", "Cancelar" };
 
 				AlertDialog.Builder builder = new AlertDialog.Builder(
@@ -259,14 +311,66 @@ public class ViewOffer extends ActionBarActivity {
 				});
 				AlertDialog alert = builder.create();
 				alert.show();
+		  }
+		}); 
+		// BOTONES
+		btnRoute.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				
+					AlertDialog.Builder dialogLocation = new AlertDialog.Builder(context);
+					dialogLocation.setTitle("¿Cómo va?");
+					dialogLocation.setMessage("Elija su modo de desplazamiento:");
+					dialogLocation.setCancelable(true);
+					dialogLocation.setPositiveButton("A pie",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialogo1, int id) {
+									
+									String url = "http://maps.google.com/maps?saddr="+latitude+","+longitude+"&daddr="+commercelat+","+commercelon+"&dirflg=w";
+									Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url)); 
+									intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+									startActivity(intent); 
+									
+								}
+
+							});
+					dialogLocation.setNegativeButton("En coche",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialogo1, int id) {
+									String url = "http://maps.google.com/maps?saddr="+latitude+","+longitude+"&daddr="+commercelat+","+commercelon+"&dirflg=d";
+									Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url)); 
+									intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+									startActivity(intent); 
+									
+								}
+							});
+					dialogLocation.show();
+
 			}
 		});
+		// IMAGEVIEW
+		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
+		
+		
+		
+		
+	}
+
+	private void makeTextViewHyperlink(TextView tvReport) {
+
+		  SpannableStringBuilder ssb = new SpannableStringBuilder();
+		  ssb.append(tvReport.getText());
+		  ssb.setSpan(new URLSpan("#"), 0, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+		  tvReport.setText(ssb, TextView.BufferType.SPANNABLE);
+		
 	}
 
 	// METODO PARA INSERTAR LIKE
 		private void insertLike(final String idoffer, final String idcommerce) {
 			// CREO OBJETOS
-			btnLike.setEnabled(false);
+//btnLike.setEnabled(false);
 			
 			//final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
 			final BackbeamObject like = new BackbeamObject("like");
@@ -285,8 +389,9 @@ public class ViewOffer extends ActionBarActivity {
 						numbubble = commerce.getNumber("numbubble").intValue();
 						commerce.setNumber("numbubble", numbubble+1);
 						System.out.println("1");
-						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.unlike_icon));
 						lastlike=false;
+						enableOk=false;
+						supportInvalidateOptionsMenu();
 						
 						
 					} else {
@@ -294,8 +399,9 @@ public class ViewOffer extends ActionBarActivity {
 						numbubble = commerce.getNumber("numbubble").intValue();
 						commerce.setNumber("numbubble", numbubble-1);
 						System.out.println("0");
-						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
 						lastlike=true;
+						enableOk=true;
+						supportInvalidateOptionsMenu();
 						
 					}
 							commerce.save(new ObjectCallback() {
@@ -349,13 +455,13 @@ public class ViewOffer extends ActionBarActivity {
 																	tvNumLike.setVisibility(View.GONE);
 																}else{ tvNumLike.setVisibility(0);
 																	if(offer.getNumber("numlike").intValue()==1){
-																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuario ha dado a Me Gusta");
+																	tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart)+" "+offer.getNumber("numlike").toString()+" persona");
 																}else{
-																	tvNumLike.setText(offer.getNumber("numlike").toString()+" usuarios han dado a Me Gusta");
+																	tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" personas");
 																	}
 																}
 																
-																	btnLike.setEnabled(true);
+//btnLike.setEnabled(true);
 																	setSupportProgressBarIndeterminateVisibility(false);
 																
 															}
@@ -446,9 +552,10 @@ public class ViewOffer extends ActionBarActivity {
 				if (totalCount == 0) {
 					// NO HA HECHO CLIC ANTES
 					//btnLike.setText(R.string.like);
-					btnLike.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
 					System.out.println("no ha hecho clic antes");
 					lastlike = true;
+					enableOk=true;
+					supportInvalidateOptionsMenu();
 					
 					System.out.println("Estado del boolean: " + lastlike);
 					
@@ -462,24 +569,26 @@ public class ViewOffer extends ActionBarActivity {
 					if (status.equals("1")) {
 						// Deshabilitar boton
 						//btnLike.setText(R.string.dislike);
-						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.unlike_icon));
 						System.out.println("habilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = false;
+						enableOk=false;
+						supportInvalidateOptionsMenu();
 					} else {
 						// Habilitar boton
 						//btnLike.setText(R.string.like);
 
-						btnLike.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
 						System.out.println("deshabilita boton");
 						System.out.println("Estado del boolean: " + lastlike);
 						lastlike = true;
+						enableOk=true;
+						supportInvalidateOptionsMenu();
 					}
 				}
 			}
 		});
 
-		btnLike.setEnabled(true);
+//btnLike.setEnabled(true);
 		
 	}
 
@@ -521,22 +630,28 @@ public class ViewOffer extends ActionBarActivity {
         switch (item.getItemId()) {
        /* case R.id.refresh:
 			new LoadDataTask().execute();
-			return true;
-        	case android.R.id.home: 
+			return true;*/
+			
+        case R.id.actionlike:
+        	new RefreshDataTask().execute();
+        	return true;
+        	
+        case R.id.actionunlike:
+        	new RefreshDataTask().execute();
+        	return true;
+        	
+        case android.R.id.home: 
 			finish();
-        		return true;*/
+        		return true;
+        case R.id.actionshare:
+        	shareIntent();
+        	
         default:
             return super.onOptionsItemSelected(item);
         }
     }
 	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu items for use in the action bar
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu3, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
+	
 	
 	//Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
@@ -593,5 +708,33 @@ public class ViewOffer extends ActionBarActivity {
 			return true;
 		}
 	}
+
+	public static int fechasdiferenciaendias(Date fechafinal) {
+
+		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
+
+		String fechafinalstring = df.format(fechafinal);
+		try {
+			fechafinal = df.parse(fechafinalstring);
+		} catch (ParseException ex) {
+		}
+		Date dt = new Date();
+		long fechainicialms = dt.getTime();
+
+		long fechafinalms = fechafinal.getTime();
+		long diferencia = fechafinalms - fechainicialms;
+		double dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+		return ((int) dias);
+	}
 	
+	
+	public void shareIntent() {
+		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+		sharingIntent.setType("text/plain");
+		String shareBody = "Here is the share content body";
+		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+				"Subject Here");
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+		startActivity(Intent.createChooser(sharingIntent, "Share via"));
+	}
 }

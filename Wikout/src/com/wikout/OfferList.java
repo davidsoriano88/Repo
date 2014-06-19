@@ -65,6 +65,7 @@ public class OfferList extends ActionBarActivity {
 	private Button btnAdd;
 	LazyAdapter adapter;
 	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer;
+	double latitude, longitude;
 	// XML node keys
 
 
@@ -233,7 +234,8 @@ public class OfferList extends ActionBarActivity {
 		// queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));
 		idcommerce = bundle.getString("id");
-		
+		latitude = bundle.getDouble("latitude");
+		longitude = bundle.getDouble("longitude");
 		// getPhoto(bundle.getString("id"));
 		
 
@@ -276,6 +278,8 @@ public class OfferList extends ActionBarActivity {
 				intent.putExtra("idoffer", dataid.get(pos));
 				intent.putExtra("idcommerce", idcommerce);
 				intent.putExtra("placename", placeName);
+				intent.putExtra("latitude", latitude);
+				intent.putExtra("longitude", longitude);
 				startActivity(intent);
 
 			}

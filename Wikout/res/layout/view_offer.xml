@@ -63,58 +63,26 @@
             android:id="@+id/tvViewOfferCreationDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:textColor="#8a8989"
             android:textSize="15sp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tvViewOfferNumlike"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:orientation="vertical" >
-
-            <View
-                android:id="@+id/View01"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="20dp"
-                android:background="@android:color/darker_gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp" >
-
-                <ImageButton
-                    android:id="@+id/btnViewOfferLike"
-                    style="@style/ButtonColor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/oferta"
-                    android:textSize="30sp" />
-
-                <TextView
-                    android:id="@+id/tvViewOfferNumlike"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_weight="1"
-                    android:textSize="15sp" />
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:textSize="15sp" />
 
         <View
             android:id="@+id/vViewOfferSeparator2"
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="17dp"
             android:background="@android:color/darker_gray" />
 
         <LinearLayout
@@ -124,49 +92,37 @@
             android:baselineAligned="false" >
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:orientation="vertical" >
 
                 <TextView
                     android:id="@+id/tvViewOfferLocation"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15sp"
                     android:layout_marginLeft="10dp" />
 
                 <TextView
                     android:id="@+id/tvViewOfferDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="15sp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="3dp"
                     android:gravity="bottom|right" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+            <ImageButton
+                android:id="@+id/btnViewOfferGo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_weight="3"
-                android:orientation="horizontal" >
+                android:scaleType="fitXY"
+                android:src="@drawable/btnmylocation" />
 
-                <ImageButton
-                    android:id="@+id/btnViewOfferGo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/btnmylocation" />
-
-                <ImageButton
-                    android:id="@+id/btnViewOfferShare"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/btnshare" />
-            </LinearLayout>
         </LinearLayout>
 
         <View
@@ -176,25 +132,17 @@
             android:layout_marginBottom="10dp"
             android:background="@android:color/darker_gray" />
 
-        <ImageButton
-            android:id="@+id/btnViewOfferFlag"
-            style="@style/ButtonColor"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:background="#8f0707"
-            android:contentDescription="@string/oferta"
-            android:src="@drawable/flag_icon" />
         <TextView
-        android:id="@+id/tvViewOfferReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:drawableStart="@drawable/flag_icon"
-        android:drawablePadding="5dp"
-        android:singleLine="true"
-        android:text=""/>
+            android:id="@+id/tvViewOfferReport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:drawablePadding="5dp"
+            android:gravity="bottom"
+            android:singleLine="true"
+            android:text="@string/report"
+            android:textSize="11sp" />
+
     </LinearLayout>
 
 </ScrollView>

@@ -9,6 +9,7 @@
     <string name="galeria">Galería</string>
     <string name="categorias_prompt">Categorias</string>
     <string name="like"> ♡ </string>
+    <string name="heart">♥: </string>
     <string name="dislike">-1</string>
     <string name="toast_crash">Fallo de la aplicacion, lo sentimos.</string>
     <string name="report_prompt">Report</string>
@@ -17,6 +18,7 @@
     <string name="buscar">Buscar</string>
     <string name="description">description</string>
     <string name="ok">OK!</string>
+    <string name="report">Denunciar oferta</string>
 
     <string-array name="categorias">
         <item>ocio</item>

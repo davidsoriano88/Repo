@@ -624,6 +624,8 @@ public class Map extends ActionBarActivity {
 													+ ","
 													+ marker.getTitle());
 											info.putExtra("id", finalId);
+											info.putExtra("latitude", location.getLatitude());
+											info.putExtra("longitude", location.getLongitude());
 											startActivity(info);
 										}
 									}

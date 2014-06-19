@@ -3,8 +3,12 @@ package utils;
 import java.util.Arrays;
 import java.util.List;
 
+import com.wikout.R;
+
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +32,19 @@ public ArrayAdapterWithIcon(Context context, String[] items, Integer[] images) {
 @Override
 public View getView(int position, View convertView, ViewGroup parent) {
     View view = super.getView(position, convertView, parent);
-    TextView textView = (TextView) view.findViewById(android.R.id.text1);
+	Drawable img;
+	Resources res = parent.getResources();
+	img = res.getDrawable(images.get(position));
+	//You need to setBounds before setCompoundDrawables , or it couldn't display
+	img.setBounds(0, 0, 37, 40);
+	TextView textView = (TextView) view.findViewById(android.R.id.text1);
     textView.setBackgroundColor(Color.WHITE);
-    textView.setCompoundDrawablesWithIntrinsicBounds(images.get(position), 0, 0, 0);
+    textView.setCompoundDrawables(img, null, null, null); 
+   // textView.setCompoundDrawablesWithIntrinsicBounds(images.get(position), 0, 0, 0);
     //textView.setMaxHeight(maxHeight);
     textView.setCompoundDrawablePadding(
             (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, 12, getContext().getResources().getDisplayMetrics()));
     return view;
-    
-    
 }
 
 }
