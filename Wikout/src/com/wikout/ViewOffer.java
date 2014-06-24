@@ -128,18 +128,21 @@ public class ViewOffer extends ActionBarActivity {
 				//SimpleDateFormat datef = new SimpleDateFormat("EEEE, d de MM del yyyy");
 				String deadline = df4.format(offer.getDay("deadline").getTime());
 				int duration = fechasdiferenciaendias(offer.getDay("deadline").getTime());
-				
+				System.out.println("Duration: "+duration);
 				if (duration < 10) {
 					tvDeadline.setTextColor(Color.RED);
-					tvDeadline.setText("Válido hasta: " + duration + " días");
-				} else if (duration == 1) {
-					tvDeadline.setTextColor(Color.RED);
-					tvDeadline.setText("Válido hasta mañana");
-				} else if (duration == 0) {
-					tvDeadline.setTextColor(Color.RED);
-					tvDeadline.setText("Válido hasta hoy");
+					
+					if (duration == 1) {
+						tvDeadline.setText("Válido hasta mañana");
+					}
+					if (duration == 0) {
+						tvDeadline.setText("Válido hasta hoy");
+					}else{
+						tvDeadline.setText("Válido hasta dentro de: " + duration
+								+ " días");
+					}
 				} else {
-					tvDeadline.setText("Válido hasta: " + duration + " días");
+					tvDeadline.setText("Válido hasta dentro de: " + duration + " días");
 				}
 				
 				String creation = df4.format(offer.getDate("offercreationdate"));

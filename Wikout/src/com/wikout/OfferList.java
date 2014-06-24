@@ -1,9 +1,11 @@
 package com.wikout;
 
+import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.CollectionConstraint;
 import io.backbeam.FetchCallback;
 import io.backbeam.JoinResult;
+import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.io.IOException;
@@ -16,6 +18,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.TreeMap;
 
 import utils.ImageLoader;
@@ -58,7 +61,7 @@ public class OfferList extends ActionBarActivity {
 	Context context = this;
 	Util util = new Util();
 	Bitmap bmPhoto = null;
-	ImageView ivPhoto, ivOfferPhoto;
+	ImageView ivPhoto;
 	//static TextView tvLocation;
 	String idcommerce = "", placeName;
 	ListView list;
@@ -76,6 +79,8 @@ public class OfferList extends ActionBarActivity {
 	static final String KEY_DESCRIPTION = "description";
 	static final String KEY_LIKES = "likes";
 	static final String KEY_DEADLINE = "deadline";
+
+	private Calendar gtoday;
 
 	public class LazyAdapter extends BaseAdapter {
 
@@ -113,21 +118,20 @@ public class OfferList extends ActionBarActivity {
 					.findViewById(R.id.tvOfferListOfferNumlike);
 			tvDeadline = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDeadline);
-			ivOfferPhoto = (ImageView) convertView
-					.findViewById(R.id.ivOfferListOfferPhoto);
+			
 
 			HashMap<String, String> song = new HashMap<String, String>();
 			song = data.get(position);
 
 			// Setting all values in listview
-			if (song.get(KEY_DESCRIPTION).length() > 52) {
-				tvOffer.setText(song.get(KEY_DESCRIPTION).substring(0, 49)
+			if (song.get(KEY_DESCRIPTION).length() > 68) {
+				tvOffer.setText(song.get(KEY_DESCRIPTION).substring(0, 60)
 						+ "...");
 			} else {
 				tvOffer.setText(song.get(KEY_DESCRIPTION));
 			}
 			
-			tvLike.setText(song.get(KEY_LIKES)+" "+getResources().getString(R.string.like));
+			tvLike.setText(song.get(KEY_LIKES)+" "+getResources().getString(R.string.heartofferlist));
 			tvDeadline.setText("Válido hasta: "+song.get(KEY_DEADLINE));
 
 			/*if (song.get(KEY_DEADLINE) != null) {
@@ -148,8 +152,7 @@ public class OfferList extends ActionBarActivity {
 				}
 			} else {*/
 
-				ivOfferPhoto.setImageDrawable(getResources().getDrawable(
-						R.drawable.nophoto));
+				
 
 			System.out.println("items cargandose");
 			setSupportProgressBarIndeterminateVisibility(false);
@@ -218,6 +221,10 @@ public class OfferList extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.offer_list);
+		System.out.println("El getDisplayLanguage (español) instalado es: " +Locale.getDefault().getDisplayLanguage()+"\n"+
+				"El getcountry (ES) instalado es: " +Locale.getDefault().getCountry()+"\n"+
+				"El getLanguage (es) instalado es: " +Locale.getDefault().getLanguage()+"\n"+
+				"El getISO3Language (spa) instalado es: " +Locale.getDefault().getISO3Language());
 		util.projectData(context);
 
 		initUi();
@@ -296,18 +303,39 @@ public class OfferList extends ActionBarActivity {
 
 	public void queryOffer(String idcommerce) {
 		final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-
+		final Date today = actualDate();
+		
 		CollectionConstraint collection = new CollectionConstraint();
 		collection.addIdentifier(idcommerce);
-
-		Query query = new Query("commerce");
+		
+		
+		Backbeam.select("commerce").setQuery("where this in ? join last 100 offer", collection).
+		/*Query query = new Query("commerce");
 		query.setQuery("where this in ? join last 100 offer", collection);
-		query.fetch(100, 0, new FetchCallback() {
+		query.*/
+		fetch(100, 0, new FetchCallback() {
 
 			@Override
 			public void success(List<BackbeamObject> objects, int totalCount,
 					boolean fromCache) {
-
+				
+				
+				/*for(BackbeamObject offer:objects){
+					
+					JoinResult join = offer.getJoinResult("offer");
+					int count = join.getCount();
+					System.out.println(offer.getString("description"));
+					System.out.println(offer.getDay("deadline"));
+					System.out.println(offer.getNumber("numlike"));
+					System.out.println("----------------");
+					
+				}*/
+				
+				
+				System.out.println("total objects   " +objects.size());
+				if (objects.size()==0){
+					System.out.println("no pilla el array");
+				}
 				BackbeamObject commerce = objects.get(0);
 				JoinResult join = commerce.getJoinResult("offer");
 				placeName = commerce.getString("placename");
@@ -330,47 +358,13 @@ public class OfferList extends ActionBarActivity {
 					tvNoOffer.setVisibility(View.GONE);
 					songsList.clear();
 					for (BackbeamObject offer : offers) {
+						if(offer.getDay("deadline").getTimeInMillis()>=today.getTime()){
 						dataid.add(offer.getId());
 						// Anadir al set Adapter
 						// creating new HashMap
 						final HashMap<String, String> map = new HashMap<String, String>();
 
-						// CONSULTA PARA LA FOTO
-
-						/*CollectionConstraint collection = new CollectionConstraint();
-						collection.addIdentifier(offer.getId());
-
-						Query query = new Query("offer");
-						query.setQuery("where this in ? join file", collection);
-						query.fetch(100, 0, new FetchCallback() {
-							@Override
-							public void success(List<BackbeamObject> companies,
-									int totalCount, boolean fromCache) {
-								if (totalCount == 0) {
-									System.out.println("totalcount0");
-									map.put(KEY_THUMB_URL, "null");
-								} else {
-
-									for (BackbeamObject company : companies) {
-
-										BackbeamObject fileObject = company
-												.getObject("file");
-										if (fileObject != null) {
-											TreeMap<String, Object> options = new TreeMap<String, Object>();
-											options.put("width", 25);
-											options.put("height", 25);
-											String logoURL = fileObject
-													.composeFileURL(options);
-											System.out.println(logoURL);
-											map.put(KEY_THUMB_URL, logoURL);
-
-										} else {
-											map.put(KEY_THUMB_URL, "null");
-										}
-									}
-								}
-							}
-						});*/
+						
 						
 						SimpleDateFormat format1 = new SimpleDateFormat(
 								"dd-MM-yyyy");
@@ -385,12 +379,12 @@ public class OfferList extends ActionBarActivity {
 
 						// adding HashList to ArrayList
 						songsList.add(map);
-
+						}
 						
 					}
 				}
-			}
 
+			}
 		});
 
 		// Getting adapter by passing data ArrayList
@@ -455,7 +449,7 @@ public class OfferList extends ActionBarActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		//new LoadDataTask().execute();
+		new LoadDataTask().execute();
 	}
 
 	@Override
@@ -465,7 +459,45 @@ public class OfferList extends ActionBarActivity {
 		//inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
+	
 
 }
 /*
-*/
+ // CONSULTA PARA LA FOTO
+
+						/*CollectionConstraint collection = new CollectionConstraint();
+						collection.addIdentifier(offer.getId());
+
+						Query query = new Query("offer");
+						query.setQuery("where this in ? join file", collection);
+						query.fetch(100, 0, new FetchCallback() {
+							@Override
+							public void success(List<BackbeamObject> companies,
+									int totalCount, boolean fromCache) {
+								if (totalCount == 0) {
+									System.out.println("totalcount0");
+									map.put(KEY_THUMB_URL, "null");
+								} else {
+
+									for (BackbeamObject company : companies) {
+
+										BackbeamObject fileObject = company
+												.getObject("file");
+										if (fileObject != null) {
+											TreeMap<String, Object> options = new TreeMap<String, Object>();
+											options.put("width", 25);
+											options.put("height", 25);
+											String logoURL = fileObject
+													.composeFileURL(options);
+											System.out.println(logoURL);
+											map.put(KEY_THUMB_URL, logoURL);
+
+										} else {
+											map.put(KEY_THUMB_URL, "null");
+										}
+									}
+								}
+							}
+						});*/ 
+ 
+ 

@@ -94,6 +94,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="left"
                 android:orientation="vertical" >
 
                 <TextView
@@ -113,15 +114,25 @@
                     android:gravity="bottom|right" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btnViewOfferGo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_gravity="right"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/btnmylocation" />
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageButton
+                    android:id="@+id/btnViewOfferGo"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/btnmylocation" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

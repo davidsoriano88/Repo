@@ -167,7 +167,7 @@ public class InsertOffer extends ActionBarActivity {
 							}else{
 								setSupportProgressBarIndeterminateVisibility(true);
 								util.log("no hay foto");
-								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
+								insertNewOffer(deadline, idcommerce, idObjectPhoto);
 								
 							}
 						
@@ -245,16 +245,17 @@ public class InsertOffer extends ActionBarActivity {
 
 		final Calendar c = Calendar.getInstance();
 		year = c.get(Calendar.YEAR);
-		month = c.get(Calendar.MONTH) +3;
+		month = c.get(Calendar.MONTH)+3;
 		day = c.get(Calendar.DAY_OF_MONTH);
 
 		// set current date into textview
 		dateLimit.setText(new StringBuilder()
 				// Month is 0 based, just add 1
-				.append(day).append("-").append(month+4).append("-")
+				.append(day).append("-").append(month+1).append("-")
 				.append(year).append(" ")); 
+		
+		c.set(year, month, day);
 		deadline = c.getTime();
-
 	}
 
 	private void addListenerOnButton() {
