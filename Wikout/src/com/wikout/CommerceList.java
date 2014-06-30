@@ -4,16 +4,15 @@ import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
 import io.backbeam.Query;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import model.FontUtils;
 import utils.Util;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
@@ -40,6 +39,7 @@ final Util util = new Util();
 	    supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	    setContentView(R.layout.commerce_list);
 	    context= this;
+	    FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
 	    util.projectData(context);
 	    fa=this;
 	    

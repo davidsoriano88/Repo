@@ -1,7 +1,8 @@
 package com.wikout;
 
+import model.FontUtils;
 import utils.Util;
-import android.content.ClipData.Item;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -56,6 +57,7 @@ public class Mapv2 extends ActionBarActivity {
 	 supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	 setContentView(R.layout.fragment_mapv2);
 	 context=this;
+	 FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
 	 fa = this;
      util.projectData(context);
      initUI();  

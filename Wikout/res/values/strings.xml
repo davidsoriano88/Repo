@@ -43,6 +43,8 @@
 
     <string name="min_version">0</string>
     <string name="required_update">false</string>
-    <string name="title_activity_start_fragment">StartFragment</string>
+   
+    <color name="backgroundlayout">#DAD6D2</color>
+    <color name="backgroundrelative">#FFFFFF</color>
 
 </resources>

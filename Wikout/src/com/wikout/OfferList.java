@@ -5,11 +5,9 @@ import io.backbeam.BackbeamObject;
 import io.backbeam.CollectionConstraint;
 import io.backbeam.FetchCallback;
 import io.backbeam.JoinResult;
-import io.backbeam.ObjectCallback;
 import io.backbeam.Query;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
+import model.FontUtils;
 import utils.ImageLoader;
 import utils.Util;
 import android.app.Activity;
@@ -30,16 +29,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -69,6 +67,7 @@ public class OfferList extends ActionBarActivity {
 	LazyAdapter adapter;
 	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer;
 	double latitude, longitude;
+	Activity act = this;
 	// XML node keys
 
 
@@ -79,8 +78,6 @@ public class OfferList extends ActionBarActivity {
 	static final String KEY_DESCRIPTION = "description";
 	static final String KEY_LIKES = "likes";
 	static final String KEY_DEADLINE = "deadline";
-
-	private Calendar gtoday;
 
 	public class LazyAdapter extends BaseAdapter {
 
@@ -95,6 +92,8 @@ public class OfferList extends ActionBarActivity {
 			inflater = (LayoutInflater) activity
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			imageLoader = new ImageLoader(activity.getApplicationContext());
+
+			
 		}
 
 		public int getCount() {
@@ -110,15 +109,24 @@ public class OfferList extends ActionBarActivity {
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-
 			convertView = inflater.inflate(R.layout.offer_list_item, null);
+			String fontPath = "fonts/Roboto-Black.ttf";
+			String fontPathLight ="fonts/Roboto-Light.ttf";
+	  
+	        // get the font face
+	        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+	        Typeface tfl = Typeface.createFromAsset(getAssets(), fontPathLight);
+	        
+	        // Apply the font
 			tvOffer = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDescription);
+			tvOffer.setTypeface(tf);
 			tvLike = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferNumlike);
+			tvLike.setTypeface(tfl);
 			tvDeadline = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDeadline);
-			
+			tvDeadline.setTypeface(tfl);
 
 			HashMap<String, String> song = new HashMap<String, String>();
 			song = data.get(position);
@@ -160,60 +168,8 @@ public class OfferList extends ActionBarActivity {
 		}
 	}
 
-	private void getPhoto(String idcommerce) {
-		CollectionConstraint collection = new CollectionConstraint();
-		collection.addIdentifier(idcommerce);
 
-		ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
-
-		Query query = new Query("commerce");
-		query.setQuery("where this in ? join file", collection);
-		query.fetch(100, 0, new FetchCallback() {
-			@Override
-			public void success(List<BackbeamObject> companies, int totalCount,
-					boolean fromCache) {
-
-				for (BackbeamObject company : companies) {
-					System.out.println("foto comercio");
-					BackbeamObject fileObject = company.getObject("file");
-					if (fileObject != null) {
-						TreeMap<String, Object> options = new TreeMap<String, Object>();
-						options.put("width", 120);
-						options.put("height", 40);
-						String logoURL = fileObject.composeFileURL(options);
-
-						// Codigo para poner la foto en el imageView
-						URL newurl = null;
-						try {
-							newurl = new URL(logoURL);
-						} catch (MalformedURLException e) {
-							e.printStackTrace();
-						}
-
-						try {
-
-							bmPhoto = BitmapFactory.decodeStream(newurl
-									.openConnection().getInputStream());
-							util.log("icono cargado");
-
-							// image.setImageBitmap(mIcon_val);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-
-						ivPhoto.setImageBitmap(bmPhoto);
-					} else {
-						//ivPhoto.getLayoutParams().height = 0;
-						
-						ivPhoto.setVisibility(View.GONE);
-					//ivPhoto.setImageDrawable(getResources().getDrawable(	R.drawable.nophoto));
-
-					}
-				}
-			}
-		});
-
-	}
+	
 
 	/** Called when the activity is first created. */
 	@Override
@@ -221,11 +177,14 @@ public class OfferList extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.offer_list);
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
+		StrictMode.setThreadPolicy(policy); 
 		System.out.println("El getDisplayLanguage (español) instalado es: " +Locale.getDefault().getDisplayLanguage()+"\n"+
 				"El getcountry (ES) instalado es: " +Locale.getDefault().getCountry()+"\n"+
 				"El getLanguage (es) instalado es: " +Locale.getDefault().getLanguage()+"\n"+
 				"El getISO3Language (spa) instalado es: " +Locale.getDefault().getISO3Language());
-		util.projectData(context);
+		
 
 		initUi();
 
@@ -244,7 +203,7 @@ public class OfferList extends ActionBarActivity {
 		latitude = bundle.getDouble("latitude");
 		longitude = bundle.getDouble("longitude");
 		// getPhoto(bundle.getString("id"));
-		
+		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context).getWindow().getDecorView());
 
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -302,94 +261,7 @@ public class OfferList extends ActionBarActivity {
 	}
 
 	public void queryOffer(String idcommerce) {
-		final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-		final Date today = actualDate();
 		
-		CollectionConstraint collection = new CollectionConstraint();
-		collection.addIdentifier(idcommerce);
-		
-		
-		Backbeam.select("commerce").setQuery("where this in ? join last 100 offer", collection).
-		/*Query query = new Query("commerce");
-		query.setQuery("where this in ? join last 100 offer", collection);
-		query.*/
-		fetch(100, 0, new FetchCallback() {
-
-			@Override
-			public void success(List<BackbeamObject> objects, int totalCount,
-					boolean fromCache) {
-				
-				
-				/*for(BackbeamObject offer:objects){
-					
-					JoinResult join = offer.getJoinResult("offer");
-					int count = join.getCount();
-					System.out.println(offer.getString("description"));
-					System.out.println(offer.getDay("deadline"));
-					System.out.println(offer.getNumber("numlike"));
-					System.out.println("----------------");
-					
-				}*/
-				
-				
-				System.out.println("total objects   " +objects.size());
-				if (objects.size()==0){
-					System.out.println("no pilla el array");
-				}
-				BackbeamObject commerce = objects.get(0);
-				JoinResult join = commerce.getJoinResult("offer");
-				placeName = commerce.getString("placename");
-				getSupportActionBar().setTitle(placeName);
-				List<BackbeamObject> offers = join.getResults();
-				// Contemplo si alguna referencia NO TIENE ofertas
-				if (offers.size() == 0) {
-					// No hay ofertas disponibles
-					setSupportProgressBarIndeterminateVisibility(false);
-					util.log("oferta no existente");
-					list.setVisibility(View.GONE);
-					tvNoOffer.setVisibility(0);
-					tvNoOffer.setTextSize(20);
-					tvNoOffer.setPadding(0, 5, 0, 5);
-					tvNoOffer.setGravity(Gravity.CENTER);
-					tvNoOffer.setText("No hay ofertas");
-				} else {
-					// Hay ofertas
-					util.log("ofertas existentes");
-					tvNoOffer.setVisibility(View.GONE);
-					songsList.clear();
-					for (BackbeamObject offer : offers) {
-						if(offer.getDay("deadline").getTimeInMillis()>=today.getTime()){
-						dataid.add(offer.getId());
-						// Anadir al set Adapter
-						// creating new HashMap
-						final HashMap<String, String> map = new HashMap<String, String>();
-
-						
-						
-						SimpleDateFormat format1 = new SimpleDateFormat(
-								"dd-MM-yyyy");
-						String formatted = format1.format(offer.getDay(
-								"deadline").getTime());
-						// adding each child node to HashMap key => value
-						map.put(KEY_ID, offer.getId());
-						map.put(KEY_DESCRIPTION, offer.getString("description"));
-						map.put(KEY_LIKES, offer.getNumber("numlike")
-								.toString());
-						map.put(KEY_DEADLINE, formatted);
-
-						// adding HashList to ArrayList
-						songsList.add(map);
-						}
-						
-					}
-				}
-
-			}
-		});
-
-		// Getting adapter by passing data ArrayList
-		adapter = new LazyAdapter(this, songsList);
-		list.setAdapter(adapter);
 	}
 
 	// METODO PARA OBTENER LA FECHA ACTUAL
@@ -418,15 +290,137 @@ public class OfferList extends ActionBarActivity {
 
 	// Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
-
+		
 		@Override
 		protected void onPostExecute(Boolean result) {
+			util.projectData(context);
 			util.log("recorremos post execute mydata");
 			//dataid.clear();
-			getPhoto(idcommerce);
-			queryOffer(idcommerce);
+			CollectionConstraint collection = new CollectionConstraint();
+			collection.addIdentifier(idcommerce);
 
+			ivPhoto = (ImageView) findViewById(R.id.ivOfferListCommercePhoto);
+
+			Query query = new Query("commerce");
+			query.setQuery("where this in ? join file", collection);
+			query.fetch(100, 0, new FetchCallback() {
+				@Override
+				public void success(List<BackbeamObject> companies, int totalCount,
+						boolean fromCache) {
+
+					for (BackbeamObject company : companies) {
+						System.out.println("foto comercio");
+						BackbeamObject fileObject = company.getObject("file");
+						if (fileObject != null) {
+							TreeMap<String, Object> options = new TreeMap<String, Object>();
+							options.put("width", 120);
+							options.put("height", 40);
+							String logoURL = fileObject.composeFileURL(options);
+
+							// Codigo para poner la foto en el imageView
+							
+							try {
+								URL newurl = null;
+								newurl = new URL(logoURL);
+
+								bmPhoto = BitmapFactory.decodeStream(newurl
+										.openConnection().getInputStream());
+								util.log("icono cargado");
+
+								// image.setImageBitmap(mIcon_val);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+
+
+							ivPhoto.setImageBitmap(bmPhoto);
+						} else {
+							//ivPhoto.getLayoutParams().height = 0;
+							
+							ivPhoto.setVisibility(View.GONE);
+						//ivPhoto.setImageDrawable(getResources().getDrawable(	R.drawable.nophoto));
+
+						}
+					}
+				}
+			});
+
+			//queryOffer(idcommerce);
+
+			final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
+			final Date today = actualDate();
 			
+			/*Query query = new Query("commerce");
+			query.setQuery("where this in ? join last 100 offer", collection);
+			query.*/
+			
+			Backbeam.select("commerce").setQuery("where this in ? join last 100 offer", collection).
+			fetch(100, 0, new FetchCallback() {
+
+				@Override
+				public void success(List<BackbeamObject> objects, int totalCount,
+						boolean fromCache) {
+					
+					
+					
+					System.out.println("total objects   " +objects.size());
+					if (objects.size()==0){
+						System.out.println("no pilla el array");
+					}
+					BackbeamObject commerce = objects.get(0);
+					JoinResult join = commerce.getJoinResult("offer");
+					placeName = commerce.getString("placename");
+					getSupportActionBar().setTitle(placeName);
+					List<BackbeamObject> offers = join.getResults();
+					// Contemplo si alguna referencia NO TIENE ofertas
+					if (offers.size() == 0) {
+						// No hay ofertas disponibles
+						setSupportProgressBarIndeterminateVisibility(false);
+						util.log("oferta no existente");
+						list.setVisibility(View.GONE);
+						tvNoOffer.setVisibility(0);
+						tvNoOffer.setTextSize(20);
+						tvNoOffer.setPadding(0, 5, 0, 5);
+						tvNoOffer.setGravity(Gravity.CENTER);
+						tvNoOffer.setText("No hay ofertas");
+					} else {
+						// Hay ofertas
+						util.log("ofertas existentes");
+						tvNoOffer.setVisibility(View.GONE);
+						songsList.clear();
+						for (BackbeamObject offer : offers) {
+							if(offer.getDay("deadline").getTimeInMillis()>=today.getTime()){
+							dataid.add(offer.getId());
+							// Anadir al set Adapter
+							// creating new HashMap
+							final HashMap<String, String> map = new HashMap<String, String>();
+
+							
+							
+							SimpleDateFormat format1 = new SimpleDateFormat(
+									"dd-MM-yyyy");
+							String formatted = format1.format(offer.getDay(
+									"deadline").getTime());
+							// adding each child node to HashMap key => value
+							map.put(KEY_ID, offer.getId());
+							map.put(KEY_DESCRIPTION, offer.getString("description"));
+							map.put(KEY_LIKES, offer.getNumber("numlike")
+									.toString());
+							map.put(KEY_DEADLINE, formatted);
+
+							// adding HashList to ArrayList
+							songsList.add(map);
+							}
+							
+						}
+					}
+
+				}
+			});
+
+			// Getting adapter by passing data ArrayList
+			adapter = new LazyAdapter(act, songsList);
+			list.setAdapter(adapter);
 		}
 
 		@Override
@@ -449,7 +443,7 @@ public class OfferList extends ActionBarActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		new LoadDataTask().execute();
+		//new LoadDataTask().execute();
 	}
 
 	@Override

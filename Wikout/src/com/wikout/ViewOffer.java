@@ -12,14 +12,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
 
+import model.FontUtils;
 import utils.Util;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,9 +45,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,6 +61,8 @@ public class ViewOffer extends ActionBarActivity {
 	Context context;
 	Util util = new Util();
 	ImageButton btnRoute;
+	View viewLike;
+	
 	
 	long startui;
 	
@@ -84,7 +87,8 @@ public class ViewOffer extends ActionBarActivity {
 		setContentView(R.layout.view_offer);
 		context=this;
 		util.projectData(context);
-		
+
+		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context).getWindow().getDecorView());
 		//util.showProgressDialog(context, 1900);
 		initUi();
 		initQueries();
@@ -113,8 +117,10 @@ public class ViewOffer extends ActionBarActivity {
 				if(offer.getNumber("numlike").intValue()==0){
 					//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
 					tvNumLike.setVisibility(View.GONE);
+					viewLike.setVisibility(View.GONE);
 					
 				}else{tvNumLike.setVisibility(0);
+				viewLike.setVisibility(0);
 					if(offer.getNumber("numlike").intValue()==1){
 					
 					tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" persona");
@@ -125,8 +131,7 @@ public class ViewOffer extends ActionBarActivity {
 				}
 				// Paso las fechas a los edittexts
 				DateFormat df4 = DateFormat.getDateInstance(DateFormat.FULL);
-				//SimpleDateFormat datef = new SimpleDateFormat("EEEE, d de MM del yyyy");
-				String deadline = df4.format(offer.getDay("deadline").getTime());
+
 				int duration = fechasdiferenciaendias(offer.getDay("deadline").getTime());
 				System.out.println("Duration: "+duration);
 				if (duration < 10) {
@@ -177,8 +182,8 @@ public class ViewOffer extends ActionBarActivity {
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
 						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
 						String myLatitude = prefers.getString("latpos", "null");
-						double latitude = Double.parseDouble(myLatitude);
 						String myLongitude = prefers.getString("longpos", "null");
+						double latitude = Double.parseDouble(myLatitude);
 						double longitude = Double.parseDouble(myLongitude);
 						commercelat=commerce.getLocation("placelocation").getLatitude();
 						commercelon=commerce.getLocation("placelocation").getLongitude();
@@ -278,6 +283,8 @@ public class ViewOffer extends ActionBarActivity {
 		tvDistance = (TextView) findViewById(R.id.tvViewOfferDistance);
 		btnRoute = (ImageButton)findViewById(R.id.btnViewOfferGo);
 		tvReport = (TextView) findViewById(R.id.tvViewOfferReport);
+		viewLike = (View) findViewById(R.id.View01);
+		
 		Drawable img;
 		Resources res = getResources();
 		img = res.getDrawable(R.drawable.flag_icon);
@@ -453,14 +460,44 @@ public class ViewOffer extends ActionBarActivity {
 																		.getString("description"));
 																System.out.println(object
 																		.getNumber("numlike"));
-																if(offer.getNumber("numlike").intValue()==0){
-																	//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
-																	tvNumLike.setVisibility(View.GONE);
-																}else{ tvNumLike.setVisibility(0);
-																	if(offer.getNumber("numlike").intValue()==1){
-																	tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart)+" "+offer.getNumber("numlike").toString()+" persona");
-																}else{
-																	tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" personas");
+																if (offer
+																		.getNumber(
+																				"numlike")
+																		.intValue() == 0) {
+																	// tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
+																	tvNumLike
+																			.setVisibility(View.GONE);
+
+																	viewLike.setVisibility(View.GONE);
+																} else {
+																	tvNumLike.setVisibility(0);
+
+																	viewLike.setVisibility(0);
+																	if (offer
+																			.getNumber(
+																					"numlike")
+																			.intValue() == 1) {
+																		tvNumLike
+																				.setText("Le han dado a "
+																						+ getResources()
+																								.getString(
+																										R.string.heart)
+																						+ " "
+																						+ offer.getNumber(
+																								"numlike")
+																								.toString()
+																						+ " persona");
+																	} else {
+																		tvNumLike
+																				.setText("Le han dado a "
+																						+ getResources()
+																								.getString(
+																										R.string.heart)
+																						+ " "
+																						+ offer.getNumber(
+																								"numlike")
+																								.toString()
+																						+ " personas");
 																	}
 																}
 																

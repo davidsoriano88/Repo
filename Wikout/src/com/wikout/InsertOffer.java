@@ -11,8 +11,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import model.FontUtils;
 import utils.Photo;
 import utils.Util;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -30,8 +32,8 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -84,6 +86,7 @@ public class InsertOffer extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_offer);
+		FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
 		fio=this;
 		util.projectData(context);
 		bundle = getIntent().getExtras();
@@ -167,7 +170,7 @@ public class InsertOffer extends ActionBarActivity {
 							}else{
 								setSupportProgressBarIndeterminateVisibility(true);
 								util.log("no hay foto");
-								insertNewOffer(deadline, idcommerce, idObjectPhoto);
+								insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
 								
 							}
 						
@@ -337,11 +340,26 @@ public class InsertOffer extends ActionBarActivity {
 		offer.save(new ObjectCallback() {//**************************************************************************
 			@Override
 			public void success(BackbeamObject offer) {
-
-				util.showToast(context, "Oferta insertada");
+				Backbeam.read("commerce", idcommerce, new ObjectCallback() {
+					@Override
+					public void success(BackbeamObject commerce) {
+						final int contador = commerce.getNumber("actualoffers").intValue();
+						System.out.println(commerce.getString("placename")+"\nNumero de ofertas: "+contador);
+						commerce.setNumber("actualoffers", contador+1);
+						commerce.save(new ObjectCallback() {
+						@Override
+						public void success(BackbeamObject object) {
+							System.out.println("updated! :) "+object.getId());
+							System.out.println(object.getString("placename")+"\nNumero de ofertas: "+object.getNumber("actualoffers").intValue());
+							util.showToast(context, "Oferta insertada");
 				finish();
 				btnOk.setEnabled(true);
 				setSupportProgressBarIndeterminateVisibility(false);
+						}
+					});
+					}
+				});
+				
 			}
 		});
 	}
@@ -478,21 +496,6 @@ public class InsertOffer extends ActionBarActivity {
 	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-	private void commerceData(String idcommerce) {
-		Backbeam.read("commerce", idcommerce, new ObjectCallback() {
-			@Override
-			public void success(BackbeamObject offer) {
-				offer.getString("placename");
-				offer.getLocation("placelocation");
-				offer.getString("category");
-				//Ocultar botón de comercio
-				//btnLocation.is;
-			
-			}
-				
-			});
-		
 	}
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {

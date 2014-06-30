@@ -6,11 +6,8 @@ import io.backbeam.FetchCallback;
 import io.backbeam.Query;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import utils.RateMeMaybe;
-import utils.RateMeMaybeFragment;
 import utils.Settings;
 import utils.Util;
 import android.app.AlertDialog;
@@ -22,7 +19,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +28,6 @@ import android.widget.ProgressBar;
 public class SplashScreen extends ActionBarActivity {
 	
 
-  private long splashDelay = 500; //6 seconds.
   private static int myProgress=0;
 	private ProgressBar progressBar;
 	private int progressStatus=0;
@@ -65,10 +60,14 @@ public class SplashScreen extends ActionBarActivity {
 	Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
 	Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
 	
+	
+	//util.refreshActualOffers();
+	
     //CREO LA REFERENCIA de TIEMPO
     int time = (int) (System.currentTimeMillis()/1000);
     System.out.println("tiempoo actual Milisegundos: "+System.currentTimeMillis());
     System.out.println("tiempoo actual Integer: "+time);
+    
     
     //Si no existe la referencia del tiempo LA CREO
     System.out.println("tiempo registrado Integer: "+Settings.getTimeLastCheckVersion(context));
@@ -76,7 +75,7 @@ public class SplashScreen extends ActionBarActivity {
     if(Settings.getTimeLastCheckVersion(context)==0){
     	Settings.setTimeLastCheckVersion(context, time);
     	System.out.println("no existe ref de tiempo");
-    	
+    	initUI();
     //Si existe y es mayor a 10 dias:
     }else if(time - Settings.getTimeLastCheckVersion(context)>= 864000){
     	System.out.println("Hace tanto tiempo de la ultima vez: "+(time - Settings.getTimeLastCheckVersion(context)));

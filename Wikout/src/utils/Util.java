@@ -1,5 +1,8 @@
 package utils;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import io.backbeam.*;
@@ -9,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,12 +25,16 @@ import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Toast;
 
 public class Util {
 	public void showToast(Context context, String mensaje) {
 		Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
+	}
+	public void optionDialog(Context context, String title, String message){
+		
 	}
 
 	 public void showInfoDialog(Context context, String title, String message){
@@ -119,8 +127,7 @@ public class Util {
 
 		}
 	 
-	 
-	 
+
 	 
 	public void showProgressDialog(Context context){
 		final ProgressDialog dialog = new ProgressDialog(context);
@@ -149,7 +156,98 @@ public class Util {
 			}
 		}
 	
-	
+		public void refreshActualOffers(){
+		final Date today = actualDate();
+		Backbeam.select("commerce").setQuery("sort by created_at")
+				.fetch(100, 0, new FetchCallback() {
+					@Override
+					public void success(List<BackbeamObject> commerces,
+							int totalCount, boolean fromCache) {
+						// RECORRO CADA COMERCIO
+						for (BackbeamObject commerce : commerces) {
+
+							// CREO UN CONSTRAINT PARA PASARLE EL id
+							CollectionConstraint collection = new CollectionConstraint();
+							collection.addIdentifier(commerce.getId());
+							// HAGO LA CONSULTA DEL COMERCIO EN CONCRETO
+							// UNIENDO OFERTAS
+							Query query = new Query("commerce");
+							query.setQuery(
+									"where this in ? join last 100 offer",
+									collection);
+							query.fetch(100, 0, new FetchCallback() {
+								@Override
+								public void success(
+										List<BackbeamObject> commerces,
+										int totalCount,
+										boolean fromCache) {
+									BackbeamObject commerce = commerces
+											.get(0);
+									JoinResult offerjoin = commerce
+											.getJoinResult("offer");
+									// CREO UN LIST CON LAS OFERTAS
+									List<BackbeamObject> offers = offerjoin
+											.getResults();
+									// Contemplo si algun comercio NO
+									// TIENE ofertas
+									if (offers.size() == 0) {
+										// No hay ofertas
+									} else {
+										// Hay ofertas
+										// DECLARO EL CONTADOR DE
+										// NUMLIKES
+
+										int numlike = 0;
+										for (BackbeamObject offer : offers) {
+											// RECORRO CADA OFERTA Y VOY
+											// SUMANDO NUMLIKES
+											if (offer
+													.getDay("deadline")
+													.getTimeInMillis() >= today
+													.getTime()) {
+
+												numlike = numlike
+														+ offer.getNumber(
+																"numlike")
+																.intValue();
+
+											}
+											System.out
+													.println("tiene: "
+															+ numlike
+															+ " likes");
+											commerce.setNumber(
+													"numbubble",
+													numlike);
+											commerce.save(new ObjectCallback() {
+												@Override
+												public void success(
+														BackbeamObject object) {
+													System.out
+															.println("numbubble actualizado");
+												}
+											});
+										}
+									}
+								}
+
+							});
+
+						}
+					}
+				});
+
+	}
+		
+		
+		
+		
+
+		private Date actualDate() {
+			Calendar calendar = new GregorianCalendar();
+			final Date createdate = calendar.getTime();
+			return createdate;
+		}
 
 		public void projectData(Context context) {
 			Backbeam.setProject("pruebaapp");

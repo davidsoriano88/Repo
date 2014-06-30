@@ -12,14 +12,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import model.FontUtils;
 import utils.CustomOnItemSelectedListener;
 import utils.Photo;
 import utils.Util;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -27,14 +28,12 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.InputMethodManager;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -81,7 +80,7 @@ public class InsertCommerce extends ActionBarActivity {
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_commerce);
 		util.projectData(context);
-	
+		FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
 		initUI();
 		
 	}
@@ -224,6 +223,7 @@ public class InsertCommerce extends ActionBarActivity {
 			commerce.setString("category", spnCategory.getSelectedItem().toString());
 			commerce.setDate("commercecreationdate", createdate);
 			commerce.setString("udid", getId());
+			commerce.setNumber("actualoffers", 0);
 			
 			commerce.setNumber("numbubble", 0);
 			//Guardo el objeto
