@@ -14,7 +14,6 @@ import model.NavDrawerItem;
 import utils.ArrayAdapterWithIcon;
 import utils.Place;
 import utils.PlacesService;
-import utils.Util;
 import adapter.NavDrawerListAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -325,9 +324,18 @@ public class Map extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.action_next:
-			Intent insert = new Intent(context, InsertOffer.class);
+			if (isNetworkAvailable() == true) {
+				
+				Intent insert = new Intent(context, InsertOffer.class);
 			startActivity(insert);
 			return true;
+			} else {
+				util.showInfoDialog(context, "Lo sentimos",
+						"Es necesaria conexión a internet");
+				return false;
+			}
+			
+			
 
 		case android.R.id.home:
 			drawerOpener();
@@ -422,9 +430,11 @@ public class Map extends ActionBarActivity {
 			public void onCameraChange(CameraPosition position) {
 				
 				snap = System.currentTimeMillis();
-				handler.postDelayed(runnable, 1000);
-				//handler.removeCallback(runnable);
 				
+				
+				
+				handler.removeCallbacks(runnable,null);
+				handler.postDelayed(runnable, 1000);
 				
 		         
 
@@ -438,9 +448,9 @@ public class Map extends ActionBarActivity {
 		   public void run() {
 		      /* do what you need to do */
 			   System.out.println(System.currentTimeMillis()-snap);
-		      if((System.currentTimeMillis()-snap)<800){
-		    	  handler.removeCallbacks(runnable);
-		      }else{
+		      /*if((System.currentTimeMillis()-snap)<800){
+		    	  handler.removeCallbacks(runnable,null);
+		      }else{}*/
 		    	  LatLngBounds curScreen = map.getProjection().getVisibleRegion().latLngBounds;
 					latitudeNE = curScreen.northeast.latitude;
 					latitudeSW = curScreen.southwest.latitude;
@@ -459,7 +469,7 @@ public class Map extends ActionBarActivity {
 								"Es necesaria conexión a internet");
 					}
 					}
-		      }
+		      
 		   
 		};
 
@@ -727,7 +737,13 @@ public class Map extends ActionBarActivity {
 															location.getLatitude());
 													info.putExtra("longitude",
 															location.getLongitude());
-													startActivity(info);
+													if (isNetworkAvailable() == true) {
+														startActivity(info);
+													} else {
+														util.showInfoDialog(context, "Lo sentimos",
+																"Es necesaria conexión a internet");
+													}
+													
 												}
 											}
 										}
@@ -894,7 +910,13 @@ public class Map extends ActionBarActivity {
 																+ ","
 																+ marker.getTitle());
 														info.putExtra("id", finalId);
-														startActivity(info);
+														if (isNetworkAvailable() == true) {
+															startActivity(info);
+														} else {
+															util.showInfoDialog(context, "Lo sentimos",
+																	"Es necesaria conexión a internet");
+														}
+														
 													}
 												}
 											}
@@ -1162,7 +1184,13 @@ public class Map extends ActionBarActivity {
 																			+ marker.getTitle());
 																	info.putExtra("id",
 																			finalId);
-																	startActivity(info);
+																	if (isNetworkAvailable() == true) {
+																		startActivity(info);
+																	} else {
+																		util.showInfoDialog(context, "Lo sentimos",
+																				"Es necesaria conexión a internet");
+																	}
+																	
 																}
 															}
 														}
@@ -1366,7 +1394,13 @@ public class Map extends ActionBarActivity {
 													location.getLatitude());
 											info.putExtra("longitude",
 													location.getLongitude());
-											startActivity(info);
+											if (isNetworkAvailable() == true) {
+												startActivity(info);
+											} else {
+												util.showInfoDialog(context, "Lo sentimos",
+														"Es necesaria conexión a internet");
+											}
+											
 										}
 									}
 								}
@@ -1632,7 +1666,13 @@ public class Map extends ActionBarActivity {
 																	+ marker.getTitle());
 															info.putExtra("id",
 																	finalId);
-															startActivity(info);
+															if (isNetworkAvailable() == true) {
+																startActivity(info);
+															} else {
+																util.showInfoDialog(context, "Lo sentimos",
+																		"Es necesaria conexión a internet");
+															}
+															
 														}
 													}
 												}
@@ -1800,7 +1840,13 @@ public class Map extends ActionBarActivity {
 														+ ","
 														+ marker.getTitle());
 												info.putExtra("id", finalId);
+												if (isNetworkAvailable() == true) {
+													
 												startActivity(info);
+												} else {
+													util.showInfoDialog(context, "Lo sentimos",
+															"Es necesaria conexión a internet");
+												}
 											}
 										}
 									}

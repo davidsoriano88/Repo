@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.wikout.Util;
+
 public class PlacesService {
 
 	private String API_KEY;

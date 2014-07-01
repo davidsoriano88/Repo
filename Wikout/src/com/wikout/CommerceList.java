@@ -9,10 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import model.FontUtils;
-import utils.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
@@ -69,7 +70,8 @@ final Util util = new Util();
 	      @Override
 	      public void onItemClick(AdapterView<?> parent, final View view,
 	          int position, long id) {
-	    	  if(position==listPlacenameCommerces.size()-1){
+	    	  if (isNetworkAvailable() == true) {
+					if(position==listPlacenameCommerces.size()-1){
 	    	 Intent insertCommerce = new Intent(context,InsertCommerce.class);
 	    	  
 	    	  insertCommerce.putExtra("pointlat",latitude);
@@ -86,6 +88,11 @@ final Util util = new Util();
 		    	  finish();
 
 	    	  }
+				} else {
+					util.showInfoDialog(context, "Lo sentimos",
+							"Es necesaria conexión a internet");
+				}
+	    	  
 	    	 
 	    	  }
 	      
@@ -213,6 +220,12 @@ final Util util = new Util();
 					}
 					
 				});
+	}
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager
+				.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	} 

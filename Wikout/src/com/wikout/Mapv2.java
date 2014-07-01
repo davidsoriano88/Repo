@@ -1,7 +1,6 @@
 package com.wikout;
 
 import model.FontUtils;
-import utils.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -182,16 +183,23 @@ public class Mapv2 extends ActionBarActivity {
         		CommerceList.fa.finish();
         		return true;
         	case R.id.btnOkMap :
-        		Intent mapLocation=new Intent();
-		          // put the message in Intent
-		          mapLocation.putExtra("pointlat", selectedLat);
-		          mapLocation.putExtra("pointlon", selectedLon);
-		          //util.log("latitud del mapv2"+String.valueOf(point.latitude));*/
-		          // Set The Result in Intent
-		        setResult(RESULT_OK,mapLocation);
-		          // finish The activity 
-		 
-		       finish();
+        		if (isNetworkAvailable() == true) {
+        			Intent mapLocation=new Intent();
+  		          // put the message in Intent
+  		          mapLocation.putExtra("pointlat", selectedLat);
+  		          mapLocation.putExtra("pointlon", selectedLon);
+  		          //util.log("latitud del mapv2"+String.valueOf(point.latitude));*/
+  		          // Set The Result in Intent
+  		        setResult(RESULT_OK,mapLocation);
+  		          // finish The activity 
+  		 
+  		       finish();
+				
+				} else {
+					util.showInfoDialog(context, "Lo sentimos",
+							"Es necesaria conexión a internet");
+				}
+        		
 
         		return true;
         default:
@@ -256,6 +264,12 @@ public class Mapv2 extends ActionBarActivity {
 	            return true;
 	    }
 	    return false;
+	}
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager
+				.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	private LocationListener listener = new LocationListener() {

@@ -13,7 +13,6 @@ import utils.MyLocation;
 import utils.MyLocation.LocationResult;
 import utils.RateMeMaybe;
 import utils.Settings;
-import utils.Util;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;

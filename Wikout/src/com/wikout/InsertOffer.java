@@ -14,7 +14,6 @@ import java.util.GregorianCalendar;
 
 import model.FontUtils;
 import utils.Photo;
-import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -106,12 +105,12 @@ public class InsertOffer extends ActionBarActivity {
 
 			btnLocationCommerce.setVisibility(View.GONE);
 
-			viewCommerce.setVisibility(0);
 			tvChangeCommerce.setVisibility(0);
 			tvPlacename.setVisibility(0);
 			tvPlacenameLabel.setVisibility(0);
 			tvLocation.setVisibility(0);
 			tvLocationLabel.setVisibility(0);
+			viewCommerce.setVisibility(0);
 
 			tvPlacename.setText(placename);
 			tvLocation.setText(location);
@@ -120,13 +119,15 @@ public class InsertOffer extends ActionBarActivity {
 					R.color.mainColor));
 		} else {
 			btnLocationCommerce.setVisibility(0);
-
+			
 			viewCommerce.setVisibility(View.GONE);
 			tvChangeCommerce.setVisibility(View.GONE);
 			tvPlacename.setVisibility(View.GONE);
 			tvPlacenameLabel.setVisibility(View.GONE);
 			tvLocation.setVisibility(View.GONE);
 			tvLocationLabel.setVisibility(View.GONE);
+
+			
 		}
 	}
 

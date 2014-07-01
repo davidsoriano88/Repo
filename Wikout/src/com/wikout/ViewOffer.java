@@ -18,8 +18,8 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
 
+
 import model.FontUtils;
-import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -33,6 +33,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -379,144 +381,153 @@ public class ViewOffer extends ActionBarActivity {
 
 	// METODO PARA INSERTAR LIKE
 		private void insertLike(final String idoffer, final String idcommerce) {
-			// CREO OBJETOS
-//btnLike.setEnabled(false);
 			
-			//final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
-			final BackbeamObject like = new BackbeamObject("like");
-			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
-			// Escribo los campos de "like" 
-			like.setString("udid", getId());
-			like.setDate("likedate", actualDate());
-			// Compruebo el boolean y, si es TRUE, inserta un LIKE. Si es FALSE,
-			// inserta un DISLIKE.
-			// Por último, se hace el count.
-			Backbeam.read("commerce", idcommerce, new ObjectCallback() {
-				@Override
-				public void success(BackbeamObject commerce) {
-					if (lastlike == true) {
-						like.setString("statuslike", "1");
-						numbubble = commerce.getNumber("numbubble").intValue();
-						commerce.setNumber("numbubble", numbubble+1);
-						System.out.println("1");
-						lastlike=false;
-						enableOk=false;
-						supportInvalidateOptionsMenu();
-						
-						
-					} else {
-						like.setString("statuslike", "0");
-						numbubble = commerce.getNumber("numbubble").intValue();
-						commerce.setNumber("numbubble", numbubble-1);
-						System.out.println("0");
-						lastlike=true;
-						enableOk=true;
-						supportInvalidateOptionsMenu();
-						
-					}
-							commerce.save(new ObjectCallback() {
-							@Override
-							public void success(BackbeamObject object) {
-								System.out.println("updated! :) "+object.getId());
-								like.setObject("offer", offer);
-								like.save(new ObjectCallback() {
-									@Override
-									public void success(BackbeamObject object) {
-										System.out.println("like guardado");
-										Query query = new Query("like");
-										// Consulto los LIKE cuyo STATUSLIKE == "1".
-										query.setQuery("where statuslike = ? and offer is ? ", "1",
-												idoffer);
-										// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
-										// "1");
-										System.out.println("Tras la consulta del success");
-										query.fetch(100, 0, new FetchCallback() {
+			if (isNetworkAvailable() == true) {
+				// CREO OBJETOS
+				//btnLike.setEnabled(false);
+							
+							//final BackbeamObject commerce = new BackbeamObject("commerce", idcommerce);
+							final BackbeamObject like = new BackbeamObject("like");
+							final BackbeamObject offer = new BackbeamObject("offer", idoffer);
+							// Escribo los campos de "like" 
+							like.setString("udid", getId());
+							like.setDate("likedate", actualDate());
+							// Compruebo el boolean y, si es TRUE, inserta un LIKE. Si es FALSE,
+							// inserta un DISLIKE.
+							// Por último, se hace el count.
+							Backbeam.read("commerce", idcommerce, new ObjectCallback() {
+								@Override
+								public void success(BackbeamObject commerce) {
+									if (lastlike == true) {
+										like.setString("statuslike", "1");
+										numbubble = commerce.getNumber("numbubble").intValue();
+										commerce.setNumber("numbubble", numbubble+1);
+										System.out.println("1");
+										lastlike=false;
+										enableOk=false;
+										supportInvalidateOptionsMenu();
+										
+										
+									} else {
+										like.setString("statuslike", "0");
+										numbubble = commerce.getNumber("numbubble").intValue();
+										commerce.setNumber("numbubble", numbubble-1);
+										System.out.println("0");
+										lastlike=true;
+										enableOk=true;
+										supportInvalidateOptionsMenu();
+										
+									}
+											commerce.save(new ObjectCallback() {
 											@Override
-											public void success(List<BackbeamObject> objects,
-													final int totalCountLike, boolean fromCache) {
-												
-												System.out.println("totalCount: " + totalCountLike);
-												Query query = new Query("like");
-												// Consulto los LIKE cuyo STATUSLIKE == "1".
-												query.setQuery("where statuslike = ? and offer is ? ",
-														"0", idoffer);
-												
-												// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,"1");
-												System.out.println("Tras la consulta del success");
-												query.fetch(100, 0, new FetchCallback() {
+											public void success(BackbeamObject object) {
+												System.out.println("updated! :) "+object.getId());
+												like.setObject("offer", offer);
+												like.save(new ObjectCallback() {
 													@Override
-													public void success(List<BackbeamObject> objects,
-															int totalCountDislike, boolean fromCache) {
-														
-														System.out.println("totalCount: "
-																+ totalCountDislike);
-														offer.setNumber("numlike", totalCountLike
-																- totalCountDislike);
-														offer.save(new ObjectCallback() {
+													public void success(BackbeamObject object) {
+														System.out.println("like guardado");
+														Query query = new Query("like");
+														// Consulto los LIKE cuyo STATUSLIKE == "1".
+														query.setQuery("where statuslike = ? and offer is ? ", "1",
+																idoffer);
+														// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,
+														// "1");
+														System.out.println("Tras la consulta del success");
+														query.fetch(100, 0, new FetchCallback() {
 															@Override
-															public void success(BackbeamObject object) {
+															public void success(List<BackbeamObject> objects,
+																	final int totalCountLike, boolean fromCache) {
 																
-																System.out.println(object
-																		.getString("description"));
-																System.out.println(object
-																		.getNumber("numlike"));
-																if (offer
-																		.getNumber(
-																				"numlike")
-																		.intValue() == 0) {
-																	// tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
-																	tvNumLike
-																			.setVisibility(View.GONE);
-
-																	viewLike.setVisibility(View.GONE);
-																} else {
-																	tvNumLike.setVisibility(0);
-
-																	viewLike.setVisibility(0);
-																	if (offer
-																			.getNumber(
-																					"numlike")
-																			.intValue() == 1) {
-																		tvNumLike
-																				.setText("Le han dado a "
-																						+ getResources()
-																								.getString(
-																										R.string.heart)
-																						+ " "
-																						+ offer.getNumber(
+																System.out.println("totalCount: " + totalCountLike);
+																Query query = new Query("like");
+																// Consulto los LIKE cuyo STATUSLIKE == "1".
+																query.setQuery("where statuslike = ? and offer is ? ",
+																		"0", idoffer);
+																
+																// query.setQuery("where this in ? join last 10 like having statuslike = ?",idoffer,"1");
+																System.out.println("Tras la consulta del success");
+																query.fetch(100, 0, new FetchCallback() {
+																	@Override
+																	public void success(List<BackbeamObject> objects,
+																			int totalCountDislike, boolean fromCache) {
+																		
+																		System.out.println("totalCount: "
+																				+ totalCountDislike);
+																		offer.setNumber("numlike", totalCountLike
+																				- totalCountDislike);
+																		offer.save(new ObjectCallback() {
+																			@Override
+																			public void success(BackbeamObject object) {
+																				
+																				System.out.println(object
+																						.getString("description"));
+																				System.out.println(object
+																						.getNumber("numlike"));
+																				if (offer
+																						.getNumber(
 																								"numlike")
-																								.toString()
-																						+ " persona");
-																	} else {
-																		tvNumLike
-																				.setText("Le han dado a "
-																						+ getResources()
-																								.getString(
-																										R.string.heart)
-																						+ " "
-																						+ offer.getNumber(
-																								"numlike")
-																								.toString()
-																						+ " personas");
+																						.intValue() == 0) {
+																					// tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
+																					tvNumLike
+																							.setVisibility(View.GONE);
+
+																					viewLike.setVisibility(View.GONE);
+																				} else {
+																					tvNumLike.setVisibility(0);
+
+																					viewLike.setVisibility(0);
+																					if (offer
+																							.getNumber(
+																									"numlike")
+																							.intValue() == 1) {
+																						tvNumLike
+																								.setText("Le han dado a "
+																										+ getResources()
+																												.getString(
+																														R.string.heart)
+																										+ " "
+																										+ offer.getNumber(
+																												"numlike")
+																												.toString()
+																										+ " persona");
+																					} else {
+																						tvNumLike
+																								.setText("Le han dado a "
+																										+ getResources()
+																												.getString(
+																														R.string.heart)
+																										+ " "
+																										+ offer.getNumber(
+																												"numlike")
+																												.toString()
+																										+ " personas");
+																					}
+																				}
+																				
+				//btnLike.setEnabled(true);
+																					setSupportProgressBarIndeterminateVisibility(false);
+																				
+																			}
+																		});
 																	}
-																}
-																
-//btnLike.setEnabled(true);
-																	setSupportProgressBarIndeterminateVisibility(false);
-																
+																});
 															}
+
 														});
 													}
 												});
 											}
-
 										});
-									}
-								});
-							}
-						});
-						}
-					});
+										}
+									});
+			
+			} else {
+				util.showInfoDialog(context, "Lo sentimos",
+						"Es necesaria conexión a internet");
+			}
+			
+			
 		}
 
 	// METODO PARA OBTENER LA UDID DEL SMARTPHONE
@@ -534,47 +545,60 @@ public class ViewOffer extends ActionBarActivity {
 		return createdate;
 	}
 
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager
+				.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
 	// METODO PARA CREAR DENUNCIA
 	private void insertReport(final String idoffer, String reason) {
 
-		BackbeamObject report = new BackbeamObject("report");
-		final BackbeamObject offer = new BackbeamObject("offer", idoffer);
+		if (isNetworkAvailable() == true) {
+			BackbeamObject report = new BackbeamObject("report");
+			final BackbeamObject offer = new BackbeamObject("offer", idoffer);
 
-		report.setString("udid", getId());
-		report.setDate("reportdate", actualDate());
-		report.setString("reason", reason);
-		report.setString("reportstatus", "pending");
-		report.setObject("offer", offer);
-		report.save(new ObjectCallback() {
-			@Override
-			public void success(BackbeamObject object) {
-				offer.setString("offerstatus", "pending");
-				offer.save(new ObjectCallback() {
-					@Override
-					public void success(BackbeamObject object) {
-						System.out.println("Oferta "
-								+ object.getString("description")
-								+ " en supervision");
-						System.out.println(offer.getString("description"));
-						AlertDialog.Builder info = new AlertDialog.Builder(context);
-						info.setTitle("Denuncia realizada");
-						info.setMessage("Gracias, en breve analizaremos su solicitud.");
-						info.setCancelable(false);
-						info.setNeutralButton("Aceptar",
-								new DialogInterface.OnClickListener() {
-									@Override
-									public void onClick(DialogInterface dialogo1, int id) {
-										finish();
-									}
+			report.setString("udid", getId());
+			report.setDate("reportdate", actualDate());
+			report.setString("reason", reason);
+			report.setString("reportstatus", "pending");
+			report.setObject("offer", offer);
+			report.save(new ObjectCallback() {
+				@Override
+				public void success(BackbeamObject object) {
+					offer.setString("offerstatus", "pending");
+					offer.save(new ObjectCallback() {
+						@Override
+						public void success(BackbeamObject object) {
+							System.out.println("Oferta "
+									+ object.getString("description")
+									+ " en supervision");
+							System.out.println(offer.getString("description"));
+							AlertDialog.Builder info = new AlertDialog.Builder(context);
+							info.setTitle("Denuncia realizada");
+							info.setMessage("Gracias, en breve analizaremos su solicitud.");
+							info.setCancelable(false);
+							info.setNeutralButton("Aceptar",
+									new DialogInterface.OnClickListener() {
+										@Override
+										public void onClick(DialogInterface dialogo1, int id) {
+											finish();
+										}
 
-								});
-						
-						info.show();
-						
-					}
-				});
-			}
-		});
+									});
+							
+							info.show();
+							
+						}
+					});
+				}
+			});
+		
+		} else {
+			util.showInfoDialog(context, "Lo sentimos",
+					"Es necesaria conexión a internet");
+		}
+		
 	}
 	// Consulta para saber qué estado tiene el último like del usuario
 	private void queryLike(String idoffer) {
@@ -628,7 +652,7 @@ public class ViewOffer extends ActionBarActivity {
 			}
 		});
 
-//btnLike.setEnabled(true);
+		//btnLike.setEnabled(true);
 		
 	}
 

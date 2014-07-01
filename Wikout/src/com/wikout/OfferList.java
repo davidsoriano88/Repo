@@ -19,9 +19,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
+
 import model.FontUtils;
 import utils.ImageLoader;
-import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -30,6 +30,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -213,25 +215,32 @@ public class OfferList extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (isNetworkAvailable() == true) {
+					AlertDialog.Builder info = new AlertDialog.Builder(context);
+					info.setTitle("Insertar Nueva Oferta");
+					info.setMessage("Está a punto de insertar una nueva oferta");
+					info.setCancelable(true);
+					info.setNeutralButton("Aceptar",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialogo1, int id) {
+									Intent addOffer = new Intent(context,
+											InsertOffer.class);
+									addOffer.putExtra("idcommerce", idcommerce);
+									addOffer.putExtra("placename", placeName);
+									startActivity(addOffer);
+								}
 
-				AlertDialog.Builder info = new AlertDialog.Builder(context);
-				info.setTitle("Insertar Nueva Oferta");
-				info.setMessage("Está a punto de insertar una nueva oferta");
-				info.setCancelable(true);
-				info.setNeutralButton("Aceptar",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialogo1, int id) {
-								Intent addOffer = new Intent(context,
-										InsertOffer.class);
-								addOffer.putExtra("idcommerce", idcommerce);
-								addOffer.putExtra("placename", placeName);
-								startActivity(addOffer);
-							}
+							});
 
-						});
+					info.show();
+				
+				} else {
+					util.showInfoDialog(context, "Lo sentimos",
+							"Es necesaria conexión a internet");
+				}
 
-				info.show();
+				
 			}
 
 		});
@@ -453,7 +462,12 @@ public class OfferList extends ActionBarActivity {
 		//inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	
+	private boolean isNetworkAvailable() {
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager
+				.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+	}
 
 }
 /*

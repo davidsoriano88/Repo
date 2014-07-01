@@ -15,7 +15,6 @@ import java.util.List;
 import model.FontUtils;
 import utils.CustomOnItemSelectedListener;
 import utils.Photo;
-import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
