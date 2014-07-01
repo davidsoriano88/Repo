@@ -236,6 +236,7 @@ public class InsertCommerce extends ActionBarActivity {
 					Intent insertoffer = new Intent();
 					insertoffer.putExtra("idcommerce", commerce.getId());
 					insertoffer.putExtra("placename", commerce.getString("placename"));
+					insertoffer.putExtra("location", commerce.getLocation("placelocation").getAddress().toString());
 					setResult(RESULT_OK, insertoffer);
 					util.showToast(context, "comercio creado");
 					setSupportProgressBarIndeterminateVisibility(false);

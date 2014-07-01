@@ -51,15 +51,20 @@
                 style="@style/boldText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                
+                android:layout_marginBottom="0dp"
                 android:textSize="18sp" />
 
             <View
-                android:id="@+id/view1"
+                android:id="@+id/viewLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
+                
                 android:layout_margin="8dp"
+                android:layout_marginTop="3dp"
                 android:background="@color/backgroundlayout" />
 
             <TextView
@@ -85,8 +90,10 @@
                 android:id="@+id/View01"
                 android:layout_width="wrap_content"
                 android:layout_height="1dp"
-                android:layout_margin="8dp"
                 android:layout_marginTop="0dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@color/backgroundlayout" />
 
             <TextView

@@ -6,7 +6,11 @@ import io.backbeam.FetchCallback;
 import io.backbeam.Query;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import utils.MyLocation;
+import utils.MyLocation.LocationResult;
 import utils.RateMeMaybe;
 import utils.Settings;
 import utils.Util;
@@ -15,6 +19,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -62,6 +67,23 @@ public class SplashScreen extends ActionBarActivity {
 	
 	
 	//util.refreshActualOffers();
+	
+	
+	LocationResult locationResult = new LocationResult(){
+	  
+
+		@Override
+		public void gotLocation(Location location) {
+			// TODO Auto-generated method stub
+			
+		}
+	};
+	MyLocation myLocation = new MyLocation();
+	myLocation.getLocation(this, locationResult);
+	
+	
+	
+	
 	
     //CREO LA REFERENCIA de TIEMPO
     int time = (int) (System.currentTimeMillis()/1000);
@@ -186,22 +208,22 @@ public class SplashScreen extends ActionBarActivity {
   
   
   public void initUI(){
-	 /* progressBar=(ProgressBar)findViewById(R.id.Initprogress);
+	  progressBar=(ProgressBar)findViewById(R.id.Initprogress);
 	  TimerTask task = new TimerTask(){
 		 @Override
 		 public void run(){
-			 beginYourTask();*/
+			// beginYourTask();
 	        Intent mainIntent = new Intent().setClass(SplashScreen.this, Map.class);
 	        
 	     startActivity(mainIntent);
-	        finish();/*   
+	        finish();   
 		 }
 	  };
 
 	  Timer timer = new Timer();
-	  timer.schedule(task, splashDelay);//after 6 seconds throws the task.
+	  timer.schedule(task, 3000);//after 6 seconds throws the task.
   
-  */}
+  }
   public void beginYourTask()
   {
   	myProgress=0;

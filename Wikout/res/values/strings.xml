@@ -18,6 +18,7 @@
     <string name="titleName">title</string>
     <string name="buscar">Buscar</string>
     <string name="description">description</string>
+    <string name="location">Ubicación: </string>
     <string name="ok">OK!</string>
     <string name="report">Denunciar oferta</string>
 

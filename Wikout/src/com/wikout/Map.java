@@ -31,6 +31,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -40,6 +41,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.Window;
@@ -47,6 +49,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -86,6 +89,9 @@ public class Map extends ActionBarActivity {
 	ActionBarDrawerToggle drawerToggle;
 	ListView lvDrawer;
 	protected int mDpi = 0;
+	private Handler handler = new Handler();
+	
+	
 
 	ArrayList<String> placeName = new ArrayList<String>(),
 			idcommerce = new ArrayList<String>(),
@@ -93,6 +99,7 @@ public class Map extends ActionBarActivity {
 			idMarker = new ArrayList<String>();
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
 	protected AsyncTask<Void, Integer, Boolean> asyncBackbeam;
+	protected long snap = System.currentTimeMillis();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +115,7 @@ public class Map extends ActionBarActivity {
 		initUI();
 
 	}
+	
 
 	public void initUI() {
 
@@ -117,14 +125,15 @@ public class Map extends ActionBarActivity {
 		map = ((SupportMapFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.map)).getMap();
 		map.setMyLocationEnabled(true);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		lvDrawer = (ListView) findViewById(R.id.left_drawer);
-		String[] navMenuTitles = getResources().getStringArray(R.array.options);
-		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 		filterView = (ImageView) findViewById(R.id.filterText);
 		tvFilterText = (TextView) findViewById(R.id.tvFilterText);
 		ibFilter = (ImageButton) findViewById(R.id.filterButton);
+		
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		String[] navMenuTitles = getResources().getStringArray(R.array.options);
+		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 		filterVisible(false);
 
 		// incializamos el header del ListView:
@@ -133,6 +142,7 @@ public class Map extends ActionBarActivity {
         // get the font face
         Typeface tf = Typeface.createFromAsset(getAssets(), fontPathLight);
 		LayoutInflater inflater = LayoutInflater.from(this);
+		
 		View search = inflater.inflate(R.layout.search_drawer, null);
 		etSearch = (EditText) search.findViewById(R.id.search1);
 		etSearch.setTypeface(tf);
@@ -172,7 +182,7 @@ public class Map extends ActionBarActivity {
 					final Integer[] filterIcons = new Integer[] {
 							R.drawable.pinazul, R.drawable.pinmorado,
 							R.drawable.pinrosa, R.drawable.pinverde };
-					filterVisible(true);
+					//filterVisible(true);
 					AlertDialog.Builder builder = new AlertDialog.Builder(
 							context);
 					ListAdapter adapter = new ArrayAdapterWithIcon(context,
@@ -238,7 +248,7 @@ public class Map extends ActionBarActivity {
 												etSearch.getWindowToken(), 0);
 										new MyData().execute();
 										break;
-									}
+									}filterVisible(true);
 
 								}
 
@@ -398,28 +408,60 @@ public class Map extends ActionBarActivity {
 				.build(); // Creates a CameraPosition from the builder
 		map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 		map.setOnCameraChangeListener(new OnCameraChangeListener() {
+			
+			
+			
+			
+			
+			
+			
+			private int CAMERA_MOVE_REACT_THRESHOLD_MS = 2000;
+	        private long lastCallMs = Long.MIN_VALUE;
+
 			@Override
 			public void onCameraChange(CameraPosition position) {
+				
+				snap = System.currentTimeMillis();
+				handler.postDelayed(runnable, 1000);
+				//handler.removeCallback(runnable);
+				
+				
+		         
 
-				LatLngBounds curScreen = map.getProjection().getVisibleRegion().latLngBounds;
-				latitudeNE = curScreen.northeast.latitude;
-				latitudeSW = curScreen.southwest.latitude;
-				longitudeNE = curScreen.northeast.longitude;
-				longitudeSW = curScreen.southwest.longitude;
-				util.log(String.valueOf(latitudeNE));
-				util.log("screen has been recharged");
-				// start both asyncTask:
-				if (isNetworkAvailable() == true) {
-					asyncBackbeam = new MyData().execute();
-					//asyncPlaces = new GetPlaces("").execute();
-				} else {
-					util.showInfoDialog(context, "Lo sentimos",
-							"Es necesaria conexión a internet");
-				}
 			}
+				
 		});
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
+	private Runnable runnable = new Runnable() {
+		   @Override
+		   public void run() {
+		      /* do what you need to do */
+			   System.out.println(System.currentTimeMillis()-snap);
+		      if((System.currentTimeMillis()-snap)<800){
+		    	  handler.removeCallbacks(runnable);
+		      }else{
+		    	  LatLngBounds curScreen = map.getProjection().getVisibleRegion().latLngBounds;
+					latitudeNE = curScreen.northeast.latitude;
+					latitudeSW = curScreen.southwest.latitude;
+					longitudeNE = curScreen.northeast.longitude;
+					longitudeSW = curScreen.southwest.longitude;
+					util.log(String.valueOf(latitudeNE));
+					util.log("screen has been recharged");
+					
+					// start both asyncTask:
+					if (isNetworkAvailable() == true) {
+						asyncBackbeam = new MyData().execute();
+						//asyncPlaces = new GetPlaces("").execute();
+					
+					} else {
+						util.showInfoDialog(context, "Lo sentimos",
+								"Es necesaria conexión a internet");
+					}
+					}
+		      }
+		   
+		};
 
 	private LocationListener listener = new LocationListener() {
 
@@ -1813,5 +1855,6 @@ public class Map extends ActionBarActivity {
 		super.onRestart();
 		new MyData().execute();
 	}
-
+	
 }
+

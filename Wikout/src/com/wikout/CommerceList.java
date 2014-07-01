@@ -32,6 +32,7 @@ public static final int RESULTOK = 100;
 public static ActionBarActivity fa;
 final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
 final ArrayList<String> listIdCommerces = new ArrayList<String>();
+final ArrayList<String> listLocationCommerces = new ArrayList<String>();
 final Util util = new Util();
 	  @Override
 	  protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,7 @@ final Util util = new Util();
 	    		 Intent insertOffer= new Intent();
 		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
 		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
+		    	  insertOffer.putExtra("location", listLocationCommerces.get(position));
 		    	  setResult(RESULT_OK, insertOffer);
 		    	  //startActivity(insertOffer);
 		    	  finish();
@@ -112,7 +114,9 @@ final Util util = new Util();
 		    	Bundle d=data.getExtras();
 		    	String placename =d.getString("placename");
 		    	String idcommerce = d.getString("idcommerce");
+		    	String location = d.getString("location");
 		    	Intent i = new Intent();
+		    	i.putExtra("location", location);
 		    	i.putExtra("placename", placename);
 		    	i.putExtra("idcommerce", idcommerce);
 		    	setResult(RESULT_OK, i);
@@ -165,6 +169,7 @@ final Util util = new Util();
 		// Vacio los arraylists
 		listPlacenameCommerces.clear();
 		listIdCommerces.clear();
+		listLocationCommerces.clear();
 		// Declaro los double de las coordenadas
 		double latNE, lonNE, latSW, lonSW;
 		// Calculo el valor de cada parámetro de la consulta de bounding
@@ -194,10 +199,12 @@ final Util util = new Util();
 							listPlacenameCommerces.add(commerce
 									.getString("placename"));
 							listIdCommerces.add(commerce.getId());
+							listLocationCommerces.add(commerce.getLocation("placelocation").getAddress());
 
 						}
 						listPlacenameCommerces.add("NUEVO");
 						listIdCommerces.add("null");
+						listLocationCommerces.add("null");
 						StableArrayAdapter adapter = new StableArrayAdapter(context,
 						        android.R.layout.simple_list_item_1, listPlacenameCommerces);
 						    listview.setAdapter(adapter);
