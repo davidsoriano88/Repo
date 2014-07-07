@@ -58,24 +58,28 @@ public class OfferList extends ActionBarActivity {
 	private ArrayList<String> dataid = new ArrayList<String>();
 
 	ActionBar ab;
+	Activity act = this;
 	Context context = this;
+	
 	Util util = new Util();
+	
 	Bitmap bmPhoto = null;
 	ImageView ivPhoto;
 	//static TextView tvLocation;
-	String idcommerce = "", placeName;
 	ListView list;
-	private Button btnAdd;
-	LazyAdapter adapter;
+	Button btnAdd;
+	
 	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer;
+	
+	LazyAdapter adapter;
+	
+	String idcommerce = "", placeName;
 	double latitude, longitude;
-	Activity act = this;
 	// XML node keys
 
 
 
 	static final String KEY_ID = "id";
-
 	static final String KEY_THUMB_URL = "thumb_url";
 	static final String KEY_DESCRIPTION = "description";
 	static final String KEY_LIKES = "likes";
@@ -130,19 +134,19 @@ public class OfferList extends ActionBarActivity {
 					.findViewById(R.id.tvOfferListOfferDeadline);
 			tvDeadline.setTypeface(tfl);
 
-			HashMap<String, String> song = new HashMap<String, String>();
-			song = data.get(position);
+			HashMap<String, String> offerHashMap = new HashMap<String, String>();
+			offerHashMap = data.get(position);
 
 			// Setting all values in listview
-			if (song.get(KEY_DESCRIPTION).length() > 68) {
-				tvOffer.setText(song.get(KEY_DESCRIPTION).substring(0, 60)
+			if (offerHashMap.get(KEY_DESCRIPTION).length() > 68) {
+				tvOffer.setText(offerHashMap.get(KEY_DESCRIPTION).substring(0, 60)
 						+ "...");
 			} else {
-				tvOffer.setText(song.get(KEY_DESCRIPTION));
+				tvOffer.setText(offerHashMap.get(KEY_DESCRIPTION));
 			}
 			
-			tvLike.setText(song.get(KEY_LIKES)+" "+getResources().getString(R.string.heartofferlist));
-			tvDeadline.setText("Válido hasta: "+song.get(KEY_DEADLINE));
+			tvLike.setText(offerHashMap.get(KEY_LIKES)+" "+getResources().getString(R.string.heartofferlist));
+			tvDeadline.setText("Válido hasta: "+offerHashMap.get(KEY_DEADLINE));
 
 			/*if (song.get(KEY_DEADLINE) != null) {
 				URL newurl = null;

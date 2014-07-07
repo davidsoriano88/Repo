@@ -1,18 +1,23 @@
 package com.wikout;
 
+import io.backbeam.Backbeam;
+import io.backbeam.BackbeamObject;
+import io.backbeam.CollectionConstraint;
+import io.backbeam.FetchCallback;
+import io.backbeam.JoinResult;
+import io.backbeam.ObjectCallback;
+import io.backbeam.Query;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import io.backbeam.*;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -22,10 +27,7 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -153,6 +155,12 @@ public class Util {
 			boolean debug=true;
 			if(debug){
 				Log.i("log",mensaje);
+			}
+		}
+		public void logBug(String mensaje){
+			boolean debug=true;
+			if(debug){
+				Log.i("logbug",mensaje);
 			}
 		}
 	

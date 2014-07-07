@@ -24,83 +24,89 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class CommerceList extends ActionBarActivity {
+	
 Context context;
 ListView listview;
+
 double latitude,longitude;
+
 static final int REQUESTCODEMAP = 101;
 static final int REQUESTCODECOMMERCE = 102;
 public static final int RESULTOK = 100;
-public static ActionBarActivity fa;
+
+public static ActionBarActivity actionbarAct;
 final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
 final ArrayList<String> listIdCommerces = new ArrayList<String>();
 final ArrayList<String> listLocationCommerces = new ArrayList<String>();
+
 final Util util = new Util();
 	  @Override
 	  protected void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 	    setContentView(R.layout.commerce_list);
-	    context= this;
-	    FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
-	    util.projectData(context);
-	    fa=this;
-	    
 	    getSupportActionBar().setTitle("Comercios cercanos");
 	    setSupportProgressBarIndeterminateVisibility(true);
 	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	   listview = (ListView) findViewById(R.id.listcommerce);
+	    listview = (ListView) findViewById(R.id.listcommerce);
+	   
+	    actionbarAct=this;
+	    context= this;
+	    
+	    FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
+	    
+	    util.projectData(context);
+	    
+
 	   Bundle location = getIntent().getExtras();//***************atencion
 	    
-	    if(location.getInt("enter")==1){
-	    	util.log("entra dentro del if del commerceList");
-	    	Intent mapv2 = new Intent(this,Mapv2.class);
-	    	startActivityForResult(mapv2, REQUESTCODEMAP);
-	    	//finish();
-	    }else{
-	    util.log("entra tras el if del commerceList");
-	    latitude=location.getDouble("pointlat");
-	    longitude=location.getDouble("pointlon");
-	    getBoundingLocation(latitude,longitude);}
-	    
-	    
+		if (location.getInt("enter") == 1) {
+			util.log("entra dentro del if del commerceList");
+			Intent mapv2 = new Intent(this, Mapv2.class);
+			startActivityForResult(mapv2, REQUESTCODEMAP);
+			// finish();
+		} else {
+			util.log("entra tras el if del commerceList");
+			latitude = location.getDouble("pointlat");
+			longitude = location.getDouble("pointlon");
+			getBoundingLocation(latitude, longitude);
+		}
 	    
 	   
 	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-	      @Override
-	      public void onItemClick(AdapterView<?> parent, final View view,
-	          int position, long id) {
-	    	  if (isNetworkAvailable() == true) {
-					if(position==listPlacenameCommerces.size()-1){
-	    	 Intent insertCommerce = new Intent(context,InsertCommerce.class);
-	    	  
-	    	  insertCommerce.putExtra("pointlat",latitude);
-	    	  insertCommerce.putExtra("pointlon",longitude);
-	    	  startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
-	    	  //finish();
-	    	  }else{
-	    		 Intent insertOffer= new Intent();
-		    	  insertOffer.putExtra("placename", listPlacenameCommerces.get(position));
-		    	  insertOffer.putExtra("idcommerce", listIdCommerces.get(position));
-		    	  insertOffer.putExtra("location", listLocationCommerces.get(position));
-		    	  setResult(RESULT_OK, insertOffer);
-		    	  //startActivity(insertOffer);
-		    	  finish();
+			@Override
+			public void onItemClick(AdapterView<?> parent, final View view,
+					int position, long id) {
+				if (isNetworkAvailable() == true) {
+					if (position == listPlacenameCommerces.size() - 1) {
+						Intent insertCommerce = new Intent(context,
+								InsertCommerce.class);
 
-	    	  }
+						insertCommerce.putExtra("pointlat", latitude);
+						insertCommerce.putExtra("pointlon", longitude);
+						startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
+						// finish();
+					} else {
+						Intent insertOffer = new Intent();
+						
+						insertOffer.putExtra("placename",listPlacenameCommerces.get(position));
+						insertOffer.putExtra("idcommerce",listIdCommerces.get(position));
+						insertOffer.putExtra("location",listLocationCommerces.get(position));
+						setResult(RESULT_OK, insertOffer);
+						// startActivity(insertOffer);
+						finish();
+
+					}
 				} else {
 					util.showInfoDialog(context, "Lo sentimos",
 							"Es necesaria conexión a internet");
 				}
-	    	  
-	    	 
-	    	  }
-	      
-	    
-	      
 
-	    });
-	  }
+			}
+
+		});
+	}
 	// load image in imageView
 		@Override
 		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -118,15 +124,18 @@ final Util util = new Util();
 		        }
 
 		    }if(requestCode== REQUESTCODECOMMERCE && resultCode==RESULT_OK){
+		    	
 		    	Bundle d=data.getExtras();
 		    	String placename =d.getString("placename");
 		    	String idcommerce = d.getString("idcommerce");
 		    	String location = d.getString("location");
+		    	
 		    	Intent i = new Intent();
 		    	i.putExtra("location", location);
 		    	i.putExtra("placename", placename);
 		    	i.putExtra("idcommerce", idcommerce);
 		    	setResult(RESULT_OK, i);
+		    	
 		    	finish();
 		    }
 				
@@ -203,8 +212,7 @@ final Util util = new Util();
 						for (BackbeamObject commerce : commerces) {
 							// CREAR ITEMS PARA LA LISTA
 							util.log(String.valueOf(totalCount));
-							listPlacenameCommerces.add(commerce
-									.getString("placename"));
+							listPlacenameCommerces.add(commerce.getString("placename"));
 							listIdCommerces.add(commerce.getId());
 							listLocationCommerces.add(commerce.getLocation("placelocation").getAddress());
 

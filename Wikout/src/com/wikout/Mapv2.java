@@ -180,7 +180,7 @@ public class Mapv2 extends ActionBarActivity {
         switch (item.getItemId()) {
         	case android.R.id.home: 
         		this.finish();
-        		CommerceList.fa.finish();
+        		CommerceList.actionbarAct.finish();
         		return true;
         	case R.id.btnOkMap :
         		if (isNetworkAvailable() == true) {
@@ -258,7 +258,7 @@ public class Mapv2 extends ActionBarActivity {
 	    switch(keycode) {
 	        case KeyEvent.KEYCODE_BACK:
 	        	System.out.println("entra aqui");
-	        	CommerceList.fa.finish();
+	        	CommerceList.actionbarAct.finish();
 	        	finish();
 	        	
 	            return true;

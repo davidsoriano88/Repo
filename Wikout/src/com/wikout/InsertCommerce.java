@@ -41,23 +41,23 @@ import android.widget.TextView;
 
 public class InsertCommerce extends ActionBarActivity {
 	
-	double latitude, longitude;
-	String position;
+	
 	ImageView ivPhoto;
 	EditText etPlacename;
 	Button btnOk;
 	Spinner spnCategory;
 	TextView tvLocation;
 	// Otras variables
-	String photoPath, idoferta, idphoto = "";
-	BackbeamObject objectphoto;
+	
 
 	// Variables para controlar la fecha
 
 	
 	// variables para control de fotografias
-	String photoName, url;
+	String position,photoName, url,photoPath, idoferta, idphoto = "";
+	BackbeamObject objectphoto;
 	File photo;
+	double latitude, longitude;
 	public int existPhoto = 0;
 	
 	// constantes utilizadas para lanzar intents
@@ -84,25 +84,27 @@ public class InsertCommerce extends ActionBarActivity {
 		
 	}
 	 private void initUI(){
-		
+		getSupportActionBar().setTitle("Nuevo Comercio");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertCommercePhoto);
 		etPlacename = (EditText) findViewById(R.id.etInsertCommercePlacename);
 		btnOk = (Button) findViewById(R.id.btnInsertCommerceOk);
 		spnCategory = (Spinner) findViewById(R.id.spnInsertCommerceCategory);
 		tvLocation=(TextView) findViewById(R.id.tvInsertCommerceAddress);
+		
 		addListenerOnSpinnerItemSelection();
 		if(etPlacename.isFocused()){
 			btnOk.requestFocus();
 		}
-		getSupportActionBar().setTitle("Nuevo Comercio");
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		Bundle bundle = getIntent().getExtras();
 		latitude = bundle.getDouble("pointlat");
 		longitude = bundle.getDouble("pointlon");
 		
-		Geocoder geocoder;
+		Geocoder geocoder = new Geocoder(context);
 		List<Address> addresses = null;
-		geocoder = new Geocoder(context);
+		
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
 		} catch (IOException e) {
@@ -165,9 +167,9 @@ public class InsertCommerce extends ActionBarActivity {
 		
 		dialogIncomplete.show();
 	}
+
 	public void addListenerOnSpinnerItemSelection() {
 
-		
 		spnCategory.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
 	}
@@ -211,9 +213,11 @@ public class InsertCommerce extends ActionBarActivity {
 			final Date createdate = calendar.getTime();
 			//Creo el objeto commerce
 			final BackbeamObject commerce = new BackbeamObject("commerce");
+			
 			if(objectphoto!=null){
 			commerce.setObject("file", objectphoto);
 			}
+			
 			//Relleno los campos del objeto
 			commerce.setString("placename", etPlacename.getText().toString());
 			util.log("david2: "+latitude+","+longitude);
@@ -241,7 +245,6 @@ public class InsertCommerce extends ActionBarActivity {
 					setSupportProgressBarIndeterminateVisibility(false);
 					finish();	
 					
-					
 				}
 			});
 		}
@@ -250,7 +253,7 @@ public class InsertCommerce extends ActionBarActivity {
 		    switch(keycode) {
 		        case KeyEvent.KEYCODE_BACK:
 		        	System.out.println("entra aqui");
-		        	CommerceList.fa.finish();
+		        	CommerceList.actionbarAct.finish();
 		        	finish();
 		        	
 		            return true;

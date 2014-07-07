@@ -3,13 +3,13 @@
     
     
     <item android:id="@+id/actionlike" 
-     android:showAsAction="always"
+     android:showAsAction="ifRoom"
      app:showAsAction="always"
      android:orderInCategory="100"
      android:icon="@drawable/like_icon"
      android:title="@string/hello_world"></item>
     <item android:id="@+id/actionunlike" 
-     android:showAsAction="always"
+     android:showAsAction="ifRoom"
      app:showAsAction="always"
      android:orderInCategory="100"
      android:icon="@drawable/unlike_icon"

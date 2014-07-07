@@ -56,26 +56,21 @@ import android.widget.TextView;
 
 public class ViewOffer extends ActionBarActivity {
 
-	TextView tvReport,tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
-	static TextView tvDistance;
+	TextView tvReport,tvDistance,tvDescription,tvDeadline,tvCreationDate,tvLocation,tvNumLike;
 	ImageView ivPhoto;
-	String idofferparameter = "",idcommerceparameter = "";
-	Context context;
-	Util util = new Util();
 	ImageButton btnRoute;
 	View viewLike;
+	Context context;
+	Util util = new Util();
 	
-	
-	long startui;
+	String idofferparameter = "",idcommerceparameter = "", placename = "";
 	
 	boolean lastlike= false;
 	//lastlike TRUE: Si pulsa el boton LIKE, inserta STATUSLIKE "1"
 	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
 	int numbubble = 0;
 	protected boolean enableOk=true;
-	double latitude, longitude;
-	double commercelat, commercelon;
-	
+	double latitude, longitude,commercelat, commercelon;
 	
 	//Radio de la tierra (en metros)
 	final static double radio = 6371000;
@@ -104,6 +99,8 @@ public class ViewOffer extends ActionBarActivity {
 		idcommerceparameter = bundle.getString("idcommerce");
 		latitude = bundle.getDouble("latitude");
 		longitude = bundle.getDouble("longitude");
+		placename = bundle.getString("placename");
+		
 		new LoadDataTask().execute();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setTitle(bundle.getString("placename"));
@@ -134,7 +131,7 @@ public class ViewOffer extends ActionBarActivity {
 				// Paso las fechas a los edittexts
 				DateFormat df4 = DateFormat.getDateInstance(DateFormat.FULL);
 
-				int duration = fechasdiferenciaendias(offer.getDay("deadline").getTime());
+				int duration = dateFormulae(offer.getDay("deadline").getTime());
 				System.out.println("Duration: "+duration);
 				if (duration < 10) {
 					tvDeadline.setTextColor(Color.RED);
@@ -178,7 +175,7 @@ public class ViewOffer extends ActionBarActivity {
 						String city = addresses.get(0).getAddressLine(1);
 						String country = addresses.get(0).getAddressLine(2);
 						util.log("pancratio: "+address + city + country);
-				tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
+						tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
 				
 						//***********************************************************
 						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
@@ -365,9 +362,6 @@ public class ViewOffer extends ActionBarActivity {
 		// IMAGEVIEW
 		ivPhoto = (ImageView) findViewById(R.id.ivViewOfferPhoto);
 		
-		
-		
-		
 	}
 
 	private void makeTextViewHyperlink(TextView tvReport) {
@@ -402,7 +396,6 @@ public class ViewOffer extends ActionBarActivity {
 										like.setString("statuslike", "1");
 										numbubble = commerce.getNumber("numbubble").intValue();
 										commerce.setNumber("numbubble", numbubble+1);
-										System.out.println("1");
 										lastlike=false;
 										enableOk=false;
 										supportInvalidateOptionsMenu();
@@ -412,7 +405,6 @@ public class ViewOffer extends ActionBarActivity {
 										like.setString("statuslike", "0");
 										numbubble = commerce.getNumber("numbubble").intValue();
 										commerce.setNumber("numbubble", numbubble-1);
-										System.out.println("0");
 										lastlike=true;
 										enableOk=true;
 										supportInvalidateOptionsMenu();
@@ -773,7 +765,7 @@ public class ViewOffer extends ActionBarActivity {
 		}
 	}
 
-	public static int fechasdiferenciaendias(Date fechafinal) {
+	public static int dateFormulae(Date fechafinal) {
 
 		DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
@@ -795,7 +787,7 @@ public class ViewOffer extends ActionBarActivity {
 	public void shareIntent() {
 		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 		sharingIntent.setType("text/plain");
-		String shareBody = "Here is the share content body";
+		String shareBody = "Estoy viendo la oferta de "+placename+" en Wikout. Descárgatelo de aquí: "+"LINK";
 		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,
 				"Subject Here");
 		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);

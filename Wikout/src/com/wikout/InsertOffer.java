@@ -41,17 +41,13 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 public class InsertOffer extends ActionBarActivity {
 
-	Double latitude, longitude;
-	int enter;
-	public ActionBarActivity fio;
+	public ActionBarActivity actionbarAct;
 
-	String position;
 	ImageView ivPhoto;
 	EditText etDescription;
 	Button btnInsertCommerce, dateLimit, btnLocationCommerce;
@@ -59,41 +55,43 @@ public class InsertOffer extends ActionBarActivity {
 	TextView tvPlacenameLabel, tvPlacename, tvLocation, tvLocationLabel,tvChangeCommerce;
 	View viewCommerce;
 	// Otras variables
-	String photoPath, idoferta, idphoto = "";
+	String photoPath, idoferta, idphoto = "",photoName, url;
 
 	// Variables para controlar la fecha
-	private int year, month, day;
+	int year, month, day, existPhoto = 0, enter;
+	Double latitude, longitude;
 	private Date deadline;
 
 	// variables para control de fotografias
-	String photoName, url;
 	File photo;
-	public int existPhoto = 0;
 
 	// constantes utilizadas para lanzar intents
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	static final int LOAD_IMAGE = 3;
-
+	static final int DATE_DIALOG_ID = 999;
+	
 	// Location de prueba
 	public Location locationbm;
 	Bundle bundle;
 	// Constante para el picker
-	static final int DATE_DIALOG_ID = 999;
+	
 	final Context context = this;
 	public Intent map;
 	Util util = new Util();
 
 	// Para el bundle de ListCommerce e InsertCommerce
-	String idcommerce, location, placename, idObjectPhoto = null;
+	String idcommerce, location, placename, idObjectPhoto = null, position;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_offer);
+		
 		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
 				.getDecorView());
-		fio = this;
+		
+		actionbarAct = this;
 		util.projectData(context);
 		bundle = getIntent().getExtras();
 		initUI();
@@ -118,6 +116,7 @@ public class InsertOffer extends ActionBarActivity {
 			btnInsertCommerce.setBackgroundColor(getResources().getColor(
 					R.color.mainColor));
 		} else {
+			
 			btnLocationCommerce.setVisibility(0);
 			
 			viewCommerce.setVisibility(View.GONE);
@@ -132,7 +131,12 @@ public class InsertOffer extends ActionBarActivity {
 	}
 
 	private void initUI() {
+		
+		getSupportActionBar().setTitle("Nueva Oferta");
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		map = new Intent(getApplicationContext(), Map.class);
+		
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertOfferPhoto);
 		viewCommerce = (View) findViewById(R.id.viewCommerce);
 		tvChangeCommerce = (TextView) findViewById(R.id.tvInsertOfferChangeCommerce);
@@ -142,9 +146,8 @@ public class InsertOffer extends ActionBarActivity {
 		tvLocation = (TextView) findViewById(R.id.tvInsertOfferCommerceLocation);
 		tvLocationLabel = (TextView) findViewById(R.id.tvInsertOfferCommerceLocationlabel);
 		btnInsertCommerce = (Button) findViewById(R.id.btnInsertOfferOk);
+		
 		addListenerOnButton();
-		getSupportActionBar().setTitle("Nueva Oferta");
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setCurrentDateOnView();
 		makeTextViewHyperlink(tvChangeCommerce);
 

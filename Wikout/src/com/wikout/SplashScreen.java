@@ -9,16 +9,20 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import utils.MyLocation;
+import model.FontUtils;
 import utils.MyLocation.LocationResult;
 import utils.RateMeMaybe;
 import utils.Settings;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,8 +32,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
-public class SplashScreen extends ActionBarActivity {
+public class SplashScreen extends ActionBarActivity  implements LocationListener {
 	
 
   private static int myProgress=0;
@@ -37,10 +42,17 @@ public class SplashScreen extends ActionBarActivity {
 	private int progressStatus=0;
 	private Handler myHandler=new Handler();
 	private Context context=this;
-	 Util util;
+	public LocationResult locationResult = null;
+	Util util;
+	double lat = 0,lng=0;
 	
 	// DECLARO Strings
 	String appReqUpdate, appMinVers;
+	
+	private LocationManager locationManager;
+	private String provider;
+	Intent mainIntent =null;
+
 	
   @Override
   protected void onCreate(Bundle savedInstanceState) 
@@ -48,6 +60,10 @@ public class SplashScreen extends ActionBarActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splash_activity);
     
+    //Cambiar la fuente
+    FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
+    
+    //RateMeMaybe
     RateMeMaybe rmm = new RateMeMaybe(this);
     rmm.setPromptMinimums(10, 14, 10, 30);
     rmm.setDialogMessage("You really seem to like this app, "
@@ -56,7 +72,8 @@ public class SplashScreen extends ActionBarActivity {
     rmm.setDialogTitle("Rate this app");
     rmm.setPositiveBtn("Yeeha!");
     rmm.run();
-
+    
+    //Backbeam ProjectData
 	Backbeam.setProject("pruebaapp");
 	Backbeam.setEnvironment("dev");
 	Backbeam.setContext(context);
@@ -67,19 +84,13 @@ public class SplashScreen extends ActionBarActivity {
 	
 	//util.refreshActualOffers();
 	
-	
-	LocationResult locationResult = new LocationResult(){
-	  
-
-		@Override
-		public void gotLocation(Location location) {
-			// TODO Auto-generated method stub
+	//Get the location manager
+	getLocationMethod();
 			
-		}
-	};
-	MyLocation myLocation = new MyLocation();
+	//Alternativa al locationManager	
+/*	MyLocation myLocation = new MyLocation();
 	myLocation.getLocation(this, locationResult);
-	
+	util.logBug(locationResult.toString());*/
 	
 	
 	
@@ -91,29 +102,30 @@ public class SplashScreen extends ActionBarActivity {
     
     
     //Si no existe la referencia del tiempo LA CREO
-    System.out.println("tiempo registrado Integer: "+Settings.getTimeLastCheckVersion(context));
-    System.out.println("resta de tiempo: " +(time-Settings.getTimeLastCheckVersion(context)));
+
+    
+    //Creo el intent pa ahorrar codigo
+    Uri uri = Uri.parse("http://www.google.com");
+	final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+	
+	
+	//COMPRUEBO SI LLEVA MÁS DE 10 DIAS INSTALADA
     if(Settings.getTimeLastCheckVersion(context)==0){
     	Settings.setTimeLastCheckVersion(context, time);
-    	System.out.println("no existe ref de tiempo");
     	initUI();
+    	
     //Si existe y es mayor a 10 dias:
     }else if(time - Settings.getTimeLastCheckVersion(context)>= 864000){
-    	System.out.println("Hace tanto tiempo de la ultima vez: "+(time - Settings.getTimeLastCheckVersion(context)));
     	final Resources res = getResources();
 		
-		//
-		
-		//CONSULTA VERSIÓN
+		//CONSULTA VERSIÓN INSTALADA
 		Query query = new Query("setting");
 		query.fetch(100, 0, new FetchCallback() {
 
 			@Override
 			public void success(List<BackbeamObject> objects, int totalCount,
 					boolean fromCache) {
-
 				
-
 				// ARRAY de objetos BackBeam
 				for (BackbeamObject setting : objects) {
 
@@ -132,47 +144,46 @@ public class SplashScreen extends ActionBarActivity {
 					
 					//si obligo o no que se la descarguen
 					if(appReqUpdate.contains("true")){
+						
 						//obligo ir al market y creo el alert dialog
 						AlertDialog.Builder info = new AlertDialog.Builder(context);
-						 info.setTitle("Actualización");
+						
+						info.setTitle("Actualización");
 						info.setMessage("Existe una nueva versión de Wikout.");
     					info.setCancelable(false);
     					info.setNeutralButton("¡Descárgatela!",
     							new DialogInterface.OnClickListener() {
     								@Override
     								public void onClick(final DialogInterface dialogo1, final int id) {
-    									Uri uri = Uri.parse("http://www.google.com");
-    									Intent intent = new Intent(Intent.ACTION_VIEW, uri);
     									context.startActivity(intent);
     									android.os.Process.killProcess(android.os.Process.myPid());
     								}
-
     							});
-    					
-    					info.show();
+	    				info.show();
 						
 					}else{
 						//Sugiero ir al market
 						AlertDialog.Builder info = new AlertDialog.Builder(context);
-						 info.setTitle("Actualización");
-						 info.setMessage("Existe una actualización de Wikout.\n ¿Quieres descargártela?");
-	    					info.setCancelable(true);
-	    					info.setPositiveButton("Sí. ¡Claro!",
-	    							new DialogInterface.OnClickListener() {
-	    								@Override
-	    								public void onClick(DialogInterface dialogo1, int id) {
-	    									Uri uri = Uri.parse("http://www.google.com");
-	    									Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-	    									context.startActivity(intent);
-	    									initUI();
-	    								}});
-	    					info.setNegativeButton("Por ahora no.",
-	    							new DialogInterface.OnClickListener() {
-			    						@Override
-			    						public void onClick(DialogInterface dialogo1, int id) {
-			    							initUI();
-			    						}});
-	    					info.show();
+						
+						info.setTitle("Actualización");
+						info.setMessage("Existe una actualización de Wikout.\n ¿Quieres descargártela?");
+	    				info.setCancelable(true);
+	    				info.setPositiveButton("Sí. ¡Claro!",
+    							new DialogInterface.OnClickListener() {
+    								@Override
+    								public void onClick(DialogInterface dialogo1, int id) {
+    									context.startActivity(intent);
+    									initUI();
+    									
+    								}});
+	    				
+    					info.setNegativeButton("Por ahora no.",
+    							new DialogInterface.OnClickListener() {
+		    						@Override
+		    						public void onClick(DialogInterface dialogo1, int id) {
+		    							initUI();
+		    						}});
+    					info.show();
 					}}}});
     	
     	
@@ -187,6 +198,27 @@ public class SplashScreen extends ActionBarActivity {
     
   
   }
+
+	private void getLocationMethod() {
+		//COJO EL PROVEEDOR DE LOCALIZACIONES (GPS Y EL PROVEEDOR DE LA RED)
+		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+		locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+		locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+		// Define the criteria how to select the locatioin provider -> use
+		// default
+		Criteria criteria = new Criteria();
+		provider = locationManager.getBestProvider(criteria, false);
+		Location location = locationManager.getLastKnownLocation(provider);
+
+		// Initialize the location fields
+		if (location != null) {
+			System.out.println("Provider " + provider + " has been selected.");
+			onLocationChanged(location);
+		} else {
+			System.out.println("Location not available");
+			System.out.println("Location not available");
+		}
+}
 
 	/**
 	 * A placeholder fragment containing a simple view.
@@ -211,18 +243,23 @@ public class SplashScreen extends ActionBarActivity {
 	  TimerTask task = new TimerTask(){
 		 @Override
 		 public void run(){
+			//METODO COMENTADO--> DA PROBLEMAS. 
 			// beginYourTask();
-	        Intent mainIntent = new Intent().setClass(SplashScreen.this, Map.class);
-	        
-	     startActivity(mainIntent);
+
+			 
+	        mainIntent = new Intent().setClass(SplashScreen.this, Map.class);
+	        mainIntent.putExtra("latitudSplash", lat);
+			mainIntent.putExtra("longitudSplash", lng);
+			startActivity(mainIntent);
 	        finish();   
 		 }
 	  };
-
 	  Timer timer = new Timer();
-	  timer.schedule(task, 3000);//after 6 seconds throws the task.
+	  timer.schedule(task, 3000);//after 3 seconds throws the task.
   
   }
+  
+  //COMPROBAR METODOS:
   public void beginYourTask()
   {
   	myProgress=0;
@@ -264,4 +301,52 @@ public class SplashScreen extends ActionBarActivity {
 			}
 		}).start();
  }
+  
+
+
+	
+
+	/* Request updates at startup */
+	@Override
+	protected void onResume() {
+		super.onResume();
+		locationManager.requestLocationUpdates(provider, 10, 1, this);
+	}
+
+	/* Remove the locationlistener updates when Activity is paused */
+	@Override
+	protected void onPause() {
+		super.onPause();
+		locationManager.removeUpdates(this);
+	}
+
+	@Override
+	public void onLocationChanged(Location location) {
+		lat = location.getLatitude();
+		lng = location.getLongitude();
+		
+		System.out.println(String.valueOf(lat));
+		System.out.println(String.valueOf(lng));
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		Toast.makeText(this, "Enabled new provider " + provider,
+				Toast.LENGTH_SHORT).show();
+
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		Toast.makeText(this, "Disabled provider " + provider,
+				Toast.LENGTH_SHORT).show();
+	}
+
+  
 }
