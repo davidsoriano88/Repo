@@ -45,6 +45,8 @@ public class Mapv2 extends ActionBarActivity {
 	LocationClient mLocationClient;
     Context context;  
     boolean enableOk = false;
+	protected SharedPreferences prefers;
+	protected double userlat, userlon;
     public static ActionBarActivity fa;
     
     
@@ -288,15 +290,22 @@ public class Mapv2 extends ActionBarActivity {
 
 		@Override
 		public void onLocationChanged(Location locationn) {
-			double lat = location.getLatitude();
-			double lon = location.getLongitude();
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString("latpos", String.valueOf(lat)); 
-			editor.putString("longpos", String.valueOf(lon));
-			editor.commit();
-			
-			locationManager.removeUpdates(listener);	
+		       System.out.println("Location = " + location);
+		       userlat = location.getLatitude();
+				 userlon = location.getLongitude();
+				 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+						 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+						SharedPreferences.Editor editor = prefers.edit();
+						editor.putFloat("latpos", (float) userlat);
+						editor.putFloat("longpos", (float) userlon);
+						editor.commit();
+				}else{
+					prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+					SharedPreferences.Editor editor = prefers.edit();
+					editor.putFloat("latpos", (float) userlat);
+					editor.putFloat("longpos", (float) userlon);
+					editor.commit();
+				}
 		}
 	};
 }

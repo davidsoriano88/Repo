@@ -21,6 +21,7 @@
     <string name="location">Ubicación: </string>
     <string name="ok">OK!</string>
     <string name="report">Denunciar oferta</string>
+    <string name="my_location">Localizarme</string>
 
     <string-array name="categorias">
         <item>ocio</item>

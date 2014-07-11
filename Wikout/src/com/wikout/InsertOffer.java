@@ -8,9 +8,11 @@ import io.backbeam.Location;
 import io.backbeam.ObjectCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import model.FontUtils;
 import utils.Photo;
@@ -25,6 +27,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -41,6 +45,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -54,12 +59,14 @@ public class InsertOffer extends ActionBarActivity {
 	Spinner spnCategory;
 	TextView tvPlacenameLabel, tvPlacename, tvLocation, tvLocationLabel,tvChangeCommerce;
 	View viewCommerce;
+	
+	LinearLayout layoutInsertOfferCommerce,layoutInsertOfferSelectCommerce;
 	// Otras variables
 	String photoPath, idoferta, idphoto = "",photoName, url;
 
 	// Variables para controlar la fecha
 	int year, month, day, existPhoto = 0, enter;
-	Double latitude, longitude;
+	Double userlat, userlon;
 	private Date deadline;
 
 	// variables para control de fotografias
@@ -81,13 +88,15 @@ public class InsertOffer extends ActionBarActivity {
 
 	// Para el bundle de ListCommerce e InsertCommerce
 	String idcommerce, location, placename, idObjectPhoto = null, position;
+	SharedPreferences prefers = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_offer);
-		
+		setSupportProgressBarIndeterminateVisibility(true);
+		//prefers = PreferenceManager.getDefaultSharedPreferences(context);
 		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
 				.getDecorView());
 		
@@ -101,14 +110,16 @@ public class InsertOffer extends ActionBarActivity {
 			placename = bundle.getString("placename");
 			location = bundle.getString("location");
 
-			btnLocationCommerce.setVisibility(View.GONE);
-
-			tvChangeCommerce.setVisibility(0);
+			layoutInsertOfferSelectCommerce.setVisibility(View.GONE);
+			
+			layoutInsertOfferCommerce.setVisibility(0);
+			
+		/*	tvChangeCommerce.setVisibility(0);
 			tvPlacename.setVisibility(0);
 			tvPlacenameLabel.setVisibility(0);
 			tvLocation.setVisibility(0);
 			tvLocationLabel.setVisibility(0);
-			viewCommerce.setVisibility(0);
+			viewCommerce.setVisibility(0);*/
 
 			tvPlacename.setText(placename);
 			tvLocation.setText(location);
@@ -117,15 +128,17 @@ public class InsertOffer extends ActionBarActivity {
 					R.color.mainColor));
 		} else {
 			
-			btnLocationCommerce.setVisibility(0);
 			
-			viewCommerce.setVisibility(View.GONE);
+			layoutInsertOfferSelectCommerce.setVisibility(0);
+			layoutInsertOfferCommerce.setVisibility(View.GONE);
+			
+		/*	viewCommerce.setVisibility(View.GONE);
 			tvChangeCommerce.setVisibility(View.GONE);
 			tvPlacename.setVisibility(View.GONE);
 			tvPlacenameLabel.setVisibility(View.GONE);
 			tvLocation.setVisibility(View.GONE);
 			tvLocationLabel.setVisibility(View.GONE);
-
+*/
 			
 		}
 	}
@@ -137,6 +150,8 @@ public class InsertOffer extends ActionBarActivity {
 		
 		map = new Intent(getApplicationContext(), Map.class);
 		
+		layoutInsertOfferSelectCommerce= (LinearLayout)findViewById(R.id.layoutInsertOfferSelectCommerce);
+		layoutInsertOfferCommerce = (LinearLayout)findViewById(R.id.layoutInsertOfferCommerce);
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertOfferPhoto);
 		viewCommerce = (View) findViewById(R.id.viewCommerce);
 		tvChangeCommerce = (TextView) findViewById(R.id.tvInsertOfferChangeCommerce);
@@ -234,7 +249,7 @@ public class InsertOffer extends ActionBarActivity {
 							"Es necesaria conexión a internet");
 				}
 			}
-		});
+		});setSupportProgressBarIndeterminateVisibility(false);
 
 	}
 
@@ -248,20 +263,30 @@ public class InsertOffer extends ActionBarActivity {
 					@Override
 					public void onClick(DialogInterface dialogo1, int id) {
 						enter = 0;
-						SharedPreferences prefs = PreferenceManager
-								.getDefaultSharedPreferences(context);
 
-						String myLatitude = prefs.getString("latpos", "no id");
-						latitude = Double.parseDouble(myLatitude);
-						String myLongitude = prefs
-								.getString("longpos", "no id");
-						longitude = Double.parseDouble(myLongitude);
+						if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+							prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+						} else {
+							prefers = getSharedPreferences("MisPreferencias",
+									Context.MODE_PRIVATE);
+
+						}
+
+						// prefers =
+						// PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+						System.out.println("PREFERS LAT: "
+								+ prefers.getFloat("latpos", 0));
+						System.out.println("PREFERS LON: "
+								+ prefers.getFloat("longpos", 0));
+						userlat = (double) prefers.getFloat("latpos", 0);
+						userlon = (double) prefers.getFloat("longpos", 0);
 						// btnLocation.setText(latitude +","+longitude);
 						// util.showToast(context,latitude+","+longitude);
 						Intent listCommerce = new Intent(context,
 								CommerceList.class);
-						listCommerce.putExtra("pointlat", latitude);
-						listCommerce.putExtra("pointlon", longitude);
+						listCommerce.putExtra("pointlat", userlat);
+						listCommerce.putExtra("pointlon", userlon);
 						startActivityForResult(listCommerce, 30);
 					}
 
@@ -543,16 +568,35 @@ public class InsertOffer extends ActionBarActivity {
 			idcommerce = commerce.getString("idcommerce");
 			placename = commerce.getString("placename");
 			location = commerce.getString("location");
+			System.out.println("commercelat: "+commerce.getDouble("commercelat")+"\ncommercelon: "+commerce.getDouble("commercelon"));
+			/*Geocoder geocoder = new Geocoder(context);
+			List<Address> addresses = null;
+			
+			try {
+				addresses = geocoder.getFromLocation(commerce.getDouble("commercelat"), commerce.getDouble("commercelon"), 1);
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			String address = addresses.get(0).getAddressLine(0);
+			String city = addresses.get(0).getAddressLine(1);
+			String country = addresses.get(0).getAddressLine(2);
+			util.log("pancratio: "+address + city + country);
+			tvLocation.setText(address+"\n"+city+", "+country);
+			*/
 			tvPlacename.setText(placename);
 			tvLocation.setText(location);
-			btnLocationCommerce.setVisibility(View.GONE);
-
-			viewCommerce.setVisibility(0);
+			//btnLocationCommerce.setVisibility(View.GONE);
+			layoutInsertOfferSelectCommerce.setVisibility(View.GONE);
+			layoutInsertOfferCommerce.setVisibility(0);
+			/*viewCommerce.setVisibility(0);
 			tvChangeCommerce.setVisibility(0);
 			tvPlacename.setVisibility(0);
 			tvPlacenameLabel.setVisibility(0);
 			tvLocation.setVisibility(0);
-			tvLocationLabel.setVisibility(0);
+			tvLocationLabel.setVisibility(0);*/
 			if (tvPlacename.getText().length() != 0) {
 				btnInsertCommerce.setBackgroundColor(getResources().getColor(
 						R.color.mainColor));

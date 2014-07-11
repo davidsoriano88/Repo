@@ -40,7 +40,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.view.Window;
@@ -48,19 +47,24 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
+import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
@@ -69,7 +73,11 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Map extends ActionBarActivity {
+public class Map extends ActionBarActivity implements
+ConnectionCallbacks,
+OnConnectionFailedListener,
+LocationListener,
+OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListener {
 
 	//COMPONENTES
 	ImageView filterView;
@@ -83,19 +91,26 @@ public class Map extends ActionBarActivity {
 	private GoogleMap map;
 	private Marker markB, markG;
 	private LocationManager locationManager;
+    private LocationClient mLocationClient;
 	private Location location;
 	private Handler handler = new Handler();
+	private SharedPreferences prefers;
 	
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
 	protected AsyncTask<Void, Integer, Boolean> asyncBackbeam;
 	protected long snap = System.currentTimeMillis();
+	
+	private static final LocationRequest REQUEST = LocationRequest.create()
+            .setInterval(5000)         // 5 seconds
+            .setFastestInterval(16)    // 16ms = 60fps
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 	
 	private Context context;
 	
 	Util util = new Util();
 	
 	String title, finalId, option, filter, searchResult;
-	double longitudeSW, latitudeSW, longitudeNE, latitudeNE,latitudeSplash=0,longitudeSplash=0;
+	double longitudeSW, latitudeSW, longitudeNE, latitudeNE,latitudeSplash=0,longitudeSplash=0,userlat, userlon;
 	protected int mDpi = 0;
 	//LocationClient locationClient;
 	
@@ -104,7 +119,7 @@ public class Map extends ActionBarActivity {
 						idcommerceonmap = new ArrayList<String>(),
 						idMarker = new ArrayList<String>();
 	
-	InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+	
 	
 	
 	@Override
@@ -114,8 +129,8 @@ public class Map extends ActionBarActivity {
 		//Componentes de pantalla
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.fragment_main);
-		FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
 		context = this;
+		FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
 		mDpi = getResources().getDisplayMetrics().densityDpi;
 
 		//Recojo Bundle
@@ -125,19 +140,38 @@ public class Map extends ActionBarActivity {
 		
 		//Datos Backbeam
 		util.projectData(context);
-
+		
 		initUI();
+		
+		
+
+		
 
 	}
+	
+
+
+
 
 	public void initUI() {
 
 		//ProgressBar
 		setSupportProgressBarIndeterminateVisibility(true);
-
+		
+        // Do a null check to confirm that we have not already instantiated the map.
+        if (map == null) {
+            // Try to obtain the map from the SupportMapFragment.
+            map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
+                    .getMap();
+            // Check if we were successful in obtaining the map.
+            if (map != null) {
+                map.setMyLocationEnabled(true);
+                map.setOnMyLocationButtonClickListener(this);
+                map.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+        }
 		//Identifico componentes de pantalla
-		map = ((SupportMapFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.map)).getMap();
+		//map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		lvDrawer = (ListView) findViewById(R.id.left_drawer);
@@ -149,7 +183,12 @@ public class Map extends ActionBarActivity {
 		String[] navMenuTitles = getResources().getStringArray(R.array.options);
 		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
 		
-		map.setMyLocationEnabled(true);
+		
+        setUpLocationClientIfNeeded();
+        mLocationClient.connect();
+		
+        
+        //map.setMyLocationEnabled(true);
 		filterVisible(false);
 
 		
@@ -178,12 +217,14 @@ public class Map extends ActionBarActivity {
 		// asignamos la funcionalidad drawerToggle:
 		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		drawerLayout, /* DrawerLayout object */
-		R.drawable.menubutton, /* nav drawer image to replace 'Up'caret */
+		R.drawable.ic_navigation_drawer, /* nav drawer image to replace 'Up'caret */
 		R.string.oferta, /* "open drawer" description for accessibility */
 		R.string.hello_world /* "close drawer" description for accessibility */
 		);
 		// prueba.setDrawerIndicatorEnabled(true);
 		drawerLayout.setDrawerListener(drawerToggle);
+		
+		final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		// establecemos las opciones del menu deslizable:
 		lvDrawer.setOnItemClickListener(new OnItemClickListener() {
@@ -265,6 +306,7 @@ public class Map extends ActionBarActivity {
 				if ((event.getAction() == KeyEvent.ACTION_DOWN)&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on key press
 					filter = null;
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					searchResult = etSearch.getText().toString();
 					imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
 					tvFilterText.setText("Buscando por: " + etSearch.getText());
@@ -294,7 +336,9 @@ public class Map extends ActionBarActivity {
 
 		});
 
-		viewPort();
+		//viewPort();
+
+		
 
 	}
 
@@ -423,12 +467,151 @@ public class Map extends ActionBarActivity {
 		});
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
+	@Override
+    public void onPause() {
+        super.onPause();
+        if (mLocationClient != null) {
+            mLocationClient.disconnect();
+        }
+    }
+
+
+
+    private void setUpLocationClientIfNeeded() {
+        if (mLocationClient == null) {
+            mLocationClient = new LocationClient(
+                    getApplicationContext(),
+                    this,  // ConnectionCallbacks
+                    this); // OnConnectionFailedListener
+        }
+    }
+
+    /**
+     * Button to get current Location. This demonstrates how to get the current Location as required
+     * without needing to register a LocationListener.
+     */
+    public void showMyLocation(View view) {
+        if (mLocationClient != null && mLocationClient.isConnected()) {
+            String msg = "Location = " + mLocationClient.getLastLocation();
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Implementation of {@link LocationListener}.
+     */
+    @Override
+    public void onLocationChanged(Location location) {
+       System.out.println("Location = " + location);
+       userlat = location.getLatitude();
+		 userlon = location.getLongitude();
+		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+				 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+				SharedPreferences.Editor editor = prefers.edit();
+				editor.putFloat("latpos", (float) userlat);
+				editor.putFloat("longpos", (float) userlon);
+				editor.commit();
+		}else{
+			prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefers.edit();
+			editor.putFloat("latpos", (float) userlat);
+			editor.putFloat("longpos", (float) userlon);
+			editor.commit();
+		}
+
+		System.out.println("PREFS: "+prefers.getFloat("latpos", 0));
+
+    }
+
+    /**
+     * Callback called when connected to GCore. Implementation of {@link ConnectionCallbacks}.
+     */
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        mLocationClient.requestLocationUpdates(
+                REQUEST,
+                 this);  // LocationListener
+		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation().getLongitude()),15.0F));
+
+		CameraPosition cameraPosition = new CameraPosition.Builder()
+				.target(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation()
+						.getLongitude())) // Sets the center of the map to
+											// location user
+				.zoom(15.0F) // Sets the zoom
+				.build(); // Creates a CameraPosition from the builder
+		map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+		map.setOnCameraChangeListener(new OnCameraChangeListener() {
+
+			@Override
+			public void onCameraChange(CameraPosition position) {
+
+				snap = System.currentTimeMillis();
+				handler.removeCallbacks(runnable, null);
+				handler.postDelayed(runnable, 500);
+
+			}
+
+		});
+		setSupportProgressBarIndeterminateVisibility(false);
+    }
+
+    /**
+     * Callback called when disconnected from GCore. Implementation of {@link ConnectionCallbacks}.
+     */
+    @Override
+    public void onDisconnected() {
+        // Do nothing
+    }
+
+    /**
+     * Implementation of {@link OnConnectionFailedListener}.
+     */
+    @Override
+    public void onConnectionFailed(ConnectionResult result) {
+        // Do nothing
+    }
+
+    @Override
+    public boolean onMyLocationButtonClick() {
+        System.out.println("Location = " + location);
+        
+ 		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+ 			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+ 			locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+ 			locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+ 			// Define the criteria how to select the locatioin provider -> use
+ 			// default
+ 			Criteria criteria = new Criteria();
+ 			String provider = locationManager.getBestProvider(criteria, false);
+ 			Location location = locationManager.getLastKnownLocation(provider);
+
+ 			// Initialize the location fields
+ 			if (location != null) {
+ 				System.out.println("Provider " + provider + " has been selected.");
+ 				System.out.println(location.getLatitude() +" "+ location.getLongitude());
+ 				onLocationChanged(location);
+ 			} else {
+ 				System.out.println("Location not available");
+ 				System.out.println("Location not available");
+ 			}
+ 			userlat = location.getLatitude();
+ 	 		 userlon = location.getLongitude();
+ 	 		 System.out.println(userlat+" "+userlon);
+ 				 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+ 				SharedPreferences.Editor editor = prefers.edit();
+ 				editor.putFloat("latpos", (float) userlat);
+ 				editor.putFloat("longpos", (float) userlon);
+ 				editor.commit();
+ 		}
+        // Return false so that we don't consume the event and the default behavior still occurs
+        // (the camera animates to the user's current position).
+        return false;
+    }
 
 	private Runnable runnable = new Runnable() {
 		@Override
 		public void run() {
 			/* do what you need to do */
-			System.out.println(System.currentTimeMillis() - snap);
 
 			LatLngBounds curScreen = map.getProjection().getVisibleRegion().latLngBounds;
 			latitudeNE = curScreen.northeast.latitude;
@@ -466,15 +649,25 @@ public class Map extends ActionBarActivity {
 		}
 
 		@Override
-		public void onLocationChanged(Location locationn) {
-			double lat = location.getLatitude();
-			double lon = location.getLongitude();
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context);
-			SharedPreferences.Editor editor = prefs.edit();
-			editor.putString("latpos", String.valueOf(lat));
-			editor.putString("longpos", String.valueOf(lon));
-			editor.commit();
+		public void onLocationChanged(Location location) {
+			
+		       System.out.println("Location = " + location);
+		       userlat = location.getLatitude();
+				 userlon = location.getLongitude();
+				 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+						 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+						SharedPreferences.Editor editor = prefers.edit();
+						editor.putFloat("latpos", (float) userlat);
+						editor.putFloat("longpos", (float) userlon);
+						editor.commit();
+				}else{
+					prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+					SharedPreferences.Editor editor = prefers.edit();
+					editor.putFloat("latpos", (float) userlat);
+					editor.putFloat("longpos", (float) userlon);
+					editor.commit();
+				}
+
 
 			locationManager.removeUpdates(listener);
 
@@ -537,16 +730,7 @@ public class Map extends ActionBarActivity {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			
-			//MARCADORES BACKBEAM
-			map.clear();
-			// Nombre Comercio
-			placeName.clear();
-			// Id Comercio
-			idcommerce.clear();
-			// Id Marcador
-			idMarker.clear();
-			// ID comercios encuadrados
-			idcommerceonmap.clear();
+			
 			util.log("recorremos post execute mydata");
 			util.log("filtro: " + filter + " busqueda: " + searchResult);
 			if (filter == null && searchResult == null) {
@@ -561,7 +745,16 @@ public class Map extends ActionBarActivity {
 							@Override
 							public void success(List<BackbeamObject> commerces,
 									int totalCount, boolean fromCache) {
-
+								//MARCADORES BACKBEAM
+								map.clear();
+								// Nombre Comercio
+								placeName.clear();
+								// Id Comercio
+								idcommerce.clear();
+								// Id Marcador
+								idMarker.clear();
+								// ID comercios encuadrados
+								idcommerceonmap.clear();
 								util.log("map clear mydata");
 								for (final BackbeamObject object : commerces) {
 									
@@ -767,12 +960,12 @@ public class Map extends ActionBarActivity {
 																+ marker.getTitle());
 														info.putExtra("id",
 																finalId);
-														info.putExtra(
-																"latitude",
-																location.getLatitude());
-														info.putExtra(
-																"longitude",
-																location.getLongitude());
+														
+														if (mLocationClient != null && mLocationClient.isConnected()) {
+												            info.putExtra("location", mLocationClient.getLastLocation().toString());
+												            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
+															info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
+												        }
 														if (isNetworkAvailable() == true) {
 															startActivity(info);
 														} else {
@@ -796,15 +989,7 @@ public class Map extends ActionBarActivity {
 			} else if (searchResult == null) {
 				// filterQuery(filter);
 				final Intent info = new Intent(context, OfferList.class);
-				map.clear();
-				// Nombre Comercio
-				placeName.clear();
-				// Id Comercio
-				idcommerce.clear();
-				// Id Marcador
-				idMarker.clear();
-				// ID comercios encuadrados
-				idcommerceonmap.clear();
+				
 				Query query = new Query("commerce");
 				query.bounding("placelocation", latitudeSW, longitudeSW,
 						latitudeNE, longitudeNE, 40, new FetchCallback() {
@@ -813,7 +998,15 @@ public class Map extends ActionBarActivity {
 							public void success(List<BackbeamObject> objects,
 									int totalCount, boolean fromCache) {
 
-								
+								map.clear();
+								// Nombre Comercio
+								placeName.clear();
+								// Id Comercio
+								idcommerce.clear();
+								// Id Marcador
+								idMarker.clear();
+								// ID comercios encuadrados
+								idcommerceonmap.clear();
 
 								util.log("map clear mydata");
 								for (final BackbeamObject object : objects) {
@@ -1014,6 +1207,11 @@ public class Map extends ActionBarActivity {
 																+ marker.getTitle());
 														info.putExtra("id",
 																finalId);
+														if (mLocationClient != null && mLocationClient.isConnected()) {
+												            info.putExtra("location", mLocationClient.getLastLocation().toString());
+												            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
+															info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
+												        }
 														if (isNetworkAvailable() == true) {
 															startActivity(info);
 														} else {
@@ -1038,15 +1236,7 @@ public class Map extends ActionBarActivity {
 				// commercesOnMap(searchResult);
 
 				final Intent info = new Intent(context, OfferList.class);
-				map.clear();
-				// Nombre Comercio
-				placeName.clear();
-				// Id Comercio
-				idcommerce.clear();
-				// Id Marcador
-				idMarker.clear();
-				// ID comercios encuadrados
-				idcommerceonmap.clear();
+				
 
 				util.log("fff ha entrado en la funcion busqueda(1)");
 				Query queryCommerce = new Query("commerce");
@@ -1055,6 +1245,15 @@ public class Map extends ActionBarActivity {
 							@Override
 							public void success(List<BackbeamObject> objects,
 									int totalCount, boolean fromCache) {
+								map.clear();
+								// Nombre Comercio
+								placeName.clear();
+								// Id Comercio
+								idcommerce.clear();
+								// Id Marcador
+								idMarker.clear();
+								// ID comercios encuadrados
+								idcommerceonmap.clear();
 								System.out.println("Numero de comercios con '"
 										+ searchResult + "': " + totalCount);
 								for (BackbeamObject commerce : objects) {
@@ -1291,6 +1490,11 @@ public class Map extends ActionBarActivity {
 																	+ marker.getTitle());
 															info.putExtra("id",
 																	finalId);
+															if (mLocationClient != null && mLocationClient.isConnected()) {
+													            info.putExtra("location", mLocationClient.getLastLocation().toString());
+													            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
+																info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
+													        }
 															if (isNetworkAvailable() == true) {
 																startActivity(info);
 															} else {
@@ -1357,8 +1561,26 @@ public class Map extends ActionBarActivity {
 
 	@Override
 	protected void onRestart() {
-		super.onRestart();
-		new MyData().execute();
+		super.onResume();
+		//new MyData().execute();
+	}
+
+	@Override
+	public void onStatusChanged(String provider, int status, Bundle extras) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderEnabled(String provider) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onProviderDisabled(String provider) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

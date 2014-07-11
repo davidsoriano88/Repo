@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.TreeMap;
 
 
+
+
+
 import model.FontUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -60,7 +63,7 @@ public class ViewOffer extends ActionBarActivity {
 	ImageView ivPhoto;
 	ImageButton btnRoute;
 	View viewLike;
-	Context context;
+	Context context = this;
 	Util util = new Util();
 	
 	String idofferparameter = "",idcommerceparameter = "", placename = "";
@@ -70,22 +73,33 @@ public class ViewOffer extends ActionBarActivity {
 	//lastlike FALSE: Si pulsa el boton DISLIKE, inserta STATUSLIKE "0"
 	int numbubble = 0;
 	protected boolean enableOk=true;
-	double latitude, longitude,commercelat, commercelon;
+	double userlat, userlon,commercelat, commercelon;
+	String userlocation;
 	
 	//Radio de la tierra (en metros)
 	final static double radio = 6371000;
 	final static double distancedouble = 0;
-	
+	SharedPreferences prefers = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.view_offer);
-		context=this;
+		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
+				.getDecorView());
+		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		 }else{
+		prefers=getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+		 }
 		util.projectData(context);
-
-		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context).getWindow().getDecorView());
+	//	prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		System.out.println("PREFERS LAT: "+String.valueOf(prefers.getFloat("latpos", 0)));
+		System.out.println("PREFERS LON: "+String.valueOf(prefers.getFloat("longpos", 0)));
+		userlat = (double)prefers.getFloat("latpos", 0);
+		userlon = (double)prefers.getFloat("longpos", 0);
+		System.out.println(" LAT: "+userlat);
 		//util.showProgressDialog(context, 1900);
 		initUi();
 		initQueries();
@@ -97,9 +111,10 @@ public class ViewOffer extends ActionBarActivity {
 		Bundle bundle = getIntent().getExtras();
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
-		latitude = bundle.getDouble("latitude");
-		longitude = bundle.getDouble("longitude");
 		placename = bundle.getString("placename");
+		userlocation = bundle.getString("userlocation");
+		//userlon = bundle.getDouble("userlongitude");
+		//userlat  = bundle.getDouble("userlatitude");
 		
 		new LoadDataTask().execute();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -113,6 +128,7 @@ public class ViewOffer extends ActionBarActivity {
 			@Override
 			public void success(BackbeamObject offer) {
 				tvDescription.setText(offer.getString("description"));
+				
 				if(offer.getNumber("numlike").intValue()==0){
 					//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
 					tvNumLike.setVisibility(View.GONE);
@@ -151,47 +167,28 @@ public class ViewOffer extends ActionBarActivity {
 				
 				String creation = df4.format(offer.getDate("offercreationdate"));
 				tvCreationDate.setText("Creado el: "+creation);
+				
+				
+				
+				
 				// Tengo que leer el objeto commerce para poder acceder a sus datos
 				Backbeam.read("commerce", offer.getObject("commerce").getId(), new ObjectCallback() {
 					@Override
 					public void success(BackbeamObject commerce) {
-						
+
+						tvLocation.setText("¿Dónde está?\n"+commerce.getLocation("placelocation").getAddress().toString());
+						commercelat=commerce.getLocation("placelocation").getLatitude();
+						commercelon=commerce.getLocation("placelocation").getLongitude();
 						// paso la dirección/coordenadas al textView correspondiente
 						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
 								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/
 						//tvLocation.setText(commerce.getLocation("placelocation").getAddress());
 						//**********************************************************
-						Geocoder geocoder;
-						List<Address> addresses = null;
-						geocoder = new Geocoder(context);
-						try {
-							addresses = geocoder.getFromLocation(commerce.getLocation("placelocation").getLatitude(), commerce.getLocation("placelocation").getLongitude(), 1);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
-						String address = addresses.get(0).getAddressLine(0);
-						String city = addresses.get(0).getAddressLine(1);
-						String country = addresses.get(0).getAddressLine(2);
-						util.log("pancratio: "+address + city + country);
-						tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
-				
-						//***********************************************************
-						//Recibo las coordenadas del usuario para poder calcular la distancia hasta el Commerce
-						SharedPreferences prefers = PreferenceManager.getDefaultSharedPreferences(context);
-						String myLatitude = prefers.getString("latpos", "null");
-						String myLongitude = prefers.getString("longpos", "null");
-						double latitude = Double.parseDouble(myLatitude);
-						double longitude = Double.parseDouble(myLongitude);
-						commercelat=commerce.getLocation("placelocation").getLatitude();
-						commercelon=commerce.getLocation("placelocation").getLongitude();
+						System.out.println("DIST:"+"\nuserlat: "+userlat+"\nuserlong: "+userlon
+								+"\ncommercelat: "+commercelat+"\ncommercelon: "+commercelon);
 						
 						//Mando latitud y long del usuario y del comercio para calcular la distancia
-						haversine(commerce.getLocation("placelocation").getLatitude(),
-								commerce.getLocation("placelocation").getLongitude(), 
-								latitude, 
-								longitude);
+						haversine(commercelat,commercelon,userlat,userlon);
 						//Habilito el boton para que el usuario pueda hacer like.
 //					btnLike.setEnabled(true);
 						}});
@@ -273,6 +270,9 @@ public class ViewOffer extends ActionBarActivity {
 
 	private void initUi() {
 		setSupportProgressBarIndeterminateVisibility(true);
+		
+		//FontUtils.setRobotoFont(getApplicationContext(), (ViewGroup) ((Activity) getApplicationContext()).getWindow().getDecorView());
+		
 		// EDITEXTS
 		tvDescription = (TextView) findViewById(R.id.tvViewOfferDescription);
 		tvDeadline = (TextView) findViewById(R.id.tvViewOfferDeadline);
@@ -336,7 +336,7 @@ public class ViewOffer extends ActionBarActivity {
 								@Override
 								public void onClick(DialogInterface dialogo1, int id) {
 									
-									String url = "http://maps.google.com/maps?saddr="+latitude+","+longitude+"&daddr="+commercelat+","+commercelon+"&dirflg=w";
+									String url = "http://maps.google.com/maps?saddr="+userlat+","+userlon+"&daddr="+commercelat+","+commercelon+"&dirflg=w";
 									Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url)); 
 									intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
 									startActivity(intent); 
@@ -348,7 +348,7 @@ public class ViewOffer extends ActionBarActivity {
 							new DialogInterface.OnClickListener() {
 								@Override
 								public void onClick(DialogInterface dialogo1, int id) {
-									String url = "http://maps.google.com/maps?saddr="+latitude+","+longitude+"&daddr="+commercelat+","+commercelon+"&dirflg=d";
+									String url = "http://maps.google.com/maps?saddr="+userlat+","+userlon+"&daddr="+commercelat+","+commercelon+"&dirflg=d";
 									Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(url)); 
 									intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
 									startActivity(intent); 

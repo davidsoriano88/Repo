@@ -1,9 +1,6 @@
 package com.wikout;
 
-import io.backbeam.Backbeam;
-import io.backbeam.BackbeamObject;
-import io.backbeam.FetchCallback;
-import io.backbeam.Query;
+import io.backbeam.*;
 
 import java.util.List;
 import java.util.Timer;
@@ -11,13 +8,13 @@ import java.util.TimerTask;
 
 import model.FontUtils;
 import utils.MyLocation.LocationResult;
-import utils.RateMeMaybe;
 import utils.Settings;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.location.Criteria;
 import android.location.Location;
@@ -25,23 +22,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-public class SplashScreen extends ActionBarActivity  implements LocationListener {
+public class SplashScreen extends Activity  implements LocationListener {
 	
 
-  private static int myProgress=0;
-	private ProgressBar progressBar;
-	private int progressStatus=0;
-	private Handler myHandler=new Handler();
-	private Context context=this;
+  private Context context=this;
 	public LocationResult locationResult = null;
 	Util util;
 	double lat = 0,lng=0;
@@ -59,19 +45,22 @@ public class SplashScreen extends ActionBarActivity  implements LocationListener
   {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.splash_activity);
-    
+ // Set portrait orientation
+    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    // Hide title bar   
+    //requestWindowFeature(Window.FEATURE_NO_TITLE);
     //Cambiar la fuente
     FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
     
-    //RateMeMaybe
-    RateMeMaybe rmm = new RateMeMaybe(this);
+ /*/RateMeMaybe
+    RateMeMaybe rmm = new RateMeMaybe((FragmentActivity) getApplicationContext());
     rmm.setPromptMinimums(10, 14, 10, 30);
     rmm.setDialogMessage("You really seem to like this app, "
                     +"since you have already used it %totalLaunchCount% times! "
                     +"It would be great if you took a moment to rate it.");
     rmm.setDialogTitle("Rate this app");
     rmm.setPositiveBtn("Yeeha!");
-    rmm.run();
+    rmm.run();*/
     
     //Backbeam ProjectData
 	Backbeam.setProject("pruebaapp");
@@ -81,19 +70,13 @@ public class SplashScreen extends ActionBarActivity  implements LocationListener
 	Backbeam.setSharedKey("dev_56862947719ac4db38049d3afa2b68a78fb3b9a9");
 	Backbeam.setSecretKey("dev_f69ccffe433e069c591151c93281ba6b14455a535998d7b29ca789add023ad5e4bab596eb88815cb");
 	
-	
+	//METODO PARA ACTUALIZAR
 	//util.refreshActualOffers();
 	
 	//Get the location manager
 	getLocationMethod();
 			
-	//Alternativa al locationManager	
-/*	MyLocation myLocation = new MyLocation();
-	myLocation.getLocation(this, locationResult);
-	util.logBug(locationResult.toString());*/
-	
-	
-	
+
 	
     //CREO LA REFERENCIA de TIEMPO
     int time = (int) (System.currentTimeMillis()/1000);
@@ -190,10 +173,7 @@ public class SplashScreen extends ActionBarActivity  implements LocationListener
     }else{
     	initUI();
     }
-    if (savedInstanceState == null) {
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.container, new PlaceholderFragment()).commit();
-	}
+
     
     
   
@@ -213,6 +193,7 @@ public class SplashScreen extends ActionBarActivity  implements LocationListener
 		// Initialize the location fields
 		if (location != null) {
 			System.out.println("Provider " + provider + " has been selected.");
+			System.out.println(location.getLatitude() +" "+ location.getLongitude());
 			onLocationChanged(location);
 		} else {
 			System.out.println("Location not available");
@@ -220,31 +201,15 @@ public class SplashScreen extends ActionBarActivity  implements LocationListener
 		}
 }
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
 
-		public PlaceholderFragment() {
-		}
-
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.splash_screen, container,
-					false);
-			return rootView;
-		}
-	}
   
   
   public void initUI(){
-	  progressBar=(ProgressBar)findViewById(R.id.Initprogress);
-	  TimerTask task = new TimerTask(){
+	 TimerTask task = new TimerTask(){
 		 @Override
 		 public void run(){
 			//METODO COMENTADO--> DA PROBLEMAS. 
-			// beginYourTask();
+			//beginYourTask();Map.class
 
 			 
 	        mainIntent = new Intent().setClass(SplashScreen.this, Map.class);
@@ -259,50 +224,7 @@ public class SplashScreen extends ActionBarActivity  implements LocationListener
   
   }
   
-  //COMPROBAR METODOS:
-  public void beginYourTask()
-  {
-  	myProgress=0;
-     
-      progressBar.setMax(500);
-      
-      new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				while(progressStatus<500)
-				{
-					progressStatus=performTask();
-					myHandler.post(new Runnable()
-					{
-					public void run() {
-					progressBar.setProgress(progressStatus);
-					}
-					});
-					
-				}
-				myHandler.post(new Runnable() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-	                   progressStatus=0; 
-	                   myProgress=0;
-						
-					}
-				});
-				
-			}
-			private int performTask()
-			{
-				
-					return ++myProgress;	
-			}
-		}).start();
- }
-  
-
+ 
 
 	
 

@@ -1,38 +1,45 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
-<TextView 
-    android:id="@+id/menuSearchHeader"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignParentLeft="true"
-    android:background="#34495e"
-    android:text="BUSQUEDA"
-    android:textColor="#c1c7ca" />
+    <TextView
+        android:id="@+id/menuSearchHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#34495e"
+        android:paddingBottom="2dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="2dp"
+        android:text="BUSQUEDA"
+        android:textColor="#c1c7ca" />
 
-	<EditText
-	    android:id="@+id/search1"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginTop="18dp"
-	    android:focusable="true"
-	    android:gravity="center_vertical"
-	    android:height="50dp"
-	    android:hint="@string/buscar"
-	    android:paddingLeft="16dp"
-	    android:paddingRight="16dp"
-	    android:singleLine="true"
-	    android:textSize="20sp" />
+    <EditText
+        android:id="@+id/search1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:height="50dp"
+        android:hint="@string/buscar"
+        android:paddingLeft="16dp"
+        android:singleLine="true"
+        android:textSize="20sp" >
 
-	<TextView 
-	    android:id="@+id/menuHeader"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
-	    android:layout_marginTop="60dp"
-	    android:background="#34495e"
-	    android:text="MENU"
-	    android:textColor="#c1c7ca" />
-	
-</RelativeLayout>
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/menuHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:background="#34495e"
+        android:paddingBottom="2dp"
+        android:paddingLeft="6dp"
+        android:paddingTop="2dp"
+        android:text="MENU"
+        android:textColor="#c1c7ca" />
+
+</LinearLayout>

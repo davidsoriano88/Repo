@@ -73,8 +73,8 @@ public class OfferList extends ActionBarActivity {
 	
 	LazyAdapter adapter;
 	
-	String idcommerce = "", placeName;
-	double latitude, longitude;
+	String idcommerce = "", placeName, userlocation, commercelocation;
+	double latitude, longitude, userlat, userlon;
 	// XML node keys
 
 
@@ -206,8 +206,10 @@ public class OfferList extends ActionBarActivity {
 		// queryOffer(bundle.getString("id"));
 		util.log(bundle.getString("id"));
 		idcommerce = bundle.getString("id");
-		latitude = bundle.getDouble("latitude");
-		longitude = bundle.getDouble("longitude");
+		userlocation = bundle.getString("location");
+		userlat = bundle.getDouble("userlatitude");
+		userlon = bundle.getDouble("userlongitude");
+		
 		// getPhoto(bundle.getString("id"));
 		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context).getWindow().getDecorView());
 
@@ -232,6 +234,7 @@ public class OfferList extends ActionBarActivity {
 											InsertOffer.class);
 									addOffer.putExtra("idcommerce", idcommerce);
 									addOffer.putExtra("placename", placeName);
+									addOffer.putExtra("location", commercelocation);
 									startActivity(addOffer);
 								}
 
@@ -257,8 +260,9 @@ public class OfferList extends ActionBarActivity {
 				intent.putExtra("idoffer", dataid.get(pos));
 				intent.putExtra("idcommerce", idcommerce);
 				intent.putExtra("placename", placeName);
-				intent.putExtra("latitude", latitude);
-				intent.putExtra("longitude", longitude);
+				intent.putExtra("userlocation", userlocation);
+				intent.putExtra("userlongitude",userlon);
+				intent.putExtra("userlatitude",userlat);
 				startActivity(intent);
 
 			}
@@ -383,6 +387,7 @@ public class OfferList extends ActionBarActivity {
 					BackbeamObject commerce = objects.get(0);
 					JoinResult join = commerce.getJoinResult("offer");
 					placeName = commerce.getString("placename");
+					commercelocation = commerce.getLocation("placelocation").getAddress().toString();
 					getSupportActionBar().setTitle(placeName);
 					List<BackbeamObject> offers = join.getResults();
 					// Contemplo si alguna referencia NO TIENE ofertas

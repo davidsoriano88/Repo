@@ -89,7 +89,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/layoutInsertOfferCommerce"
+                android:id="@+id/layoutInsertOfferSelectCommerce"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -103,6 +103,18 @@
                     android:layout_height="50dp"
                     android:layout_weight="0.25"
                     android:text="Seleccionar Comercio" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutInsertOfferCommerce"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="0dp"
+                android:background="@color/backgroundrelative"
+                android:orientation="vertical" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -116,8 +128,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="Comercio:"
-                         />
+                        android:text="Comercio:" />
 
                     <TextView
                         android:id="@+id/tvInsertOfferChangeCommerce"
@@ -129,7 +140,6 @@
                         android:singleLine="true"
                         android:text="Cambiar comercio"
                         android:textSize="11sp" />
-
                 </LinearLayout>
 
                 <TextView
@@ -139,8 +149,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="20dp"
                     android:ems="15"
-                    android:enabled="false"
-                     />
+                    android:enabled="false" />
 
                 <View
                     android:id="@+id/viewCommerce"

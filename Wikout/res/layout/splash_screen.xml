@@ -11,12 +11,11 @@
 
     <ImageView
         android:id="@+id/ivTitleReference"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="185dp"
-        android:background="@drawable/pin" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/icono_app"/>
 
     <ProgressBar
         android:id="@+id/Initprogress"

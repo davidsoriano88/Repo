@@ -107,11 +107,13 @@ public class InsertCommerce extends ActionBarActivity {
 		
 		try {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		latitude = addresses.get(0).getLatitude();
+		longitude = addresses.get(0).getLongitude();
 		String address = addresses.get(0).getAddressLine(0);
 		String city = addresses.get(0).getAddressLine(1);
 		String country = addresses.get(0).getAddressLine(2);
@@ -147,6 +149,7 @@ public class InsertCommerce extends ActionBarActivity {
 				}else{util.showInfoDialog(context, "Lo sentimos", "Es necesaria conexión a internet");}
 				}
 				});
+		setSupportProgressBarIndeterminateVisibility(false);
 		}
 	 
 
@@ -208,6 +211,7 @@ public class InsertCommerce extends ActionBarActivity {
 		protected void insertNewCommerce(BackbeamObject objectphoto) {
 			
 			location= new Location(latitude,longitude);
+			
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
@@ -239,6 +243,11 @@ public class InsertCommerce extends ActionBarActivity {
 					Intent insertoffer = new Intent();
 					insertoffer.putExtra("idcommerce", commerce.getId());
 					insertoffer.putExtra("placename", commerce.getString("placename"));
+					double comlat = commerce.getLocation("placelocation").getLatitude();
+					double comlon = commerce.getLocation("placelocation").getLongitude();
+					insertoffer.putExtra("commercelat", comlat);
+					System.out.println("commercelat insert: "+comlat);
+					insertoffer.putExtra("commercelon", comlon);
 					insertoffer.putExtra("location", commerce.getLocation("placelocation").getAddress().toString());
 					setResult(RESULT_OK, insertoffer);
 					util.showToast(context, "comercio creado");
