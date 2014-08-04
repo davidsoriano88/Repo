@@ -38,6 +38,12 @@ public class SplashScreen extends Activity  implements LocationListener {
 	private LocationManager locationManager;
 	private String provider;
 	Intent mainIntent =null;
+	
+	
+	private long ms = 0;
+	private long splashDuration = 2000;
+	private boolean splashActive = true;
+	private boolean paused = false;
 
 	
   @Override

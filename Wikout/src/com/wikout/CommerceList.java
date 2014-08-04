@@ -93,6 +93,7 @@ final Util util = new Util();
 						insertOffer.putExtra("placename",listPlacenameCommerces.get(position));
 						insertOffer.putExtra("idcommerce",listIdCommerces.get(position));
 						insertOffer.putExtra("location",listLocationCommerces.get(position));
+						System.out.println("location intent: "+listLocationCommerces.get(position));
 						setResult(RESULT_OK, insertOffer);
 						// startActivity(insertOffer);
 						finish();
@@ -129,6 +130,8 @@ final Util util = new Util();
 		    	String placename =d.getString("placename");
 		    	String idcommerce = d.getString("idcommerce");
 		    	String location = d.getString("location");
+		    	
+		    	System.out.println("la location es: "+d.getString("location"));
 		    	
 		    	Intent i = new Intent();
 		    	i.putExtra("location", location);
@@ -214,8 +217,8 @@ final Util util = new Util();
 							util.log(String.valueOf(totalCount));
 							listPlacenameCommerces.add(commerce.getString("placename"));
 							listIdCommerces.add(commerce.getId());
-							listLocationCommerces.add(commerce.getLocation("placelocation").getAddress());
-
+							listLocationCommerces.add(commerce.getLocation("placelocation").getAddress().toString());
+							System.out.println(commerce.getLocation("placelocation").getAddress().toString());
 						}
 						listPlacenameCommerces.add("NUEVO");
 						listIdCommerces.add("null");

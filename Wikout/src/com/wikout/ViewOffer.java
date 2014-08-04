@@ -176,9 +176,22 @@ public class ViewOffer extends ActionBarActivity {
 					@Override
 					public void success(BackbeamObject commerce) {
 
-						tvLocation.setText("¿Dónde está?\n"+commerce.getLocation("placelocation").getAddress().toString());
-						commercelat=commerce.getLocation("placelocation").getLatitude();
-						commercelon=commerce.getLocation("placelocation").getLongitude();
+						//tvLocation.setText("¿Dónde está?\n"+commerce.getLocation("placelocation").getAddress().toString());
+						Geocoder geocoder = new Geocoder(context);
+						List<Address> addresses = null;
+						
+						try {
+							addresses = geocoder.getFromLocation(commercelat=commerce.getLocation("placelocation").getLatitude(), commercelon=commerce.getLocation("placelocation").getLongitude(), 1);
+							
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						
+						String address = addresses.get(0).getAddressLine(0);
+						String city = addresses.get(0).getAddressLine(1);
+						String country = addresses.get(0).getAddressLine(2);
+
+						tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
 						// paso la dirección/coordenadas al textView correspondiente
 						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
 								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/

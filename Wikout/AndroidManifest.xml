@@ -25,10 +25,9 @@
     <application
         android:name=".AcraClass"
         android:allowBackup="true"
-        android:icon="@drawable/pin"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" android:logo="@drawable/icono_top" android:icon="@drawable/icono_app">
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCyZF9Cxz6bhgzuGLt7OvD3f_gPqsfvJSI" />

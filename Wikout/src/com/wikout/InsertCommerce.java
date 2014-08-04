@@ -66,6 +66,7 @@ public class InsertCommerce extends ActionBarActivity {
 
 	// Location de prueba
 	public Location location=null;
+	public String strLocation = null,address= null,city= null,country= null, straddress = null;
 
 	// Constante para el picker
 	
@@ -109,14 +110,21 @@ public class InsertCommerce extends ActionBarActivity {
 			addresses = geocoder.getFromLocation(latitude, longitude, 1);
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		latitude = addresses.get(0).getLatitude();
 		longitude = addresses.get(0).getLongitude();
-		String address = addresses.get(0).getAddressLine(0);
-		String city = addresses.get(0).getAddressLine(1);
-		String country = addresses.get(0).getAddressLine(2);
+		address = addresses.get(0).getAddressLine(0);
+		city = addresses.get(0).getAddressLine(1);
+		country = addresses.get(0).getAddressLine(2);
+		straddress = address +" \n"+ city +" "+country;
+		strLocation = addresses.get(0).toString();
+		System.out.println(strLocation);
+		System.out.println(address);
+		
+		
+		
+		
 		util.log("pancratio: "+address + city + country);
 		tvLocation.setText(address+"\n"+city+", "+country);
 		
@@ -210,7 +218,7 @@ public class InsertCommerce extends ActionBarActivity {
 		// INSERTAR NUEVO "NEW COMMERCE"
 		protected void insertNewCommerce(BackbeamObject objectphoto) {
 			
-			location= new Location(latitude,longitude);
+			location= new Location(latitude,longitude,strLocation);
 			
 			//Extraigo la fecha actual
 			Calendar calendar = new GregorianCalendar();
@@ -249,6 +257,7 @@ public class InsertCommerce extends ActionBarActivity {
 					System.out.println("commercelat insert: "+comlat);
 					insertoffer.putExtra("commercelon", comlon);
 					insertoffer.putExtra("location", commerce.getLocation("placelocation").getAddress().toString());
+					insertoffer.putExtra("address", straddress);
 					setResult(RESULT_OK, insertoffer);
 					util.showToast(context, "comercio creado");
 					setSupportProgressBarIndeterminateVisibility(false);
