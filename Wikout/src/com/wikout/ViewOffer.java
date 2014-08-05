@@ -18,10 +18,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TreeMap;
 
-
-
-
-
 import model.FontUtils;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -50,7 +46,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -93,6 +88,8 @@ public class ViewOffer extends ActionBarActivity {
 		 }else{
 		prefers=getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
 		 }
+		 prefers = getSharedPreferences(
+					"MisPreferencias", Context.MODE_PRIVATE);
 		util.projectData(context);
 	//	prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		System.out.println("PREFERS LAT: "+String.valueOf(prefers.getFloat("latpos", 0)));

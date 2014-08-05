@@ -1,6 +1,9 @@
 package com.wikout;
 
-import io.backbeam.*;
+import io.backbeam.Backbeam;
+import io.backbeam.BackbeamObject;
+import io.backbeam.FetchCallback;
+import io.backbeam.Query;
 
 import java.util.List;
 import java.util.Timer;
@@ -14,6 +17,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.location.Criteria;
@@ -29,6 +33,7 @@ public class SplashScreen extends Activity  implements LocationListener {
 
   private Context context=this;
 	public LocationResult locationResult = null;
+	Location location;
 	Util util;
 	double lat = 0,lng=0;
 	
@@ -194,7 +199,7 @@ public class SplashScreen extends Activity  implements LocationListener {
 		// default
 		Criteria criteria = new Criteria();
 		provider = locationManager.getBestProvider(criteria, false);
-		Location location = locationManager.getLastKnownLocation(provider);
+		location = locationManager.getLastKnownLocation(provider);
 
 		// Initialize the location fields
 		if (location != null) {
@@ -210,26 +215,47 @@ public class SplashScreen extends Activity  implements LocationListener {
 
   
   
-  public void initUI(){
-	 TimerTask task = new TimerTask(){
-		 @Override
-		 public void run(){
-			//METODO COMENTADO--> DA PROBLEMAS. 
-			//beginYourTask();Map.class
+	public void initUI() {
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				// METODO COMENTADO--> DA PROBLEMAS.
+				// beginYourTask();Map.class
 
-			 
-	        mainIntent = new Intent().setClass(SplashScreen.this, Map.class);
-	        mainIntent.putExtra("latitudSplash", lat);
-			mainIntent.putExtra("longitudSplash", lng);
-			startActivity(mainIntent);
-	        finish();   
-		 }
-	  };
-	  Timer timer = new Timer();
-	  timer.schedule(task, 3000);//after 3 seconds throws the task.
-  
-  }
-  
+				SharedPreferences prefs = getSharedPreferences(
+						"MisPreferencias", Context.MODE_PRIVATE);
+				boolean notour = prefs.getBoolean("notour", false);
+
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putFloat("latpos", (float) location.getLatitude());
+				editor.putFloat("longpos", (float) location.getLongitude());
+				editor.commit();
+
+				if (notour == false) {
+					mainIntent = new Intent().setClass(SplashScreen.this,
+							MainActivity.class);
+					
+				} else {
+					mainIntent = new Intent().setClass(SplashScreen.this,
+							Map.class);
+					}
+					mainIntent
+							.putExtra("latitudSplash", location.getLatitude());
+					mainIntent.putExtra("longitudSplash",
+							location.getLongitude());
+					System.out.println("latitudSplash "
+							+ location.getLatitude() + "\n" + "longitudSplash "
+							+ location.getLongitude());
+					startActivity(mainIntent);
+					finish();
+				
+
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(task, 3000);// after 3 seconds throws the task.
+
+	}
  
 
 	

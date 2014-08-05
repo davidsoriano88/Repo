@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
@@ -61,8 +62,10 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -110,7 +113,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 	Util util = new Util();
 	
 	String title, finalId, option, filter, searchResult;
-	double longitudeSW, latitudeSW, longitudeNE, latitudeNE,latitudeSplash=0,longitudeSplash=0,userlat, userlon;
+	double longitudeSW, latitudeSW, longitudeNE, latitudeNE,latitudeSplash,longitudeSplash,userlat, userlon;
 	protected int mDpi = 0;
 	//LocationClient locationClient;
 	
@@ -119,57 +122,55 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 						idcommerceonmap = new ArrayList<String>(),
 						idMarker = new ArrayList<String>();
 	
-	
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		//Componentes de pantalla
+
+		// Componentes de pantalla
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.fragment_main);
 		context = this;
-		FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
+		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
+				.getDecorView());
 		mDpi = getResources().getDisplayMetrics().densityDpi;
 
-		//Recojo Bundle
+		// Recojo Bundle
 		Bundle splash = getIntent().getExtras();
 		latitudeSplash = splash.getDouble("latitudSplash");
+		userlat = splash.getDouble("latitudSplash");
 		longitudeSplash = splash.getDouble("longitudSplash");
-		
-		//Datos Backbeam
-		util.projectData(context);
-		
-		initUI();
-		
-		
+		userlon = splash.getDouble("longitudSplash");
 
-		
+		// Datos Backbeam
+		util.projectData(context);
+
+		initUI();
 
 	}
-	
-
-
-
 
 	public void initUI() {
 
-		//ProgressBar
+		// ProgressBar
 		setSupportProgressBarIndeterminateVisibility(true);
+
+		// Do a null check to confirm that we have not already instantiated the
+		// map.
+		if (map == null) {
+			// Try to obtain the map from the SupportMapFragment.
+			map = ((SupportMapFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.map)).getMap();
+			map.setMyLocationEnabled(true);
+			// Check if we were successful in obtaining the map.
+			if (map != null) {
+				map.setMyLocationEnabled(true);
+				map.setOnMyLocationButtonClickListener(this);
+				map.getUiSettings().setMyLocationButtonEnabled(true);
+
+			}
+		}
+        map.setMyLocationEnabled(true);
+        
 		
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (map == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
-                    .getMap();
-            // Check if we were successful in obtaining the map.
-            if (map != null) {
-                map.setMyLocationEnabled(true);
-                map.setOnMyLocationButtonClickListener(this);
-                map.getUiSettings().setMyLocationButtonEnabled(true);
-            }
-        }
 		//Identifico componentes de pantalla
 		//map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
 		
