@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import com.viewpagerindicator.CirclePageIndicator;
 
 public class MainActivity extends FragmentActivity {
 
@@ -18,9 +19,13 @@ public class MainActivity extends FragmentActivity {
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         
+      //Bind the title indicator to the adapter
+        CirclePageIndicator circle = (CirclePageIndicator)findViewById(R.id.circulitos);
+        		circle.setViewPager(pager);
         Bundle splash = getIntent().getExtras();
 		 latitudeSplash = splash.getDouble("latitudSplash");
 		 longitudeSplash = splash.getDouble("longitudSplash");
+		 
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
