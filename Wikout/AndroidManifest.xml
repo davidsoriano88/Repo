@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="walktrought.MainActivity"
             android:label="@string/app_name"
             android:parentActivityName=".SplashScreen" >
         </activity>

@@ -138,9 +138,29 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		Bundle splash = getIntent().getExtras();
 		latitudeSplash = splash.getDouble("latitudSplash");
 		userlat = splash.getDouble("latitudSplash");
+		
 		longitudeSplash = splash.getDouble("longitudSplash");
 		userlon = splash.getDouble("longitudSplash");
-
+		System.out.println("Coordenadas en MAPS recibidas del intent: LAT "+userlat +" LON "+userlon);
+		
+		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = prefers.edit();
+			editor.putFloat("latpos", (float) userlat);
+			editor.putFloat("longpos", (float) userlon);
+			editor.commit();
+	}else{
+		prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefers.edit();
+		editor.putFloat("latpos", (float) userlat);
+		editor.putFloat("longpos", (float) userlon);
+		
+		editor.commit();
+	}
+		 System.out.println("parametros que paso a insertoffer:\n"
+					+ "LAT: "+userlat+" LON: "+userlon);
+		System.out.println("PREFS: "+prefers.getFloat("latpos", 0));
+		
 		// Datos Backbeam
 		util.projectData(context);
 
@@ -355,7 +375,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		switch (item.getItemId()) {
 		case R.id.action_next:
 			if (isNetworkAvailable() == true) {
-
+				
 				Intent insert = new Intent(context, InsertOffer.class);
 				startActivity(insert);
 				return true;
@@ -466,6 +486,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			}
 
 		});
+
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
 	@Override
@@ -517,9 +538,11 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			SharedPreferences.Editor editor = prefers.edit();
 			editor.putFloat("latpos", (float) userlat);
 			editor.putFloat("longpos", (float) userlon);
+			
 			editor.commit();
 		}
-
+		 System.out.println("parametros que paso a insertoffer:\n"
+					+ "LAT: "+userlat+" LON: "+userlon);
 		System.out.println("PREFS: "+prefers.getFloat("latpos", 0));
 
     }
@@ -619,7 +642,6 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			latitudeSW = curScreen.southwest.latitude;
 			longitudeNE = curScreen.northeast.longitude;
 			longitudeSW = curScreen.southwest.longitude;
-			util.log(String.valueOf(latitudeNE));
 			util.log("screen has been recharged");
 
 			// start both asyncTask:

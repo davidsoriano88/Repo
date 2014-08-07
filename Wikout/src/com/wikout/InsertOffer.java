@@ -307,6 +307,7 @@ public class InsertOffer extends ActionBarActivity {
 						// util.showToast(context,latitude+","+longitude);
 						Intent listCommerce = new Intent(context,
 								CommerceList.class);
+						System.out.println("Insert offer: LAT "+userlat);
 						listCommerce.putExtra("pointlat", userlat);
 						listCommerce.putExtra("pointlon", userlon);
 						startActivityForResult(listCommerce, 30);

@@ -22,6 +22,11 @@
     <string name="ok">OK!</string>
     <string name="report">Denunciar oferta</string>
     <string name="my_location">Localizarme</string>
+    <string name="splashtitle"><b>Wikout</b> \nLa "Wikipedia" de las ofertas a tu alrededor</string>
+    <string name="walkthrougth1">Wikout te permite (geo)localizar ofertas en el mapa pero más importante aún, te permite añadir las tuyas propias.</string>
+    <string name="walkthrougth2">Pulsando los iconos del mapa sabrás cuántas ofertas y "me gusta" tiene cada establecimiento y oferta..</string>
+    <string name="walkthrougth3">En cada oferta encontrarás más información y la posibilidad de compartirla a tus amigos, cómo ir,....</string>
+    <string name="walkthrougth4">Y lo mejor, esto lo construimos entre todos, con lo que puedes añadir ofertas y comercios preferidos.</string>
 
     <string-array name="categorias">
         <item>ocio</item>
@@ -45,7 +50,7 @@
 
     <string name="min_version">0</string>
     <string name="required_update">false</string>
-   
+
     <color name="backgroundlayout">#DAD6D2</color>
     <color name="backgroundrelative">#FFFFFF</color>
 

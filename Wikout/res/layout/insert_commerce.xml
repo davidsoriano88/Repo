@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="30dp"
-                    android:text="Calle el Coso, 56, 50001 Zaragoza, España" />
+                    android:text="" />
 
                 <View
                     android:id="@+id/viewCommerce"
@@ -105,8 +105,8 @@
                         android:id="@+id/spnInsertCommerceCategory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="30dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="30dp"
                         android:layout_weight="1"
                         android:entries="@array/categorias"
                         android:prompt="@string/categorias_prompt" />
@@ -119,8 +119,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:text="Insertar Comercio" />
         </LinearLayout>
     </LinearLayout>

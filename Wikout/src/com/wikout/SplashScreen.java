@@ -12,6 +12,7 @@ import java.util.TimerTask;
 import model.FontUtils;
 import utils.MyLocation.LocationResult;
 import utils.Settings;
+import walktrought.MainActivity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class SplashScreen extends Activity  implements LocationListener {
@@ -46,9 +48,10 @@ public class SplashScreen extends Activity  implements LocationListener {
 	
 	
 	private long ms = 0;
-	private long splashDuration = 2000;
+	private long splashDuration = 3000;
 	private boolean splashActive = true;
 	private boolean paused = false;
+	
 
 	
   @Override
@@ -58,6 +61,10 @@ public class SplashScreen extends Activity  implements LocationListener {
     setContentView(R.layout.splash_activity);
  // Set portrait orientation
     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    
+    FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
+			.getDecorView());
+   
     // Hide title bar   
     //requestWindowFeature(Window.FEATURE_NO_TITLE);
     //Cambiar la fuente
