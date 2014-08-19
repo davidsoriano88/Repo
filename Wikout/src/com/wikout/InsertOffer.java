@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 
 import model.FontUtils;
 import utils.Photo;
+import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -192,7 +193,7 @@ public class InsertOffer extends ActionBarActivity {
 			public void onClick(View v) {
 				// request your webservice here. Possible use of AsyncTask and
 				// ProgressDialog
-				if (isNetworkAvailable() == true) {
+				if (util.isNetworkAvailable(context) == true) {
 					dialogGetLocation();
 				} else {
 					util.showInfoDialog(context, "Lo sentimos",
@@ -215,7 +216,7 @@ public class InsertOffer extends ActionBarActivity {
 			public void onClick(View v) {
 				// request your webservice here. Possible use of AsyncTask and
 				// ProgressDialog
-				if (isNetworkAvailable() == true) {
+				if (util.isNetworkAvailable(context) == true) {
 					dialogGetLocation();
 				} else {
 					util.showInfoDialog(context, "Lo sentimos",
@@ -229,7 +230,7 @@ public class InsertOffer extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (isNetworkAvailable() == true) {
+				if (util.isNetworkAvailable(context) == true) {
 					if (etDescription.getText().length() == 0) {
 						util.log("aceptar1");
 						dialogIncompleteFields();
@@ -287,7 +288,8 @@ public class InsertOffer extends ActionBarActivity {
 						enter = 0;
 
 						if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-							prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+							prefers = PreferenceManager
+									.getDefaultSharedPreferences(getApplicationContext());
 
 						} else {
 							prefers = getSharedPreferences("MisPreferencias",
@@ -573,7 +575,7 @@ public class InsertOffer extends ActionBarActivity {
 				});
 	}
 
-	private String getId() {
+	public String getId() {
 		String id = android.provider.Settings.System.getString(
 				super.getContentResolver(),
 				android.provider.Settings.Secure.ANDROID_ID);
@@ -714,12 +716,7 @@ public class InsertOffer extends ActionBarActivity {
 
 	}
 
-	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

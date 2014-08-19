@@ -12,17 +12,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
 
     <application
-        android:name=".AcraClass"
+        android:name="utils.AcraClass"
         android:allowBackup="true"
         android:icon="@drawable/icono_app"
         android:label="@string/app_name"
@@ -34,9 +34,12 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
 
         <activity
-            android:name=".SplashScreen"
+            android:name="com.wikout.SplashScreen"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -45,49 +48,56 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.facebook.LoginActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.wikout.LoginActivity"
+            android:label="@string/app_name" />
+        <activity android:name=".LoginUsingLoginFragmentActivity" />
+        <activity
             android:name="walktrought.MainActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".SplashScreen" >
+            android:parentActivityName="com.wikout.SplashScreen" >
         </activity>
         <activity
-            android:name=".Map"
+            android:name="com.wikout.Map"
             android:label="@string/app_name"
-            android:parentActivityName=".SplashScreen" >
+            android:parentActivityName="com.wikout.SplashScreen" >
         </activity>
         <activity
-            android:name=".Mapv2"
+            android:name="com.wikout.Mapv2"
             android:label="@string/app_name"
-            android:parentActivityName=".InsertOffer" >
+            android:parentActivityName="com.wikout.InsertOffer" >
         </activity>
         <activity
-            android:name=".OfferList"
+            android:name="com.wikout.OfferList"
             android:label="@string/app_name"
-            android:parentActivityName=".Map" >
+            android:parentActivityName="com.wikout.Map" >
         </activity>
         <activity
-            android:name=".ViewOffer"
+            android:name="com.wikout.ViewOffer"
             android:label="@string/titleName"
-            android:parentActivityName=".Map" >
+            android:parentActivityName="com.wikout.Map" >
         </activity>
         <activity
-            android:name=".InsertOffer"
+            android:name="com.wikout.InsertOffer"
             android:label="@string/app_name"
-            android:parentActivityName=".Map" >
+            android:parentActivityName="com.wikout.Map" >
         </activity>
         <activity
-            android:name=".InsertCommerce"
+            android:name="com.wikout.InsertCommerce"
             android:label="@string/app_name"
-            android:parentActivityName=".Map" >
+            android:parentActivityName="com.wikout.Map" >
         </activity>
         <activity
-            android:name=".CommerceList"
+            android:name="com.wikout.CommerceList"
             android:label="@string/app_name"
-            android:parentActivityName=".SplashScreen" >
+            android:parentActivityName="com.wikout.SplashScreen" >
         </activity>
         <activity
             android:name="utils.Photo"
             android:label="@string/app_name"
-            android:parentActivityName=".Map" >
+            android:parentActivityName="com.wikout.Map" >
         </activity>
     </application>
 

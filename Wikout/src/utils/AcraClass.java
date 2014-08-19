@@ -1,4 +1,4 @@
-package com.wikout;
+package utils;
 
 
 import org.acra.ACRA;
@@ -25,8 +25,8 @@ import android.app.Application;
 	            ReportField.BUILD,
 	            ReportField.STACK_TRACE
 	    },
-	    mode = ReportingInteractionMode.TOAST,
-	    resToastText = R.string.toast_crash
+	    mode = ReportingInteractionMode.TOAST
+	    //,	    resToastText = R.string.toast_crash
 	)
 
 public class AcraClass extends Application {

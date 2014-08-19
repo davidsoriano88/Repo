@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import utils.Util;
 import model.FontUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -69,6 +70,7 @@ final Util util = new Util();
 			util.log("entra tras el if del commerceList");
 			latitude = location.getDouble("pointlat");
 			longitude = location.getDouble("pointlon");
+			System.out.println("Commerce list: "+latitude+" "+longitude);
 			getBoundingLocation(latitude, longitude);
 		}
 	    
@@ -78,7 +80,7 @@ final Util util = new Util();
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view,
 					int position, long id) {
-				if (isNetworkAvailable() == true) {
+				if (util.isNetworkAvailable(context) == true) {
 					if (position == listPlacenameCommerces.size() - 1) {
 						Intent insertCommerce = new Intent(context,
 								InsertCommerce.class);
@@ -232,11 +234,6 @@ final Util util = new Util();
 					
 				});
 	}
-	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
+
 
 	} 

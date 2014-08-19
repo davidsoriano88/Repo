@@ -1,5 +1,6 @@
 package walktrought;
 
+import utils.Util;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wikout.R;
-import com.wikout.Util;
 
 public class FourthFragment extends Fragment {
 

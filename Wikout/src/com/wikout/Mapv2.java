@@ -1,5 +1,6 @@
 package com.wikout;
 
+import utils.Util;
 import model.FontUtils;
 import android.app.Activity;
 import android.content.Context;
@@ -178,36 +179,38 @@ public class Mapv2 extends ActionBarActivity {
 
 	
 	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        	case android.R.id.home: 
-        		this.finish();
-        		CommerceList.actionbarAct.finish();
-        		return true;
-        	case R.id.btnOkMap :
-        		if (isNetworkAvailable() == true) {
-        			Intent mapLocation=new Intent();
-  		          // put the message in Intent
-  		          mapLocation.putExtra("pointlat", selectedLat);
-  		          mapLocation.putExtra("pointlon", selectedLon);
-  		          //util.log("latitud del mapv2"+String.valueOf(point.latitude));*/
-  		          // Set The Result in Intent
-  		        setResult(RESULT_OK,mapLocation);
-  		          // finish The activity 
-  		 
-  		       finish();
-				
-				} else {
-					util.showInfoDialog(context, "Lo sentimos",
-							"Es necesaria conexión a internet");
-				}
-        		
+	public boolean onOptionsItemSelected(MenuItem item) {
+		int id = item.getItemId();
+		if (id == android.R.id.home) {
 
-        		return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
-    } 
+			this.finish();
+			CommerceList.actionbarAct.finish();
+			return true;
+		} else if (id == R.id.btnOkMap) {
+			if (util.isNetworkAvailable(context) == true) {
+				Intent mapLocation = new Intent();
+				// put the message in Intent
+				mapLocation.putExtra("pointlat", selectedLat);
+				mapLocation.putExtra("pointlon", selectedLon);
+				// util.log("latitud del mapv2"+String.valueOf(point.latitude));*/
+				// Set The Result in Intent
+				setResult(RESULT_OK, mapLocation);
+				// finish The activity
+
+				finish();
+
+			} else {
+				util.showInfoDialog(context, "Lo sentimos",
+						"Es necesaria conexión a internet");
+			}
+
+			return true;
+
+			//
+		}else{
+		return super.onOptionsItemSelected(item);}
+	}
+
 	/*
 	 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -266,12 +269,6 @@ public class Mapv2 extends ActionBarActivity {
 	            return true;
 	    }
 	    return false;
-	}
-	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 	private LocationListener listener = new LocationListener() {

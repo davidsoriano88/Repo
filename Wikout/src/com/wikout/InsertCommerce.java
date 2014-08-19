@@ -15,6 +15,7 @@ import java.util.List;
 import model.FontUtils;
 import utils.CustomOnItemSelectedListener;
 import utils.Photo;
+import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -133,7 +134,7 @@ public class InsertCommerce extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				if(isNetworkAvailable()==true){
+				if(util.isNetworkAvailable(context)==true){
 				btnOk.setEnabled(false);
 				ivPhoto.setEnabled(false);
 				if( etPlacename.getText().length()==0){
@@ -145,7 +146,7 @@ public class InsertCommerce extends ActionBarActivity {
 						longitude = bundle.getDouble("pointlon");
 						if(photo!=null){
 							setSupportProgressBarIndeterminateVisibility(true);
-							insertComercePhoto(actualDate());
+							insertComercePhoto(util.actualDate());
 							}else{
 								setSupportProgressBarIndeterminateVisibility(true);
 								util.log("no hay foto");
@@ -286,12 +287,8 @@ public class InsertCommerce extends ActionBarActivity {
 		return id;
 	}
 
-	private boolean isNetworkAvailable() {
-	    ConnectivityManager connectivityManager 
-	          = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
+
+	
 	
 	public void imageClicked(View imageView) {
 
@@ -362,12 +359,6 @@ public class InsertCommerce extends ActionBarActivity {
 
 		}
 	}
-	// METODO PARA OBTENER LA FECHA ACTUAL
-		protected Date actualDate(){
-			Calendar calendar = new GregorianCalendar();
-			final Date createdate = calendar.getTime();
-			return createdate;
-		}
 		
 		
 		

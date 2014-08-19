@@ -20,8 +20,10 @@ import java.util.Locale;
 import java.util.TreeMap;
 
 
+
 import model.FontUtils;
 import utils.ImageLoader;
+import utils.Util;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -221,7 +223,7 @@ public class OfferList extends ActionBarActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (isNetworkAvailable() == true) {
+				if (util.isNetworkAvailable(context) == true) {
 					AlertDialog.Builder info = new AlertDialog.Builder(context);
 					info.setTitle("Insertar Nueva Oferta");
 					info.setMessage("Está a punto de insertar una nueva oferta");
@@ -277,16 +279,10 @@ public class OfferList extends ActionBarActivity {
 		return id;
 	}
 
-	public void queryOffer(String idcommerce) {
-		
-	}
+	
 
-	// METODO PARA OBTENER LA FECHA ACTUAL
-	protected Date actualDate() {
-		Calendar calendar = new GregorianCalendar();
-		final Date createdate = calendar.getTime();
-		return createdate;
-	}
+
+	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -365,7 +361,7 @@ public class OfferList extends ActionBarActivity {
 			//queryOffer(idcommerce);
 
 			final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
-			final Date today = actualDate();
+			final Date today = util.actualDate();
 			
 			/*Query query = new Query("commerce");
 			query.setQuery("where this in ? join last 100 offer", collection);
@@ -471,12 +467,7 @@ public class OfferList extends ActionBarActivity {
 		//inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
-	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
+
 
 }
 /*

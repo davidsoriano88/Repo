@@ -14,6 +14,7 @@ import model.NavDrawerItem;
 import utils.ArrayAdapterWithIcon;
 import utils.Place;
 import utils.PlacesService;
+import utils.Util;
 import adapter.NavDrawerListAdapter;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -372,10 +373,10 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.action_next:
-			if (isNetworkAvailable() == true) {
-				
+		int id = item.getItemId();
+		if (id == R.id.action_next) {
+			if (util.isNetworkAvailable(context) == true) {
+
 				Intent insert = new Intent(context, InsertOffer.class);
 				startActivity(insert);
 				return true;
@@ -385,11 +386,11 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 						"Es necesaria conexión a internet");
 				return false;
 			}
-
-		case android.R.id.home:
+		} else if (id == android.R.id.home) {
 			drawerOpener();
 			return true;
-		default:
+		} else {
+
 			return super.onOptionsItemSelected(item);
 		}
 	}
@@ -439,7 +440,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 				locationManager.getBestProvider(criteria, false), 100, 0,
 				listener);
 
-		location = locationManager.getLastKnownLocation(locationManager
+				location = locationManager.getLastKnownLocation(locationManager
 				.getBestProvider(criteria, false));
 		/*
 		 * LocationManager locationManager = (LocationManager)
@@ -447,6 +448,9 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		 * locationManager.getBestProvider(criteria, false); Location location =
 		 * locationManager.getLastKnownLocation(bestProvider);
 		 */
+
+				System.out.println("mLocationClient.getLastLocation().getLatitude(): "+mLocationClient.getLastLocation().getLatitude());
+				
 
 		if (location == null) {
 			if (longitudeSplash == 0 && latitudeSplash == 0) {
@@ -555,9 +559,14 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
         mLocationClient.requestLocationUpdates(
                 REQUEST,
                  this);  // LocationListener
-		map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation().getLongitude()),15.0F));
+       if(userlat !=0.0){
+    	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userlat, userlon),15.0F));
+       }else{
+    	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation().getLongitude()),15.0F));
 
-		CameraPosition cameraPosition = new CameraPosition.Builder()
+   
+       }
+				CameraPosition cameraPosition = new CameraPosition.Builder()
 				.target(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation()
 						.getLongitude())) // Sets the center of the map to
 											// location user
@@ -645,7 +654,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			util.log("screen has been recharged");
 
 			// start both asyncTask:
-			if (isNetworkAvailable() == true) {
+			if (util.isNetworkAvailable(context) == true) {
 				asyncBackbeam = new MyData().execute();
 				// asyncPlaces = new GetPlaces("").execute();
 
@@ -989,7 +998,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 												            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
 															info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
 												        }
-														if (isNetworkAvailable() == true) {
+														if (util.isNetworkAvailable(context) == true) {
 															startActivity(info);
 														} else {
 															util.showInfoDialog(
@@ -1235,7 +1244,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 												            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
 															info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
 												        }
-														if (isNetworkAvailable() == true) {
+														if (util.isNetworkAvailable(context) == true) {
 															startActivity(info);
 														} else {
 															util.showInfoDialog(
@@ -1518,7 +1527,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 													            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
 																info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
 													        }
-															if (isNetworkAvailable() == true) {
+															if (util.isNetworkAvailable(context) == true) {
 																startActivity(info);
 															} else {
 																util.showInfoDialog(
@@ -1575,12 +1584,6 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 
 
-	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo activeNetworkInfo = connectivityManager
-				.getActiveNetworkInfo();
-		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
 
 	@Override
 	protected void onRestart() {

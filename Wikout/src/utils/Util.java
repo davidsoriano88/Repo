@@ -1,4 +1,4 @@
-package com.wikout;
+package utils;
 
 import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
@@ -27,6 +27,8 @@ import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
@@ -55,6 +57,8 @@ public class Util {
 			
 			info.show();
 		}
+	 
+	 
 	 public void checkVersion(final Context context, final String minversion){
 		
 		 final AlertDialog.Builder info = new AlertDialog.Builder(context);
@@ -251,7 +255,7 @@ public class Util {
 		
 		
 
-		private Date actualDate() {
+		public Date actualDate() {
 			Calendar calendar = new GregorianCalendar();
 			final Date createdate = calendar.getTime();
 			return createdate;
@@ -343,5 +347,12 @@ public class Util {
 
 		    return (int) ((nDP * conversionScale) + 0.5f) ;
 
+		}
+		
+		public boolean isNetworkAvailable(Context c) {
+			ConnectivityManager connectivityManager = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo activeNetworkInfo = connectivityManager
+					.getActiveNetworkInfo();
+			return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 		}
 }
