@@ -21,19 +21,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -63,10 +58,8 @@ import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -77,13 +70,12 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class Map extends ActionBarActivity implements
-ConnectionCallbacks,
-OnConnectionFailedListener,
-LocationListener,
-OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListener {
+public class Map extends ActionBarActivity implements ConnectionCallbacks,
+		OnConnectionFailedListener, LocationListener,
+		OnMyLocationButtonClickListener,
+		com.google.android.gms.location.LocationListener {
 
-	//COMPONENTES
+	// COMPONENTES
 	ImageView filterView;
 	TextView tvFilterText;
 	ImageButton ibFilter;
@@ -91,38 +83,38 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle drawerToggle;
 	ListView lvDrawer;
-	
+
 	private GoogleMap map;
 	private Marker markB, markG;
 	private LocationManager locationManager;
-    private LocationClient mLocationClient;
+	private LocationClient mLocationClient;
 	private Location location;
 	private Handler handler = new Handler();
-	private SharedPreferences prefers;
-	
+
 	protected AsyncTask<Void, Void, ArrayList<Place>> asyncPlaces;
 	protected AsyncTask<Void, Integer, Boolean> asyncBackbeam;
 	protected long snap = System.currentTimeMillis();
-	
+
 	private static final LocationRequest REQUEST = LocationRequest.create()
-            .setInterval(5000)         // 5 seconds
-            .setFastestInterval(16)    // 16ms = 60fps
-            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-	
+			.setInterval(5000) // 5 seconds
+			.setFastestInterval(16) // 16ms = 60fps
+			.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
 	private Context context;
-	
+
 	Util util = new Util();
-	
+
 	String title, finalId, option, filter, searchResult;
-	double longitudeSW, latitudeSW, longitudeNE, latitudeNE,latitudeSplash,longitudeSplash,userlat, userlon;
+	double longitudeSW, latitudeSW, longitudeNE, latitudeNE, latitudeSplash,
+			longitudeSplash, userlat, userlon;
 	protected int mDpi = 0;
-	//LocationClient locationClient;
-	
-	ArrayList<String> 	placeName = new ArrayList<String>(),
-						idcommerce = new ArrayList<String>(),
-						idcommerceonmap = new ArrayList<String>(),
-						idMarker = new ArrayList<String>();
-	
+	// LocationClient locationClient;
+
+	ArrayList<String> placeName = new ArrayList<String>(),
+			idcommerce = new ArrayList<String>(),
+			idcommerceonmap = new ArrayList<String>(),
+			idMarker = new ArrayList<String>();
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -139,28 +131,17 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		Bundle splash = getIntent().getExtras();
 		latitudeSplash = splash.getDouble("latitudSplash");
 		userlat = splash.getDouble("latitudSplash");
-		
+
 		longitudeSplash = splash.getDouble("longitudSplash");
 		userlon = splash.getDouble("longitudSplash");
-		System.out.println("Coordenadas en MAPS recibidas del intent: LAT "+userlat +" LON "+userlon);
-		
-		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			SharedPreferences.Editor editor = prefers.edit();
-			editor.putFloat("latpos", (float) userlat);
-			editor.putFloat("longpos", (float) userlon);
-			editor.commit();
-	}else{
-		prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-		SharedPreferences.Editor editor = prefers.edit();
-		editor.putFloat("latpos", (float) userlat);
-		editor.putFloat("longpos", (float) userlon);
-		
-		editor.commit();
-	}
-		 System.out.println("parametros que paso a insertoffer:\n"
-					+ "LAT: "+userlat+" LON: "+userlon);
-		System.out.println("PREFS: "+prefers.getFloat("latpos", 0));
+		System.out.println("Coordenadas en MAPS recibidas del intent: LAT "
+				+ userlat + " LON " + userlon);
+
+		Util.setPreferenceDouble(context, "latpos",userlat);
+		Util.setPreferenceDouble(context, "longpos",userlon);
+		System.out.println("parametros que paso a insertoffer:\n" + "LAT: "
+				+ userlat + " LON: " + userlon);
+		System.out.println("PREFS: " +Util.getPreferenceDouble(context, "latpos"));
 		
 		// Datos Backbeam
 		util.projectData(context);
@@ -189,12 +170,12 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 			}
 		}
-        map.setMyLocationEnabled(true);
-        
-		
-		//Identifico componentes de pantalla
-		//map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-		
+		map.setMyLocationEnabled(true);
+
+		// Identifico componentes de pantalla
+		// map = ((SupportMapFragment)
+		// getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		lvDrawer = (ListView) findViewById(R.id.left_drawer);
 		filterView = (ImageView) findViewById(R.id.filterText);
@@ -204,24 +185,19 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		String[] navMenuTitles = getResources().getStringArray(R.array.options);
 		ArrayList<NavDrawerItem> navDrawerItems = new ArrayList<NavDrawerItem>();
-		
-		
-        setUpLocationClientIfNeeded();
-        mLocationClient.connect();
-		
-        
-        //map.setMyLocationEnabled(true);
+
+		setUpLocationClientIfNeeded();
+		mLocationClient.connect();
+
+		// map.setMyLocationEnabled(true);
 		filterVisible(false);
 
-		
 		String fontPathLight = "fonts/Roboto-Light.ttf";
 		// get the font face
 		Typeface tf = Typeface.createFromAsset(getAssets(), fontPathLight);
 		LayoutInflater inflater = LayoutInflater.from(this);
-		
-		
-		
-		//incializamos el header del ListView:
+
+		// incializamos el header del ListView:
 		View search = inflater.inflate(R.layout.search_drawer, null);
 		etSearch = (EditText) search.findViewById(R.id.search1);
 		etSearch.setTypeface(tf);
@@ -245,7 +221,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		);
 		// prueba.setDrawerIndicatorEnabled(true);
 		drawerLayout.setDrawerListener(drawerToggle);
-		
+
 		final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
 		// establecemos las opciones del menu deslizable:
@@ -258,14 +234,17 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 				case 0:
 					break;
 				case 1:
-					final String[] filterItems = new String[] { "Ocio","Servicios", "Compras", "Otros" };
+					final String[] filterItems = new String[] { "Ocio",
+							"Servicios", "Compras", "Otros" };
 					final Integer[] filterIcons = new Integer[] {
 							R.drawable.pinazul, R.drawable.pinmorado,
 							R.drawable.pinrosa, R.drawable.pinverde };
 					// filterVisible(true);
-					
-					AlertDialog.Builder builder = new AlertDialog.Builder(context);
-					ListAdapter adapter = new ArrayAdapterWithIcon(context,filterItems, filterIcons);
+
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							context);
+					ListAdapter adapter = new ArrayAdapterWithIcon(context,
+							filterItems, filterIcons);
 					builder.setTitle("Filtrar por: ");
 					builder.setAdapter(adapter,
 							new DialogInterface.OnClickListener() {
@@ -273,28 +252,34 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 								public void onClick(DialogInterface dialog,
 										int item) {
 									// Do something with the selection
-									getSupportActionBar().setTitle("Resultados");
+									getSupportActionBar()
+											.setTitle("Resultados");
 									etSearch.setText("");
-									imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+									imm.hideSoftInputFromWindow(
+											etSearch.getWindowToken(), 0);
 									switch (item) {
 									case 0:
 										filter = "ocio";
-										tvFilterText.setText("Filtrado por: "+ filter);
+										tvFilterText.setText("Filtrado por: "
+												+ filter);
 										new MyData().execute();
 										break;
 									case 1:
 										filter = "servicios";
-										tvFilterText.setText("Filtrado por: "+ filter);
+										tvFilterText.setText("Filtrado por: "
+												+ filter);
 										new MyData().execute();
 										break;
 									case 2:
 										filter = "compras";
-										tvFilterText.setText("Filtrado por: "+ filter);
+										tvFilterText.setText("Filtrado por: "
+												+ filter);
 										new MyData().execute();
 										break;
 									case 3:
 										filter = "otros";
-										tvFilterText.setText("Filtrado por: "+ filter);
+										tvFilterText.setText("Filtrado por: "
+												+ filter);
 										new MyData().execute();
 										break;
 									}
@@ -314,7 +299,33 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 					break;
 
 				case 3:
-					android.os.Process.killProcess(android.os.Process.myPid());
+					if(Util.getPreferenceBoolean(context, "login")==true){
+					AlertDialog.Builder dialogLocation = new AlertDialog.Builder(context);
+					dialogLocation.setTitle("Salir");
+					dialogLocation.setMessage("Antes de salir... ¿Desea cerrar sesión?");
+					dialogLocation.setCancelable(true);
+					dialogLocation.setPositiveButton("Sí",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialogo1, int id) {
+									Util.setPreferenceBoolean(context, "login", false);
+									//Util.setPreferenceString(context, "email", "");
+									android.os.Process.killProcess(android.os.Process.myPid());
+									}
+
+							});
+					dialogLocation.setNegativeButton("No",
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialogo1, int id) {
+								
+									android.os.Process.killProcess(android.os.Process.myPid());
+								}
+							});
+					dialogLocation.show();
+					}else{
+						android.os.Process.killProcess(android.os.Process.myPid());
+					}
 					break;
 				}
 
@@ -325,7 +336,8 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				// If the event is a key-down event on the "enter" button
-				if ((event.getAction() == KeyEvent.ACTION_DOWN)&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
+				if ((event.getAction() == KeyEvent.ACTION_DOWN)
+						&& (keyCode == KeyEvent.KEYCODE_ENTER)) {
 					// Perform action on key press
 					filter = null;
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -358,9 +370,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 		});
 
-		//viewPort();
-
-		
+		// viewPort();
 
 	}
 
@@ -440,7 +450,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 				locationManager.getBestProvider(criteria, false), 100, 0,
 				listener);
 
-				location = locationManager.getLastKnownLocation(locationManager
+		location = locationManager.getLastKnownLocation(locationManager
 				.getBestProvider(criteria, false));
 		/*
 		 * LocationManager locationManager = (LocationManager)
@@ -449,8 +459,8 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		 * locationManager.getLastKnownLocation(bestProvider);
 		 */
 
-				System.out.println("mLocationClient.getLastLocation().getLatitude(): "+mLocationClient.getLastLocation().getLatitude());
-				
+		System.out.println("mLocationClient.getLastLocation().getLatitude(): "
+				+ mLocationClient.getLastLocation().getLatitude());
 
 		if (location == null) {
 			if (longitudeSplash == 0 && latitudeSplash == 0) {
@@ -493,81 +503,71 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 		setSupportProgressBarIndeterminateVisibility(false);
 	}
+
 	@Override
-    public void onPause() {
-        super.onPause();
-        if (mLocationClient != null) {
-            mLocationClient.disconnect();
-        }
-    }
-
-
-
-    private void setUpLocationClientIfNeeded() {
-        if (mLocationClient == null) {
-            mLocationClient = new LocationClient(
-                    getApplicationContext(),
-                    this,  // ConnectionCallbacks
-                    this); // OnConnectionFailedListener
-        }
-    }
-
-    /**
-     * Button to get current Location. This demonstrates how to get the current Location as required
-     * without needing to register a LocationListener.
-     */
-    public void showMyLocation(View view) {
-        if (mLocationClient != null && mLocationClient.isConnected()) {
-            String msg = "Location = " + mLocationClient.getLastLocation();
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * Implementation of {@link LocationListener}.
-     */
-    @Override
-    public void onLocationChanged(Location location) {
-       System.out.println("Location = " + location);
-       userlat = location.getLatitude();
-		 userlon = location.getLongitude();
-		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-				 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-				SharedPreferences.Editor editor = prefers.edit();
-				editor.putFloat("latpos", (float) userlat);
-				editor.putFloat("longpos", (float) userlon);
-				editor.commit();
-		}else{
-			prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-			SharedPreferences.Editor editor = prefers.edit();
-			editor.putFloat("latpos", (float) userlat);
-			editor.putFloat("longpos", (float) userlon);
-			
-			editor.commit();
+	public void onPause() {
+		super.onPause();
+		if (mLocationClient != null) {
+			mLocationClient.disconnect();
 		}
-		 System.out.println("parametros que paso a insertoffer:\n"
-					+ "LAT: "+userlat+" LON: "+userlon);
-		System.out.println("PREFS: "+prefers.getFloat("latpos", 0));
+	}
 
-    }
+	private void setUpLocationClientIfNeeded() {
+		if (mLocationClient == null) {
+			mLocationClient = new LocationClient(getApplicationContext(), this, // ConnectionCallbacks
+					this); // OnConnectionFailedListener
+		}
+	}
 
-    /**
-     * Callback called when connected to GCore. Implementation of {@link ConnectionCallbacks}.
-     */
-    @Override
-    public void onConnected(Bundle connectionHint) {
-        mLocationClient.requestLocationUpdates(
-                REQUEST,
-                 this);  // LocationListener
-       if(userlat !=0.0){
-    	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userlat, userlon),15.0F));
-       }else{
-    	   map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation().getLongitude()),15.0F));
+	/**
+	 * Button to get current Location. This demonstrates how to get the current
+	 * Location as required without needing to register a LocationListener.
+	 */
+	public void showMyLocation(View view) {
+		if (mLocationClient != null && mLocationClient.isConnected()) {
+			String msg = "Location = " + mLocationClient.getLastLocation();
+			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT)
+					.show();
+		}
+	}
 
-   
-       }
-				CameraPosition cameraPosition = new CameraPosition.Builder()
-				.target(new LatLng(mLocationClient.getLastLocation().getLatitude(), mLocationClient.getLastLocation()
+	/**
+	 * Implementation of {@link LocationListener}.
+	 */
+	@Override
+	public void onLocationChanged(Location location) {
+		System.out.println("Location = " + location);
+		userlat = location.getLatitude();
+		userlon = location.getLongitude();
+	
+		
+		Util.setPreferenceDouble(context, "latpos",userlat);
+		Util.setPreferenceDouble(context, "longpos",userlon);
+		System.out.println("parametros que paso a insertoffer:\n" + "LAT: "
+				+ userlat + " LON: " + userlon);
+		System.out.println("PREFS: " + Util.getPreferenceDouble(context, "latpos"));
+
+	}
+
+	/**
+	 * Callback called when connected to GCore. Implementation of
+	 * {@link ConnectionCallbacks}.
+	 */
+	@Override
+	public void onConnected(Bundle connectionHint) {
+		mLocationClient.requestLocationUpdates(REQUEST, this); // LocationListener
+		if (userlat != 0.0) {
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+					userlat, userlon), 15.0F));
+		} else {
+			map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(
+					mLocationClient.getLastLocation().getLatitude(),
+					mLocationClient.getLastLocation().getLongitude()), 15.0F));
+
+		}
+		CameraPosition cameraPosition = new CameraPosition.Builder()
+				.target(new LatLng(mLocationClient.getLastLocation()
+						.getLatitude(), mLocationClient.getLastLocation()
 						.getLongitude())) // Sets the center of the map to
 											// location user
 				.zoom(15.0F) // Sets the zoom
@@ -586,60 +586,62 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 		});
 		setSupportProgressBarIndeterminateVisibility(false);
-    }
+	}
 
-    /**
-     * Callback called when disconnected from GCore. Implementation of {@link ConnectionCallbacks}.
-     */
-    @Override
-    public void onDisconnected() {
-        // Do nothing
-    }
+	/**
+	 * Callback called when disconnected from GCore. Implementation of
+	 * {@link ConnectionCallbacks}.
+	 */
+	@Override
+	public void onDisconnected() {
+		// Do nothing
+	}
 
-    /**
-     * Implementation of {@link OnConnectionFailedListener}.
-     */
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        // Do nothing
-    }
+	/**
+	 * Implementation of {@link OnConnectionFailedListener}.
+	 */
+	@Override
+	public void onConnectionFailed(ConnectionResult result) {
+		// Do nothing
+	}
 
-    @Override
-    public boolean onMyLocationButtonClick() {
-        System.out.println("Location = " + location);
-        
- 		 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
- 			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
- 			locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
- 			locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
- 			// Define the criteria how to select the locatioin provider -> use
- 			// default
- 			Criteria criteria = new Criteria();
- 			String provider = locationManager.getBestProvider(criteria, false);
- 			Location location = locationManager.getLastKnownLocation(provider);
+	@Override
+	public boolean onMyLocationButtonClick() {
+		System.out.println("Location = " + location);
 
- 			// Initialize the location fields
- 			if (location != null) {
- 				System.out.println("Provider " + provider + " has been selected.");
- 				System.out.println(location.getLatitude() +" "+ location.getLongitude());
- 				onLocationChanged(location);
- 			} else {
- 				System.out.println("Location not available");
- 				System.out.println("Location not available");
- 			}
- 			userlat = location.getLatitude();
- 	 		 userlon = location.getLongitude();
- 	 		 System.out.println(userlat+" "+userlon);
- 				 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
- 				SharedPreferences.Editor editor = prefers.edit();
- 				editor.putFloat("latpos", (float) userlat);
- 				editor.putFloat("longpos", (float) userlon);
- 				editor.commit();
- 		}
-        // Return false so that we don't consume the event and the default behavior still occurs
-        // (the camera animates to the user's current position).
-        return false;
-    }
+		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+			locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+			// Define the criteria how to select the locatioin provider -> use
+			// default
+			Criteria criteria = new Criteria();
+			String provider = locationManager.getBestProvider(criteria, false);
+			Location location = locationManager.getLastKnownLocation(provider);
+
+			// Initialize the location fields
+			if (location != null) {
+				System.out.println("Provider " + provider
+						+ " has been selected.");
+				System.out.println(location.getLatitude() + " "
+						+ location.getLongitude());
+				onLocationChanged(location);
+			} else {
+				System.out.println("Location not available");
+				System.out.println("Location not available");
+			}
+			userlat = location.getLatitude();
+			userlon = location.getLongitude();
+			System.out.println(userlat + " " + userlon);
+			
+			Util.setPreferenceDouble(context, "latpos",userlat);
+			Util.setPreferenceDouble(context, "longpos",userlon);
+		}
+		// Return false so that we don't consume the event and the default
+		// behavior still occurs
+		// (the camera animates to the user's current position).
+		return false;
+	}
 
 	private Runnable runnable = new Runnable() {
 		@Override
@@ -682,25 +684,13 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 		@Override
 		public void onLocationChanged(Location location) {
+
+			System.out.println("Location = " + location);
+			userlat = location.getLatitude();
+			userlon = location.getLongitude();
 			
-		       System.out.println("Location = " + location);
-		       userlat = location.getLatitude();
-				 userlon = location.getLongitude();
-				 if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-						 prefers = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-						SharedPreferences.Editor editor = prefers.edit();
-						editor.putFloat("latpos", (float) userlat);
-						editor.putFloat("longpos", (float) userlon);
-						editor.commit();
-				}else{
-					prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-					SharedPreferences.Editor editor = prefers.edit();
-					editor.putFloat("latpos", (float) userlat);
-					editor.putFloat("longpos", (float) userlon);
-					editor.commit();
-				}
-
-
+			Util.setPreferenceDouble(context, "latpos",userlat);
+			Util.setPreferenceDouble(context, "longpos",userlon);
 			locationManager.removeUpdates(listener);
 
 		}
@@ -725,8 +715,11 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			for (int i = 0; i < result.size(); i++) {
 				markG = map.addMarker(new MarkerOptions()
 						.title(result.get(i).getName())
-						.position(new LatLng(result.get(i).getLatitude(), result.get(i).getLongitude()))
-						.icon(BitmapDescriptorFactory.fromResource(R.drawable.pinplaces))
+						.position(
+								new LatLng(result.get(i).getLatitude(), result
+										.get(i).getLongitude()))
+						.icon(BitmapDescriptorFactory
+								.fromResource(R.drawable.pinplaces))
 						.snippet(result.get(i).getVicinity()));
 			}
 			setSupportProgressBarIndeterminateVisibility(false);
@@ -761,8 +754,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 
 		@Override
 		protected void onPostExecute(Boolean result) {
-			
-			
+
 			util.log("recorremos post execute mydata");
 			util.log("filtro: " + filter + " busqueda: " + searchResult);
 			if (filter == null && searchResult == null) {
@@ -777,7 +769,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 							@Override
 							public void success(List<BackbeamObject> commerces,
 									int totalCount, boolean fromCache) {
-								//MARCADORES BACKBEAM
+								// MARCADORES BACKBEAM
 								map.clear();
 								// Nombre Comercio
 								placeName.clear();
@@ -789,7 +781,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 								idcommerceonmap.clear();
 								util.log("map clear mydata");
 								for (final BackbeamObject object : commerces) {
-									
+
 									if (object.getNumber("actualoffers")
 											.intValue() > 0) {
 										util.log("1" + object.getId());
@@ -832,7 +824,6 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 																					object.getNumber(
 																							"actualoffers")
 																							.toString()))));
-										
 
 											/*
 											 * .icon(BitmapDescriptorFactory
@@ -992,12 +983,26 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 																+ marker.getTitle());
 														info.putExtra("id",
 																finalId);
-														
-														if (mLocationClient != null && mLocationClient.isConnected()) {
-												            info.putExtra("location", mLocationClient.getLastLocation().toString());
-												            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
-															info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
-												        }
+
+														if (mLocationClient != null
+																&& mLocationClient
+																		.isConnected()) {
+															info.putExtra(
+																	"location",
+																	mLocationClient
+																			.getLastLocation()
+																			.toString());
+															info.putExtra(
+																	"userlatitude",
+																	mLocationClient
+																			.getLastLocation()
+																			.getLatitude());
+															info.putExtra(
+																	"userlongitude",
+																	mLocationClient
+																			.getLastLocation()
+																			.getLongitude());
+														}
 														if (util.isNetworkAvailable(context) == true) {
 															startActivity(info);
 														} else {
@@ -1021,7 +1026,7 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 			} else if (searchResult == null) {
 				// filterQuery(filter);
 				final Intent info = new Intent(context, OfferList.class);
-				
+
 				Query query = new Query("commerce");
 				query.bounding("placelocation", latitudeSW, longitudeSW,
 						latitudeNE, longitudeNE, 40, new FetchCallback() {
@@ -1239,11 +1244,25 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 																+ marker.getTitle());
 														info.putExtra("id",
 																finalId);
-														if (mLocationClient != null && mLocationClient.isConnected()) {
-												            info.putExtra("location", mLocationClient.getLastLocation().toString());
-												            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
-															info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
-												        }
+														if (mLocationClient != null
+																&& mLocationClient
+																		.isConnected()) {
+															info.putExtra(
+																	"location",
+																	mLocationClient
+																			.getLastLocation()
+																			.toString());
+															info.putExtra(
+																	"userlatitude",
+																	mLocationClient
+																			.getLastLocation()
+																			.getLatitude());
+															info.putExtra(
+																	"userlongitude",
+																	mLocationClient
+																			.getLastLocation()
+																			.getLongitude());
+														}
 														if (util.isNetworkAvailable(context) == true) {
 															startActivity(info);
 														} else {
@@ -1268,7 +1287,6 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 				// commercesOnMap(searchResult);
 
 				final Intent info = new Intent(context, OfferList.class);
-				
 
 				util.log("fff ha entrado en la funcion busqueda(1)");
 				Query queryCommerce = new Query("commerce");
@@ -1522,11 +1540,25 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 																	+ marker.getTitle());
 															info.putExtra("id",
 																	finalId);
-															if (mLocationClient != null && mLocationClient.isConnected()) {
-													            info.putExtra("location", mLocationClient.getLastLocation().toString());
-													            info.putExtra("userlatitude",mLocationClient.getLastLocation().getLatitude());
-																info.putExtra("userlongitude",mLocationClient.getLastLocation().getLongitude());
-													        }
+															if (mLocationClient != null
+																	&& mLocationClient
+																			.isConnected()) {
+																info.putExtra(
+																		"location",
+																		mLocationClient
+																				.getLastLocation()
+																				.toString());
+																info.putExtra(
+																		"userlatitude",
+																		mLocationClient
+																				.getLastLocation()
+																				.getLatitude());
+																info.putExtra(
+																		"userlongitude",
+																		mLocationClient
+																				.getLastLocation()
+																				.getLongitude());
+															}
 															if (util.isNetworkAvailable(context) == true) {
 																startActivity(info);
 															} else {
@@ -1582,31 +1614,28 @@ OnMyLocationButtonClickListener, com.google.android.gms.location.LocationListene
 		return super.onCreateOptionsMenu(menu);
 	}
 
-
-
-
 	@Override
 	protected void onRestart() {
 		super.onResume();
-		//new MyData().execute();
+		// new MyData().execute();
 	}
 
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onProviderEnabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onProviderDisabled(String provider) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

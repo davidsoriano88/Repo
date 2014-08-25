@@ -72,7 +72,7 @@ public class ViewOffer extends ActionBarActivity {
 	// Radio de la tierra (en metros)
 	final static double radio = 6371000;
 	final static double distancedouble = 0;
-	SharedPreferences prefers = null;
+	protected static final int REQUEST_LOGIN = 40;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,23 +81,19 @@ public class ViewOffer extends ActionBarActivity {
 		setContentView(R.layout.view_offer);
 		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
 				.getDecorView());
-		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-			prefers = PreferenceManager
-					.getDefaultSharedPreferences(getApplicationContext());
-		} else {
-			prefers = getSharedPreferences("MisPreferencias",
-					Context.MODE_PRIVATE);
-		}
-		prefers = getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
+	
 		util.projectData(context);
 		// prefers =
 		// PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		System.out.println("PREFERS LAT: "
-				+ String.valueOf(prefers.getFloat("latpos", 0)));
+				+ String.valueOf(Util.getPreferenceDouble(context, "latpos")));
 		System.out.println("PREFERS LON: "
-				+ String.valueOf(prefers.getFloat("longpos", 0)));
-		userlat = (double) prefers.getFloat("latpos", 0);
-		userlon = (double) prefers.getFloat("longpos", 0);
+				+ String.valueOf(	Util.getPreferenceDouble(context, "longpos")));
+		
+		userlat = Util.getPreferenceDouble(context, "latpos");
+		userlon = Util.getPreferenceDouble(context, "longpos");
+		
+		
 		System.out.println(" LAT: " + userlat);
 		// util.showProgressDialog(context, 1900);
 		initUi();
@@ -122,81 +118,88 @@ public class ViewOffer extends ActionBarActivity {
 	}
 
 	private void loadData(String idoffer) {
-		
+
 		Backbeam.read("offer", idoffer, new ObjectCallback() {
 			@Override
 			public void success(BackbeamObject offer) {
 				tvDescription.setText(offer.getString("description"));
-				
-				if(offer.getNumber("numlike").intValue()==0){
-					//tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
+
+				if (offer.getNumber("numlike").intValue() == 0) {
+					// tvNumLike.setText("Ningún usuario ha dado a Me Gusta");
 					tvNumLike.setVisibility(View.GONE);
 					viewLike.setVisibility(View.GONE);
-					
-				}else{tvNumLike.setVisibility(0);
-				viewLike.setVisibility(0);
-					if(offer.getNumber("numlike").intValue()==1){
-					
-					tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" persona");
-				}else{
 
-					tvNumLike.setText("Le han dado a "+getResources().getString(R.string.heart) +" "+offer.getNumber("numlike").toString()+" personas");
+				} else {
+					tvNumLike.setVisibility(0);
+					viewLike.setVisibility(0);
+					if (offer.getNumber("numlike").intValue() == 1) {
+
+						tvNumLike.setText("Le han dado a "
+								+ getResources().getString(R.string.heart)
+								+ " " + offer.getNumber("numlike").toString()
+								+ " persona");
+					} else {
+
+						tvNumLike.setText("Le han dado a "
+								+ getResources().getString(R.string.heart)
+								+ " " + offer.getNumber("numlike").toString()
+								+ " personas");
 					}
 				}
 				// Paso las fechas a los edittexts
 				DateFormat df4 = DateFormat.getDateInstance(DateFormat.FULL);
 
 				int duration = dateFormulae(offer.getDay("deadline").getTime());
-				System.out.println("Duration: "+duration);
+				System.out.println("Duration: " + duration);
 				if (duration < 10) {
 					tvDeadline.setTextColor(Color.RED);
-					
+
 					if (duration == 1) {
 						tvDeadline.setText("Válido hasta mañana");
 					}
 					if (duration == 0) {
 						tvDeadline.setText("Válido hasta hoy");
-					}else{
-						tvDeadline.setText("Válido hasta dentro de: " + duration
-								+ " días");
+					} else {
+						tvDeadline.setText("Válido hasta dentro de: "
+								+ duration + " días");
 					}
 				} else {
-					tvDeadline.setText("Válido hasta dentro de: " + duration + " días");
+					tvDeadline.setText("Válido hasta dentro de: " + duration
+							+ " días");
 				}
-				
+
 				String creation = df4.format(offer.getDate("offercreationdate"));
-				tvCreationDate.setText("Creado el: "+creation);
-				
-				
-				
-				
-				// Tengo que leer el objeto commerce para poder acceder a sus datos
-				Backbeam.read("commerce", offer.getObject("commerce").getId(), new ObjectCallback() {
-					@Override
-					public void success(BackbeamObject commerce) {
+				tvCreationDate.setText("Creado el: " + creation);
+
+				// Tengo que leer el objeto commerce para poder acceder a sus
+				// datos
+				Backbeam.read("commerce", offer.getObject("commerce").getId(),
+						new ObjectCallback() {
+							@Override
+							public void success(BackbeamObject commerce) {
 
 								// tvLocation.setText("¿Dónde está?\n"+commerce.getLocation("placelocation").getAddress().toString());
 								Geocoder geocoder = new Geocoder(context);
 								List<Address> addresses = null;
-								 System.out.println("Parametros que paso al geocoder (latitude): "+ commerce.getLocation(
-											"placelocation")
-											.getLatitude());
+								System.out
+										.println("Parametros que paso al geocoder (latitude): "
+												+ commerce.getLocation(
+														"placelocation")
+														.getLatitude());
 								// commercelon=commerce.getLocation("placelocation").getLongitude());
 								try {
 									commercelat = commerce.getLocation(
-											"placelocation")
-											.getLatitude();
+											"placelocation").getLatitude();
 									commercelon = commerce.getLocation(
-											"placelocation")
-											.getLongitude();
+											"placelocation").getLongitude();
 									addresses = geocoder.getFromLocation(
-											commercelat,
-											commercelon, 1);
+											commercelat, commercelon, 1);
 
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
-								System.out.println("del geocoder se obtiene: " +addresses.get(0).toString());
+								System.out.println("del geocoder se obtiene: "
+										+ addresses.get(0).toString());
 								String address = addresses.get(0)
 										.getAddressLine(0);
 								String city = addresses.get(0)
@@ -204,21 +207,34 @@ public class ViewOffer extends ActionBarActivity {
 								String country = addresses.get(0)
 										.getAddressLine(2);
 
-						tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
-						// paso la dirección/coordenadas al textView correspondiente
-						/*tvLocation.setText(String.valueOf(commerce.getLocation("placelocation").getLatitude())+
-								","+String.valueOf(commerce.getLocation("placelocation").getLongitude()));*/
-						//tvLocation.setText(commerce.getLocation("placelocation").getAddress());
-						//**********************************************************
-						System.out.println("DIST:"+"\nuserlat: "+userlat+"\nuserlong: "+userlon
-								+"\ncommercelat: "+commercelat+"\ncommercelon: "+commercelon);
-						
-						//Mando latitud y long del usuario y del comercio para calcular la distancia
-						haversine(commercelat,commercelon,userlat,userlon);
-						//Habilito el boton para que el usuario pueda hacer like.
-//					btnLike.setEnabled(true);
-						}});
-				;}
+								tvLocation.setText("¿Dónde está?\n" + address
+										+ "\n" + city + ", " + country);
+								// paso la dirección/coordenadas al textView
+								// correspondiente
+								/*
+								 * tvLocation.setText(String.valueOf(commerce.
+								 * getLocation("placelocation").getLatitude())+
+								 * ","+String.valueOf(commerce.getLocation(
+								 * "placelocation").getLongitude()));
+								 */
+								// tvLocation.setText(commerce.getLocation("placelocation").getAddress());
+								// **********************************************************
+								System.out.println("DIST:" + "\nuserlat: "
+										+ userlat + "\nuserlong: " + userlon
+										+ "\ncommercelat: " + commercelat
+										+ "\ncommercelon: " + commercelon);
+
+								// Mando latitud y long del usuario y del
+								// comercio para calcular la distancia
+								haversine(commercelat, commercelon, userlat,
+										userlon);
+								// Habilito el boton para que el usuario pueda
+								// hacer like.
+								// btnLike.setEnabled(true);
+							}
+						});
+				;
+			}
 		});
 
 	}
@@ -322,32 +338,52 @@ public class ViewOffer extends ActionBarActivity {
 		makeTextViewHyperlink(tvReport);
 
 		tvReport.setOnClickListener(new OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
-				final CharSequence[] items = { "Referencia Incorrecta",
-						"Contenido Ofensivo", "Cancelar" };
+				Util.setPreferenceInt(context, "place", 2);
+				
+				System.out.println("dentro del onclic de viewoffer");
+				System.out.println("Valor de login "+ Util.getPreferenceBoolean(context, "login"));
+				if (Util.getPreferenceBoolean(context, "login") == true) {
+					System.out.println("entra dentro del if del onclic");
+					final CharSequence[] items = { "Referencia Incorrecta",
+							"Contenido Ofensivo", "Cancelar" };
 
-				AlertDialog.Builder builder = new AlertDialog.Builder(
-						ViewOffer.this);
-				builder.setTitle("Elija el motivo: ");
-				builder.setItems(items, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int item) {
-						// Do something with the selection
-						switch (item) {
-						case 0:
-							insertReport(idofferparameter, "incorrecto");
-							break;
-						case 1:
-							insertReport(idofferparameter, "ofensivo");
-							break;
-						case 2:
-							finish();
-						}
-					}
-				});
-				AlertDialog alert = builder.create();
-				alert.show();
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							ViewOffer.this);
+					builder.setTitle("Elija el motivo: ");
+					builder.setItems(items,
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int item) {
+
+									// Do something with the selection
+									switch (item) {
+									case 0:
+										insertReport(idofferparameter,
+												"incorrecto");
+										break;
+									case 1:
+										insertReport(idofferparameter,
+												"ofensivo");
+										break;
+									case 2:
+										finish();
+									}
+								}
+							});
+					AlertDialog alert = builder.create();
+					alert.show();
+				}else{
+					//CREO EL INTENT PARA IR A LOGINACTIVITY
+					Intent in = new Intent(context,LoginActivity.class);
+					in.putExtra("procedencia", 2);
+
+					System.out.println("dentro del else del onclic");
+					startActivityForResult(in, REQUEST_LOGIN);
+				}
 			}
 		});
 		// BOTONES
@@ -601,10 +637,6 @@ public class ViewOffer extends ActionBarActivity {
 		return id;
 	}
 
-
-
-
-
 	// METODO PARA CREAR DENUNCIA
 	private void insertReport(final String idoffer, String reason) {
 
@@ -655,6 +687,43 @@ public class ViewOffer extends ActionBarActivity {
 					"Es necesaria conexión a internet");
 		}
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(requestCode == REQUEST_LOGIN && resultCode ==RESULT_OK){
+			final CharSequence[] items = { "Referencia Incorrecta",
+					"Contenido Ofensivo", "Cancelar" };
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					ViewOffer.this);
+			builder.setTitle("Elija el motivo: ");
+			builder.setItems(items,
+					new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog,
+								int item) {
+
+							// Do something with the selection
+							switch (item) {
+							case 0:
+								insertReport(idofferparameter,
+										"incorrecto");
+								break;
+							case 1:
+								insertReport(idofferparameter,
+										"ofensivo");
+								break;
+							case 2:
+								finish();
+							}
+						}
+					});
+			AlertDialog alert = builder.create();
+			alert.show();
+		}
 	}
 
 	// Consulta para saber qué estado tiene el último like del usuario

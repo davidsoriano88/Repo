@@ -1,5 +1,4 @@
 package com.wikout;
-
 import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
@@ -19,7 +18,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -29,7 +27,6 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-
 public class SplashScreen extends Activity implements LocationListener {
 
 	private Context context = this;
@@ -38,13 +35,12 @@ public class SplashScreen extends Activity implements LocationListener {
 	Util util;
 	double lat = 0, lng = 0, latitude = 0, longitude = 0;
 
-	// DECLARO Strings
+	// DECLARO Strings 
 	String appReqUpdate, appMinVers;
 
 	private LocationManager locationManager;
 	private String provider;
 	Intent mainIntent = null;
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -266,34 +262,42 @@ public class SplashScreen extends Activity implements LocationListener {
 				// METODO COMENTADO--> DA PROBLEMAS.
 				// beginYourTask();Map.class
 
-				SharedPreferences prefs = getSharedPreferences(
-						"MisPreferencias", Context.MODE_PRIVATE);
-				boolean notour = prefs.getBoolean("notour", false);
+				boolean notour = Util.getPreferenceBoolean(context, "notour");
 
-				SharedPreferences.Editor editor = prefs.edit();
-				//place: 1 Splash/Walkthrough; 2 Denunciar Oferta; 3 Insertar oferta
-				editor.putInt("place", 1);
-				//pasar: 0 loggeado; 1 No loggeado
-				editor.putInt("pasar", 0);
-				//userid
-				editor.putInt("userid", 0);
-				if (lat != 0) {
-					editor.putFloat("latpos", (float) lat);
-					editor.putFloat("longpos", (float) lng);
-					editor.commit();
-				} else {
-					editor.putFloat("latpos", (float) 0.0);// location.getLatitude());
-					editor.putFloat("longpos", (float) 0.0);// location.getLongitude());
-					editor.commit();
+				// place: 1 Splash/Walkthrough; 2 Denunciar Oferta; 3 Insertar
+
+				// SI NO HAY MAIL REGISTRADO, VA A PASAR POR Login ACTIVITY
+				if (Util.getPreferenceInt(context, "userid") == 0) {
+					// util.setlog(prefs, false);
+					Util.setPreferenceString(context, "email", "");
+					Util.setPreferenceInt(context, "place", 1);
 				}
+
+				if (lat != 0) {
+					Util.setPreferenceDouble(context, "latpos",lat);
+					Util.setPreferenceDouble(context, "longpos",lng);
+				} else {
+					Util.setPreferenceDouble(context, "latpos",0);
+					Util.setPreferenceDouble(context, "longpos",0);
+					// location.getLatitude());
+					// location.getLongitude());
+				}
+				
 				// va al splash screen
 				if (notour == false) {
 					mainIntent = new Intent().setClass(SplashScreen.this,
 							MainActivity.class);
 
 				} else {
-					mainIntent = new Intent().setClass(SplashScreen.this,
-							LoginActivity.class);
+					if (Util.getPreferenceBoolean(context, "login") == false) {
+						mainIntent = new Intent().setClass(SplashScreen.this,
+								LoginActivity.class);
+
+					} else {
+						mainIntent = new Intent().setClass(SplashScreen.this,
+								Map.class);
+					}
+
 				}
 				mainIntent.putExtra("latitudSplash", lat);// location.getLatitude());
 				mainIntent.putExtra("longitudSplash", lng);// location.getLongitude());
@@ -352,30 +356,30 @@ public class SplashScreen extends Activity implements LocationListener {
 
 }
 
-//Esta es la clave: 2jmj7l5rSw0yVb/vlWAYkK/YBwk=
+	/*@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-/* @Override
-	 public void onCreate(Bundle savedInstanceState) 
-	 {
-	  super.onCreate(savedInstanceState);
+		// Add code to print out the key hash
+		try {
 
-	  // Add code to print out the key hash
-	  try {
-	   
-	   PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_SIGNATURES);
-	   
-	   for (Signature signature : info.signatures) 
-	   {
-	    MessageDigest md = MessageDigest.getInstance("SHA");
-	    md.update(signature.toByteArray());
-	    Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-	    String a = Base64.encodeToString(md.digest(), Base64.DEFAULT);
-	    System.out.println("Esta es la clave: "+a);
-	   }
-	   
-	  } catch (NameNotFoundException e) {
-	   Log.e("name not found", e.toString());
-	  } catch (NoSuchAlgorithmException e) {
-	   Log.e("no such an algorithm", e.toString());
-	  }
-	 }}*/
+			PackageInfo info = getPackageManager().getPackageInfo(
+					getPackageName(), PackageManager.GET_SIGNATURES);
+
+			for (Signature signature : info.signatures) {
+				MessageDigest md = MessageDigest.getInstance("SHA");
+				md.update(signature.toByteArray());
+				Log.d("KeyHash:",
+						Base64.encodeToString(md.digest(), Base64.DEFAULT));
+				String a = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+				System.out.println("Esta es la clave: " + a);
+			}
+
+		} catch (NameNotFoundException ex) {
+			Log.e("name not found", ex.toString());
+		} catch (NoSuchAlgorithmException e) {
+			Log.e("no such an algorithm", e.toString());
+		}
+	}
+}
+*/

@@ -19,8 +19,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TreeMap;
 
-
-
 import model.FontUtils;
 import utils.ImageLoader;
 import utils.Util;
@@ -62,24 +60,22 @@ public class OfferList extends ActionBarActivity {
 	ActionBar ab;
 	Activity act = this;
 	Context context = this;
-	
+
 	Util util = new Util();
-	
+
 	Bitmap bmPhoto = null;
 	ImageView ivPhoto;
-	//static TextView tvLocation;
+	// static TextView tvLocation;
 	ListView list;
 	Button btnAdd;
-	
+
 	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer;
-	
+
 	LazyAdapter adapter;
-	
+
 	String idcommerce = "", placeName, userlocation, commercelocation;
 	double latitude, longitude, userlat, userlon;
 	// XML node keys
-
-
 
 	static final String KEY_ID = "id";
 	static final String KEY_THUMB_URL = "thumb_url";
@@ -101,7 +97,6 @@ public class OfferList extends ActionBarActivity {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			imageLoader = new ImageLoader(activity.getApplicationContext());
 
-			
 		}
 
 		public int getCount() {
@@ -119,13 +114,13 @@ public class OfferList extends ActionBarActivity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			convertView = inflater.inflate(R.layout.offer_list_item, null);
 			String fontPath = "fonts/Roboto-Black.ttf";
-			String fontPathLight ="fonts/Roboto-Light.ttf";
-	  
-	        // get the font face
-	        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
-	        Typeface tfl = Typeface.createFromAsset(getAssets(), fontPathLight);
-	        
-	        // Apply the font
+			String fontPathLight = "fonts/Roboto-Light.ttf";
+
+			// get the font face
+			Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+			Typeface tfl = Typeface.createFromAsset(getAssets(), fontPathLight);
+
+			// Apply the font
 			tvOffer = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDescription);
 			tvOffer.setTypeface(tf);
@@ -141,34 +136,28 @@ public class OfferList extends ActionBarActivity {
 
 			// Setting all values in listview
 			if (offerHashMap.get(KEY_DESCRIPTION).length() > 68) {
-				tvOffer.setText(offerHashMap.get(KEY_DESCRIPTION).substring(0, 60)
+				tvOffer.setText(offerHashMap.get(KEY_DESCRIPTION).substring(0,
+						60)
 						+ "...");
 			} else {
 				tvOffer.setText(offerHashMap.get(KEY_DESCRIPTION));
 			}
-			
-			tvLike.setText(offerHashMap.get(KEY_LIKES)+" "+getResources().getString(R.string.heartofferlist));
-			tvDeadline.setText("Válido hasta: "+offerHashMap.get(KEY_DEADLINE));
 
-			/*if (song.get(KEY_DEADLINE) != null) {
-				URL newurl = null;
+			tvLike.setText(offerHashMap.get(KEY_LIKES) + " "
+					+ getResources().getString(R.string.heartofferlist));
+			tvDeadline.setText("Válido hasta: "
+					+ offerHashMap.get(KEY_DEADLINE));
 
-				try {
-					newurl = new URL(song.get(KEY_THUMB_URL));
-				} catch (MalformedURLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				try {
-					bmPhoto = BitmapFactory.decodeStream(newurl
-							.openConnection().getInputStream());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {*/
-
-				
+			/*
+			 * if (song.get(KEY_DEADLINE) != null) { URL newurl = null;
+			 * 
+			 * try { newurl = new URL(song.get(KEY_THUMB_URL)); } catch
+			 * (MalformedURLException e1) { // TODO Auto-generated catch block
+			 * e1.printStackTrace(); } try { bmPhoto =
+			 * BitmapFactory.decodeStream(newurl
+			 * .openConnection().getInputStream()); } catch (IOException e) { //
+			 * TODO Auto-generated catch block e.printStackTrace(); } } else {
+			 */
 
 			System.out.println("items cargandose");
 			setSupportProgressBarIndeterminateVisibility(false);
@@ -176,23 +165,24 @@ public class OfferList extends ActionBarActivity {
 		}
 	}
 
-
-	
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.offer_list);
-		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+				.permitAll().build();
 
-		StrictMode.setThreadPolicy(policy); 
-		System.out.println("El getDisplayLanguage (español) instalado es: " +Locale.getDefault().getDisplayLanguage()+"\n"+
-				"El getcountry (ES) instalado es: " +Locale.getDefault().getCountry()+"\n"+
-				"El getLanguage (es) instalado es: " +Locale.getDefault().getLanguage()+"\n"+
-				"El getISO3Language (spa) instalado es: " +Locale.getDefault().getISO3Language());
-		
+		StrictMode.setThreadPolicy(policy);
+		System.out.println("El getDisplayLanguage (español) instalado es: "
+				+ Locale.getDefault().getDisplayLanguage() + "\n"
+				+ "El getcountry (ES) instalado es: "
+				+ Locale.getDefault().getCountry() + "\n"
+				+ "El getLanguage (es) instalado es: "
+				+ Locale.getDefault().getLanguage() + "\n"
+				+ "El getISO3Language (spa) instalado es: "
+				+ Locale.getDefault().getISO3Language());
 
 		initUi();
 
@@ -201,7 +191,7 @@ public class OfferList extends ActionBarActivity {
 	private void initUi() {
 		setSupportProgressBarIndeterminateVisibility(true);
 		Bundle bundle = getIntent().getExtras();
-		//ivPhoto = new ImageView(this);
+		// ivPhoto = new ImageView(this);
 		btnAdd = (Button) findViewById(R.id.btnAddOffer);
 		tvNoOffer = (TextView) findViewById(R.id.tvListOfferNoOffer);
 		list = (ListView) findViewById(R.id.listOff);
@@ -211,10 +201,10 @@ public class OfferList extends ActionBarActivity {
 		userlocation = bundle.getString("location");
 		userlat = bundle.getDouble("userlatitude");
 		userlon = bundle.getDouble("userlongitude");
-		
-		// getPhoto(bundle.getString("id"));
-		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context).getWindow().getDecorView());
 
+		// getPhoto(bundle.getString("id"));
+		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context)
+				.getWindow().getDecorView());
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		new LoadDataTask().execute();
@@ -231,25 +221,26 @@ public class OfferList extends ActionBarActivity {
 					info.setNeutralButton("Aceptar",
 							new DialogInterface.OnClickListener() {
 								@Override
-								public void onClick(DialogInterface dialogo1, int id) {
+								public void onClick(DialogInterface dialogo1,
+										int id) {
 									Intent addOffer = new Intent(context,
 											InsertOffer.class);
 									addOffer.putExtra("idcommerce", idcommerce);
 									addOffer.putExtra("placename", placeName);
-									addOffer.putExtra("location", commercelocation);
+									addOffer.putExtra("location",
+											commercelocation);
 									startActivity(addOffer);
 								}
 
 							});
 
 					info.show();
-				
+
 				} else {
 					util.showInfoDialog(context, "Lo sentimos",
 							"Es necesaria conexión a internet");
 				}
 
-				
 			}
 
 		});
@@ -263,8 +254,8 @@ public class OfferList extends ActionBarActivity {
 				intent.putExtra("idcommerce", idcommerce);
 				intent.putExtra("placename", placeName);
 				intent.putExtra("userlocation", userlocation);
-				intent.putExtra("userlongitude",userlon);
-				intent.putExtra("userlatitude",userlat);
+				intent.putExtra("userlongitude", userlon);
+				intent.putExtra("userlatitude", userlat);
 				startActivity(intent);
 
 			}
@@ -279,20 +270,13 @@ public class OfferList extends ActionBarActivity {
 		return id;
 	}
 
-	
-
-
-	
-
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		/*case R.id.refresh:
-			//new LoadDataTask().execute();
-			/*Intent intent = getIntent();
-			finish();
-			startActivity(intent);
-			return true; */
+		/*
+		 * case R.id.refresh: //new LoadDataTask().execute(); /*Intent intent =
+		 * getIntent(); finish(); startActivity(intent); return true;
+		 */
 		case android.R.id.home:
 			finish();
 			return true;
@@ -303,12 +287,12 @@ public class OfferList extends ActionBarActivity {
 
 	// Async Task para cargar datos al abrir la activity
 	private class LoadDataTask extends AsyncTask<Void, Integer, Boolean> {
-		
+
 		@Override
 		protected void onPostExecute(Boolean result) {
 			util.projectData(context);
 			util.log("recorremos post execute mydata");
-			//dataid.clear();
+			// dataid.clear();
 			CollectionConstraint collection = new CollectionConstraint();
 			collection.addIdentifier(idcommerce);
 
@@ -318,8 +302,8 @@ public class OfferList extends ActionBarActivity {
 			query.setQuery("where this in ? join file", collection);
 			query.fetch(100, 0, new FetchCallback() {
 				@Override
-				public void success(List<BackbeamObject> companies, int totalCount,
-						boolean fromCache) {
+				public void success(List<BackbeamObject> companies,
+						int totalCount, boolean fromCache) {
 
 					for (BackbeamObject company : companies) {
 						System.out.println("foto comercio");
@@ -331,7 +315,7 @@ public class OfferList extends ActionBarActivity {
 							String logoURL = fileObject.composeFileURL(options);
 
 							// Codigo para poner la foto en el imageView
-							
+
 							try {
 								URL newurl = null;
 								newurl = new URL(logoURL);
@@ -345,92 +329,99 @@ public class OfferList extends ActionBarActivity {
 								e.printStackTrace();
 							}
 
-
 							ivPhoto.setImageBitmap(bmPhoto);
 						} else {
-							//ivPhoto.getLayoutParams().height = 0;
-							
+							// ivPhoto.getLayoutParams().height = 0;
+
 							ivPhoto.setVisibility(View.GONE);
-						//ivPhoto.setImageDrawable(getResources().getDrawable(	R.drawable.nophoto));
+							// ivPhoto.setImageDrawable(getResources().getDrawable(
+							// R.drawable.nophoto));
 
 						}
 					}
 				}
 			});
 
-			//queryOffer(idcommerce);
+			// queryOffer(idcommerce);
 
 			final ArrayList<HashMap<String, String>> songsList = new ArrayList<HashMap<String, String>>();
 			final Date today = util.actualDate();
-			
-			/*Query query = new Query("commerce");
-			query.setQuery("where this in ? join last 100 offer", collection);
-			query.*/
-			
-			Backbeam.select("commerce").setQuery("where this in ? join last 100 offer", collection).
-			fetch(100, 0, new FetchCallback() {
 
-				@Override
-				public void success(List<BackbeamObject> objects, int totalCount,
-						boolean fromCache) {
-					
-					
-					
-					System.out.println("total objects   " +objects.size());
-					if (objects.size()==0){
-						System.out.println("no pilla el array");
-					}
-					BackbeamObject commerce = objects.get(0);
-					JoinResult join = commerce.getJoinResult("offer");
-					placeName = commerce.getString("placename");
-					commercelocation = commerce.getLocation("placelocation").getAddress().toString();
-					getSupportActionBar().setTitle(placeName);
-					List<BackbeamObject> offers = join.getResults();
-					// Contemplo si alguna referencia NO TIENE ofertas
-					if (offers.size() == 0) {
-						// No hay ofertas disponibles
-						setSupportProgressBarIndeterminateVisibility(false);
-						util.log("oferta no existente");
-						list.setVisibility(View.GONE);
-						tvNoOffer.setVisibility(0);
-						tvNoOffer.setTextSize(20);
-						tvNoOffer.setPadding(0, 5, 0, 5);
-						tvNoOffer.setGravity(Gravity.CENTER);
-						tvNoOffer.setText("No hay ofertas");
-					} else {
-						// Hay ofertas
-						util.log("ofertas existentes");
-						tvNoOffer.setVisibility(View.GONE);
-						songsList.clear();
-						for (BackbeamObject offer : offers) {
-							if(offer.getDay("deadline").getTimeInMillis()>=today.getTime()){
-							dataid.add(offer.getId());
-							// Anadir al set Adapter
-							// creating new HashMap
-							final HashMap<String, String> map = new HashMap<String, String>();
+			/*
+			 * Query query = new Query("commerce");
+			 * query.setQuery("where this in ? join last 100 offer",
+			 * collection); query.
+			 */
 
-							
-							
-							SimpleDateFormat format1 = new SimpleDateFormat(
-									"dd-MM-yyyy");
-							String formatted = format1.format(offer.getDay(
-									"deadline").getTime());
-							// adding each child node to HashMap key => value
-							map.put(KEY_ID, offer.getId());
-							map.put(KEY_DESCRIPTION, offer.getString("description"));
-							map.put(KEY_LIKES, offer.getNumber("numlike")
-									.toString());
-							map.put(KEY_DEADLINE, formatted);
+			Backbeam.select("commerce")
+					.setQuery("where this in ? join last 100 offer", collection)
+					.fetch(100, 0, new FetchCallback() {
 
-							// adding HashList to ArrayList
-							songsList.add(map);
+						@Override
+						public void success(List<BackbeamObject> objects,
+								int totalCount, boolean fromCache) {
+
+							System.out.println("total objects   "
+									+ objects.size());
+							if (objects.size() == 0) {
+								System.out.println("no pilla el array");
 							}
-							
-						}
-					}
+							BackbeamObject commerce = objects.get(0);
+							JoinResult join = commerce.getJoinResult("offer");
+							placeName = commerce.getString("placename");
+							commercelocation = commerce
+									.getLocation("placelocation").getAddress()
+									.toString();
+							getSupportActionBar().setTitle(placeName);
+							List<BackbeamObject> offers = join.getResults();
+							// Contemplo si alguna referencia NO TIENE ofertas
+							if (offers.size() == 0) {
+								// No hay ofertas disponibles
+								setSupportProgressBarIndeterminateVisibility(false);
+								util.log("oferta no existente");
+								list.setVisibility(View.GONE);
+								tvNoOffer.setVisibility(0);
+								tvNoOffer.setTextSize(20);
+								tvNoOffer.setPadding(0, 5, 0, 5);
+								tvNoOffer.setGravity(Gravity.CENTER);
+								tvNoOffer.setText("No hay ofertas");
+							} else {
+								// Hay ofertas
+								util.log("ofertas existentes");
+								tvNoOffer.setVisibility(View.GONE);
+								songsList.clear();
+								for (BackbeamObject offer : offers) {
+									if (offer.getDay("deadline")
+											.getTimeInMillis() >= today
+											.getTime()) {
+										dataid.add(offer.getId());
+										// Anadir al set Adapter
+										// creating new HashMap
+										final HashMap<String, String> map = new HashMap<String, String>();
 
-				}
-			});
+										SimpleDateFormat format1 = new SimpleDateFormat(
+												"dd-MM-yyyy");
+										String formatted = format1.format(offer
+												.getDay("deadline").getTime());
+										// adding each child node to HashMap key
+										// => value
+										map.put(KEY_ID, offer.getId());
+										map.put(KEY_DESCRIPTION,
+												offer.getString("description"));
+										map.put(KEY_LIKES,
+												offer.getNumber("numlike")
+														.toString());
+										map.put(KEY_DEADLINE, formatted);
+
+										// adding HashList to ArrayList
+										songsList.add(map);
+									}
+
+								}
+							}
+
+						}
+					});
 
 			// Getting adapter by passing data ArrayList
 			adapter = new LazyAdapter(act, songsList);
@@ -457,55 +448,39 @@ public class OfferList extends ActionBarActivity {
 	@Override
 	protected void onRestart() {
 		super.onRestart();
-		//new LoadDataTask().execute();
+		// new LoadDataTask().execute();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
-		//MenuInflater inflater = getMenuInflater();
-		//inflater.inflate(R.menu.menu3, menu);
+		// MenuInflater inflater = getMenuInflater();
+		// inflater.inflate(R.menu.menu3, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
-
 }
 /*
- // CONSULTA PARA LA FOTO
+ * // CONSULTA PARA LA FOTO
+ * 
+ * /*CollectionConstraint collection = new CollectionConstraint();
+ * collection.addIdentifier(offer.getId());
+ * 
+ * Query query = new Query("offer"); query.setQuery("where this in ? join file",
+ * collection); query.fetch(100, 0, new FetchCallback() {
+ * 
+ * @Override public void success(List<BackbeamObject> companies, int totalCount,
+ * boolean fromCache) { if (totalCount == 0) {
+ * System.out.println("totalcount0"); map.put(KEY_THUMB_URL, "null"); } else {
+ * 
+ * for (BackbeamObject company : companies) {
+ * 
+ * BackbeamObject fileObject = company .getObject("file"); if (fileObject !=
+ * null) { TreeMap<String, Object> options = new TreeMap<String, Object>();
+ * options.put("width", 25); options.put("height", 25); String logoURL =
+ * fileObject .composeFileURL(options); System.out.println(logoURL);
+ * map.put(KEY_THUMB_URL, logoURL);
+ * 
+ * } else { map.put(KEY_THUMB_URL, "null"); } } } } });
+ */
 
-						/*CollectionConstraint collection = new CollectionConstraint();
-						collection.addIdentifier(offer.getId());
-
-						Query query = new Query("offer");
-						query.setQuery("where this in ? join file", collection);
-						query.fetch(100, 0, new FetchCallback() {
-							@Override
-							public void success(List<BackbeamObject> companies,
-									int totalCount, boolean fromCache) {
-								if (totalCount == 0) {
-									System.out.println("totalcount0");
-									map.put(KEY_THUMB_URL, "null");
-								} else {
-
-									for (BackbeamObject company : companies) {
-
-										BackbeamObject fileObject = company
-												.getObject("file");
-										if (fileObject != null) {
-											TreeMap<String, Object> options = new TreeMap<String, Object>();
-											options.put("width", 25);
-											options.put("height", 25);
-											String logoURL = fileObject
-													.composeFileURL(options);
-											System.out.println(logoURL);
-											map.put(KEY_THUMB_URL, logoURL);
-
-										} else {
-											map.put(KEY_THUMB_URL, "null");
-										}
-									}
-								}
-							}
-						});*/ 
- 
- 

@@ -6,7 +6,7 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.acra.sender.HttpSender;
-
+import com.wikout.R;
 import android.app.Application;
 
 @ReportsCrashes(
@@ -26,7 +26,7 @@ import android.app.Application;
 	            ReportField.STACK_TRACE
 	    },
 	    mode = ReportingInteractionMode.TOAST
-	    //,	    resToastText = R.string.toast_crash
+	    ,	    resToastText = R.string.toast_crash
 	)
 
 public class AcraClass extends Application {

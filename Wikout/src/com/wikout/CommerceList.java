@@ -25,42 +25,43 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class CommerceList extends ActionBarActivity {
-	
-Context context;
-ListView listview;
 
-double latitude,longitude;
+	Context context;
+	ListView listview;
 
-static final int REQUESTCODEMAP = 101;
-static final int REQUESTCODECOMMERCE = 102;
-public static final int RESULTOK = 100;
+	double latitude, longitude;
 
-public static ActionBarActivity actionbarAct;
-final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
-final ArrayList<String> listIdCommerces = new ArrayList<String>();
-final ArrayList<String> listLocationCommerces = new ArrayList<String>();
+	static final int REQUESTCODEMAP = 101;
+	static final int REQUESTCODECOMMERCE = 102;
+	public static final int RESULTOK = 100;
 
-final Util util = new Util();
-	  @Override
-	  protected void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-	    setContentView(R.layout.commerce_list);
-	    getSupportActionBar().setTitle("Comercios cercanos");
-	    setSupportProgressBarIndeterminateVisibility(true);
-	    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-	    listview = (ListView) findViewById(R.id.listcommerce);
-	   
-	    actionbarAct=this;
-	    context= this;
-	    
-	    FontUtils.setRobotoFont(context, ((Activity) context).getWindow().getDecorView());
-	    
-	    util.projectData(context);
-	    
+	public static ActionBarActivity actionbarAct;
+	final ArrayList<String> listPlacenameCommerces = new ArrayList<String>();
+	final ArrayList<String> listIdCommerces = new ArrayList<String>();
+	final ArrayList<String> listLocationCommerces = new ArrayList<String>();
 
-	   Bundle location = getIntent().getExtras();//***************atencion
-	    
+	final Util util = new Util();
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		setContentView(R.layout.commerce_list);
+		getSupportActionBar().setTitle("Comercios cercanos");
+		setSupportProgressBarIndeterminateVisibility(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		listview = (ListView) findViewById(R.id.listcommerce);
+
+		actionbarAct = this;
+		context = this;
+
+		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
+				.getDecorView());
+
+		util.projectData(context);
+
+		Bundle location = getIntent().getExtras();// ***************atencion
+
 		if (location.getInt("enter") == 1) {
 			util.log("entra dentro del if del commerceList");
 			Intent mapv2 = new Intent(this, Mapv2.class);
@@ -70,12 +71,11 @@ final Util util = new Util();
 			util.log("entra tras el if del commerceList");
 			latitude = location.getDouble("pointlat");
 			longitude = location.getDouble("pointlon");
-			System.out.println("Commerce list: "+latitude+" "+longitude);
+			System.out.println("Commerce list: " + latitude + " " + longitude);
 			getBoundingLocation(latitude, longitude);
 		}
-	    
-	   
-	    listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+		listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, final View view,
@@ -87,15 +87,20 @@ final Util util = new Util();
 
 						insertCommerce.putExtra("pointlat", latitude);
 						insertCommerce.putExtra("pointlon", longitude);
-						startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
+						startActivityForResult(insertCommerce,
+								REQUESTCODECOMMERCE);
 						// finish();
 					} else {
 						Intent insertOffer = new Intent();
-						
-						insertOffer.putExtra("placename",listPlacenameCommerces.get(position));
-						insertOffer.putExtra("idcommerce",listIdCommerces.get(position));
-						insertOffer.putExtra("location",listLocationCommerces.get(position));
-						System.out.println("location intent: "+listLocationCommerces.get(position));
+
+						insertOffer.putExtra("placename",
+								listPlacenameCommerces.get(position));
+						insertOffer.putExtra("idcommerce",
+								listIdCommerces.get(position));
+						insertOffer.putExtra("location",
+								listLocationCommerces.get(position));
+						System.out.println("location intent: "
+								+ listLocationCommerces.get(position));
 						setResult(RESULT_OK, insertOffer);
 						// startActivity(insertOffer);
 						finish();
@@ -110,83 +115,85 @@ final Util util = new Util();
 
 		});
 	}
+
 	// load image in imageView
-		@Override
-		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-			super.onActivityResult(requestCode, resultCode, data);
-			if(data==null){
-				
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (data == null) {
+
+		}
+		if (requestCode == REQUESTCODEMAP) {
+			if (resultCode == RESULT_OK) {
+				System.out.println("entra en result code");
+				Bundle d = data.getExtras();
+				latitude = d.getDouble("pointlat");
+				longitude = d.getDouble("pointlon");
+				getBoundingLocation(latitude, longitude);
 			}
-		    if (requestCode == REQUESTCODEMAP) {
-		        if(resultCode == RESULT_OK){
-		        	System.out.println("entra en result code");
-		        	Bundle d = data.getExtras();
-		            latitude=d.getDouble("pointlat");
-		            longitude=d.getDouble("pointlon");
-		            getBoundingLocation(latitude, longitude);
-		        }
 
-		    }if(requestCode== REQUESTCODECOMMERCE && resultCode==RESULT_OK){
-		    	
-		    	Bundle d=data.getExtras();
-		    	String placename =d.getString("placename");
-		    	String idcommerce = d.getString("idcommerce");
-		    	String location = d.getString("location");
-		    	
-		    	System.out.println("la location es: "+d.getString("location"));
-		    	
-		    	Intent i = new Intent();
-		    	i.putExtra("location", location);
-		    	i.putExtra("placename", placename);
-		    	i.putExtra("idcommerce", idcommerce);
-		    	setResult(RESULT_OK, i);
-		    	
-		    	finish();
-		    }
-				
-		    }
-			
-		
-	  private class StableArrayAdapter extends ArrayAdapter<String> {
+		}
+		if (requestCode == REQUESTCODECOMMERCE && resultCode == RESULT_OK) {
 
-	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+			Bundle d = data.getExtras();
+			String placename = d.getString("placename");
+			String idcommerce = d.getString("idcommerce");
+			String location = d.getString("location");
 
-	    public StableArrayAdapter(Context context, int textViewResourceId,
-	        List<String> objects) {
-	      super(context, textViewResourceId, objects);
-	      for (int i = 0; i < objects.size(); ++i) {
-	        mIdMap.put(objects.get(i), i);
-	      }
-	    }
+			System.out.println("la location es: " + d.getString("location"));
 
-	    @Override
-	    public long getItemId(int position) {
-	      String item = getItem(position);
-	      return mIdMap.get(item);
-	    }
+			Intent i = new Intent();
+			i.putExtra("location", location);
+			i.putExtra("placename", placename);
+			i.putExtra("idcommerce", idcommerce);
+			setResult(RESULT_OK, i);
 
-	    @Override
-	    public boolean hasStableIds() {
-	      return true;
-	    }
+			finish();
+		}
 
-	  }
-	  @Override
-	    public boolean onOptionsItemSelected(MenuItem item) {
-	        switch (item.getItemId()) {
-	        	case android.R.id.home: 
-	        		this.finish();
-	        		return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	        }
-	    }
-	  
+	}
+
+	private class StableArrayAdapter extends ArrayAdapter<String> {
+
+		HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+		public StableArrayAdapter(Context context, int textViewResourceId,
+				List<String> objects) {
+			super(context, textViewResourceId, objects);
+			for (int i = 0; i < objects.size(); ++i) {
+				mIdMap.put(objects.get(i), i);
+			}
+		}
+
+		@Override
+		public long getItemId(int position) {
+			String item = getItem(position);
+			return mIdMap.get(item);
+		}
+
+		@Override
+		public boolean hasStableIds() {
+			return true;
+		}
+
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			this.finish();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	// METODO para localizar comercios cercanos respecto a las coordenadas del
 	// usuario
 	protected void getBoundingLocation(double userlat, double userlon) {
-		
-		util.log("coordenadas: "+userlat+", "+userlon);
+
+		util.log("coordenadas: " + userlat + ", " + userlon);
 		// Vacio los arraylists
 		listPlacenameCommerces.clear();
 		listIdCommerces.clear();
@@ -207,33 +214,41 @@ final Util util = new Util();
 					public void success(List<BackbeamObject> commerces,
 							int totalCount, boolean fromCache) {
 						// RECORRO CADA COMERCIO
-						if (totalCount==0){
+						if (totalCount == 0) {
 
-						Intent insertCommerce = new Intent(context, InsertCommerce.class);
-							insertCommerce.putExtra("pointlat",latitude);
-					    	insertCommerce.putExtra("pointlon",longitude);
-					    	startActivityForResult(insertCommerce,REQUESTCODECOMMERCE);
-						}else{
-						for (BackbeamObject commerce : commerces) {
-							// CREAR ITEMS PARA LA LISTA
-							util.log(String.valueOf(totalCount));
-							listPlacenameCommerces.add(commerce.getString("placename"));
-							listIdCommerces.add(commerce.getId());
-							listLocationCommerces.add(commerce.getLocation("placelocation").getAddress().toString());
-							System.out.println(commerce.getLocation("placelocation").getAddress().toString());
-						}
-						listPlacenameCommerces.add("NUEVO");
-						listIdCommerces.add("null");
-						listLocationCommerces.add("null");
-						StableArrayAdapter adapter = new StableArrayAdapter(context,
-						        android.R.layout.simple_list_item_1, listPlacenameCommerces);
-						    listview.setAdapter(adapter);
-						    setSupportProgressBarIndeterminateVisibility(false);
+							Intent insertCommerce = new Intent(context,
+									InsertCommerce.class);
+							insertCommerce.putExtra("pointlat", latitude);
+							insertCommerce.putExtra("pointlon", longitude);
+							startActivityForResult(insertCommerce,
+									REQUESTCODECOMMERCE);
+						} else {
+							for (BackbeamObject commerce : commerces) {
+								// CREAR ITEMS PARA LA LISTA
+								util.log(String.valueOf(totalCount));
+								listPlacenameCommerces.add(commerce
+										.getString("placename"));
+								listIdCommerces.add(commerce.getId());
+								listLocationCommerces.add(commerce
+										.getLocation("placelocation")
+										.getAddress().toString());
+								System.out.println(commerce
+										.getLocation("placelocation")
+										.getAddress().toString());
+							}
+							listPlacenameCommerces.add("NUEVO");
+							listIdCommerces.add("null");
+							listLocationCommerces.add("null");
+							StableArrayAdapter adapter = new StableArrayAdapter(
+									context,
+									android.R.layout.simple_list_item_1,
+									listPlacenameCommerces);
+							listview.setAdapter(adapter);
+							setSupportProgressBarIndeterminateVisibility(false);
 						}
 					}
-					
+
 				});
 	}
 
-
-	} 
+}

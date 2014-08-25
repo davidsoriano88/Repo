@@ -4,13 +4,13 @@ import utils.Util;
 import utils.MyLocation.LocationResult;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,27 +60,35 @@ public class LastFragment extends Fragment implements LocationListener {
 			public void onClick(View v) {
 				Context context = getActivity();
 
-				SharedPreferences sharedPref = context.getSharedPreferences(
-						"MisPreferencias", Context.MODE_PRIVATE);
-
-				SharedPreferences.Editor editor = sharedPref.edit();
+				
 				if (cbxDontShow.isChecked() == true) {
 
-					editor.putBoolean("notour", true);
-					editor.commit();
+					
+					Util.setPreferenceBoolean(getActivity().getApplicationContext(), "notour", true);
 
 				}
 				if (lat != 0) {
-					editor.putFloat("latpos", (float) lat);
-					editor.putFloat("longpos", (float) log);
-					editor.commit();
+					Util.setPreferenceDouble(getActivity().getApplicationContext(), "latpos", lat);
+					Util.setPreferenceDouble(getActivity().getApplicationContext(), "longpos", log);
+					
 				} else {
-					editor.putFloat("latpos", (float) 0.0);// location.getLatitude());
-					editor.putFloat("longpos", (float) 0.0);// location.getLongitude());
-					editor.commit();
-				}
 
-				Intent mainIntent = new Intent().setClass(context, LoginActivity.class);
+					Util.setPreferenceDouble(getActivity().getApplicationContext(), "latpos", 0);
+					Util.setPreferenceDouble(getActivity().getApplicationContext(), "longpos", 0);
+				}
+				if(Util.getPreferenceBoolean(getActivity().getApplicationContext(), "login")==true){
+					Intent mainIntent = new Intent().setClass(context,
+							Map.class);
+					mainIntent.putExtra("latitudSplash", lat);// location.getLatitude());
+					mainIntent.putExtra("longitudSplash", log);// location.getLongitude());
+					// System.out.println("latitudSplash "+ location.getLatitude() +
+					// "\n" + "longitudSplash "+ location.getLongitude());
+
+					startActivity(mainIntent);
+					getActivity().finish();
+				}else{
+				Intent mainIntent = new Intent().setClass(context,
+						LoginActivity.class);
 				mainIntent.putExtra("latitudSplash", lat);// location.getLatitude());
 				mainIntent.putExtra("longitudSplash", log);// location.getLongitude());
 				// System.out.println("latitudSplash "+ location.getLatitude() +
@@ -88,7 +96,7 @@ public class LastFragment extends Fragment implements LocationListener {
 
 				startActivity(mainIntent);
 				getActivity().finish();
-
+				}
 			}
 		});
 

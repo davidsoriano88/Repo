@@ -8,11 +8,9 @@ import io.backbeam.Location;
 import io.backbeam.ObjectCallback;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.StringTokenizer;
 
 import model.FontUtils;
@@ -29,10 +27,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
@@ -57,14 +51,15 @@ public class InsertOffer extends ActionBarActivity {
 
 	ImageView ivPhoto;
 	EditText etDescription;
-	Button btnInsertCommerce, dateLimit, btnLocationCommerce;
+	Button btnInsertOffer, dateLimit, btnLocationCommerce;
 	Spinner spnCategory;
-	TextView tvPlacenameLabel, tvPlacename, tvLocation, tvLocationLabel,tvChangeCommerce;
+	TextView tvPlacenameLabel, tvPlacename, tvLocation, tvLocationLabel,
+			tvChangeCommerce;
 	View viewCommerce;
-	
-	LinearLayout layoutInsertOfferCommerce,layoutInsertOfferSelectCommerce;
+
+	LinearLayout layoutInsertOfferCommerce, layoutInsertOfferSelectCommerce;
 	// Otras variables
-	String photoPath, idoferta, idphoto = "",photoName, url;
+	String photoPath, idoferta, idphoto = "", photoName, url;
 
 	// Variables para controlar la fecha
 	int year, month, day, existPhoto = 0, enter;
@@ -78,102 +73,104 @@ public class InsertOffer extends ActionBarActivity {
 	static final int REQUEST_IMAGE_CAPTURE = 1;
 	static final int LOAD_IMAGE = 3;
 	static final int DATE_DIALOG_ID = 999;
-	
+	static final int REQUEST_LOGIN = 20;
+
 	// Location de prueba
 	public Location locationbm;
 	Bundle bundle;
 	// Constante para el picker
-	
+
 	final Context context = this;
 	public Intent map;
 	Util util = new Util();
 
 	// Para el bundle de ListCommerce e InsertCommerce
 	String idcommerce, location, placename, idObjectPhoto = null, position;
-	SharedPreferences prefers = null;
-
-	@Override
+		@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.insert_offer);
 		setSupportProgressBarIndeterminateVisibility(true);
-		//prefers = PreferenceManager.getDefaultSharedPreferences(context);
+		// prefers = PreferenceManager.getDefaultSharedPreferences(context);
 		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
 				.getDecorView());
-		
+
 		actionbarAct = this;
 		util.projectData(context);
+
+	
 		bundle = getIntent().getExtras();
 		initUI();
 		if (bundle != null) {
-			
+
 			idcommerce = bundle.getString("idcommerce");
 			placename = bundle.getString("placename");
 			location = bundle.getString("location");
 
 			layoutInsertOfferSelectCommerce.setVisibility(View.GONE);
-			
+
 			layoutInsertOfferCommerce.setVisibility(0);
-			
-		/*	tvChangeCommerce.setVisibility(0);
-			tvPlacename.setVisibility(0);
-			tvPlacenameLabel.setVisibility(0);
-			tvLocation.setVisibility(0);
-			tvLocationLabel.setVisibility(0);
-			viewCommerce.setVisibility(0);*/
+
+			/*
+			 * tvChangeCommerce.setVisibility(0); tvPlacename.setVisibility(0);
+			 * tvPlacenameLabel.setVisibility(0); tvLocation.setVisibility(0);
+			 * tvLocationLabel.setVisibility(0); viewCommerce.setVisibility(0);
+			 */
 
 			tvPlacename.setText(placename);
 			StringTokenizer tokens = new StringTokenizer(location, ":\"");
 			String first = tokens.nextToken();// this will contain "Fruit"
-			String second = tokens.nextToken();// this will contain " they taste good"
+			String second = tokens.nextToken();// this will contain
+												// " they taste good"
 			String third = tokens.nextToken();
 			String fourth = tokens.nextToken();
 			String fifth = tokens.nextToken();
 			String sixth = tokens.nextToken();
-			
-		/*	String address = location.;
-			String city = addresses.get(0).getAddressLine(1);
-			String country = addresses.get(0).getAddressLine(2);
 
-			tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
-			*/
-			
+			/*
+			 * String address = location.; String city =
+			 * addresses.get(0).getAddressLine(1); String country =
+			 * addresses.get(0).getAddressLine(2);
+			 * 
+			 * tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country
+			 * );
+			 */
+
 			System.out.println(second);
 			System.out.println(fourth);
 			System.out.println(sixth);
-			
 
-			tvLocation.setText(second+"\n"+fourth+", "+sixth);
+			tvLocation.setText(second + "\n" + fourth + ", " + sixth);
 
-			btnInsertCommerce.setBackgroundColor(getResources().getColor(
+			btnInsertOffer.setBackgroundColor(getResources().getColor(
 					R.color.mainColor));
 		} else {
-			
-			
+
 			layoutInsertOfferSelectCommerce.setVisibility(0);
 			layoutInsertOfferCommerce.setVisibility(View.GONE);
-			
-		/*	viewCommerce.setVisibility(View.GONE);
-			tvChangeCommerce.setVisibility(View.GONE);
-			tvPlacename.setVisibility(View.GONE);
-			tvPlacenameLabel.setVisibility(View.GONE);
-			tvLocation.setVisibility(View.GONE);
-			tvLocationLabel.setVisibility(View.GONE);
-*/
-			
+
+			/*
+			 * viewCommerce.setVisibility(View.GONE);
+			 * tvChangeCommerce.setVisibility(View.GONE);
+			 * tvPlacename.setVisibility(View.GONE);
+			 * tvPlacenameLabel.setVisibility(View.GONE);
+			 * tvLocation.setVisibility(View.GONE);
+			 * tvLocationLabel.setVisibility(View.GONE);
+			 */
+
 		}
 	}
 
 	private void initUI() {
-		
+
 		getSupportActionBar().setTitle("Nueva Oferta");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		
+
 		map = new Intent(getApplicationContext(), Map.class);
-		
-		layoutInsertOfferSelectCommerce= (LinearLayout)findViewById(R.id.layoutInsertOfferSelectCommerce);
-		layoutInsertOfferCommerce = (LinearLayout)findViewById(R.id.layoutInsertOfferCommerce);
+
+		layoutInsertOfferSelectCommerce = (LinearLayout) findViewById(R.id.layoutInsertOfferSelectCommerce);
+		layoutInsertOfferCommerce = (LinearLayout) findViewById(R.id.layoutInsertOfferCommerce);
 		ivPhoto = (ImageView) findViewById(R.id.ivInsertOfferPhoto);
 		viewCommerce = (View) findViewById(R.id.viewCommerce);
 		tvChangeCommerce = (TextView) findViewById(R.id.tvInsertOfferChangeCommerce);
@@ -182,8 +179,8 @@ public class InsertOffer extends ActionBarActivity {
 		tvPlacenameLabel = (TextView) findViewById(R.id.tvInsertOfferPlacenamelabel);
 		tvLocation = (TextView) findViewById(R.id.tvInsertOfferCommerceLocation);
 		tvLocationLabel = (TextView) findViewById(R.id.tvInsertOfferCommerceLocationlabel);
-		btnInsertCommerce = (Button) findViewById(R.id.btnInsertOfferOk);
-		
+		btnInsertOffer = (Button) findViewById(R.id.btnInsertOfferOk);
+
 		addListenerOnButton();
 		setCurrentDateOnView();
 		makeTextViewHyperlink(tvChangeCommerce);
@@ -205,7 +202,7 @@ public class InsertOffer extends ActionBarActivity {
 		btnLocationCommerce = (Button) findViewById(R.id.btnInsertOfferCommerce);
 
 		if (etDescription.isFocused()) {
-			btnInsertCommerce.requestFocus();
+			btnInsertOffer.requestFocus();
 		}
 
 		// Lo ponemos a escuchar para cuando sea pulsado
@@ -226,11 +223,16 @@ public class InsertOffer extends ActionBarActivity {
 
 		});
 
-		btnInsertCommerce.setOnClickListener(new OnClickListener() {
+		btnInsertOffer.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (util.isNetworkAvailable(context) == true) {
+					//Digo que viene de InsertOffer
+					Util.setPreferenceInt(context, "place", 3);
+					
+					
+					
 					if (etDescription.getText().length() == 0) {
 						util.log("aceptar1");
 						dialogIncompleteFields();
@@ -253,17 +255,28 @@ public class InsertOffer extends ActionBarActivity {
 								});
 
 						dialogIncomplete.show();
-					} else if (photo != null) {
-						btnInsertCommerce.setEnabled(false);
-						setSupportProgressBarIndeterminateVisibility(true);
-						btnInsertCommerce.setEnabled(false);
-						insertOfferPhoto(actualDate());
-					} else {
-						setSupportProgressBarIndeterminateVisibility(true);
-						util.log("no hay foto");
-						btnInsertCommerce.setEnabled(false);
-						insertNewOffer(actualDate(), idcommerce, idObjectPhoto);
+					} else if (Util.getPreferenceBoolean(context, "login")==true) {
+						System.out.println("entra al primer if de insertoffer");
+						if (photo != null) {
+							System.out.println("entra al segudno if de insertoffer");
+							setSupportProgressBarIndeterminateVisibility(true);
+							btnInsertOffer.setEnabled(false);
+							insertOfferPhoto(actualDate());
+						} else {
+							System.out.println("entra al else del if de insertoffer");
+							setSupportProgressBarIndeterminateVisibility(true);
+							util.log("no hay foto");
+							btnInsertOffer.setEnabled(false);
+							insertNewOffer(actualDate(), idcommerce,
+									idObjectPhoto);
 
+						}
+					}else{
+						System.out.println("Entra al else de InsertOffer");
+						//CREO EL INTENT PARA IR A LOGINACTIVITY
+						Intent in = new Intent(context,LoginActivity.class);
+						in.putExtra("procedencia", 3);
+						startActivityForResult(in, REQUEST_LOGIN);
 					}
 
 					// imageClicked(v);
@@ -272,7 +285,8 @@ public class InsertOffer extends ActionBarActivity {
 							"Es necesaria conexión a internet");
 				}
 			}
-		});setSupportProgressBarIndeterminateVisibility(false);
+		});
+		setSupportProgressBarIndeterminateVisibility(false);
 
 	}
 
@@ -287,29 +301,23 @@ public class InsertOffer extends ActionBarActivity {
 					public void onClick(DialogInterface dialogo1, int id) {
 						enter = 0;
 
-						if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
-							prefers = PreferenceManager
-									.getDefaultSharedPreferences(getApplicationContext());
-
-						} else {
-							prefers = getSharedPreferences("MisPreferencias",
-									Context.MODE_PRIVATE);
-
-						}
+			
 
 						// prefers =
 						// PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 						System.out.println("PREFERS LAT: "
-								+ prefers.getFloat("latpos", 0));
+								+ Util.getPreferenceDouble(context, "latpos"));
 						System.out.println("PREFERS LON: "
-								+ prefers.getFloat("longpos", 0));
-						userlat = (double) prefers.getFloat("latpos", 0);
-						userlon = (double) prefers.getFloat("longpos", 0);
+								+ Util.getPreferenceDouble(context, "longpos"));
+						userlat = Util.getPreferenceDouble(context, "latpos");
+
+						userlon = Util.getPreferenceDouble(context, "longpos");
+
 						// btnLocation.setText(latitude +","+longitude);
 						// util.showToast(context,latitude+","+longitude);
 						Intent listCommerce = new Intent(context,
 								CommerceList.class);
-						System.out.println("Insert offer: LAT "+userlat);
+						System.out.println("Insert offer: LAT " + userlat);
 						listCommerce.putExtra("pointlat", userlat);
 						listCommerce.putExtra("pointlon", userlon);
 						startActivityForResult(listCommerce, 30);
@@ -471,7 +479,7 @@ public class InsertOffer extends ActionBarActivity {
 												.intValue());
 								util.showToast(context, "Oferta insertada");
 								finish();
-								btnInsertCommerce.setEnabled(true);
+								btnInsertOffer.setEnabled(true);
 								setSupportProgressBarIndeterminateVisibility(false);
 							}
 						});
@@ -481,65 +489,51 @@ public class InsertOffer extends ActionBarActivity {
 			}
 
 			// METODO PARA INSERTAR OFERTA
-			protected void insertNewOffer(final Date createdate,
-					final String idcommerce, final String idfile) {
-				// Creo el objeto "offer"
-				final BackbeamObject offer = new BackbeamObject("offer");
-				// Sacar idcommerce del bundle al volver a esta activity
-				final BackbeamObject commerce = new BackbeamObject("commerce",
-						idcommerce);
-			
-				if (idfile != null) {
-					final BackbeamObject file = new BackbeamObject("file", idfile);
-					offer.setObject("file", file);
-				}
-				// inserto los valores de "offer"
-				// util.log(idfile);
-				offer.setString("description", etDescription.getText().toString());
-				offer.setDay("deadline", deadline);
-				offer.setString("udid", getId());
-				offer.setString("offerstatus", "ok");
-				offer.setDate("offercreationdate", createdate);
-			
-				offer.setObject("commerce", commerce);
-				offer.setNumber("numlike", 0);
-				// TODAVIA NO CONTEMPLO LIKE NI REPORT YA QUE SE ACABA DE CREAR
-				// offer.addObject("like");
-				// offer.addObject("report");
-			
-				offer.save(new ObjectCallback() {// **************************************************************************
-					@Override
-					public void success(BackbeamObject offer) {
-						Backbeam.read("commerce", idcommerce, new ObjectCallback() {
-							@Override
-							public void success(BackbeamObject commerce) {
-								final int contador = commerce.getNumber("actualoffers")
-										.intValue();
-								System.out.println(commerce.getString("placename")
-										+ "\nNumero de ofertas: " + contador);
-								commerce.setNumber("actualoffers", contador + 1);
-								commerce.save(new ObjectCallback() {
-									@Override
-									public void success(BackbeamObject object) {
-										System.out.println("updated! :) "
-												+ object.getId());
-										System.out.println(object
-												.getString("placename")
-												+ "\nNumero de ofertas: "
-												+ object.getNumber("actualoffers")
-														.intValue());
-										util.showToast(context, "Oferta insertada");
-										finish();
-										btnInsertCommerce.setEnabled(true);
-										setSupportProgressBarIndeterminateVisibility(false);
-									}
-								});
-							}
-						});
-			
-					}
-				});
-			}
+			/*
+			 * protected void insertNewOffer(final Date createdate, final String
+			 * idcommerce, final String idfile) { // Creo el objeto "offer"
+			 * final BackbeamObject offer = new BackbeamObject("offer"); //
+			 * Sacar idcommerce del bundle al volver a esta activity final
+			 * BackbeamObject commerce = new BackbeamObject("commerce",
+			 * idcommerce);
+			 * 
+			 * if (idfile != null) { final BackbeamObject file = new
+			 * BackbeamObject("file", idfile); offer.setObject("file", file); }
+			 * // inserto los valores de "offer" // util.log(idfile);
+			 * offer.setString("description",
+			 * etDescription.getText().toString()); offer.setDay("deadline",
+			 * deadline); offer.setString("udid", getId());
+			 * offer.setString("offerstatus", "ok");
+			 * offer.setDate("offercreationdate", createdate);
+			 * 
+			 * offer.setObject("commerce", commerce); offer.setNumber("numlike",
+			 * 0); // TODAVIA NO CONTEMPLO LIKE NI REPORT YA QUE SE ACABA DE
+			 * CREAR // offer.addObject("like"); // offer.addObject("report");
+			 * 
+			 * offer.save(new ObjectCallback() {//
+			 * ******************************
+			 * ********************************************
+			 * 
+			 * @Override public void success(BackbeamObject offer) {
+			 * Backbeam.read("commerce", idcommerce, new ObjectCallback() {
+			 * 
+			 * @Override public void success(BackbeamObject commerce) { final
+			 * int contador = commerce.getNumber("actualoffers") .intValue();
+			 * System.out.println(commerce.getString("placename") +
+			 * "\nNumero de ofertas: " + contador);
+			 * commerce.setNumber("actualoffers", contador + 1);
+			 * commerce.save(new ObjectCallback() {
+			 * 
+			 * @Override public void success(BackbeamObject object) {
+			 * System.out.println("updated! :) " + object.getId());
+			 * System.out.println(object .getString("placename") +
+			 * "\nNumero de ofertas: " + object.getNumber("actualoffers")
+			 * .intValue()); util.showToast(context, "Oferta insertada");
+			 * finish(); btnInsertCommerce.setEnabled(true);
+			 * setSupportProgressBarIndeterminateVisibility(false); } }); } });
+			 * 
+			 * } }); }
+			 */
 		});
 	}
 
@@ -628,6 +622,20 @@ public class InsertOffer extends ActionBarActivity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
+		if (requestCode == REQUEST_LOGIN && resultCode ==RESULT_OK){
+			if (photo != null) {
+				setSupportProgressBarIndeterminateVisibility(true);
+				btnInsertOffer.setEnabled(false);
+				insertOfferPhoto(actualDate());
+			} else {
+				setSupportProgressBarIndeterminateVisibility(true);
+				util.log("no hay foto");
+				btnInsertOffer.setEnabled(false);
+				insertNewOffer(actualDate(), idcommerce,
+						idObjectPhoto);
+
+			}
+		}
 		// if there's no errors, the image is loaded
 		if (resultCode == 10000) {
 
@@ -654,69 +662,66 @@ public class InsertOffer extends ActionBarActivity {
 			idcommerce = commerce.getString("idcommerce");
 			placename = commerce.getString("placename");
 			location = commerce.getString("location");
-			
-			
+
 			StringTokenizer tokens = new StringTokenizer(location, ":\"");
 			String first = tokens.nextToken();// this will contain "Fruit"
-			String second = tokens.nextToken();// this will contain " they taste good"
+			String second = tokens.nextToken();// this will contain
+												// " they taste good"
 			String third = tokens.nextToken();
 			String fourth = tokens.nextToken();
 			String fifth = tokens.nextToken();
 			String sixth = tokens.nextToken();
-			
-		/*	String address = location.;
-			String city = addresses.get(0).getAddressLine(1);
-			String country = addresses.get(0).getAddressLine(2);
 
-			tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country);
-			*/
-			
+			/*
+			 * String address = location.; String city =
+			 * addresses.get(0).getAddressLine(1); String country =
+			 * addresses.get(0).getAddressLine(2);
+			 * 
+			 * tvLocation.setText("¿Dónde está?\n"+address+"\n"+city+", "+country
+			 * );
+			 */
+
 			System.out.println(second);
 			System.out.println(fourth);
 			System.out.println(sixth);
-			
-			
-			
-			//location = commerce.getString("address");
-			System.out.println("location precommercelat: "+location);
-			/*Geocoder geocoder = new Geocoder(context);
-			List<Address> addresses = null;
-			
-			try {
-				addresses = geocoder.getFromLocation(commerce.getDouble("commercelat"), commerce.getDouble("commercelon"), 1);
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			String address = addresses.get(0).getAddressLine(0);
-			String city = addresses.get(0).getAddressLine(1);
-			String country = addresses.get(0).getAddressLine(2);
-			util.log("pancratio: "+address + city + country);
-			tvLocation.setText(address+"\n"+city+", "+country);
-			*/
+
+			// location = commerce.getString("address");
+			System.out.println("location precommercelat: " + location);
+			/*
+			 * Geocoder geocoder = new Geocoder(context); List<Address>
+			 * addresses = null;
+			 * 
+			 * try { addresses =
+			 * geocoder.getFromLocation(commerce.getDouble("commercelat"),
+			 * commerce.getDouble("commercelon"), 1);
+			 * 
+			 * } catch (IOException e) { // TODO Auto-generated catch block
+			 * e.printStackTrace(); }
+			 * 
+			 * String address = addresses.get(0).getAddressLine(0); String city
+			 * = addresses.get(0).getAddressLine(1); String country =
+			 * addresses.get(0).getAddressLine(2);
+			 * util.log("pancratio: "+address + city + country);
+			 * tvLocation.setText(address+"\n"+city+", "+country);
+			 */
 			tvPlacename.setText(placename);
-			tvLocation.setText(second+"\n"+fourth+", "+sixth);
-			//btnLocationCommerce.setVisibility(View.GONE);
+			tvLocation.setText(second + "\n" + fourth + ", " + sixth);
+			// btnLocationCommerce.setVisibility(View.GONE);
 			layoutInsertOfferSelectCommerce.setVisibility(View.GONE);
 			layoutInsertOfferCommerce.setVisibility(0);
-			/*viewCommerce.setVisibility(0);
-			tvChangeCommerce.setVisibility(0);
-			tvPlacename.setVisibility(0);
-			tvPlacenameLabel.setVisibility(0);
-			tvLocation.setVisibility(0);
-			tvLocationLabel.setVisibility(0);*/
+			/*
+			 * viewCommerce.setVisibility(0); tvChangeCommerce.setVisibility(0);
+			 * tvPlacename.setVisibility(0); tvPlacenameLabel.setVisibility(0);
+			 * tvLocation.setVisibility(0); tvLocationLabel.setVisibility(0);
+			 */
 			if (tvPlacename.getText().length() != 0) {
-				btnInsertCommerce.setBackgroundColor(getResources().getColor(
+				btnInsertOffer.setBackgroundColor(getResources().getColor(
 						R.color.mainColor));
 				btnLocationCommerce.setBackgroundColor(Color.GRAY);
 			}
 		}
 
 	}
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -745,5 +750,13 @@ public class InsertOffer extends ActionBarActivity {
 		tvReport.setText(ssb, TextView.BufferType.SPANNABLE);
 
 	}
+/*		if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB) {
+			prefers = PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext());
 
+		} else {
+			prefers = getSharedPreferences("MisPreferencias",
+					Context.MODE_PRIVATE);
+
+		}*/
 }
