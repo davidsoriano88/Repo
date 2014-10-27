@@ -1,7 +1,5 @@
 package walktrought;
 
-
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,7 +9,6 @@ import android.support.v4.view.ViewPager;
 
 import com.viewpagerindicator.CirclePageIndicator;
 import com.wikout.R;
-
 
 public class MainActivity extends FragmentActivity {
 

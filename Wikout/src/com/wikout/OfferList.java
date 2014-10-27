@@ -196,11 +196,21 @@ public class OfferList extends ActionBarActivity {
 		tvNoOffer = (TextView) findViewById(R.id.tvListOfferNoOffer);
 		list = (ListView) findViewById(R.id.listOff);
 		// queryOffer(bundle.getString("id"));
-		util.log(bundle.getString("id"));
-		idcommerce = bundle.getString("id");
-		userlocation = bundle.getString("location");
-		userlat = bundle.getDouble("userlatitude");
-		userlon = bundle.getDouble("userlongitude");
+
+		if (bundle.getString("commerceid") != null) {
+			idcommerce = bundle.getString("commerceid");
+			userlat = Util.getPreferenceDouble(context, "latpos");
+			userlon = Util.getPreferenceDouble(context, "longpos");
+
+		} else {
+			util.log(bundle.getString("id"));
+			idcommerce = bundle.getString("id");
+
+			// userlocation = bundle.getString("location");
+			userlat = bundle.getDouble("userlatitude");
+			userlon = bundle.getDouble("userlongitude");
+
+		}
 
 		// getPhoto(bundle.getString("id"));
 		FontUtils.setRobotoFont(context, (ViewGroup) ((Activity) context)
@@ -216,7 +226,7 @@ public class OfferList extends ActionBarActivity {
 				if (util.isNetworkAvailable(context) == true) {
 					AlertDialog.Builder info = new AlertDialog.Builder(context);
 					info.setTitle("Insertar Nueva Oferta");
-					info.setMessage("Está a punto de insertar una nueva oferta");
+					info.setMessage("Estás a punto de insertar una nueva oferta");
 					info.setCancelable(true);
 					info.setNeutralButton("Aceptar",
 							new DialogInterface.OnClickListener() {
@@ -253,7 +263,7 @@ public class OfferList extends ActionBarActivity {
 				intent.putExtra("idoffer", dataid.get(pos));
 				intent.putExtra("idcommerce", idcommerce);
 				intent.putExtra("placename", placeName);
-				intent.putExtra("userlocation", userlocation);
+				// intent.putExtra("userlocation", userlocation);
 				intent.putExtra("userlongitude", userlon);
 				intent.putExtra("userlatitude", userlat);
 				startActivity(intent);
@@ -391,9 +401,11 @@ public class OfferList extends ActionBarActivity {
 								tvNoOffer.setVisibility(View.GONE);
 								songsList.clear();
 								for (BackbeamObject offer : offers) {
+									
+									//23-10. He añadido SI ADEMÁS, el estado de la oferta es OK, que se cargue
 									if (offer.getDay("deadline")
 											.getTimeInMillis() >= today
-											.getTime()) {
+											.getTime() ) {
 										dataid.add(offer.getId());
 										// Anadir al set Adapter
 										// creating new HashMap

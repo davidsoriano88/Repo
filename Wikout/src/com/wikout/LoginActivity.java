@@ -49,17 +49,16 @@ public class LoginActivity extends Activity implements OnClickListener,
 		OnConnectionFailedListener {
 
 	private static final int DIALOG_GET_GOOGLE_PLAY_SERVICES = 1;
-
 	private static final int REQUEST_CODE_SIGN_IN = 1;
 	private static final int REQUEST_CODE_GET_GOOGLE_PLAY_SERVICES = 2;
-
-	private PlusClient mPlusClient;
 	private static final String URL_PREFIX_FRIENDS = "https://graph.facebook.com/me/friends?access_token=";
+
 	Context context = this;
 	Util util;
 	private TextView textInstructionsOrLink;
 	private Button btnFacebook, btnSinLogin, btnGoogleLogout;
 
+	private PlusClient mPlusClient;
 	private ConnectionResult mConnectionResult;
 	private SignInButton btnGoogle;
 	private Session.StatusCallback statusCallback = new SessionStatusCallback();
@@ -67,11 +66,10 @@ public class LoginActivity extends Activity implements OnClickListener,
 	private String email, nombre;
 	private int lastUserId = 0;
 	// Profile pic image size in pixels
-
 	// Google client to interact with Google API
 	// private GoogleApiClient mGoogleApiClient;
 	List<String> permissions = new ArrayList<String>();
-	
+
 	// Esta es la clave: 2jmj7l5rSw0yVb/vlWAYkK/YBwk=
 
 	@Override
@@ -89,11 +87,12 @@ public class LoginActivity extends Activity implements OnClickListener,
 		btnGoogleLogout = (Button) findViewById(R.id.sign_out_button);
 		textInstructionsOrLink = (TextView) findViewById(R.id.instructionsOrLink);
 		textInstructionsOrLink.setVisibility(View.GONE);
-		// btnGooglePlus = (Button) findViewById(R.id.btnLoginGoogle);
 		btnSinLogin = (Button) findViewById(R.id.btnSinLogin);
+
 		Bundle splash = getIntent().getExtras();
 		latitudeSplash = splash.getDouble("latitudSplash");
 		longitudeSplash = splash.getDouble("longitudSplash");
+
 		FontUtils.setRobotoFont(context, ((Activity) context).getWindow()
 				.getDecorView());
 
@@ -112,10 +111,14 @@ public class LoginActivity extends Activity implements OnClickListener,
 				&& splash.getInt("procedencia") > 1) {
 			btnSinLogin.setVisibility(View.GONE);
 		}
+
+		// FACEBOOK
 		Settings.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
 		Session session = Session.getActiveSession();
 		if (Util.getPreferenceBoolean(context, "login") == true) {
+
+			// Login FACEBOOK
 			if (session == null) {
 				if (savedInstanceState != null) {
 
@@ -144,7 +147,6 @@ public class LoginActivity extends Activity implements OnClickListener,
 
 				session = new Session(context);
 				Session.setActiveSession(session);
-
 				session.closeAndClearTokenInformation();
 				// clear your preferences if saved
 
@@ -172,7 +174,8 @@ public class LoginActivity extends Activity implements OnClickListener,
 	@Override
 	public void onStart() {
 		super.onStart();
-		/* Facebook */Session.getActiveSession().addCallback(statusCallback);
+		/* Facebook */
+		Session.getActiveSession().addCallback(statusCallback);
 		mPlusClient.connect();
 	}
 
@@ -261,7 +264,8 @@ public class LoginActivity extends Activity implements OnClickListener,
 											String lastName = user
 													.getLastName();
 											String id = user.getId();
-											email = user.getProperty("email").toString();
+											email = user.getProperty("email")
+													.toString();
 											nombre = lastName + ", "
 													+ firstName;
 											Log.e("facebookid", id);
@@ -330,6 +334,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 
 	}
 
+	@SuppressWarnings("unused")
 	private void buscarusuario(String email) {
 		// TODO Auto-generated method stub
 
@@ -340,6 +345,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 		String currentPersonName = mPlusClient.getCurrentPerson() != null ? mPlusClient
 				.getCurrentPerson().getDisplayName()
 				: getString(R.string.unknown_person);
+				System.out.println("nombre del usuario de google: "+currentPersonName);
 		textInstructionsOrLink.setText(getString(R.string.signed_in_status,
 				currentPersonName));
 		updateButtons(true /* isSignedIn */);
@@ -385,6 +391,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onClick(View v) {
 
@@ -401,7 +408,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 				showDialog(DIALOG_GET_GOOGLE_PLAY_SERVICES);
 				return;
 			}
-
+			System.out.println("login google. Parece que sí se conecta");
 			try {
 				textInstructionsOrLink
 						.setText(getString(R.string.signing_in_status));
@@ -440,6 +447,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		if (id != DIALOG_GET_GOOGLE_PLAY_SERVICES) {
@@ -472,7 +480,6 @@ public class LoginActivity extends Activity implements OnClickListener,
 				login();
 			} else {
 				Util.setPreferenceBoolean(context, "login", true);
-
 				dondeVa(Util.getPreferenceInt(context, "place"));
 			}
 		} else {
@@ -483,6 +490,7 @@ public class LoginActivity extends Activity implements OnClickListener,
 	public void login() {
 		Util.setPreferenceBoolean(context, "login", true);
 		if (Util.getPreferenceString(context, "email") == "") {
+			System.out.println("490 Estoy en login(), email: " + email);
 			Util.setPreferenceString(context, "email", email);
 
 		}
@@ -600,7 +608,6 @@ public class LoginActivity extends Activity implements OnClickListener,
 		case 1: // IR A MAPA
 			Intent imap = new Intent();
 			imap.setClass(LoginActivity.this, Map.class);
-
 			imap.putExtra("latitudSplash", latitudeSplash); // location.getLatitude());
 			imap.putExtra("longitudSplash", longitudeSplash);// location.getLongitude());
 			// System.out.println("Leloo"+"latitudSplash "+

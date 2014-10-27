@@ -53,7 +53,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="30dp"
                     android:ems="10"
-                    android:hint="Oferta" >
+                    android:hint="Oferta"
+                    android:inputType="text" >
 
                     <requestFocus />
                 </EditText>

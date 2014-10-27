@@ -3,7 +3,7 @@
     android:id="@+id/listcommerce"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:divider="#aad2c9"
-    android:dividerHeight="4dp" >
+    android:divider="#999999"
+    android:dividerHeight="1dp" >
 
 </ListView>

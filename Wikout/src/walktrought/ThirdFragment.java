@@ -22,8 +22,9 @@ public class ThirdFragment extends Fragment {
 
 		TextView tv = (TextView) v.findViewById(R.id.tvFragThird);
 		String string = getString(R.string.walkthrougth3);
-		tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf"));
-		
+		tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),
+				"fonts/Roboto-Regular.ttf"));
+
 		tv.setText(string);
 
 		return v;

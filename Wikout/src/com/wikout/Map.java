@@ -215,7 +215,7 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 		// asignamos la funcionalidad drawerToggle:
 		drawerToggle = new ActionBarDrawerToggle(this, /* host Activity */
 		drawerLayout, /* DrawerLayout object */
-		R.drawable.ic_navigation_drawer, /* nav drawer image to replace 'Up'caret */
+		R.drawable.ic_navigation_drawe, /* nav drawer image to replace 'Up'caret */
 		R.string.oferta, /* "open drawer" description for accessibility */
 		R.string.hello_world /* "close drawer" description for accessibility */
 		);
@@ -302,7 +302,7 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 					if(Util.getPreferenceBoolean(context, "login")==true){
 					AlertDialog.Builder dialogLocation = new AlertDialog.Builder(context);
 					dialogLocation.setTitle("Salir");
-					dialogLocation.setMessage("Antes de salir... ¿Desea cerrar sesión?");
+					dialogLocation.setMessage("Antes de salir... ¿Deseas cerrar sesión?");
 					dialogLocation.setCancelable(true);
 					dialogLocation.setPositiveButton("Sí",
 							new DialogInterface.OnClickListener() {
@@ -658,7 +658,7 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 			// start both asyncTask:
 			if (util.isNetworkAvailable(context) == true) {
 				asyncBackbeam = new MyData().execute();
-				// asyncPlaces = new GetPlaces("").execute();
+				 //asyncPlaces = new GetPlaces("").execute();
 
 			} else {
 				util.showInfoDialog(context, "Lo sentimos",
@@ -702,7 +702,7 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 		private String places;
 
 		public GetPlaces(String places) {
-			util.log("recorremos getplaces");
+			System.out.println("recorremos getplaces");
 
 			this.places = places;
 		}
@@ -710,7 +710,7 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 		@Override
 		protected void onPostExecute(ArrayList<Place> result) {
 			super.onPostExecute(result);
-			util.log("recorremos post execute places");
+			System.out.println("recorremos post execute places");
 
 			for (int i = 0; i < result.size(); i++) {
 				markG = map.addMarker(new MarkerOptions()
@@ -728,22 +728,21 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			util.log("recorremos pre-execute places");
+			System.out.println("recorremos pre-execute places");
 		}
 
 		@Override
 		protected ArrayList<Place> doInBackground(Void... arg0) {
 			PlacesService service = new PlacesService(
 					"AIzaSyCyZF9Cxz6bhgzuGLt7OvD3f_gPqsfvJSI");
-			ArrayList<Place> findPlaces = service.findPlaces(
-					location.getLatitude(), location.getLongitude(), places);
-			util.log("placesprueba1" + location.getLatitude()
-					+ location.getLongitude() + places);
-
+			ArrayList<Place> findPlaces = service.findPlaces(userlat, userlon, places);
+			//ArrayList<Place> findPlaces = service.search(latitudeSplash, longitudeSplash, 300, null);
+			//System.out.println("placesprueba1: " + location.getLatitude()+ location.getLongitude());
+			System.out.println("DENTRO DE GETPLACES");
 			for (int i = 0; i < findPlaces.size(); i++) {
 
 				Place placeDetail = findPlaces.get(i);
-				util.log("places : " + placeDetail.getName());
+			System.out.println("places : " + placeDetail.getName());
 			}
 			return findPlaces;
 		}
@@ -780,8 +779,11 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 								// ID comercios encuadrados
 								idcommerceonmap.clear();
 								util.log("map clear mydata");
+								
 								for (final BackbeamObject object : commerces) {
 
+									
+									
 									if (object.getNumber("actualoffers")
 											.intValue() > 0) {
 										util.log("1" + object.getId());
@@ -817,13 +819,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinazul,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 
 											/*
 											 * .icon(BitmapDescriptorFactory
@@ -858,13 +860,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinmorado,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										case ("compras"):
 											markB = map
@@ -893,13 +895,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinrosa,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										case ("otros"):
 											markB = map
@@ -928,13 +930,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinverde,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										default:
 											break;
@@ -1084,13 +1086,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinazul,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										case ("servicios"):
 											markB = map
@@ -1119,13 +1121,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinmorado,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										case ("compras"):
 											markB = map
@@ -1154,13 +1156,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinrosa,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										case ("otros"):
 											markB = map
@@ -1189,13 +1191,13 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 															.title(object
 																	.getString("placename"))
 															.icon(BitmapDescriptorFactory
-																	.fromBitmap(util
+																	.fromBitmap(util.ajusteBitmap(mDpi ,util
 																			.writeTextOnDrawable(
 																					context,
 																					R.drawable.pinverde,
 																					object.getNumber(
 																							"actualoffers")
-																							.toString()))));
+																							.toString())))));
 											break;
 										default:
 											break;
@@ -1388,14 +1390,14 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
+																		.fromBitmap(util.ajusteBitmap(mDpi ,util
 																				.writeTextOnDrawable(
 																						context,
 																						R.drawable.pinazul,
 																						commerceMark
 																								.getNumber(
 																										"actualoffers")
-																								.toString()))));
+																								.toString())))));
 												break;
 											case ("servicios"):
 												markB = map
@@ -1415,14 +1417,14 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
+																		.fromBitmap(util.ajusteBitmap(mDpi ,util
 																				.writeTextOnDrawable(
 																						context,
 																						R.drawable.pinmorado,
 																						commerceMark
 																								.getNumber(
 																										"actualoffers")
-																								.toString()))));
+																								.toString())))));
 												break;
 											case ("compras"):
 												markB = map
@@ -1469,14 +1471,14 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 																.title(commerceMark
 																		.getString("placename"))
 																.icon(BitmapDescriptorFactory
-																		.fromBitmap(util
+																		.fromBitmap(util.ajusteBitmap(mDpi ,util
 																				.writeTextOnDrawable(
 																						context,
 																						R.drawable.pinverde,
 																						commerceMark
 																								.getNumber(
 																										"actualoffers")
-																								.toString()))));
+																								.toString())))));
 												break;
 											default:
 												break;

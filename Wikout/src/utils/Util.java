@@ -37,6 +37,8 @@ import android.widget.Toast;
 
 public class Util {
 
+	public Object PlacesService;
+
 	public void showToast(Context context, String mensaje) {
 		Toast.makeText(context, mensaje, Toast.LENGTH_SHORT).show();
 	}
@@ -348,6 +350,22 @@ public class Util {
 
 	}
 
+	public Bitmap ajusteBitmap(int mDpi, Bitmap image) {
+		int dpi = image.getDensity();
+
+		if (dpi == mDpi)
+			return image;
+		else {
+
+			int width = (image.getWidth() * mDpi + dpi / 4) / dpi;
+			int height = (image.getHeight() * mDpi + dpi / 4) / dpi;
+			Bitmap adjustedImage = Bitmap.createScaledBitmap(image, 50, 50,
+					true);
+			adjustedImage.setDensity(mDpi);
+			return adjustedImage;
+		}
+	}
+
 	public static int convertToPixels(Context context, int nDP) {
 		final float conversionScale = context.getResources()
 				.getDisplayMetrics().density;
@@ -430,80 +448,4 @@ public class Util {
 		return (double) settings.getFloat(prefName, 0);
 	}
 
-	/*
-	 * 
-	 * public int getuserid(SharedPreferences sp) {
-	 * 
-	 * return sp.getInt("userid", 0);
-	 * 
-	 * }
-	 * 
-	 * public void setuserid(SharedPreferences.Editor editor, int value) {
-	 * 
-	 * 
-	 * editor.putInt("userid", value); editor.commit();
-	 * 
-	 * } public int getplace(SharedPreferences sp) {
-	 * 
-	 * return sp.getInt("place", 0);
-	 * 
-	 * }
-	 * 
-	 * public void setplace(SharedPreferences.Editor editor, int value) {
-	 * 
-	 * 
-	 * editor.putInt("place", value); editor.commit();
-	 * 
-	 * }
-	 * 
-	 * 
-	 * public String getmail(SharedPreferences sp) {
-	 * 
-	 * return sp.getString("email", "");
-	 * 
-	 * }
-	 * 
-	 * public void setmail(SharedPreferences.Editor editor, String value) {
-	 * 
-	 * editor.putString("email", value); editor.commit();
-	 * 
-	 * }
-	 * 
-	 * public boolean getlog(SharedPreferences sp) {
-	 * 
-	 * return sp.getBoolean("login", false);
-	 * 
-	 * }
-	 * 
-	 * public void setlog(SharedPreferences.Editor editor, boolean value) {
-	 * 
-	 * 
-	 * editor.putBoolean("login", value); editor.commit();
-	 * 
-	 * } public double getlatpos(SharedPreferences sp) {
-	 * 
-	 * return (double)sp.getFloat("latpos", 0);
-	 * 
-	 * }
-	 * 
-	 * public void setlongpos(SharedPreferences.Editor editor, double value) {
-	 * 
-	 * 
-	 * editor.putFloat("longpos", (float)value); editor.commit();
-	 * 
-	 * }
-	 * 
-	 * public double getlongpos(SharedPreferences sp) {
-	 * 
-	 * return (double)sp.getFloat("longpos", 0);
-	 * 
-	 * }
-	 * 
-	 * public void setlatpos(SharedPreferences.Editor editor, double value) {
-	 * 
-	 * 
-	 * editor.putFloat("latpos", (float)value); editor.commit();
-	 * 
-	 * }
-	 */
 }

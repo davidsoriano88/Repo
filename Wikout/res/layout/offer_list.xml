@@ -13,19 +13,29 @@
         android:contentDescription="@string/oferta"
         android:scaleType="fitXY" />
 
+    <TextView
+        android:id="@+id/tvOfferListSms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/offerlistsms"
+        android:textSize="18sp" />
+
     <ListView
         android:id="@+id/listOff"
         android:layout_width="fill_parent"
         android:layout_height="277dp"
         android:layout_marginBottom="5dp"
         android:layout_weight="1" >
-
     </ListView>
+
     <TextView
         android:id="@+id/tvListOfferNoOffer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnAddOffer"
@@ -39,4 +49,3 @@
         android:text="Insertar Nueva Oferta" />
 
 </LinearLayout>
-   

@@ -12,15 +12,17 @@ import android.widget.TextView;
 import com.wikout.R;
 
 public class FirstFragment extends Fragment {
- Context context = null;
+	Context context = null;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.first_frag, container, false);
-		
+
 		TextView tv = (TextView) v.findViewById(R.id.tvFragFirst);
 		String string = getString(R.string.walkthrougth1);
-		tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf"));
+		tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),
+				"fonts/Roboto-Regular.ttf"));
 		tv.setText(string);
 
 		return v;

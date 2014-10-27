@@ -25,6 +25,7 @@
         android:hint="@string/buscar"
         android:paddingLeft="16dp"
         android:singleLine="true"
+        android:textColor="#FFFFFF"
         android:textSize="20sp" >
 
         <requestFocus />

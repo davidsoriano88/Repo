@@ -1,4 +1,5 @@
 package com.wikout;
+
 import io.backbeam.Backbeam;
 import io.backbeam.BackbeamObject;
 import io.backbeam.FetchCallback;
@@ -27,20 +28,22 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+
 public class SplashScreen extends Activity implements LocationListener {
 
 	private Context context = this;
 	public LocationResult locationResult = null;
 	Location location;
+	private LocationManager locationManager;
+
 	Util util;
 	double lat = 0, lng = 0, latitude = 0, longitude = 0;
 
-	// DECLARO Strings 
-	String appReqUpdate, appMinVers;
+	// DECLARO Strings
+	String appReqUpdate, appMinVers, provider;
 
-	private LocationManager locationManager;
-	private String provider;
 	Intent mainIntent = null;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -81,11 +84,6 @@ public class SplashScreen extends Activity implements LocationListener {
 
 		// CREO LA REFERENCIA de TIEMPO
 		int time = (int) (System.currentTimeMillis() / 1000);
-		System.out.println("tiempoo actual Milisegundos: "
-				+ System.currentTimeMillis());
-		System.out.println("tiempoo actual Integer: " + time);
-
-		// Si no existe la referencia del tiempo LA CREO
 
 		// Creo el intent pa ahorrar codigo
 		Uri uri = Uri.parse("http://www.google.com");
@@ -95,11 +93,12 @@ public class SplashScreen extends Activity implements LocationListener {
 		final Intent intentServices = new Intent(Intent.ACTION_VIEW,
 				uriServices);
 
-		// COMPRUEBO SI LLEVA MÁS DE 10 DIAS INSTALADA
+		// Si no existe la referencia del tiempo LA CREO
 		if (Settings.getTimeLastCheckVersion(context) == 0) {
 			Settings.setTimeLastCheckVersion(context, time);
 			initUI();
 
+			// COMPRUEBO SI LLEVA MÁS DE 10 DIAS INSTALADA
 			// Si existe y es mayor a 10 dias:
 		} else if (time - Settings.getTimeLastCheckVersion(context) >= 864000) {
 			final Resources res = getResources();
@@ -125,13 +124,12 @@ public class SplashScreen extends Activity implements LocationListener {
 						}
 
 					}
-					System.out.println("Esta instalado services??: "
-							+ appInstalledOrNot("com.google.android.gms"));
+					System.out.println("Esta instalado services??: "+ appInstalledOrNot("com.google.android.gms"));
 					if (appInstalledOrNot("com.google.android.gms") == false) {
+						
 						// obligo ir al market y creo el alert dialog
 						AlertDialog.Builder info = new AlertDialog.Builder(
 								context);
-
 						info.setTitle("Actualización");
 						info.setMessage("Existe una nueva versión de Wikout.");
 						info.setCancelable(false);
@@ -183,7 +181,6 @@ public class SplashScreen extends Activity implements LocationListener {
 								// Sugiero ir al market
 								AlertDialog.Builder info = new AlertDialog.Builder(
 										context);
-
 								info.setTitle("Actualización");
 								info.setMessage("Existe una actualización de Wikout.\n ¿Quieres descargártela?");
 								info.setCancelable(true);
@@ -251,7 +248,6 @@ public class SplashScreen extends Activity implements LocationListener {
 			onLocationChanged(location);
 		} else {
 			System.out.println("Location not available");
-			System.out.println("Location not available");
 		}
 	}
 
@@ -267,6 +263,7 @@ public class SplashScreen extends Activity implements LocationListener {
 				// place: 1 Splash/Walkthrough; 2 Denunciar Oferta; 3 Insertar
 
 				// SI NO HAY MAIL REGISTRADO, VA A PASAR POR Login ACTIVITY
+				// antes había un == en el if inferior. (23-10)
 				if (Util.getPreferenceInt(context, "userid") == 0) {
 					// util.setlog(prefs, false);
 					Util.setPreferenceString(context, "email", "");
@@ -274,15 +271,15 @@ public class SplashScreen extends Activity implements LocationListener {
 				}
 
 				if (lat != 0) {
-					Util.setPreferenceDouble(context, "latpos",lat);
-					Util.setPreferenceDouble(context, "longpos",lng);
+					Util.setPreferenceDouble(context, "latpos", lat);
+					Util.setPreferenceDouble(context, "longpos", lng);
 				} else {
-					Util.setPreferenceDouble(context, "latpos",0);
-					Util.setPreferenceDouble(context, "longpos",0);
+					Util.setPreferenceDouble(context, "latpos", 0);
+					Util.setPreferenceDouble(context, "longpos", 0);
 					// location.getLatitude());
 					// location.getLongitude());
 				}
-				
+
 				// va al splash screen
 				if (notour == false) {
 					mainIntent = new Intent().setClass(SplashScreen.this,
@@ -356,30 +353,22 @@ public class SplashScreen extends Activity implements LocationListener {
 
 }
 
-	/*@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		// Add code to print out the key hash
-		try {
-
-			PackageInfo info = getPackageManager().getPackageInfo(
-					getPackageName(), PackageManager.GET_SIGNATURES);
-
-			for (Signature signature : info.signatures) {
-				MessageDigest md = MessageDigest.getInstance("SHA");
-				md.update(signature.toByteArray());
-				Log.d("KeyHash:",
-						Base64.encodeToString(md.digest(), Base64.DEFAULT));
-				String a = Base64.encodeToString(md.digest(), Base64.DEFAULT);
-				System.out.println("Esta es la clave: " + a);
-			}
-
-		} catch (NameNotFoundException ex) {
-			Log.e("name not found", ex.toString());
-		} catch (NoSuchAlgorithmException e) {
-			Log.e("no such an algorithm", e.toString());
-		}
-	}
-}
-*/
+/*
+ * @Override public void onCreate(Bundle savedInstanceState) {
+ * super.onCreate(savedInstanceState);
+ * 
+ * // Add code to print out the key hash try {
+ * 
+ * PackageInfo info = getPackageManager().getPackageInfo( getPackageName(),
+ * PackageManager.GET_SIGNATURES);
+ * 
+ * for (Signature signature : info.signatures) { MessageDigest md =
+ * MessageDigest.getInstance("SHA"); md.update(signature.toByteArray());
+ * Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT)); String
+ * a = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+ * System.out.println("Esta es la clave: " + a); }
+ * 
+ * } catch (NameNotFoundException ex) { Log.e("name not found", ex.toString());
+ * } catch (NoSuchAlgorithmException e) { Log.e("no such an algorithm",
+ * e.toString()); } } }
+ */

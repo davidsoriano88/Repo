@@ -33,9 +33,10 @@ public class LastFragment extends Fragment implements LocationListener {
 
 	public LocationResult locationResult = null;
 	Location location;
+	private LocationManager locationManager;
+
 	double lat = 0, log = 0, latitude = 0, longitude = 0;
 
-	private LocationManager locationManager;
 	private String provider;
 
 	@Override
@@ -60,42 +61,48 @@ public class LastFragment extends Fragment implements LocationListener {
 			public void onClick(View v) {
 				Context context = getActivity();
 
-				
 				if (cbxDontShow.isChecked() == true) {
 
-					
-					Util.setPreferenceBoolean(getActivity().getApplicationContext(), "notour", true);
+					Util.setPreferenceBoolean(getActivity()
+							.getApplicationContext(), "notour", true);
 
 				}
 				if (lat != 0) {
-					Util.setPreferenceDouble(getActivity().getApplicationContext(), "latpos", lat);
-					Util.setPreferenceDouble(getActivity().getApplicationContext(), "longpos", log);
-					
+					Util.setPreferenceDouble(getActivity()
+							.getApplicationContext(), "latpos", lat);
+					Util.setPreferenceDouble(getActivity()
+							.getApplicationContext(), "longpos", log);
+
 				} else {
 
-					Util.setPreferenceDouble(getActivity().getApplicationContext(), "latpos", 0);
-					Util.setPreferenceDouble(getActivity().getApplicationContext(), "longpos", 0);
+					Util.setPreferenceDouble(getActivity()
+							.getApplicationContext(), "latpos", 0);
+					Util.setPreferenceDouble(getActivity()
+							.getApplicationContext(), "longpos", 0);
 				}
-				if(Util.getPreferenceBoolean(getActivity().getApplicationContext(), "login")==true){
+				if (Util.getPreferenceBoolean(getActivity()
+						.getApplicationContext(), "login") == true) {
 					Intent mainIntent = new Intent().setClass(context,
 							Map.class);
 					mainIntent.putExtra("latitudSplash", lat);// location.getLatitude());
 					mainIntent.putExtra("longitudSplash", log);// location.getLongitude());
-					// System.out.println("latitudSplash "+ location.getLatitude() +
+					// System.out.println("latitudSplash "+
+					// location.getLatitude() +
 					// "\n" + "longitudSplash "+ location.getLongitude());
 
 					startActivity(mainIntent);
 					getActivity().finish();
-				}else{
-				Intent mainIntent = new Intent().setClass(context,
-						LoginActivity.class);
-				mainIntent.putExtra("latitudSplash", lat);// location.getLatitude());
-				mainIntent.putExtra("longitudSplash", log);// location.getLongitude());
-				// System.out.println("latitudSplash "+ location.getLatitude() +
-				// "\n" + "longitudSplash "+ location.getLongitude());
+				} else {
+					Intent mainIntent = new Intent().setClass(context,
+							LoginActivity.class);
+					mainIntent.putExtra("latitudSplash", lat);// location.getLatitude());
+					mainIntent.putExtra("longitudSplash", log);// location.getLongitude());
+					// System.out.println("latitudSplash "+
+					// location.getLatitude() +
+					// "\n" + "longitudSplash "+ location.getLongitude());
 
-				startActivity(mainIntent);
-				getActivity().finish();
+					startActivity(mainIntent);
+					getActivity().finish();
 				}
 			}
 		});

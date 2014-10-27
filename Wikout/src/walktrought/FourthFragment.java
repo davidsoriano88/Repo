@@ -26,16 +26,16 @@ public class FourthFragment extends Fragment {
 
 		TextView tv = (TextView) v.findViewById(R.id.tvFragFourth);
 		String string = getString(R.string.walkthrougth4);
-		tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf"));
-		
+		tv.setTypeface(Typeface.createFromAsset(getActivity().getAssets(),
+				"fonts/Roboto-Regular.ttf"));
+
 		tv.setText(string);
 
-		
-			
 		Fragment fragmentC = new LastFragment();
-		FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-		transaction.add(R.id.lastfragment, fragmentC ).commit();
-		
+		FragmentTransaction transaction = getChildFragmentManager()
+				.beginTransaction();
+		transaction.add(R.id.lastfragment, fragmentC).commit();
+
 		return v;
 	}
 

@@ -8,8 +8,6 @@
         android:layout_width="25dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginRight="12dp"
         android:contentDescription="@string/hello_world"
         android:src="@drawable/abc_ic_go"
         android:layout_centerVertical="true" />

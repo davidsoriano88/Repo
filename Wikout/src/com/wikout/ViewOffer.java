@@ -107,7 +107,7 @@ public class ViewOffer extends ActionBarActivity {
 		idofferparameter = bundle.getString("idoffer");
 		idcommerceparameter = bundle.getString("idcommerce");
 		placename = bundle.getString("placename");
-		userlocation = bundle.getString("userlocation");
+		//userlocation = bundle.getString("userlocation");
 		// userlon = bundle.getDouble("userlongitude");
 		// userlat = bundle.getDouble("userlatitude");
 
@@ -393,8 +393,8 @@ public class ViewOffer extends ActionBarActivity {
 
 				AlertDialog.Builder dialogLocation = new AlertDialog.Builder(
 						context);
-				dialogLocation.setTitle("¿Cómo va?");
-				dialogLocation.setMessage("Elija su modo de desplazamiento:");
+				dialogLocation.setTitle("¿Cómo vas?");
+				dialogLocation.setMessage("Elije tu medio de desplazamiento:");
 				dialogLocation.setCancelable(true);
 				dialogLocation.setPositiveButton("A pie",
 						new DialogInterface.OnClickListener() {
@@ -663,7 +663,7 @@ public class ViewOffer extends ActionBarActivity {
 							AlertDialog.Builder info = new AlertDialog.Builder(
 									context);
 							info.setTitle("Denuncia realizada");
-							info.setMessage("Gracias, en breve analizaremos su solicitud.");
+							info.setMessage("Gracias, en breve analizaremos tu solicitud.");
 							info.setCancelable(false);
 							info.setNeutralButton("Aceptar",
 									new DialogInterface.OnClickListener() {
@@ -807,11 +807,11 @@ public class ViewOffer extends ActionBarActivity {
 			distancedouble = (double) Math.round(distancedouble * 10) / 10;
 			distancestring = distancedouble.toString();
 			util.log("Dist: " + distancestring + " km.");
-			tvDistance.setText("Dist: " + distancestring + " km.");
+			tvDistance.setText("Distancia: " + distancestring + " km.");
 		} else {
 			int distanceint = distancedouble.intValue();
 			util.log("Dist: " + distanceint + " m.");
-			tvDistance.setText("Dist: " + distanceint + " m.");
+			tvDistance.setText("Distancia: " + distanceint + " m.");
 		}
 		setSupportProgressBarIndeterminateVisibility(false);
 

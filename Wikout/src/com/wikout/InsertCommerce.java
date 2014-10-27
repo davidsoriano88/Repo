@@ -166,7 +166,7 @@ public class InsertCommerce extends ActionBarActivity {
 		AlertDialog.Builder dialogIncomplete = new AlertDialog.Builder(this);
 		dialogIncomplete.setTitle("Información incompleta");
 		dialogIncomplete
-				.setMessage("Rellene los campos Incompletos, por favor.");
+				.setMessage("Rellena los campos Incompletos, por favor.");
 		dialogIncomplete.setCancelable(false);
 		dialogIncomplete.setNeutralButton("Aceptar",
 				new DialogInterface.OnClickListener() {
@@ -324,7 +324,6 @@ public class InsertCommerce extends ActionBarActivity {
 		Intent picture = new Intent(this, Photo.class);
 		picture.putExtra("ACTION_REQUESTED", "CAMERA");
 		startActivityForResult(picture, REQUEST_IMAGE_CAPTURE);
-
 	}
 
 	// if gallery has been pushed
