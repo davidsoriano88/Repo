@@ -69,7 +69,7 @@ public class OfferList extends ActionBarActivity {
 	ListView list;
 	Button btnAdd;
 
-	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer;
+	TextView tvOffer, tvLike, tvId, tvDeadline, tvNoOffer, tvSms;
 
 	LazyAdapter adapter;
 
@@ -130,6 +130,7 @@ public class OfferList extends ActionBarActivity {
 			tvDeadline = (TextView) convertView
 					.findViewById(R.id.tvOfferListOfferDeadline);
 			tvDeadline.setTypeface(tfl);
+			
 
 			HashMap<String, String> offerHashMap = new HashMap<String, String>();
 			offerHashMap = data.get(position);
@@ -195,6 +196,8 @@ public class OfferList extends ActionBarActivity {
 		btnAdd = (Button) findViewById(R.id.btnAddOffer);
 		tvNoOffer = (TextView) findViewById(R.id.tvListOfferNoOffer);
 		list = (ListView) findViewById(R.id.listOff);
+		tvSms = (TextView) findViewById(R.id.tvOfferListSms);
+		tvSms.setVisibility(View.GONE);
 		// queryOffer(bundle.getString("id"));
 
 		if (bundle.getString("commerceid") != null) {
@@ -218,6 +221,7 @@ public class OfferList extends ActionBarActivity {
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		new LoadDataTask().execute();
+		
 
 		btnAdd.setOnClickListener(new OnClickListener() {
 
@@ -429,7 +433,7 @@ public class OfferList extends ActionBarActivity {
 										songsList.add(map);
 									}
 
-								}
+								}tvSms.setVisibility(0);
 							}
 
 						}
@@ -438,6 +442,7 @@ public class OfferList extends ActionBarActivity {
 			// Getting adapter by passing data ArrayList
 			adapter = new LazyAdapter(act, songsList);
 			list.setAdapter(adapter);
+			//
 		}
 
 		@Override

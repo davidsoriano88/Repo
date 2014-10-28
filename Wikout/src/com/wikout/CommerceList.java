@@ -547,7 +547,7 @@ public class CommerceList extends ActionBarActivity {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			convertView = inflater.inflate(R.layout.commerce_list_item, null);
-			String fontPath = "fonts/Roboto-Black.ttf";
+			String fontPath = "fonts/Roboto-Regular.ttf";
 			String fontPathLight = "fonts/Roboto-Light.ttf";
 
 			// get the font face

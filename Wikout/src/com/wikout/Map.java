@@ -76,9 +76,10 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 		com.google.android.gms.location.LocationListener {
 
 	// COMPONENTES
-	ImageView filterView;
+	ImageView filterView, ivIconSearch;
 	TextView tvFilterText;
 	ImageButton ibFilter;
+	
 	EditText etSearch;
 	DrawerLayout drawerLayout;
 	ActionBarDrawerToggle drawerToggle;
@@ -201,6 +202,7 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 		View search = inflater.inflate(R.layout.search_drawer, null);
 		etSearch = (EditText) search.findViewById(R.id.search1);
 		etSearch.setTypeface(tf);
+		ivIconSearch = (ImageView) search.findViewById(R.id.ivIconSearch);
 		lvDrawer.addHeaderView(search);
 
 		// asignamos los items con su icono:
@@ -354,7 +356,24 @@ public class Map extends ActionBarActivity implements ConnectionCallbacks,
 				return false;
 			}
 		});
+		ivIconSearch.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+					// Perform action on key press
+					filter = null;
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+					searchResult = etSearch.getText().toString();
+					imm.hideSoftInputFromWindow(etSearch.getWindowToken(), 0);
+					tvFilterText.setText("Buscando por: " + etSearch.getText());
+					getSupportActionBar().setTitle("Resultados");
+					filterVisible(true);
+					new MyData().execute();
+					drawerOpener();
+					etSearch.setText("");
+
+			}
+		});
 		ibFilter.setOnClickListener(new View.OnClickListener() {
 
 			@Override
